@@ -1,0 +1,93 @@
+@prefix : <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix kpi: <http://bimerr.iot.linkeddata.es/def/key-performance-indicator#> .
+
+@base <http://example.org/ontology#> .
+
+<http://example.org/ontology#> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+### http://example.org/ontology#hasCategory
+kpi:hasCategory rdf:type owl:ObjectProperty .
+
+### http://example.org/ontology#hasScenario
+kpi:hasScenario rdf:type owl:ObjectProperty .
+
+### http://example.org/ontology#hasKPI
+kpi:hasKPI rdf:type owl:ObjectProperty .
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+### http://example.org/ontology#identifier
+ kpi:identifier rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#name
+ kpi:name rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#unit
+ kpi:unit rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#comment
+ kpi:comment rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#kpiValue
+ kpi:kpiValue rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#identifier
+ kpi:identifier rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#name
+ kpi:name rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#address
+ kpi:address rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#coordinates
+ kpi:coordinates rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#changeDate
+ kpi:changeDate rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#identifier
+ kpi:identifier rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+### http://example.org/ontology#name
+ kpi:name rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty .
+
+#################################################################
+#    Classes
+#################################################################
+
+### http://example.org/ontology#KPI
+kpi:KPI rdf:type owl:Class .
+
+### http://example.org/ontology#Project
+kpi:Project rdf:type owl:Class .
+
+### http://example.org/ontology#Scenario
+kpi:Scenario rdf:type owl:Class .
+
+### http://example.org/ontology#KPICategory
+kpi:KPICategory rdf:type owl:Class .
+

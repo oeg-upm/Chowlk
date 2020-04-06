@@ -1,0 +1,8 @@
+ns:Class1 rdf:type owl:Class ;
+	 rdfs:subClassOf [ rdf:type owl:Restriction; 
+owl:onProperty ns:relation1 ; 
+owl:someValuesFrom ns:Class2 ] ,
+ns:Class2 rdf:type owl:Class ;
+	 rdfs:subClassOf [ rdf:type owl:Restriction; 
+owl:onProperty ns:relation2 ; 
+owl:someValuesFrom ns:Class3 ] ,
