@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="Chrome" modified="2020-04-09T14:08:01.123Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" version="12.9.10" etag="2r2yKPQnoYX7iyM1rh5f" type="device">
-  <diagram id="SD2BDa18W3KQiAEdFKCp">
+<mxfile host="Chrome" modified="2020-04-09T13:30:46.587Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36" version="12.9.10" etag="c0kk5TYXTRcmjz1HhorE" type="device">
+  <diagram id="-1a2pyt1USnBAtv4MKfE">
     <mxGraphModel dx="3047" dy="2090" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -47,19 +47,19 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="15" value="kpi:Economic" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="-420" y="-1000" width="140" height="27" as="geometry" />
+          <mxGeometry x="-420" y="-950" width="140" height="27" as="geometry" />
         </mxCell>
         <mxCell id="16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=classic;endFill=1;dashed=1;" edge="1" source="17" target="15" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="17" value="kpi:MaterialsCost" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=4" vertex="1" parent="1">
-          <mxGeometry x="-315" y="-936.5" width="140" height="27" as="geometry" />
+          <mxGeometry x="-315" y="-886.5" width="140" height="27" as="geometry" />
         </mxCell>
         <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=classic;endFill=1;dashed=1;" edge="1" source="19" target="15" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="19" value="kpi:EnergyCost" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=4" vertex="1" parent="1">
-          <mxGeometry x="-315" y="-894.5" width="140" height="27" as="geometry" />
+          <mxGeometry x="-315" y="-844.5" width="140" height="27" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

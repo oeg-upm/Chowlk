@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="" />
+    <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/kpi.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/data/kpi.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/kpi.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/kpi.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/owl_code.ttl" beforeDir="false" afterPath="$PROJECT_DIR$/owl_code.ttl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/read_xml.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_xml.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +21,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1ZMgcXtvGd0OZHoTlMgOYyZ1Lzv" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,6 +32,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager" selected="Python.read_xml">
@@ -88,22 +99,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1345" height="263" key="GridCell.Tab.0.bottom" timestamp="1586127981573">
+    <state width="1345" height="212" key="GridCell.Tab.0.bottom" timestamp="1586445804862">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="263" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1586127981573" />
-    <state width="1345" height="263" key="GridCell.Tab.0.center" timestamp="1586127981573">
+    <state width="1345" height="212" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1586445804862" />
+    <state width="1345" height="212" key="GridCell.Tab.0.center" timestamp="1586445804862">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="263" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1586127981573" />
-    <state width="1345" height="263" key="GridCell.Tab.0.left" timestamp="1586127981572">
+    <state width="1345" height="212" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1586445804862" />
+    <state width="1345" height="212" key="GridCell.Tab.0.left" timestamp="1586445804862">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="263" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1586127981572" />
-    <state width="1345" height="263" key="GridCell.Tab.0.right" timestamp="1586127981573">
+    <state width="1345" height="212" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1586445804862" />
+    <state width="1345" height="212" key="GridCell.Tab.0.right" timestamp="1586445804862">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="263" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1586127981573" />
+    <state width="1345" height="212" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1586445804862" />
     <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1586117391579">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
