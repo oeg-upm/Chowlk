@@ -12,10 +12,12 @@
 #################################################################
 
 ### http://example.org/ontology#hasCategory
-kpi:hasCategory rdf:type owl:ObjectProperty .
+kpi:hasCategory rdf:type owl:ObjectProperty ,
+			owl:FunctionalProperty .
 
 ### http://example.org/ontology#hasScenario
-kpi:hasScenario rdf:type owl:ObjectProperty .
+kpi:hasScenario rdf:type owl:ObjectProperty ,
+			owl:FunctionalProperty .
 
 ### http://example.org/ontology#hasKPI
 kpi:hasKPI rdf:type owl:ObjectProperty .
@@ -90,7 +92,7 @@ kpi:KPI rdf:type owl:Class ;
 		owl:someValuesFrom xsd:string ],
 		[ rdf:type owl:Restriction ;
 		owl:onProperty  kpi:comment ;
-		owl:someValuesFrom xsd:string ],
+		owl:allValuesFrom xsd:string ],
 		[ rdf:type owl:Restriction ;
 		owl:onProperty  kpi:kpiValue ;
 		owl:someValuesFrom xsd:float ],
@@ -114,7 +116,7 @@ kpi:Project rdf:type owl:Class ;
 		owl:someValuesFrom xsd:string ],
 		[ rdf:type owl:Restriction ;
 		owl:onProperty  kpi:coordinates ;
-		owl:someValuesFrom xsd:string ],
+		owl:allValuesFrom xsd:string ],
 		[ rdf:type owl:Restriction ;
 		owl:onProperty  kpi:changeDate ;
 		owl:someValuesFrom xsd:dateTime ],
@@ -142,10 +144,6 @@ kpi:Economic rdf:type owl:Class ;
 	rdfs:subClassOf 
 		kpi:KPICategory.
 ### http://example.org/ontology#MaterialsCost
-kpi:MaterialsCost rdf:type owl:Class ;
-	rdfs:subClassOf 
-		kpi:Economic.
+kpi:MaterialsCost rdf:type kpi:Economic.
 ### http://example.org/ontology#EnergyCost
-kpi:EnergyCost rdf:type owl:Class ;
-	rdfs:subClassOf 
-		kpi:Economic.
+kpi:EnergyCost rdf:type kpi:Economic.
