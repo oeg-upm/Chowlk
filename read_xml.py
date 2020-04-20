@@ -48,6 +48,7 @@ def find_elements(root):
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
         discard_edge = False
+        attributes_found = False
 
         if "edge" in child.attrib:
             relation = {}
@@ -55,31 +56,47 @@ def find_elements(root):
             target = child.attrib["target"] if "target" in child.attrib else None
 
             relation["source"] = source
-            relation["target"] = target # (Then Evaluate what happen if they do not have target or source)
+            relation["target"] = target  # (Then Evaluate what happen if they do not have target or source)
             relation["id"] = id
             relation["value"] = value
 
             if value == "" or value is None:
 
+                # Looking for ellipses in a second iteration
                 for child2 in root:
                     if source == child2.attrib["id"] and "ellipse" in child2.attrib["style"]:
-                        # This edge is part of a uniofOf / itersectionOf construct
+                        # This edge is part of a unionOf / intersectionOf construct
                         # it is not useful beyond that construction
                         discard_edge = True
                         break
-
                 if discard_edge:
                     continue
 
-                if "endArrow=block" in style:
-                    relation["type"] = "rdfs:subClassOf"
-                elif "endArrow=open" in style:
-                    relation["type"] = "rdf:type"
+                # Sometimes edges have their value not embedded into the edge itself, at least not in the
+                # "value" parameter of the object. We can track their associated value by looking for free text
+                # and evaluating the "parent" parameter which will point to an edge.
+                for child2 in root:
+                    if "text" in child2.attrib["style"] and id == child2.attrib["parent"]:
+                        value = child2.attrib["value"]
+                        break
+
+                if value == "" or value is None:
+                    if "endArrow=block" in style:
+                        relation["type"] = "rdfs:subClassOf"
+                    elif "endArrow=open" in style:
+                        relation["type"] = "rdf:type"
+                else:
+                    relation["type"] = "owl:ObjectProperty"
+
             elif "subClassOf" in value:
                 relation["type"] = "rdfs:subClassOf"
             elif "type" in value:
                 relation["type"] = "rdf:type"
-            else:
+
+            # Instead of using another "elif" I use an "if" again because I always want to evaluate this
+            # condition no matter what, because of the fact that sometimes edges do not have their values
+            # embedded into the edge itself.
+            if "subClassOf" not in value and "type" not in value and value != "" and value is None:
                 # Domain Range evaluation
                 if "dashed=1" in style and "startArrow=oval" not in style:
                     relation["domain"] = False
@@ -99,7 +116,6 @@ def find_elements(root):
                 elif "dashed=1" not in style and "startFill=0" in style:
                     relation["domain"] = False
                     relation["range"] = True
-
                 # Existential Universal restriction evaluation
                 if "allValuesFrom" in value or "(all)" in value or "∀" in value:
                     relation["allValuesFrom"] = True
@@ -196,6 +212,7 @@ def find_elements(root):
             anonymous_concepts.append(unnamed)
 
         # List of individuals
+        # The "&lt;u&gt;" value indicates "bold" in html
         elif "fontStyle=4" in style or "&lt;u&gt;" in value:
             individual = {}
             individual["id"] = id
@@ -209,43 +226,71 @@ def find_elements(root):
                 individual["uri"] = value.split(";")[2].split("&")[0].split(":")[1]
             individuals.append(individual)
 
-        # List of classes, it is important to remember that we should distinguish between
-        # new classes, reused classes and attributes by means of colors,
-        elif "fillColor" in style and "fillColor=none" not in style:
-            concept = {}
-            # Specific concept for the current ontology should be in "#dae8fc" (light blue)
-            concept["id"] = id
-            concept["prefix"] = value.split(":")[0]
-            concept["uri"] = value.split(":")[1]
-            if "fillColor=#dae8fc" in style:
-                concept["type"] = "new"  # To distinguish between new or reused concepts easily
-            else:
-                concept["type"] = "reused"
-
-            concepts.append(concept)
-
-        # List of attribute_blocks, each of them contains one or more attributes
         else:
-            attributes = []
-            attribute_list = value.split("&lt;br&gt;")
-            domain = False if "dashed=1" in style else True
-            for attribute_value in attribute_list:
-                attribute = {}
-                attribute["prefix"] = attribute_value.split(":")[0].split(" ")[::-1][0]
-                attribute["uri"] = attribute_value.split(":")[1].split(" ")[0]
-                attribute["datatype"] = attribute_value.split(":")[2][1:] \
-                    if len(attribute_value.split(":")) > 2 else None
-                attribute["range"] = True if attribute["datatype"] is not None else False
-                attribute["domain"] = domain
-                attribute["functional"] = True if "(F)" in attribute_value else False
-                attribute["min_cardinality"] = attribute_value.split("..")[0][-1] \
-                    if len(attribute_value.split("..")) > 1 else None
-                attribute["max_cardinality"] = attribute_value.split("..")[1].split(")")[0] \
-                    if attribute["min_cardinality"] is not None else None
+            concept = {}
+            attribute_block = {}
+            attribute_block["id"] = id
 
-                attributes.append(attribute)
+            geometry = child[0]
+            x, y, width, height = geometry["x"], geometry["y"], geometry["width"], geometry["height"]
+            p1, p2, p3, p4 = get_corners(x, y, width, height)
 
-            attribute_blocks.append(attributes)
+            # We need a second iteration because we need to know if there is a block
+            # on top of the current block, that determines if we are dealing with a class or attributes
+            for child2 in root:
+                # Filter all the elements except attributes and classes
+                if "edge" not in style or "ellipse" not in style or "shape" in style or \
+                        "fontStyle=4" not in style or "&lt;u&gt;" in value:
+
+                    geometry = child2[0]
+                    x, y, width, height = geometry["x"], geometry["y"], geometry["width"], geometry["height"]
+                    p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
+                    dx = abs(p1[0] - p2_support[0])
+                    dy = abs(p1[1] - p2_support[1])
+
+                    if dx < 5 and dy < 5:
+                        attributes = []
+                        attribute_list = value.split("&lt;br&gt;")
+                        domain = False if "dashed=1" in style else True
+                        for attribute_value in attribute_list:
+                            attribute = {}
+                            attribute["prefix"] = attribute_value.split(":")[0].split(" ")[::-1][0]
+                            attribute["uri"] = attribute_value.split(":")[1].split(" ")[0]
+                            attribute["datatype"] = attribute_value.split(":")[2][1:] \
+                                if len(attribute_value.split(":")) > 2 else None
+                            attribute["range"] = True if attribute["datatype"] is not None else False
+                            attribute["domain"] = domain
+
+                            # Existential Universal restriction evaluation
+                            if "(all)" in attribute_value or "∀" in attribute_value:
+                                attribute["allValuesFrom"] = True
+                            else:
+                                attribute["allValuesFrom"] = False
+
+                            if "(some)" in attribute_value or "∃" in attribute_value:
+                                attribute["someValuesFrom"] = True
+                            else:
+                                attribute["someValuesFrom"] = False
+
+                            attribute["functional"] = True if "(F)" in attribute_value else False
+                            attribute["min_cardinality"] = attribute_value.split("..")[0][-1] \
+                                if len(attribute_value.split("..")) > 1 else None
+                            attribute["max_cardinality"] = attribute_value.split("..")[1].split(")")[0] \
+                                if attribute["min_cardinality"] is not None else None
+
+                            attributes.append(attribute)
+
+                        attribute_block["attributes"] = attributes
+                        attribute_block["concept_associated"] = child2.attrib["id"]
+                        attribute_blocks.append(attribute_block)
+                        attributes_found = True
+                        break
+
+            if not attributes_found:
+                concept["id"] = id
+                concept["prefix"] = value.split(":")[0]
+                concept["uri"] = value.split(":")[1]
+                concepts.append(concept)
 
     return concepts, attribute_blocks, relations, individuals, anonymous_concepts, \
            ontology_metadata, namespaces
