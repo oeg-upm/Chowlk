@@ -29,6 +29,87 @@ def get_corners(x, y, width, height):
 
     return p1, p2, p3, p4
 
+def find_missing_source_target(properties, type="restrictions"):
+
+    ########################################################################
+
+    for property in properties:
+
+        child = property["xml_object"]
+
+        geom_property = child[0]
+        for elem in geom_property:
+            if elem.attrib["as"] == "sourcePoint":
+                x_source, y_source = float(elem.attrib["x"]), float(elem.attrib["y"])
+            elif elem.attrib["as"] == "targetPoint":
+                x_target, y_target = float(elem.attrib["x"]), float(elem.attrib["y"])
+
+        # Second iteration to look for other edges as possibles sources
+        for child2 in root:
+            if "edge" in child2.attrib:
+                # We are considering the simple scenario in which the supporting or
+                # reference edges have source and target, however this is not always the situation
+                source_child2 = child2.attrib["source"]
+                target_child2 = child2.attrib["target"]
+
+                # Sadly we have to make a third iteration to look for the source and target shapes
+                for child3 in root:
+                    if source_child2 == child3.attrib["id"]:
+                        s_shape_x, s_shape_y = child3[0].attrib["x"], child3[0].attrib["y"]
+                        s_shape_width, s_shape_height = child3[0].attrib["width"], child3[0].attrib["height"]
+                        break
+
+                exitX = child2.attrib["style"].split("exitX=")[1].split(";")[0]
+                exitY = child2.attrib["style"].split("exitY=")[1].split(";")[0]
+                x_source_ref = float(s_shape_x) + float(s_shape_width) * float(exitX)
+                y_source_ref = float(s_shape_y) + float(s_shape_height) * float(exitY)
+                source_point_ref = [x_source_ref, y_source_ref]
+
+                for child3 in root:
+                    if target_child2 == child3.attrib["id"]:
+                        t_shape_x, t_shape_y = child3[0].attrib["x"], child3[0].attrib["y"]
+                        t_shape_width, t_shape_height = child3[0].attrib["width"], child3[0].attrib["height"]
+                        break
+
+                entryX = child2.attrib["style"].split("entryX=")[1].split(";")[0]
+                entryY = child2.attrib["style"].split("entryY=")[1].split(";")[0]
+                x_target_ref = float(t_shape_x) + float(t_shape_width) * float(entryX)
+                y_target_ref = float(t_shape_y) + float(t_shape_height) * float(entryY)
+                target_point_ref = [x_target_ref, y_target_ref]
+
+                # We have to determine how many inflexion points it have, however sometimes it is
+                # not indicated explicitly and have to be derived from the associated shapes.
+                # Try to iter over the mxGeom elements, if they exist
+                for elem in child2[0]:
+                    # if you found an element with the attribute "points", Eureka!
+                    if elem.attrib["as"] == "points":
+                        points_ref = []
+                        for mxPoint in elem:
+                            point = [float(mxPoint.attrib["x"]), float(mxPoint.attrib["y"])]
+                            points_ref.append(point)
+                        points_ref.insert(0, source_point_ref)
+                        points_ref.append(target_point_ref)
+
+                        # At this point you already have all the points for a candidate line
+                        # We are going to evaluate each segment of the candidate line
+                        for index in range(len(points_ref) - 1):
+                            point_A = points_ref[index]
+                            point_B = points_ref[index + 1]
+
+                            if point_A[0] > point_B[0]:
+                                min_x, max_x = point_B[0], point_A[0]
+                            else:
+                                min_x, max_x = point_A[0], point_B[0]
+
+                            if point_A[1] > point_B[1]:
+                                min_y, max_y = point_B[1], point_A[1]
+                            else:
+                                min_y, max_y = point_A[1], point_B[1]
+
+
+            else:
+                continue
+
 def find_elements(root):
 
     concepts = []
@@ -58,7 +139,7 @@ def find_elements(root):
             relation["source"] = source
             relation["target"] = target  # (Then Evaluate what happen if they do not have target or source)
             relation["id"] = id
-            relation["value"] = value
+            relation["xml_object"] = child
 
             if value == "" or value is None:
 
@@ -80,65 +161,89 @@ def find_elements(root):
                         value = child2.attrib["value"]
                         break
 
+                # If after the evaluation of free text we cannot find any related text to the edge
+                # we can say for sure that it is a "subclass" or "type" relationship
                 if value == "" or value is None:
-                    if "endArrow=block" in style:
+                    # Check for both sides of the edge, sometimes it can be tricky.
+                    if "endArrow=block" in style or "startArrow=block" in style:
                         relation["type"] = "rdfs:subClassOf"
-                    elif "endArrow=open" in style:
+                    elif "endArrow=open" in style or "startArrow=open" in style:
                         relation["type"] = "rdf:type"
-                else:
-                    relation["type"] = "owl:ObjectProperty"
+                    relations.append(relation)
+                    continue
 
-            elif "subClassOf" in value:
+            if "subClassOf" in value:
                 relation["type"] = "rdfs:subClassOf"
-            elif "type" in value:
+                relations.append(relation)
+                continue
+            if "type" in value:
                 relation["type"] = "rdf:type"
+                relations.append(relation)
+                continue
+            if "equivalentClass" in value:
+                relation["type"] = "owl:equivalentClass"
+                relations.append(relation)
+                continue
+            if "disjointWith" in value:
+                relation["type"] = "owl:disjointWith"
+                relations.append(relation)
+                continue
+            if "subPropertyOf" in value:
+                relation["type"] = "owl:subPropertyOf"
+                relations.append(relation)
+                continue
+            if "equivalentProperty" in value:
+                relation["type"] = "owl:equivalentProperty"
+                relations.append(relation)
+                continue
+            if "inverseOf" in value:
+                relation["type"] = "owl:inverseOf"
+                relations.append(relation)
+                continue
 
-            # Instead of using another "elif" I use an "if" again because I always want to evaluate this
-            # condition no matter what, because of the fact that sometimes edges do not have their values
-            # embedded into the edge itself.
-            if "subClassOf" not in value and "type" not in value and value != "" and value is None:
-                # Domain Range evaluation
-                if "dashed=1" in style and "startArrow=oval" not in style:
-                    relation["domain"] = False
-                    relation["range"] = False
-                elif "dashed=1" in style and "startFill=0" in style:
-                    relation["domain"] = False
-                    relation["range"] = False
-                elif "dashed=1" not in style and "startArrow=oval" not in style:
-                    relation["domain"] = True
-                    relation["range"] = True
-                elif "dashed=1" not in style and "startFill=1" in style:
-                    relation["domain"] = True
-                    relation["range"] = True
-                elif "dashed=1" in style and "startFill=1" in style:
-                    relation["domain"] = True
-                    relation["range"] = False
-                elif "dashed=1" not in style and "startFill=0" in style:
-                    relation["domain"] = False
-                    relation["range"] = True
-                # Existential Universal restriction evaluation
-                if "allValuesFrom" in value or "(all)" in value or "∀" in value:
-                    relation["allValuesFrom"] = True
-                else:
-                    relation["allValuesFrom"] = False
-                if "someValuesFrom" in value or "(some)" in value or "∃" in value:
-                    relation["someValuesFrom"] = True
-                else:
-                    relation["someValuesFrom"] = False
+            # Domain Range evaluation
+            if "dashed=1" in style and "startArrow=oval" not in style:
+                relation["domain"] = False
+                relation["range"] = False
+            elif "dashed=1" in style and "startFill=0" in style:
+                relation["domain"] = False
+                relation["range"] = False
+            elif "dashed=1" not in style and "startArrow=oval" not in style:
+                relation["domain"] = True
+                relation["range"] = True
+            elif "dashed=1" not in style and "startFill=1" in style:
+                relation["domain"] = True
+                relation["range"] = True
+            elif "dashed=1" in style and "startFill=1" in style:
+                relation["domain"] = True
+                relation["range"] = False
+            elif "dashed=1" not in style and "startFill=0" in style:
+                relation["domain"] = False
+                relation["range"] = True
+            # Existential Universal restriction evaluation
+            if "allValuesFrom" in value or "(all)" in value or "∀" in value:
+                relation["allValuesFrom"] = True
+            else:
+                relation["allValuesFrom"] = False
+            if "someValuesFrom" in value or "(some)" in value or "∃" in value:
+                relation["someValuesFrom"] = True
+            else:
+                relation["someValuesFrom"] = False
 
-                # Property restriction evaluation
-                relation["functional"] = True if "(F)" in value else False
-                relation["inverse_functional"] = True if "(IF)" in value else False
-                relation["transitive"] = True if "(T)" in value else False
-                relation["symmetric"] = True if "(S)" in value else False
+            # Property restriction evaluation
+            relation["functional"] = True if "(F)" in value else False
+            relation["inverse_functional"] = True if "(IF)" in value else False
+            relation["transitive"] = True if "(T)" in value else False
+            relation["symmetric"] = True if "(S)" in value else False
 
-                # Finding the property uri
-                relation["prefix"] = value.split(":")[0].split(" ")[::-1][0]
-                relation["uri"] = value.split(":")[1].split(" ")[0]
+            # Finding the property uri
+            relation["prefix"] = value.split(":")[0].split(" ")[::-1][0]
+            relation["uri"] = value.split(":")[1].split(" ")[0]
 
-                # Cardinality restriction evaluation
-                relation["min_cardinality"] = value.split("(")[-1].split("..")[0]
-                relation["max_cardinality"] = value.split("(")[-1].split("..")[1][:-1]
+            # Cardinality restriction evaluation
+            relation["min_cardinality"] = value.split("(")[-1].split("..")[0]
+            relation["max_cardinality"] = value.split("(")[-1].split("..")[1][:-1]
+            relation["type"] = "owl:ObjectProperty"
 
             relations.append(relation)
 
@@ -172,10 +277,15 @@ def find_elements(root):
         elif "ellipse" in style:
             unnamed = {}
             unnamed["id"] = id
+            unnamed["xml_object"] = child
             if "⨅" in value:
                 unnamed["type"] = "owl:intersectionOf"
             elif "⨆" in value:
                 unnamed["type"] = "owl:unionOf"
+            elif "≡" in value:
+                unnamed["type"] = "owl:equivalentClass"
+            elif "⊥" in value:
+                unnamed["type"] = "owl:disjointWith"
             else:
                 # If the type is not embedded we have to look for free text in a small neighborhood
                 ellipse_geom = child[0]
@@ -200,14 +310,14 @@ def find_elements(root):
                                 unnamed["type"] = "owl:unionOf"
                             break
 
-                # Find the associated concepts to this union / intersection restriction
-                unnamed["group"] = []
-                for child2 in root:
-                    if "edge" in child2.attrib:
-                        source_id = child2.attrib["source"]
-                        if id == source_id:
-                            target_id = child2.attrib["target"]
-                            unnamed["group"].append(target_id)
+            # Find the associated concepts to this union / intersection restriction
+            unnamed["group"] = []
+            for child2 in root:
+                if "edge" in child2.attrib:
+                    source_id = child2.attrib["source"]
+                    if id == source_id:
+                        target_id = child2.attrib["target"]
+                        unnamed["group"].append(target_id)
 
             anonymous_concepts.append(unnamed)
 
@@ -216,6 +326,7 @@ def find_elements(root):
         elif "fontStyle=4" in style or "&lt;u&gt;" in value:
             individual = {}
             individual["id"] = id
+            individual["xml_object"] = child
             # The underlining is done at the style level
             if "fontStyle=4" in style:
                 individual["prefix"] = value.split(":")[0]
@@ -230,6 +341,7 @@ def find_elements(root):
             concept = {}
             attribute_block = {}
             attribute_block["id"] = id
+            attribute_block["xml_object"] = child
 
             geometry = child[0]
             x, y, width, height = geometry["x"], geometry["y"], geometry["width"], geometry["height"]
@@ -286,6 +398,8 @@ def find_elements(root):
                         attributes_found = True
                         break
 
+            # If after a dense one to all evaluation the object selected cannot be associated
+            # to any other object it means that it is a class
             if not attributes_found:
                 concept["id"] = id
                 concept["prefix"] = value.split(":")[0]
