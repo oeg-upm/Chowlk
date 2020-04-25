@@ -1,149 +1,25 @@
-@prefix kpi: <http://example.org/ontology#> .
+@prefix kpi:  http://theontology.namespace.com .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://example.org/ontology#> rdf:type owl:Ontology .
+ http://theontology.namespace.com rdf:type owl:Ontology .
 
 #################################################################
 #    Object Properties
 #################################################################
 
-### http://example.org/ontology#hasCategory
-kpi:hasCategory rdf:type owl:ObjectProperty ,
-			owl:FunctionalProperty .
+### kpi:hasCategory
+kpi:hasCategory rdf:type owl:ObjectProperty .
 
-### http://example.org/ontology#hasScenario
-kpi:hasScenario rdf:type owl:ObjectProperty ,
-			owl:FunctionalProperty .
+### kpi:hasScenario
+kpi:hasScenario rdf:type owl:ObjectProperty .
 
-### http://example.org/ontology#hasKPI
+### kpi:hasKPI
 kpi:hasKPI rdf:type owl:ObjectProperty .
 
-#################################################################
-#    Datatype Properties
-#################################################################
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty .
 
-### http://example.org/ontology#identifier
- kpi:identifier rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#name
- kpi:name rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#unit
- kpi:unit rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#comment
- kpi:comment rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#kpiValue
- kpi:kpiValue rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#identifier
- kpi:identifier rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#name
- kpi:name rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#address
- kpi:address rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#coordinates
- kpi:coordinates rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#changeDate
- kpi:changeDate rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#identifier
- kpi:identifier rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-### http://example.org/ontology#name
- kpi:name rdf:type owl:DatatypeProperty ,
-			owl:FunctionalProperty .
-
-#################################################################
-#    Classes
-#################################################################
-
-### http://example.org/ontology#KPI
-kpi:KPI rdf:type owl:Class ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:identifier ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:name ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:unit ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:comment ;
-		owl:allValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:kpiValue ;
-		owl:someValuesFrom xsd:float ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty kpi:hasCategory ;
-		owl:someValuesFrom kpi:KPICategory ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty kpi:hasScenario ;
-		owl:someValuesFrom kpi:Scenario ].
-### http://example.org/ontology#Project
-kpi:Project rdf:type owl:Class ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:identifier ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:name ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:address ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:coordinates ;
-		owl:allValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:changeDate ;
-		owl:someValuesFrom xsd:dateTime ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty kpi:hasKPI ;
-		owl:someValuesFrom kpi:KPI ].
-### http://example.org/ontology#Scenario
-kpi:Scenario rdf:type owl:Class ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:identifier ;
-		owl:someValuesFrom xsd:string ],
-		[ rdf:type owl:Restriction ;
-		owl:onProperty  kpi:name ;
-		owl:someValuesFrom xsd:string ].
-### http://example.org/ontology#KPICategory
-kpi:KPICategory rdf:type owl:Class .
-
-### http://example.org/ontology#Comfort
-kpi:Comfort rdf:type owl:Class ;
-	rdfs:subClassOf 
-		kpi:KPICategory.
-### http://example.org/ontology#Economic
-kpi:Economic rdf:type owl:Class ;
-	rdfs:subClassOf 
-		kpi:KPICategory.
-### http://example.org/ontology#MaterialsCost
-kpi:MaterialsCost rdf:type kpi:Economic.
-### http://example.org/ontology#EnergyCost
-kpi:EnergyCost rdf:type kpi:Economic.

@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/kpi.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/kpi.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/owl_code.ttl" beforeDir="false" afterPath="$PROJECT_DIR$/owl_code.ttl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/read_xml.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_xml.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +33,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Python.html_parser">
+  <component name="RunManager" selected="Python.read_xml">
     <configuration name="html_parser" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="owlCodeGenerator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,8 +99,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.html_parser" />
         <item itemvalue="Python.read_xml" />
+        <item itemvalue="Python.html_parser" />
         <item itemvalue="Python.png_reader" />
       </list>
     </recent_temporary>
@@ -121,22 +123,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1587493474810" />
-    <state width="1345" height="223" key="GridCell.Tab.0.bottom" timestamp="1587324487484">
+    <state width="1345" height="355" key="GridCell.Tab.0.bottom" timestamp="1587855911216">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587324487484" />
-    <state width="1345" height="223" key="GridCell.Tab.0.center" timestamp="1587324487484">
+    <state width="1345" height="355" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587855911216" />
+    <state width="1345" height="355" key="GridCell.Tab.0.center" timestamp="1587855911216">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587324487484" />
-    <state width="1345" height="223" key="GridCell.Tab.0.left" timestamp="1587324487483">
+    <state width="1345" height="355" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587855911216" />
+    <state width="1345" height="355" key="GridCell.Tab.0.left" timestamp="1587855911216">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587324487483" />
-    <state width="1345" height="223" key="GridCell.Tab.0.right" timestamp="1587324487484">
+    <state width="1345" height="355" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587855911216" />
+    <state width="1345" height="355" key="GridCell.Tab.0.right" timestamp="1587855911216">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="223" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587324487484" />
+    <state width="1345" height="355" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587855911216" />
     <state width="1345" height="223" key="GridCell.Tab.1.bottom" timestamp="1587324487484">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -153,10 +155,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1345" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1587324487484" />
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1587671843126">
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1587809725114">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1587671843126" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1587809725114" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587407527347">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
