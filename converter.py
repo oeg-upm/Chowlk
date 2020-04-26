@@ -321,9 +321,9 @@ def find_elements(root):
             relation["uri"] = value.split(":")[1].split(" ")[0]
 
             # Cardinality restriction evaluation
-            reg_exp = "\(([^)]+)\)"
+            reg_exp = "\(([0-9][^)]+)\)"
             max_min_card = re.findall(reg_exp, value)
-            max_min_card = max_min_card[0] if len(max_min_card) > 0 else None
+            max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
 
             #relation["min_cardinality"] = value.split("(")[-1].split("..")[0]
             #relation["max_cardinality"] = value.split("(")[-1].split("..")[1][:-1]
@@ -344,7 +344,7 @@ def find_elements(root):
                     prefix = prefix.contents[0]
                     prefix = prefix.split(":")[0]
 
-                ontology_uri = str(div.contents[1])
+                ontology_uri = str(div.contents[1]).strip()
                 namespaces[prefix] = ontology_uri
 
         # Dictionary of ontology level metadata
@@ -508,64 +508,135 @@ def find_elements(root):
     return concepts, attribute_blocks, relations, individuals, anonymous_concepts, \
            ontology_metadata, namespaces
 
+def resolve_concept_reference(attribute_blocks, concepts):
+
+    for attribute_block in attribute_blocks:
+        concept_found = False
+        source_id = attribute_block["concept_associated"]
+        # Check if the object associated to this set of attributes (attribute block) is really a concept
+        for concept in concepts:
+            if source_id == concept["id"]:
+                concept_found = True
+        # If a the id was not from a concept look for the attributes associated
+        # and take its concept associated
+        if not concept_found:
+            for attribute_block2 in attribute_blocks:
+                if source_id == attribute_block2["id"]:
+                    attribute_block["concept_associated"] = attribute_block2["concept_associated"]
+
+    return attribute_blocks
+
+
 
 def concept_attributes_association(concepts, attribute_blocks):
 
     associations = []
 
     for concept in concepts:
-        associations.append({"concept": concept})
+        associations.append({"concept": concept, "attribute_blocks": [], "relations": []})
 
     for attribute_block in attribute_blocks:
+        concept_id = attribute_block["concept_associated"]
         for association in associations:
-            if attribute_block["concept_associated"] == association["concept"]["id"]:
-                association["attribute_block"] = attribute_block
-
+            if concept_id == association["concept"]["id"]:
+                association["attribute_blocks"].append(attribute_block)
+                break
     return associations
 
 def concept_relations_association(associations, relations):
 
-    #concept_atr_rel_triplets = copy.deepcopy(concept_attribute_pairs)
     for relation in relations:
+        if relation["type"] == "rdf:type":
+            continue
         source_id = relation["source"]
         target_id = relation["target"]
         for i, association in enumerate(associations):
             concept_id = association["concept"]["id"]
-            try:
-                attribute_block_id = association["attribute_block"]["id"]
-            except:
-                attribute_block_id = None
-            if concept_id == source_id or attribute_block_id == source_id:
-                if "relations" in association:
-                    association["relations"].append(relation)
-                else:
-                    association["relations"] = [relation]
+            attribute_block_ids = []
+            if len(association["attribute_blocks"]) > 0:
+                for attribute_block in association["attribute_blocks"]:
+                    attribute_block_ids.append(attribute_block["id"])
+            if source_id == concept_id or source_id in attribute_block_ids:
+                association["relations"].append(relation)
                 break
-        """
-        for j, pair in enumerate(concept_attribute_pairs):
-            concept_id = pair["concept"].attrib["id"]
-            try:
-                attributes_id = pair["attributes"].attrib["id"]
-            except:
-                attributes_id = None
-            if concept_id == target_id or attributes_id == target_id:
-                concept_atr_rel_triplets[i]["relations"][-1]["target_concept"] = pair["concept"]
-                break
-        """
+
+        for j, association in enumerate(associations):
+            concept_id = association["concept"]["id"]
+            concept_prefix = association["concept"]["prefix"]
+            concept_uri = association["concept"]["uri"]
+            attribute_block_ids = []
+            if len(association["attribute_blocks"]) > 0:
+                for attribute_block in association["attribute_blocks"]:
+                    attribute_block_ids.append(attribute_block["id"])
+            if target_id == concept_id or target_id in attribute_block_ids:
+                associations[i]["relations"][-1]["target_name"] = concept_prefix + ":" + concept_uri
+
     return associations
 
+def individuals_type_identification(individuals, associations_concepts, relations):
 
-def get_ttl_template(filename, onto_uri, onto_prefix):
+    associations_individuals = []
+    for individual in individuals:
+        associations_individuals.append({"individual": individual})
+
+    for relation in relations:
+        for association in associations_individuals:
+            individual_id = association["individual"]["id"]
+            if relation["source"] == individual_id:
+                association["type_relation"] = relation
+                break
+    for association_individual in associations_individuals:
+        target_id = association_individual["type_relation"]["target"]
+        for association_concept in associations_concepts:
+            concept_id = association_concept["concept"]["id"]
+            concept_prefix = association_concept["concept"]["prefix"]
+            concept_uri = association_concept["concept"]["uri"]
+            attribute_block_ids = []
+            if len(association_concept["attribute_blocks"]) > 0:
+                for attribute_block in association_concept["attribute_blocks"]:
+                    attribute_block_ids.append(attribute_block["id"])
+
+            if target_id == concept_id or target_id in attribute_block_ids:
+                association_individual["individual"]["type"] = concept_prefix + ":" + concept_uri
+
+    return associations_individuals
+
+def get_ttl_template(filename, namespaces):
 
     file = open(filename, 'w')
-    file.write("@prefix " + onto_prefix + ": " + onto_uri + " .\n")
+    onto_prefix = list(namespaces.keys())[0]
+    onto_uri = namespaces[onto_prefix]
+    for prefix, uri in namespaces.items():
+        file.write("@prefix " + prefix + ": <" + uri + "#> .\n")
+
     file.write("@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
                "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
                "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
                "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n"
-               "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n")
+               "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
+               "@prefix dc: <http://purl.org/dc/elements/1.1> .\n"
+               "@prefix dcterms: <http://purl.org/dc/terms/>")
+    file.write("@base <" + onto_uri + "#> .\n\n")
 
-    file.write(onto_uri + " rdf:type owl:Ontology .\n\n")
+    return file, onto_prefix, onto_uri
+
+def write_ontology_metadata(file, metadata, onto_uri):
+
+    file.write("<" + onto_uri + "#> rdf:type owl:Ontology")
+    for key, value in metadata.items():
+        key = key.lower()
+        value = "\"" + value + "\""
+        if key == "version":
+            metadata_uri = "owl:versionInfo"
+        elif key == "author":
+            metadata_uri = "dc:creator"
+        elif key == "title":
+            metadata_uri = "dc:title"
+        else:
+            continue
+        file.write(" ;\n")
+        file.write("\t\t\t" + metadata_uri + " " + value)
+    file.write(" .\n\n")
 
     return file
 
@@ -587,162 +658,229 @@ filename = "owl_code.ttl"
 all_elements = find_elements(root)
 concepts, attribute_blocks, relations = all_elements[0:3]
 individuals, anonymous_concepts, ontology_metadata, namespaces = all_elements[3:]
-onto_prefix = list(namespaces.keys())[0]
-onto_uri = namespaces[onto_prefix]
-
-
-print("Namespaces######################")
-print(namespaces)
-print("Ontology Metadata ##############")
-print(ontology_metadata)
-print("Concepts #####################")
-for concept in concepts:
-    print(concept)
-print("Attributes #####################")
-for attribute_block in attribute_blocks:
-    print(attribute_block)
-print("Relations #####################")
-for relation in relations:
-    print(relation)
-print("Individuals ###################")
-for individual in individuals:
-    print(individual)
-print("Unnamed #######################")
-for unnamed in anonymous_concepts:
-    print(unnamed)
+attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
 
 associations = concept_attributes_association(concepts, attribute_blocks)
 associations = concept_relations_association(associations, relations)
+type_relations = [relation for relation in relations if relation["type"] == "rdf:type"]
+individuals_associations = individuals_type_identification(individuals, associations, type_relations)
 
-#pairs = concept_attribute_association(root)
-#triplets = concept_relation_association(pairs, relations)
-
-
-file = get_ttl_template(filename, onto_uri, onto_prefix)
+file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces)
+file = write_ontology_metadata(file, ontology_metadata, onto_uri)
 
 file.write("#################################################################\n"
            "#    Object Properties\n"
            "#################################################################\n\n")
-
 
 for relation in relations:
 
     if relation["type"] == "owl:ObjectProperty":
         uri = relation["uri"]
         prefix = relation["prefix"]
-        domain = relation["domain"]
-        range = relation["range"]
-        functional = relation["functional"]
 
         file.write("### " + prefix + ":" + uri + "\n")
-        if functional:
-            file.write(prefix + ":" + uri + " rdf:type owl:ObjectProperty ,\n")
-            file.write("\t\t\towl:FunctionalProperty .\n\n")
-        else:
-            file.write(prefix + ":" + uri + " rdf:type owl:ObjectProperty .\n\n")
+        file.write(prefix + ":" + uri + " rdf:type owl:ObjectProperty")
+        if relation["functional"]:
+            file.write(" ,\n")
+            file.write("\t\t\towl:FunctionalProperty")
 
-"""
+        if relation["symmetric"]:
+            file.write(" ,\n")
+            file.write("\t\t\towl:SymmetricProperty")
+
+        if relation["transitive"]:
+            file.write(" ,\n")
+            file.write("\t\t\towl:TransitiveProperty")
+
+        if relation["inverse_functional"]:
+            file.write(" ,\n")
+            file.write("\t\t\towl:InverseFunctionalProperty")
+
+        if relation["domain"]:
+            domain_name = [concept["prefix"] + ":" + concept["uri"]
+                           for concept in concepts if concept["id"] == relation["source"]][0]
+            file.write(" ;\n")
+            file.write("\t\trdfs:domain " + domain_name)
+
+        if relation["range"]:
+            range_name = [concept["prefix"] + ":" + concept["uri"]
+                          for concept in concepts if concept["id"] == relation["target"]][0]
+            file.write(" ;\n")
+            file.write("\t\trdfs:range " + range_name)
+
+        file.write(" .\n\n")
+
+
 file.write("#################################################################\n"
-           "#    Datatype Properties\n"
+           "#    Data Properties\n"
            "#################################################################\n\n")
 
-for attributes in attribute_blocks:
+attributes_reviewed = []
+for attribute_block in attribute_blocks:
 
-    attributes = re.split("<br>", attributes.attrib["value"])
-    for attribute in attributes:
-        index_prefix = attribute.find(":")
-        index_sufix = attribute.find("::")
-        cardinality_limit_1 = attribute.find("(")
-        cardinality_limit_2 = attribute.find(")")
-        cardinality_sep = attribute.find("..")
-        max_cardinality = attribute[cardinality_sep+2:cardinality_limit_2]
-        attrib_name_without_prefix = attribute[index_prefix + 1:index_sufix]
-        attrib_name_with_prefix = attribute[cardinality_limit_2 + 1:index_sufix]
-        file.write("### " + onto_uri[1:-1] + attrib_name_without_prefix + "\n")
-        if max_cardinality == "1":
-            file.write(attrib_name_with_prefix + " rdf:type owl:DatatypeProperty ,\n")
-            file.write("\t\t\towl:FunctionalProperty .\n\n")
-        else:
-            file.write(attrib_name_with_prefix + " rdf:type owl:DatatypeProperty .\n\n")
+    source_id = attribute_block["concept_associated"]
+
+    for attribute in attribute_block["attributes"]:
+
+        uri = attribute["uri"]
+        prefix = attribute["prefix"]
+        full_name = prefix + ":" + uri
+        if full_name in attributes_reviewed:
+            continue
+
+        file.write("### " + prefix + ":" + uri + "\n")
+        file.write(prefix + ":" + uri + " rdf:type owl:DatatypeProperty")
+
+        if attribute["functional"]:
+            file.write(" ,\n")
+            file.write("\t\t\towl:FunctionalProperty")
+
+        if attribute["domain"]:
+            domain_name = [concept["prefix"] + ":" + concept["uri"]
+                           for concept in concepts if concept["id"] == source_id][0]
+            file.write(" ;\n")
+            file.write("\t\trdfs:domain " + domain_name)
+
+        if attribute["range"]:
+            file.write(" ;\n")
+            file.write("\t\trdfs:range xsd:" + attribute["datatype"].lower())
+
+        file.write(" .\n\n")
+        attributes_reviewed.append(full_name)
+
 
 
 file.write("#################################################################\n"
            "#    Classes\n"
            "#################################################################\n\n")
 
-for triplet in triplets:
+for association in associations:
 
-    concept = triplet["concept"]
-    concept_name_without_prefix = concept.attrib["value"][concept.attrib["value"].find(":")+1:]
-    concept_name_with_prefix = concept.attrib["value"]
-    file.write("### " + onto_uri[1:-1] + concept_name_without_prefix + "\n")
-    last_upper_case = re.findall("[A-Z]", concept_name_without_prefix)[-1]
-    sep_index = concept_name_without_prefix.find(last_upper_case)
-    label = concept_name_without_prefix[:sep_index] + " " + concept_name_without_prefix[sep_index:].lower()
-    #print(concept_name_with_prefix)
-    if len(triplet) > 1:
+    concept = association["concept"]
+    concept_prefix = concept["prefix"]
+    concept_uri = concept["uri"]
+    file.write("### " + concept_prefix + ":" + concept_uri + "\n")
+    file.write(concept_prefix + ":" + concept_uri + " rdf:type owl:Class")
 
-        if "fontStyle=4" not in concept.attrib["style"]:
-            file.write(concept_name_with_prefix + " rdf:type owl:Class ;\n")
-            file.write("\trdfs:subClassOf \n")
-        if "attributes" in triplet:
-            attribute_block = triplet["attributes"]
-            attributes = re.split("<br>", attribute_block.attrib["value"])
-            for i, attribute in enumerate(attributes):
-                index_prefix = attribute.find(":")
-                index_sufix = attribute.find("::")
-                cardinality_limit_1 = attribute.find("(")
-                cardinality_limit_2 = attribute.find(")")
-                cardinality_sep = attribute.find("..")
-                #max_cardinality = attribute[cardinality_sep + 2:cardinality_limit_2]
-                min_cardinality = attribute[cardinality_limit_1+1:cardinality_sep]
-                attrib_name_with_prefix = attribute[cardinality_limit_2 + 1:index_sufix]
-                attribute_type = attribute[index_sufix+2:][0].lower() + attribute[index_sufix+2:][1:]
-                file.write("\t\t[ rdf:type owl:Restriction ;\n"
-                           "\t\towl:onProperty {} ;\n".format(attrib_name_with_prefix))
-                # Check these rules because I'm not sure if a min cardinality of 0 means
-                # an existential restriction of type allValuesFrom, I think not!
-                if int(min_cardinality) != 0:
-                    file.write("\t\towl:someValuesFrom xsd:{} ]".format(attribute_type))
+    attribute_blocks = association["attribute_blocks"]
+    relations = association["relations"]
+    subclassof_statement_done = False
+    for relation in relations:
+        if relation["type"] == "rdfs:subClassOf":
+            file.write(" ;\n")
+            file.write("\trdfs:subClassOf " + relation["target_name"])
+            subclassof_statement_done = True
+
+    for attribute_block in attribute_blocks:
+        for attribute in attribute_block["attributes"]:
+            if attribute["allValuesFrom"]:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
                 else:
-                    file.write("\t\towl:allValuesFrom xsd:{} ]".format(attribute_type))
-                if i < len(attributes) - 1:
-                    file.write(",\n")
-                elif i == len(attributes) - 1 and "relations" in triplet:
-                    file.write(",\n")
-                else:
-                    file.write(".\n")
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
+                file.write("\t\t  owl:allValuesFrom xsd:" + attribute["datatype"] + " ]")
 
-        if "relations" in triplet:
-            relations = triplet["relations"]
-            for j, relation in enumerate(relations):
-                link = relation["link"]
-                target_concept = relation["target_concept"]
-                target_concept_name = target_concept.attrib["value"]
-                if "value" in link.attrib:
-                    link_name = link.attrib["value"]
-                    cardinality_limit_1 = link_name.find("(")
-                    #cardinality_limit_2 = link.attrib["value"].find(")")
-                    cardinality_sep = link_name.find("..")
-                    min_cardinality = link_name[cardinality_limit_1 + 1:cardinality_sep]
-                    relation_name_with_prefix = link_name[:cardinality_limit_1 - 1]
-                    file.write("\t\t[ rdf:type owl:Restriction ;\n"
-                               "\t\towl:onProperty {} ;\n".format(relation_name_with_prefix))
-                    if int(min_cardinality) != 0:
-                        file.write("\t\towl:someValuesFrom {} ]".format(target_concept_name))
-                    else:
-                        file.write("\t\towl:allValuesFrom {} ]".format(target_concept_name))
+            elif attribute["someValuesFrom"]:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
                 else:
-                    if "fontStyle=4" in concept.attrib["style"]:
-                        file.write(concept_name_with_prefix + " rdf:type " + target_concept_name)
-                    else:
-                        file.write("\t\t{}".format(target_concept_name))
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
+                file.write("\t\t  owl:someValuesFrom xsd:" + attribute["datatype"] + " ]")
 
-                if j < len(relations) - 1:
-                    file.write(",\n")
+            if attribute["min_cardinality"] is not None:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
                 else:
-                    file.write(".\n")
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
+                file.write("\t\t  owl:minQualifiedCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" +
+                           "nonNegativeInteger ;\n")
+                file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
 
-    else:
-        file.write(concept_name_with_prefix + " rdf:type owl:Class .\n\n")
-"""
+            if attribute["max_cardinality"] is not None:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
+                else:
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
+                file.write("\t\t  owl:maxQualifiedCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" +
+                           "nonNegativeInteger ;\n")
+                file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
+
+    for relation in relations:
+        if relation["type"] == "owl:ObjectProperty":
+            if relation["allValuesFrom"]:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
+                else:
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
+                file.write("\t\t  owl:allValuesFrom " + relation["target_name"] + " ]")
+            elif relation["someValuesFrom"]:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
+                else:
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
+                file.write("\t\t  owl:someValuesFrom " + relation["target_name"] + " ]")
+
+            if relation["min_cardinality"] is not None:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
+                else:
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
+                file.write("\t\t  owl:minQualifiedCardinality \"" + relation["min_cardinality"] + "\"^^xsd:" +
+                           "nonNegativeInteger ;\n")
+                file.write("\t\t  owl:onClass " + relation["target_name"] + " ]")
+
+            if relation["max_cardinality"] is not None:
+                if not subclassof_statement_done:
+                    file.write(" ;\n")
+                    file.write("\trdfs:subClassOf \n")
+                    subclassof_statement_done = True
+                else:
+                    file.write(" ,\n")
+                file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
+                file.write("\t\t  owl:maxQualifiedCardinality \"" + relation["max_cardinality"] + "\"^^xsd:" +
+                           "nonNegativeInteger ;\n")
+                file.write("\t\t  owl:onClass " + relation["target_name"] + " ]")
+
+    file.write(" .\n\n")
+
+file.write("#################################################################\n"
+           "#    Instances\n"
+           "#################################################################\n\n")
+
+for individual in individuals_associations:
+
+    prefix = individual["individual"]["prefix"]
+    uri = individual["individual"]["uri"]
+    type = individual["individual"]["type"]
+    file.write("### " + prefix + ":" + uri + "\n")
+    file.write(prefix + ":" + uri + " rdf:type owl:NamedIndividual ,\n")
+    file.write("\t\t" + type + " .\n\n")

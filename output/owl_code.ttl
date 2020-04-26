@@ -1,0 +1,242 @@
+@prefix kpi: <http://theontology.namespace.com#> .
+@prefix s4bldg: <http://reusedontologies.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1> .
+@prefix dcterms: <http://purl.org/dc/terms/>@base <http://theontology.namespace.com#> .
+
+<http://theontology.namespace.com#> rdf:type owl:Ontology ;
+			owl:versionInfo "0.0.1" ;
+			dc:creator "Serge" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+### kpi:hasCategory
+kpi:hasCategory rdf:type owl:ObjectProperty .
+
+### kpi:hasScenario
+kpi:hasScenario rdf:type owl:ObjectProperty .
+
+### kpi:hasKPI
+kpi:hasKPI rdf:type owl:ObjectProperty .
+
+#################################################################
+#    Data Properties
+#################################################################
+
+### kpi:unit
+kpi:unit rdf:type owl:DatatypeProperty ;
+		rdfs:domain kpi:KPI ;
+		rdfs:range xsd:string .
+
+### kpi:comment
+kpi:comment rdf:type owl:DatatypeProperty ;
+		rdfs:domain kpi:KPI ;
+		rdfs:range xsd:string .
+
+### kpi:kpiValue
+kpi:kpiValue rdf:type owl:DatatypeProperty ;
+		rdfs:domain kpi:KPI ;
+		rdfs:range xsd:float .
+
+### kpi:address
+kpi:address rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty ;
+		rdfs:domain kpi:Project ;
+		rdfs:range xsd:string .
+
+### kpi:coordinates
+kpi:coordinates rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty ;
+		rdfs:domain kpi:Project ;
+		rdfs:range xsd:string .
+
+### kpi:changeDate
+kpi:changeDate rdf:type owl:DatatypeProperty ;
+		rdfs:domain kpi:Project ;
+		rdfs:range xsd:datetime .
+
+### kpi:identifier
+kpi:identifier rdf:type owl:DatatypeProperty ,
+			owl:FunctionalProperty ;
+		rdfs:range xsd:string .
+
+### kpi:name
+kpi:name rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:string .
+
+#################################################################
+#    Classes
+#################################################################
+
+### kpi:KPI
+kpi:KPI rdf:type owl:Class ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:unit ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:unit ;
+		  owl:maxQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:comment ;
+		  owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:comment ;
+		  owl:maxQualifiedCardinality "N"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:kpiValue ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:float ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:kpiValue ;
+		  owl:maxQualifiedCardinality "N"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:float ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:allValuesFrom xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:allValuesFrom xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasCategory ;
+		  owl:allValuesFrom kpi:KPICategory ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasCategory ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass kpi:KPICategory ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasCategory ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass kpi:KPICategory ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasScenario ;
+		  owl:someValuesFrom kpi:Scenario ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasScenario ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass kpi:Scenario ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasScenario ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass kpi:Scenario ] .
+
+### kpi:Project
+kpi:Project rdf:type owl:Class ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:address ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:address ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:coordinates ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:coordinates ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:changeDate ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:datetime ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:changeDate ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:datetime ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:allValuesFrom xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:someValuesFrom xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasKPI ;
+		  owl:someValuesFrom kpi:KPI ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasKPI ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass kpi:KPI ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:hasKPI ;
+		  owl:maxQualifiedCardinality "N"^^xsd:nonNegativeInteger ;
+		  owl:onClass kpi:KPI ] .
+
+### kpi:Scenario
+kpi:Scenario rdf:type owl:Class ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:someValuesFrom xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:identifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:allValuesFrom xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty kpi:name ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] .
+
+### kpi:KPICategory
+kpi:KPICategory rdf:type owl:Class .
+
+### kpi:Comfort
+kpi:Comfort rdf:type owl:Class ;
+	rdfs:subClassOf kpi:KPICategory .
+
+### kpi:Economic
+kpi:Economic rdf:type owl:Class ;
+	rdfs:subClassOf kpi:KPICategory .
+
+#################################################################
+#    Instances
+#################################################################
+
+### kpi:MaterialsCost
+kpi:MaterialsCost rdf:type owl:NamedIndividual ,
+		kpi:Economic .
+
+### kpi:EnergyCost
+kpi:EnergyCost rdf:type owl:NamedIndividual ,
+		kpi:Economic .
+
