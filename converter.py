@@ -615,7 +615,7 @@ def get_ttl_template(filename, namespaces):
                "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n"
                "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
                "@prefix dc: <http://purl.org/dc/elements/1.1> .\n"
-               "@prefix dcterms: <http://purl.org/dc/terms/>")
+               "@prefix dcterms: <http://purl.org/dc/terms/> .\n")
     file.write("@base <" + onto_uri + "#> .\n\n")
 
     return file, onto_prefix, onto_uri
