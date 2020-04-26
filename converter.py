@@ -325,10 +325,11 @@ def find_elements(root):
             max_min_card = re.findall(reg_exp, value)
             max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
 
-            #relation["min_cardinality"] = value.split("(")[-1].split("..")[0]
-            #relation["max_cardinality"] = value.split("(")[-1].split("..")[1][:-1]
             relation["min_cardinality"] = max_min_card.split("..")[0] if max_min_card is not None else None
             relation["max_cardinality"] = max_min_card.split("..")[1] if max_min_card is not None else None
+            if relation["max_cardinality"] == "N":
+                relation["max_cardinality"] = None
+
             relation["type"] = "owl:ObjectProperty"
 
             relations.append(relation)
@@ -488,6 +489,9 @@ def find_elements(root):
                                 if len(attribute_value.split("..")) > 1 else None
                             attribute["max_cardinality"] = attribute_value.split("..")[1].split(")")[0] \
                                 if attribute["min_cardinality"] is not None else None
+
+                            if attribute["max_cardinality"] == "N":
+                                attribute["max_cardinality"] = None
 
                             attributes.append(attribute)
 
@@ -654,7 +658,7 @@ for elem in root:
         root.remove(elem)
         break
 
-filename = "owl_code.ttl"
+filename = "output/owl_code.ttl"
 all_elements = find_elements(root)
 concepts, attribute_blocks, relations = all_elements[0:3]
 individuals, anonymous_concepts, ontology_metadata, namespaces = all_elements[3:]

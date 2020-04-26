@@ -6,7 +6,8 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dc: <http://purl.org/dc/elements/1.1> .
-@prefix dcterms: <http://purl.org/dc/terms/>@base <http://theontology.namespace.com#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://theontology.namespace.com#> .
 
 <http://theontology.namespace.com#> rdf:type owl:Ontology ;
 			owl:versionInfo "0.0.1" ;
@@ -90,16 +91,8 @@ kpi:KPI rdf:type owl:Class ;
 		  owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:string ] ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty kpi:comment ;
-		  owl:maxQualifiedCardinality "N"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
-		[ rdf:type owl:Restriction ;
 		  owl:onProperty kpi:kpiValue ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty kpi:kpiValue ;
-		  owl:maxQualifiedCardinality "N"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:float ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty kpi:identifier ;
@@ -185,10 +178,6 @@ kpi:Project rdf:type owl:Class ;
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty kpi:hasKPI ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass kpi:KPI ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty kpi:hasKPI ;
-		  owl:maxQualifiedCardinality "N"^^xsd:nonNegativeInteger ;
 		  owl:onClass kpi:KPI ] .
 
 ### kpi:Scenario
