@@ -14,8 +14,8 @@ It just requires:
 ```bash
 python converter.py path/diagram/xml path/output/ttlfile
 ```
-* path/diagram/xml: is the path were you have the drawio in xml format.
-* path/output/ttlfile: is the output path were to store the OWL generated ontology in ttl format.
+* path/diagram/xml: is the path where you have the drawio in xml format.
+* path/output/ttlfile: is the output path to store the OWL generated ontology in ttl format.
 
 Example of running the algorithm:
 ```bash
