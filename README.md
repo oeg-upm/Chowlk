@@ -4,7 +4,7 @@ Script to transform an ontogical diagram intro code.
 ### Requirements:
 Install the requirements provided by:
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 ```
 It just requires:
 * beautifulsoup4==4.9.0
