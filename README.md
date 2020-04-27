@@ -1,7 +1,7 @@
 # Diagram2code (aka chOWLk)
 Script to transform an ontogical diagram intro code.
 
-###Requirements:
+### Requirements:
 Install the requirements provided by:
 ```bash
 pip install -r requirements
@@ -10,7 +10,7 @@ It just requires:
 * beautifulsoup4==4.9.0
 * soupsieve==2.0
 
-###How to run it:
+### How to run it:
 ```bash
 python converter.py path/diagram/xml path/output/ttlfile
 ```
