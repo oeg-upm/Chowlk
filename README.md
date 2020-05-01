@@ -1,21 +1,21 @@
 # Diagram2code (aka chOWLk)
 Script to transform an ontogical diagram intro code.
 
-###Requirements:
+### Requirements:
 Install the requirements provided by:
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 ```
 It just requires:
 * beautifulsoup4==4.9.0
 * soupsieve==2.0
 
-###How to run it:
+### How to run it:
 ```bash
 python converter.py path/diagram/xml path/output/ttlfile
 ```
-* path/diagram/xml: is the path were you have the drawio in xml format.
-* path/output/ttlfile: is the output path were to store the OWL generated ontology in ttl format.
+* path/diagram/xml: is the path where you have the drawio in xml format.
+* path/output/ttlfile: is the output path to store the OWL generated ontology in ttl format.
 
 Example of running the algorithm:
 ```bash
