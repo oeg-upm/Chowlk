@@ -552,7 +552,7 @@ def concept_attributes_association(concepts, attribute_blocks):
 
 def concept_relations_association(associations, relations):
 
-    for relation in relations:
+    for idx, relation in enumerate(relations):
         if relation["type"] == "rdf:type":
             continue
         source_id = relation["source"]
@@ -560,11 +560,12 @@ def concept_relations_association(associations, relations):
         for i, association in enumerate(associations):
             concept_id = association["concept"]["id"]
             attribute_block_ids = []
-            if len(association["attribute_blocks"]) > 0:
-                for attribute_block in association["attribute_blocks"]:
-                    attribute_block_ids.append(attribute_block["id"])
+            #if len(association["attribute_blocks"]) > 0:
+            for attribute_block in association["attribute_blocks"]:
+                attribute_block_ids.append(attribute_block["id"])
             if source_id == concept_id or source_id in attribute_block_ids:
                 association["relations"].append(relation)
+                relations[idx]["source"] = concept_id
                 break
 
         for j, association in enumerate(associations):
@@ -572,13 +573,14 @@ def concept_relations_association(associations, relations):
             concept_prefix = association["concept"]["prefix"]
             concept_uri = association["concept"]["uri"]
             attribute_block_ids = []
-            if len(association["attribute_blocks"]) > 0:
-                for attribute_block in association["attribute_blocks"]:
-                    attribute_block_ids.append(attribute_block["id"])
+            #if len(association["attribute_blocks"]) > 0:
+            for attribute_block in association["attribute_blocks"]:
+                attribute_block_ids.append(attribute_block["id"])
             if target_id == concept_id or target_id in attribute_block_ids:
                 associations[i]["relations"][-1]["target_name"] = concept_prefix + ":" + concept_uri
+                relations[idx]["target"] = concept_id
 
-    return associations
+    return associations, relations
 
 def individuals_type_identification(individuals, associations_concepts, relations):
 
@@ -648,7 +650,6 @@ def write_ontology_metadata(file, metadata, onto_uri):
     return file
 
 
-
 def transformation(root, filename):
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
@@ -656,7 +657,7 @@ def transformation(root, filename):
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
 
     associations = concept_attributes_association(concepts, attribute_blocks)
-    associations = concept_relations_association(associations, relations)
+    associations, relations = concept_relations_association(associations, relations)
     type_relations = [relation for relation in relations if relation["type"] == "rdf:type"]
     individuals_associations = individuals_type_identification(individuals, associations, type_relations)
 
@@ -698,10 +699,25 @@ def transformation(root, filename):
                 file.write("\t\trdfs:domain " + domain_name)
 
             if relation["range"]:
-                range_name = [concept["prefix"] + ":" + concept["uri"]
-                              for concept in concepts if concept["id"] == relation["target"]][0]
                 file.write(" ;\n")
-                file.write("\t\trdfs:range " + range_name)
+                try:
+                    range_name = [concept["prefix"] + ":" + concept["uri"]
+                                  for concept in concepts if concept["id"] == relation["target"]][0]
+
+                    file.write("\t\trdfs:range " + range_name)
+                except:
+                    group_node = [blank for blank in anonymous_concepts if blank["id"] == relation["target"]][0]
+                    concept_ids = group_node["group"]
+                    concept_names = [concept["prefix"] + ":" + concept["uri"] for concept in concepts
+                                     if concept["id"] in concept_ids]
+                    file.write("\t\trdfs:range [ " + group_node["type"] + " ( \n")
+                    for name in concept_names:
+                        file.write("\t\t\t\t\t\t" + name + "\n")
+
+                    file.write("\t\t\t\t\t) ;\n")
+                    file.write("\t\t\t\t\trdf:type owl:Class\n")
+                    file.write("\t\t\t\t\t]")
+
 
             file.write(" .\n\n")
 
@@ -766,6 +782,22 @@ def transformation(root, filename):
                 file.write("\trdfs:subClassOf " + relation["target_name"])
                 subclassof_statement_done = True
 
+        for blank in anonymous_concepts:
+
+            if len(blank["group"]) > 2:
+                continue
+
+            if concept["id"] in blank["group"] and blank["type"] in ["owl:disjointWith"]:
+                file.write(" ;\n")
+                if blank["group"].index(concept["id"]) == 0:
+                    disjoint_complement_id = blank["group"][1]
+                else:
+                    disjoint_complement_id = blank["group"][0]
+                disjoint_complement_name = [concept["prefix"] + ":" + concept["uri"]
+                                            for concept in concepts if concept["id"] == disjoint_complement_id][0]
+                file.write("\t" + blank["type"] + " " + disjoint_complement_name)
+
+
         for attribute_block in attribute_blocks:
             for attribute in attribute_block["attributes"]:
                 if attribute["allValuesFrom"]:
@@ -827,7 +859,24 @@ def transformation(root, filename):
                         file.write(" ,\n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
-                    file.write("\t\t  owl:allValuesFrom " + relation["target_name"] + " ]")
+                    # Target name only applies when the target is a class
+                    if "target_name" in relation:
+                        file.write("\t\t  owl:allValuesFrom " + relation["target_name"] + " ]")
+                    # Otherwise the target is an blank node of type intersection, union, etc.
+                    else:
+                        group_node = [blank for blank in anonymous_concepts if blank["id"] == relation["target"]][0]
+                        concept_ids = group_node["group"]
+                        concept_names = [concept["prefix"] + ":" + concept["uri"] for concept in concepts
+                                         if concept["id"] in concept_ids]
+                        file.write("\t\t  owl:allValuesFrom [ " + group_node["type"] + " ( \n")
+                        for name in concept_names:
+                            file.write("\t\t\t\t\t\t" + name + "\n")
+
+                        file.write("\t\t\t\t\t) ;\n")
+                        file.write("\t\t\t\t\trdf:type owl:Class\n")
+                        file.write("\t\t\t\t\t] ]")
+
+
                 elif relation["someValuesFrom"]:
                     if not subclassof_statement_done:
                         file.write(" ;\n")
@@ -837,7 +886,22 @@ def transformation(root, filename):
                         file.write(" ,\n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
-                    file.write("\t\t  owl:someValuesFrom " + relation["target_name"] + " ]")
+                    # Target name only applies when the target is a class
+                    if "target_name" in relation:
+                        file.write("\t\t  owl:someValuesFrom " + relation["target_name"] + " ]")
+                    # Otherwise the target is an blank node of type intersection, union, etc.
+                    else:
+                        group_node = [blank for blank in anonymous_concepts if blank["id"] == relation["target"]][0]
+                        concept_ids = group_node["group"]
+                        concept_names = [concept["prefix"] + ":" + concept["uri"] for concept in concepts
+                                         if concept["id"] in concept_ids]
+                        file.write("\t\t  owl:someValuesFrom [ " + group_node["type"] + " ( \n")
+                        for name in concept_names:
+                            file.write("\t\t\t\t\t\t" + name + "\n")
+
+                        file.write("\t\t\t\t\t) ;\n")
+                        file.write("\t\t\t\t\trdf:type owl:Class\n")
+                        file.write("\t\t\t\t\t] ]")
 
                 if relation["min_cardinality"] is not None:
                     if not subclassof_statement_done:
@@ -880,6 +944,22 @@ def transformation(root, filename):
         file.write(prefix + ":" + uri + " rdf:type owl:NamedIndividual ,\n")
         file.write("\t\t" + type + " .\n\n")
 
+    file.write("#################################################################\n"
+               "#    General Axioms\n"
+               "#################################################################\n\n")
+
+    for blank in anonymous_concepts:
+        if len(blank["group"]) > 2 and blank["type"] in ["owl:disjointWith"]:
+            file.write("[ rdf:type owl:AllDisjointClasses ;\n")
+            file.write("  owl:members ( \n")
+            concept_names = [concept["prefix"] + ":" + concept["uri"]
+                             for concept in concepts if concept["id"] in blank["group"]]
+            for name in concept_names:
+                file.write("\t\t" + name + "\n")
+            file.write("\t\t)")
+            file.write("] .")
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
@@ -903,4 +983,3 @@ if __name__ == "__main__":
             break
     #filename = "output/owl_code.ttl"
     transformation(root, args.output_path)
-
