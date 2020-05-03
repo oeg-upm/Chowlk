@@ -31,7 +31,8 @@ def find_elements(root):
     attribute_blocks = []
     relations = []
     individuals = []
-    anonymous_concepts = []
+    anonymous_concepts = [] # Check this because ellipses are not anonymous concepts
+    unnamed_concepts = []
     ontology_metadata = {}
     namespaces = {}
 
@@ -270,6 +271,12 @@ def find_elements(root):
             if "text" in child.attrib["style"]:
                 continue
 
+            if child.attrib["value"] == "":
+                unnamed = {}
+                unnamed["id"] = child.attrib["id"]
+                unnamed_concepts.append(unnamed)
+                continue
+
             concept = {}
             attribute_block = {}
             attribute_block["id"] = id
@@ -355,7 +362,7 @@ def find_elements(root):
                 concepts.append(concept)
 
     return concepts, attribute_blocks, relations, individuals, anonymous_concepts, \
-           ontology_metadata, namespaces
+           ontology_metadata, namespaces, unnamed_concepts
 
 def resolve_concept_reference(attribute_blocks, concepts):
 
@@ -495,7 +502,7 @@ def write_ontology_metadata(file, metadata, onto_uri):
 def transformation(root, filename):
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
-    individuals, anonymous_concepts, ontology_metadata, namespaces = all_elements[3:]
+    individuals, anonymous_concepts, ontology_metadata, namespaces, unnamed_concepts = all_elements[3:]
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
 
     associations = concept_attributes_association(concepts, attribute_blocks)
@@ -616,7 +623,6 @@ def transformation(root, filename):
 
         attribute_blocks = association["attribute_blocks"]
         relations = association["relations"]
-        print(relations)
         subclassof_statement_done = False
         for relation in relations:
             if relation["type"] == "rdfs:subClassOf":
@@ -758,22 +764,70 @@ def transformation(root, filename):
         for relation in relations:
             if relation["type"] == "owl:disjointWith":
                 file.write(" ;\n")
-                file.write("\towl:disjointWith" + " " + relation["target_name"])
+                file.write("\towl:disjointWith " + relation["target_name"])
+
+            elif relation["type"] == "owl:equivalentClass":
+                file.write(" ;\n")
+                complement_concept = [concept for concept in concepts if relation["target"] == concept["id"]]
+                complement_unnamed = [unnamed for unnamed in unnamed_concepts if relation["target"] == unnamed["id"]]
+                complement_gate = [gate for gate in anonymous_concepts if relation["target"] == gate["id"]]
+
+                if len(complement_concept) > 0:
+                    complement = complement_concept[0]
+                    complement_name = complement["prefix"] + ":" + complement["uri"]
+                    file.write("\t" + relation["type"] + " " + complement_name)
+                elif len(complement_gate) > 0:
+                    complement = complement_gate[0]
+                    ids = complement["group"]
+                    file.write("\t" + relation["type"] + " [ " + complement["type"] + " ( \n")
+                    for id in ids:
+                        concept_involved = [concept["prefix"] + ":" + concept["uri"]
+                                            for concept in concepts if concept["id"] == id][0]
+                        file.write("\t\t\t\t" + concept_involved + "\n")
+                    file.write("\t\t\t\t)")
+                    file.write("\t\t]")
 
         for blank in anonymous_concepts:
 
             if len(blank["group"]) > 2:
                 continue
 
-            if concept["id"] in blank["group"] and blank["type"] in ["owl:disjointWith"]:
+            if concept["id"] in blank["group"] and blank["type"] == "owl:disjointWith":
                 file.write(" ;\n")
                 if blank["group"].index(concept["id"]) == 0:
-                    disjoint_complement_id = blank["group"][1]
+                    complement_id = blank["group"][1]
                 else:
-                    disjoint_complement_id = blank["group"][0]
-                disjoint_complement_name = [concept["prefix"] + ":" + concept["uri"]
-                                            for concept in concepts if concept["id"] == disjoint_complement_id][0]
-                file.write("\t" + blank["type"] + " " + disjoint_complement_name)
+                    complement_id = blank["group"][0]
+                complement_concept = [concept for concept in concepts if concept["id"] == complement_id][0]
+                complement_name = complement_concept["prefix"] + ":" + complement_concept["uri"]
+                file.write("\t" + blank["type"] + " " + complement_name)
+
+            elif concept["id"] in blank["group"] and blank["type"] == "owl:equivalentClass":
+                file.write(" ; \n")
+                if blank["group"].index(concept["id"]) == 0:
+                    complement_id = blank["group"][1]
+                else:
+                    complement_id = blank["group"][0]
+
+                complement_concept = [concept for concept in concepts if concept["id"] == complement_id]
+                complement_unnamed = [unnamed for unnamed in unnamed_concepts if unnamed["id"] == complement_id]
+                complement_gate = [gate for gate in anonymous_concepts if gate["id"] == complement_id]
+
+                if len(complement_concept) > 0:
+                    complement = complement_concept[0]
+                    complement_name = complement["prefix"] + ":" + complement["uri"]
+                    file.write("\t" + blank["type"] + " " + complement_name)
+                elif len(complement_gate) > 0:
+                    complement = complement_gate[0]
+                    ids = complement["group"]
+                    file.write("\t" + blank["type"] + " [ " + complement["type"] + " ( \n")
+                    for id in ids:
+                        concept_involved = [concept["prefix"] + ":" + concept["uri"]
+                                            for concept in concepts if concept["id"] == id][0]
+                        file.write("\t\t\t\t" + concept_involved + "\n")
+                    file.write("\t\t\t\t)")
+                    file.write("\t\t]")
+
 
 
         file.write(" .\n\n")
