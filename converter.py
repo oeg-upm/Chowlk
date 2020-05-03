@@ -7,7 +7,6 @@ import math
 import argparse
 
 
-
 """
 # This lines are for compresed XML files
 compressed_xml = root[0].text
@@ -24,166 +23,6 @@ def get_corners(x, y, width, height):
     p4 = (x+width, y+height)
 
     return p1, p2, p3, p4
-
-def find_missing_source_target(property_restrictions, object_properties, sources_targets):
-
-    """ Function to find the source and target of floating edges, for now it only works for
-    edges that support the relation between two other edges, it can be extended for other cases"""
-
-    # Under this scope restrictions are all relations that indicate relationships
-    # between other object properties
-    for restriction in property_restrictions:
-
-        child = restriction["xml_object"]
-
-        geom_property = child[0]
-        for elem in geom_property:
-            if elem.attrib["as"] == "sourcePoint":
-                x_source, y_source = float(elem.attrib["x"]), float(elem.attrib["y"])
-            elif elem.attrib["as"] == "targetPoint":
-                x_target, y_target = float(elem.attrib["x"]), float(elem.attrib["y"])
-
-        # Iteration to look for other edges as possibles sources
-        for property in object_properties:
-            child2 = property["xml_object"]
-            #for child2 in root:
-            # We are considering the simple scenario in which the supporting or
-            # reference edges have source and target, however this is not always the situation
-            #source_child2 = child2.attrib["source"]
-            #target_child2 = child2.attrib["target"]
-            source_child2 = property["source"]
-            target_child2 = property["target"]
-
-            # Look for the source object and extract its geometry
-            for shape in sources_targets:
-                #for child3 in root:
-                child3 = shape["xml_object"]
-                if source_child2 == shape["id"]:
-                    s_shape_x, s_shape_y = child3[0].attrib["x"], child3[0].attrib["y"]
-                    s_shape_width, s_shape_height = child3[0].attrib["width"], child3[0].attrib["height"]
-                    break
-            # Now compute the geometry of the initial source point of the edge
-            exitX = child2.attrib["style"].split("exitX=")[1].split(";")[0]
-            exitY = child2.attrib["style"].split("exitY=")[1].split(";")[0]
-            x_source_ref = float(s_shape_x) + float(s_shape_width) * float(exitX)
-            y_source_ref = float(s_shape_y) + float(s_shape_height) * float(exitY)
-            source_point_ref = [x_source_ref, y_source_ref]
-
-            # Look for the target object and extract its geometry
-            for shape in sources_targets:
-                #for child3 in root:
-                if target_child2 == shape["id"]:
-                    t_shape_x, t_shape_y = child3[0].attrib["x"], child3[0].attrib["y"]
-                    t_shape_width, t_shape_height = child3[0].attrib["width"], child3[0].attrib["height"]
-                    break
-            # Now compute the geometry of the initial source point of the edge
-            entryX = child2.attrib["style"].split("entryX=")[1].split(";")[0]
-            entryY = child2.attrib["style"].split("entryY=")[1].split(";")[0]
-            x_target_ref = float(t_shape_x) + float(t_shape_width) * float(entryX)
-            y_target_ref = float(t_shape_y) + float(t_shape_height) * float(entryY)
-            target_point_ref = [x_target_ref, y_target_ref]
-
-            # We have to determine how many inflexion points it have, however sometimes it is
-            # not indicated explicitly and have to be derived from the associated shapes.
-            # Try to iter over the mxGeom elements, if they exist
-            elem = [i for i in child2[0] if i.attrib["as"] == "points"]
-            # if you found an element with the attribute "points", Eureka!
-            if len(elem) != 0:
-                #for elem in child2[0]:
-                #if elem.attrib["as"] == "points":
-                elem = elem[0]
-                points_ref = []
-                for mxPoint in elem:
-                    point = [float(mxPoint.attrib["x"]), float(mxPoint.attrib["y"])]
-                    points_ref.append(point)
-                points_ref.insert(0, source_point_ref)
-                points_ref.append(target_point_ref)
-
-                # At this point you already have all the points for a candidate line
-                # We are going to evaluate each segment of the candidate line
-                for index in range(len(points_ref) - 1):
-                    point_A = points_ref[index]
-                    point_B = points_ref[index + 1]
-
-                    if point_A[0] > point_B[0]:
-                        min_x, max_x = point_B[0], point_A[0]
-                    else:
-                        min_x, max_x = point_A[0], point_B[0]
-
-                    if point_A[1] > point_B[1]:
-                        min_y, max_y = point_B[1], point_A[1]
-                    else:
-                        min_y, max_y = point_A[1], point_B[1]
-
-                    if restriction["source"] is None:
-                        if x_source > min_x - 5 and x_source < max_x + 5:
-                            x_within_limit = True
-                        else:
-                            x_within_limit = False
-                        if y_source > min_y - 5 and y_source < max_y + 5:
-                            y_within_limit = True
-                        else:
-                            y_within_limit = False
-                        if x_within_limit and y_within_limit:
-                            restriction["source"] = property["id"]
-                            break
-                    if restriction["target"] is None:
-                        if x_target > min_x - 5 and x_target < max_x + 5:
-                            x_within_limit = True
-                        else:
-                            x_within_limit = False
-                        if y_target > min_y - 5 and y_target < max_y + 5:
-                            y_within_limit = True
-                        else:
-                            y_within_limit = False
-                        if x_within_limit and y_within_limit:
-                            restriction["target"] = property["id"]
-                            break
-
-                if restriction["source"] is not None and restriction["target"] is not None:
-                    break
-
-            else:
-                # Sometimes we have straight lines and the process is simple to evaluate
-                if x_source_ref == x_target_ref or y_source_ref == y_target_ref:
-
-                    point_A = [x_source_ref, y_source_ref]
-                    point_B = [x_target_ref, y_target_ref]
-
-                    if point_A[0] > point_B[0]:
-                        min_x, max_x = point_B[0], point_A[0]
-                    else:
-                        min_x, max_x = point_A[0], point_B[0]
-
-                    if point_A[1] > point_B[1]:
-                        min_y, max_y = point_B[1], point_A[1]
-                    else:
-                        min_y, max_y = point_A[1], point_B[1]
-
-                    if restriction["source"] is None:
-                        if x_source > min_x - 5 and x_source < max_x + 5:
-                            x_within_limit = True
-                        else:
-                            x_within_limit = False
-                        if y_source > min_y - 5 and y_source < max_y + 5:
-                            y_within_limit = True
-                        else:
-                            y_within_limit = False
-                        if x_within_limit and y_within_limit:
-                            restriction["source"] = property["id"]
-                            break
-                    if restriction["target"] is None:
-                        if x_target > min_x - 5 and x_target < max_x + 5:
-                            x_within_limit = True
-                        else:
-                            x_within_limit = False
-                        if y_target > min_y - 5 and y_target < max_y + 5:
-                            y_within_limit = True
-                        else:
-                            y_within_limit = False
-                        if x_within_limit and y_within_limit:
-                            restriction["target"] = property["id"]
-                            break
 
 
 def find_elements(root):
@@ -378,16 +217,16 @@ def find_elements(root):
             else:
                 # If the type is not embedded we have to look for free text in a small neighborhood
                 ellipse_geom = child[0]
-                x, y, = ellipse_geom["x"], ellipse_geom["y"]
-                width, height = ellipse_geom["width"], ellipse_geom["height"]
+                x, y = float(ellipse_geom.attrib["x"]), float(ellipse_geom.attrib["y"])
+                width, height = float(ellipse_geom.attrib["width"]), float(ellipse_geom.attrib["height"])
                 ellipse_ctr = (x+(width/2), y+(height/2))
                 # Second iteration to find the associated free text to this blank node
                 unnamed["type"] = None
                 for child2 in root:
-                    if "text" in child2["style"]:
+                    if "text" in child2.attrib["style"]:
                         text_geom = child2[0]
-                        x, y = text_geom.attrib["x"], text_geom.attrib["y"]
-                        width, height = text_geom.attrib["width"], text_geom.attrib["height"]
+                        x, y = float(text_geom.attrib["x"]), float(text_geom.attrib["y"])
+                        width, height = float(text_geom.attrib["width"]), float(text_geom.attrib["height"])
                         text_ctr = (x+(width/2), y+(height/2))
                         d = math.sqrt((ellipse_ctr[0] - text_ctr[0])**2 + (ellipse_ctr[1] - text_ctr[1])**2)
                         # This evaluation considers that only one free text element will be on the
@@ -427,6 +266,10 @@ def find_elements(root):
             individuals.append(individual)
 
         else:
+            # Free text alone is not useful, it has be within the context of another object
+            if "text" in child.attrib["style"]:
+                continue
+
             concept = {}
             attribute_block = {}
             attribute_block["id"] = id
@@ -444,10 +287,9 @@ def find_elements(root):
                 value2 = child2.attrib["value"] if "value" in child2.attrib else None
                 # Filter all the elements except attributes and classes
                 if "edge" not in child2.attrib and "ellipse" not in style2 and "shape" not in style2 and \
-                        "fontStyle=4" not in style2 and "&lt;u&gt;" not in value2:
+                        "fontStyle=4" not in style2 and "&lt;u&gt;" not in value2 and "text" not in style2:
 
                     geometry = child2[0]
-
                     x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
                     width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
                     p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
@@ -766,7 +608,6 @@ def transformation(root, filename):
                "#################################################################\n\n")
 
     for association in associations:
-
         concept = association["concept"]
         concept_prefix = concept["prefix"]
         concept_uri = concept["uri"]
@@ -775,28 +616,13 @@ def transformation(root, filename):
 
         attribute_blocks = association["attribute_blocks"]
         relations = association["relations"]
+        print(relations)
         subclassof_statement_done = False
         for relation in relations:
             if relation["type"] == "rdfs:subClassOf":
                 file.write(" ;\n")
                 file.write("\trdfs:subClassOf " + relation["target_name"])
                 subclassof_statement_done = True
-
-        for blank in anonymous_concepts:
-
-            if len(blank["group"]) > 2:
-                continue
-
-            if concept["id"] in blank["group"] and blank["type"] in ["owl:disjointWith"]:
-                file.write(" ;\n")
-                if blank["group"].index(concept["id"]) == 0:
-                    disjoint_complement_id = blank["group"][1]
-                else:
-                    disjoint_complement_id = blank["group"][0]
-                disjoint_complement_name = [concept["prefix"] + ":" + concept["uri"]
-                                            for concept in concepts if concept["id"] == disjoint_complement_id][0]
-                file.write("\t" + blank["type"] + " " + disjoint_complement_name)
-
 
         for attribute_block in attribute_blocks:
             for attribute in attribute_block["attributes"]:
@@ -929,6 +755,27 @@ def transformation(root, filename):
                                "nonNegativeInteger ;\n")
                     file.write("\t\t  owl:onClass " + relation["target_name"] + " ]")
 
+        for relation in relations:
+            if relation["type"] == "owl:disjointWith":
+                file.write(" ;\n")
+                file.write("\towl:disjointWith" + " " + relation["target_name"])
+
+        for blank in anonymous_concepts:
+
+            if len(blank["group"]) > 2:
+                continue
+
+            if concept["id"] in blank["group"] and blank["type"] in ["owl:disjointWith"]:
+                file.write(" ;\n")
+                if blank["group"].index(concept["id"]) == 0:
+                    disjoint_complement_id = blank["group"][1]
+                else:
+                    disjoint_complement_id = blank["group"][0]
+                disjoint_complement_name = [concept["prefix"] + ":" + concept["uri"]
+                                            for concept in concepts if concept["id"] == disjoint_complement_id][0]
+                file.write("\t" + blank["type"] + " " + disjoint_complement_name)
+
+
         file.write(" .\n\n")
 
     file.write("#################################################################\n"
@@ -968,7 +815,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     tree = ET.parse(args.diagram_path)
-    #tree = ET.parse("data/kpi.xml")
     mxfile = tree.getroot()
     root = mxfile[0][0][0]
 
@@ -981,5 +827,4 @@ if __name__ == "__main__":
         if elem.attrib["id"] == "1":
             root.remove(elem)
             break
-    #filename = "output/owl_code.ttl"
     transformation(root, args.output_path)
