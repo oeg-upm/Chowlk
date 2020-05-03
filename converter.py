@@ -32,7 +32,6 @@ def find_elements(root):
     relations = []
     individuals = []
     anonymous_concepts = [] # Check this because ellipses are not anonymous concepts
-    unnamed_concepts = []
     ontology_metadata = {}
     namespaces = {}
 
@@ -271,12 +270,6 @@ def find_elements(root):
             if "text" in child.attrib["style"]:
                 continue
 
-            if child.attrib["value"] == "":
-                unnamed = {}
-                unnamed["id"] = child.attrib["id"]
-                unnamed_concepts.append(unnamed)
-                continue
-
             concept = {}
             attribute_block = {}
             attribute_block["id"] = id
@@ -358,11 +351,11 @@ def find_elements(root):
             if not attributes_found:
                 concept["id"] = id
                 concept["prefix"] = value.split(":")[0]
-                concept["uri"] = value.split(":")[1]
+                concept["uri"] = value.split(":")[-1]
                 concepts.append(concept)
 
     return concepts, attribute_blocks, relations, individuals, anonymous_concepts, \
-           ontology_metadata, namespaces, unnamed_concepts
+           ontology_metadata, namespaces
 
 def resolve_concept_reference(attribute_blocks, concepts):
 
@@ -502,7 +495,7 @@ def write_ontology_metadata(file, metadata, onto_uri):
 def transformation(root, filename):
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
-    individuals, anonymous_concepts, ontology_metadata, namespaces, unnamed_concepts = all_elements[3:]
+    individuals, anonymous_concepts, ontology_metadata, namespaces = all_elements[3:]
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
 
     associations = concept_attributes_association(concepts, attribute_blocks)
@@ -544,8 +537,9 @@ def transformation(root, filename):
             if relation["domain"]:
                 domain_name = [concept["prefix"] + ":" + concept["uri"]
                                for concept in concepts if concept["id"] == relation["source"]][0]
-                file.write(" ;\n")
-                file.write("\t\trdfs:domain " + domain_name)
+                if domain_name != ":":
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:domain " + domain_name)
 
             if relation["range"]:
                 file.write(" ;\n")
@@ -615,9 +609,14 @@ def transformation(root, filename):
                "#################################################################\n\n")
 
     for association in associations:
+
         concept = association["concept"]
         concept_prefix = concept["prefix"]
         concept_uri = concept["uri"]
+        # For now we are not considering unnamed concepts unless they are used for
+        # relations of type owl:equivalentClass
+        if concept_uri == "":
+            continue
         file.write("### " + concept_prefix + ":" + concept_uri + "\n")
         file.write(concept_prefix + ":" + concept_uri + " rdf:type owl:Class")
 
@@ -769,13 +768,26 @@ def transformation(root, filename):
             elif relation["type"] == "owl:equivalentClass":
                 file.write(" ;\n")
                 complement_concept = [concept for concept in concepts if relation["target"] == concept["id"]]
-                complement_unnamed = [unnamed for unnamed in unnamed_concepts if relation["target"] == unnamed["id"]]
                 complement_gate = [gate for gate in anonymous_concepts if relation["target"] == gate["id"]]
 
                 if len(complement_concept) > 0:
                     complement = complement_concept[0]
                     complement_name = complement["prefix"] + ":" + complement["uri"]
-                    file.write("\t" + relation["type"] + " " + complement_name)
+                    if complement_name != ":":
+                        file.write("\t" + relation["type"] + " " + complement_name)
+                    else:
+                        file.write("\t" + relation["type"] + " [ rdf:type owl:Restriction ;\n")
+                        unnamed_id = complement["id"]
+                        association = [association for association in associations
+                                        if association["concept"]["id"] == unnamed_id][0]
+                        relation = association["relations"][0]
+                        relation_name = relation["prefix"] + ":" + relation["uri"]
+                        target_name = relation["target_name"]
+                        file.write("\towl:onProperty " + relation_name + " ;\n")
+                        if relation["someValuesFrom"]:
+                            file.write("\towl:someValuesFrom " + target_name + " ]\n")
+                        elif relation["allValuesFrom"]:
+                            file.write("\towl:allValuesFrom " + target_name + " ]\n")
                 elif len(complement_gate) > 0:
                     complement = complement_gate[0]
                     ids = complement["group"]
@@ -810,13 +822,26 @@ def transformation(root, filename):
                     complement_id = blank["group"][0]
 
                 complement_concept = [concept for concept in concepts if concept["id"] == complement_id]
-                complement_unnamed = [unnamed for unnamed in unnamed_concepts if unnamed["id"] == complement_id]
                 complement_gate = [gate for gate in anonymous_concepts if gate["id"] == complement_id]
 
                 if len(complement_concept) > 0:
                     complement = complement_concept[0]
                     complement_name = complement["prefix"] + ":" + complement["uri"]
-                    file.write("\t" + blank["type"] + " " + complement_name)
+                    if complement_name != ":":
+                        file.write("\t" + blank["type"] + " " + complement_name)
+                    else:
+                        file.write("\t" + blank["type"] + " [ rdf:type owl:Restriction ;\n")
+                        unnamed_id = complement["id"]
+                        association = [association for association in associations
+                                       if association["concept"]["id"] == unnamed_id][0]
+                        relation = association["relations"][0]
+                        relation_name = relation["prefix"] + ":" + relation["uri"]
+                        target_name = relation["target_name"]
+                        file.write("\towl:onProperty " + relation_name + " ;\n")
+                        if relation["someValuesFrom"]:
+                            file.write("\towl:someValuesFrom " + target_name + " ]\n")
+                        elif relation["allValuesFrom"]:
+                            file.write("\towl:allValuesFrom " + target_name + " ]\n")
                 elif len(complement_gate) > 0:
                     complement = complement_gate[0]
                     ids = complement["group"]
