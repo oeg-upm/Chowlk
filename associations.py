@@ -1,4 +1,4 @@
-from geometry import get_corners
+from geometry import get_corners, get_corners_rect_child
 
 def resolve_concept_reference(attribute_blocks, concepts):
     """
@@ -136,3 +136,56 @@ def individuals_type_identification(individuals, associations_concepts, relation
                     break
 
     return associations_individuals
+
+
+def individuals_type_identification_rdf(individuals, concepts, relations):
+
+    relations = [relation for relation in relations if relation["type"] == "rdf:type"]
+
+    for relation in relations:
+        source_id = relation["source"]
+        target_id = relation["target"]
+
+        for individual in individuals:
+            if individual["id"] == source_id:
+                break
+        for concept in concepts:
+            if concept["id"] == target_id:
+                individual["type"] = concept["prefix"] + ":" + concept["uri"]
+
+    for individual in individuals:
+        if individual["type"] is None:
+            p1 = get_corners_rect_child(individual["xml_object"])[0]
+            for concept in concepts:
+                p2_concept = get_corners_rect_child(concept["xml_object"])[1]
+                dx = abs(p1[0] - p2_concept[0])
+                dy = abs(p1[1] - p2_concept[1])
+
+                if dx < 5 and dy < 5:
+                    individual["type"] = concept["prefix"] + ":" + concept["uri"]
+                    break
+
+    return individuals
+
+
+def individuals_associations_rdf(individuals, relations):
+
+    relations = [relation for relation in relations if relation["type"] == "owl:ObjectProperty"]
+    associations = []
+    for individual in individuals:
+        associations.append({"individual": individual, "relations": []})
+
+    for relation in relations:
+        source_id = relation["source"]
+        target_id = relation["target"]
+
+        for i, association in enumerate(associations):
+            if source_id == association["individual"]["id"]:
+                break
+        for j, association in enumerate(associations):
+            if target_id == association["individual"]["id"]:
+                target_name = association["individual"]["prefix"] + ":" + association["individual"]["uri"]
+                relation["target_name"] = target_name
+                associations[i]["relations"].append(relation)
+
+    return associations

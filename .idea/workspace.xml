@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/associations.py" beforeDir="false" afterPath="$PROJECT_DIR$/associations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/kpi.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/kpi.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/owl_code.ttl" beforeDir="false" afterPath="$PROJECT_DIR$/output/owl_code.ttl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/rdf.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/rdf.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/finding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/rdf.ttl" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,26 +148,30 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="453" y="167" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588710291576">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="453" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1588710291576" />
     <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1588580761563">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1588580761563" />
-    <state width="1345" height="217" key="GridCell.Tab.0.bottom" timestamp="1588524109816">
+    <state width="1345" height="217" key="GridCell.Tab.0.bottom" timestamp="1588711246775">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588524109816" />
-    <state width="1345" height="217" key="GridCell.Tab.0.center" timestamp="1588524109815">
+    <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588711246775" />
+    <state width="1345" height="217" key="GridCell.Tab.0.center" timestamp="1588711246775">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588524109815" />
-    <state width="1345" height="217" key="GridCell.Tab.0.left" timestamp="1588524109815">
+    <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588711246775" />
+    <state width="1345" height="217" key="GridCell.Tab.0.left" timestamp="1588711246774">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588524109815" />
-    <state width="1345" height="217" key="GridCell.Tab.0.right" timestamp="1588524109816">
+    <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588711246774" />
+    <state width="1345" height="217" key="GridCell.Tab.0.right" timestamp="1588711246775">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="217" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588524109816" />
+    <state width="1345" height="217" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588711246775" />
     <state width="1345" height="223" key="GridCell.Tab.1.bottom" timestamp="1587324487484">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

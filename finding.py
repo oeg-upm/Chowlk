@@ -11,9 +11,6 @@ def find_relations(root):
     relations = []
     for child in root:
 
-        if child.attrib["id"] in ["0", "1"]:
-            continue
-
         id = child.attrib["id"]
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
@@ -154,9 +151,6 @@ def find_namespaces(root):
 
     for child in root:
 
-        if child.attrib["id"] in ["0", "1"]:
-            continue
-
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
 
@@ -183,9 +177,6 @@ def find_metadata(root):
 
     for child in root:
 
-        if child.attrib["id"] in ["0", "1"]:
-            continue
-
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
 
@@ -207,9 +198,6 @@ def find_ellipses(root):
     ellipses = []
 
     for child in root:
-
-        if child.attrib["id"] in ["0", "1"]:
-            continue
 
         id = child.attrib["id"]
         style = child.attrib["style"]
@@ -271,9 +259,6 @@ def find_individuals(root):
 
     for child in root:
 
-        if child.attrib["id"] in ["0", "1"]:
-            continue
-
         id = child.attrib["id"]
         style = child.attrib["style"]
 
@@ -284,7 +269,7 @@ def find_individuals(root):
 
         # List of individuals
         # The "&lt;u&gt;" value indicates "underline" in html
-        if "fontStyle=4" in style or "&lt;u&gt;" in value:
+        if "fontStyle=4" in style or "&lt;u&gt;" in value or "<u>" in value:
             individual = {}
             individual["id"] = id
             individual["xml_object"] = child
@@ -293,9 +278,12 @@ def find_individuals(root):
                 individual["prefix"] = value.split(":")[0]
                 individual["uri"] = value.split(":")[1]
             # Or at the value level (vaya mierda)
-            else:
+            elif "&lt;u&gt;" in value:
                 individual["prefix"] = value.split(";")[2].split("&")[0].split(":")[0]
                 individual["uri"] = value.split(";")[2].split("&")[0].split(":")[1]
+            else:
+                individual["prefix"] = value[3:-4].split(":")[0]
+                individual["uri"] = value[3:-4].split(":")[1]
             individual["type"] = None
             individuals.append(individual)
 
@@ -308,9 +296,6 @@ def find_concepts_and_attributes(root):
     attribute_blocks = []
 
     for child in root:
-
-        if child.attrib["id"] in ["0", "1"]:
-            continue
 
         id = child.attrib["id"]
         style = child.attrib["style"]
@@ -328,7 +313,7 @@ def find_concepts_and_attributes(root):
             continue
         if "shape" in style:
             continue
-        if "fontStyle=4" in style or "&lt;u&gt;" in value:
+        if "fontStyle=4" in style or "&lt;u&gt;" in value or "<u>" in value:
             continue
 
         concept = {}

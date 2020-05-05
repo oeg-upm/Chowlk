@@ -1,9 +1,10 @@
 import xml.etree.ElementTree as ET
 import argparse
-from finding import find_elements
+from finding import *
 from geometry import get_corners
 from associations import resolve_concept_reference, concept_relations_association
 from associations import concept_attributes_association, individuals_type_identification
+from associations import individuals_type_identification_rdf, individuals_associations_rdf
 from writer import get_ttl_template, write_ontology_metadata
 
 """
@@ -15,7 +16,7 @@ mxGraphModel = ET.fromstring(xml_string)
 """
 
 
-def transformation(root, filename):
+def transform_ontology(root, filename):
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
     individuals, anonymous_concepts, ontology_metadata, namespaces = all_elements[3:]
@@ -408,12 +409,43 @@ def transformation(root, filename):
             file.write("\t\t)")
             file.write("] .")
 
+def transform_rdf(root, filename):
+
+    individuals = find_individuals(root)
+    relations = find_relations(root)
+    namespaces = find_namespaces(root)
+    #metadata = find_metadata(root)
+    concepts, attributes = find_concepts_and_attributes(root)
+
+    individuals = individuals_type_identification_rdf(individuals, concepts, relations)
+    associations = individuals_associations_rdf(individuals, relations)
+
+    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces)
+    #file = write_ontology_metadata(file, metadata, onto_uri)
+
+    for association in associations:
+
+        subject = association["individual"]["prefix"] + ":" + association["individual"]["uri"]
+        concept = association["individual"]["type"]
+        relations = association["relations"]
+
+        file.write(subject + " rdf:type " + concept)
+
+        for relation in relations:
+            file.write(" ;\n")
+            predicate = relation["prefix"] + ":" + relation["uri"]
+            object = relation["target_name"]
+
+            file.write("\t" + predicate + " " + object)
+
+        file.write(" .\n\n")
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("diagram_path")
     parser.add_argument("output_path")
+    parser.add_argument("type")
     args = parser.parse_args()
 
     tree = ET.parse(args.diagram_path)
@@ -429,4 +461,10 @@ if __name__ == "__main__":
         if elem.attrib["id"] == "1":
             root.remove(elem)
             break
-    transformation(root, args.output_path)
+
+    if args.type == "ontology":
+        transform_ontology(root, args.output_path)
+    elif args.type == "rdf":
+        transform_rdf(root, args.output_path)
+    else:
+        raise ValueError("Not a correct option of data")
