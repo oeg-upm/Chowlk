@@ -2,9 +2,7 @@ import xml.etree.ElementTree as ET
 import argparse
 from finding import *
 from geometry import get_corners
-from associations import resolve_concept_reference, concept_relations_association
-from associations import concept_attributes_association, individuals_type_identification
-from associations import individuals_type_identification_rdf, individuals_associations_rdf
+from associations import *
 from writer import get_ttl_template, write_ontology_metadata
 
 """
@@ -414,14 +412,14 @@ def transform_rdf(root, filename):
     individuals = find_individuals(root)
     relations = find_relations(root)
     namespaces = find_namespaces(root)
-    #metadata = find_metadata(root)
-    concepts, attributes = find_concepts_and_attributes(root)
+    values = find_attribute_values(root)
+    concepts, _ = find_concepts_and_attributes(root)
 
     individuals = individuals_type_identification_rdf(individuals, concepts, relations)
     associations = individuals_associations_rdf(individuals, relations)
+    associations = individuals_attributes_associations(associations, values, relations)
 
     file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces)
-    #file = write_ontology_metadata(file, metadata, onto_uri)
 
     for association in associations:
 

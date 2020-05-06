@@ -189,3 +189,21 @@ def individuals_associations_rdf(individuals, relations):
                 associations[i]["relations"].append(relation)
 
     return associations
+
+def individuals_attributes_associations(associations, values, relations):
+
+    for relation in relations:
+        source_id = relation["source"]
+        target_id = relation["target"]
+
+        for i, association in enumerate(associations):
+            if association["individual"]["id"] == source_id:
+                break
+        for value in values:
+            if value["id"] == target_id:
+                target_name = value["value"]
+                target_type = value["type"]
+                relation["target_name"] = "\"" + target_name + "\"^^" + target_type
+                associations[i]["relations"].append(relation)
+
+    return associations

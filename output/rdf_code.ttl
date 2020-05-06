@@ -16,9 +16,12 @@ kpi:Project1 rdf:type kpi:Project ;
 kpi:KPI1 rdf:type kpi:KPI ;
 	kpi:hasCategory kpi:Energy01 ;
 	kpi:hasScenario kpi:Scenario2 ;
-	kpi:hasScenario kpi:Scenario1 .
+	kpi:hasScenario kpi:Scenario1 ;
+	kpi:hasValue "1.5"^^xsd:float .
 
-kpi:Scenario1 rdf:type kpi:Scenario .
+kpi:Scenario1 rdf:type kpi:Scenario ;
+	kpi:identifier "ID_001"^^xsd:string ;
+	kpi:name "renovation scenatio"^^xsd:string .
 
 kpi:Energy01 rdf:type kpi:Energy .
 

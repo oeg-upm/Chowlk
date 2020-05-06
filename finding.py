@@ -290,6 +290,40 @@ def find_individuals(root):
     return individuals
 
 
+def find_attribute_values(root):
+
+    attributes = []
+
+    for child in root:
+        id = child.attrib["id"]
+
+        if "value" in child.attrib:
+            value = child.attrib["value"]
+        else:
+            continue
+
+        if "&quot;" in value or "\"" in value:
+            attribute = {}
+            attribute["id"] = id
+            attribute["xml_object"] = child
+            attribute["type"] = None
+
+            # Finding the value
+            if "&quot;" in value:
+                attribute["value"] = value.split("&quot;")[1]
+            elif "\"" in value:
+                reg_exp = '"(.*?)"'
+                attribute["value"] = re.findall(reg_exp, value)[0]
+
+            # Finding the type
+            if "^^" in value:
+                attribute["type"] = value.split("^^")[-1]
+
+            attributes.append(attribute)
+
+    return attributes
+
+
 def find_concepts_and_attributes(root):
 
     concepts = []
@@ -314,6 +348,8 @@ def find_concepts_and_attributes(root):
         if "shape" in style:
             continue
         if "fontStyle=4" in style or "&lt;u&gt;" in value or "<u>" in value:
+            continue
+        if "&quot;" in value or "\"" in value:
             continue
 
         concept = {}
