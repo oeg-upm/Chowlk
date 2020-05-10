@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="www.draw.io" modified="2020-05-10T09:58:38.599Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" version="13.0.8" etag="4I-akJgPS4RyrxYVl00m">
+  <diagram id="nU3ciYpkIMC3T49S2-Cw">
+    <mxGraphModel dx="868" dy="482" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="ns:Class" style="rounded=0;whiteSpace=wrap;html=1;snapToPoint=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="90" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

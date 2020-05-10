@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/png_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/png_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/associations.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/associations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/finding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/geometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/geometry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/writer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +38,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\diagram2code\modules" />
       <recent name="D:\Projects\diagram2code\output" />
     </key>
   </component>
@@ -189,10 +194,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1588796853213" />
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1588792740843">
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1589098071061">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1588792740843" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1589098071061" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587887772504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

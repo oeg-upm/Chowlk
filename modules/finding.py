@@ -3,12 +3,12 @@ import html
 import bs4
 from bs4 import BeautifulSoup
 import math
-from geometry import get_corners_rect_child
+from modules.geometry import get_corners_rect_child
 
 
 def find_relations(root):
 
-    relations = []
+    relations = {}
     for child in root:
 
         id = child.attrib["id"]
@@ -23,7 +23,6 @@ def find_relations(root):
 
             relation["source"] = source
             relation["target"] = target  # (Then Evaluate what happen if they do not have target or source)
-            relation["id"] = id
             relation["xml_object"] = child
 
             if value == "" or value is None:
@@ -54,36 +53,36 @@ def find_relations(root):
                         relation["type"] = "rdfs:subClassOf"
                     elif "endArrow=open" in style or "startArrow=open" in style:
                         relation["type"] = "rdf:type"
-                    relations.append(relation)
+                    relations[id] = relation
                     continue
 
             if "subClassOf" in value:
                 relation["type"] = "rdfs:subClassOf"
-                relations.append(relation)
+                relations[id] = relation
                 continue
             if "type" in value:
                 relation["type"] = "rdf:type"
-                relations.append(relation)
+                relations[id] = relation
                 continue
             if "equivalentClass" in value:
                 relation["type"] = "owl:equivalentClass"
-                relations.append(relation)
+                relations[id] = relation
                 continue
             if "disjointWith" in value:
                 relation["type"] = "owl:disjointWith"
-                relations.append(relation)
+                relations[id] = relation
                 continue
             if "subPropertyOf" in value:
                 relation["type"] = "owl:subPropertyOf"
-                relations.append(relation)
+                relations[id] = relation
                 continue
             if "equivalentProperty" in value:
                 relation["type"] = "owl:equivalentProperty"
-                relations.append(relation)
+                relations[id] = relation
                 continue
             if "inverseOf" in value:
                 relation["type"] = "owl:inverseOf"
-                relations.append(relation)
+                relations[id] = relation
                 continue
 
             # Domain Range evaluation
@@ -140,7 +139,7 @@ def find_relations(root):
 
             relation["type"] = "owl:ObjectProperty"
 
-            relations.append(relation)
+            relations[id] = relation
 
     return relations
 
@@ -195,7 +194,7 @@ def find_metadata(root):
 
 def find_ellipses(root):
 
-    ellipses = []
+    ellipses = {}
 
     for child in root:
 
@@ -205,7 +204,6 @@ def find_ellipses(root):
 
         if "ellipse" in style:
             ellipse = {}
-            ellipse["id"] = id
             ellipse["xml_object"] = child
             if "⨅" in value:
                 ellipse["type"] = "owl:intersectionOf"
@@ -248,14 +246,14 @@ def find_ellipses(root):
                         target_id = child2.attrib["target"]
                         ellipse["group"].append(target_id)
 
-            ellipses.append(ellipse)
+            ellipses[id] = ellipse
 
     return ellipses
 
 
 def find_individuals(root):
 
-    individuals = []
+    individuals = {}
 
     for child in root:
 
@@ -271,7 +269,6 @@ def find_individuals(root):
         # The "&lt;u&gt;" value indicates "underline" in html
         if "fontStyle=4" in style or "&lt;u&gt;" in value or "<u>" in value:
             individual = {}
-            individual["id"] = id
             individual["xml_object"] = child
             # The underlining is done at the style level
             if "fontStyle=4" in style:
@@ -285,14 +282,14 @@ def find_individuals(root):
                 individual["prefix"] = value[3:-4].split(":")[0]
                 individual["uri"] = value[3:-4].split(":")[1]
             individual["type"] = None
-            individuals.append(individual)
+            individuals[id] = individual
 
     return individuals
 
 
 def find_attribute_values(root):
 
-    attributes = []
+    attributes = {}
 
     for child in root:
         id = child.attrib["id"]
@@ -304,7 +301,6 @@ def find_attribute_values(root):
 
         if "&quot;" in value or "\"" in value:
             attribute = {}
-            attribute["id"] = id
             attribute["xml_object"] = child
             attribute["type"] = None
 
@@ -319,15 +315,15 @@ def find_attribute_values(root):
             if "^^" in value:
                 attribute["type"] = value.split("^^")[-1]
 
-            attributes.append(attribute)
+            attributes[id] = attribute
 
     return attributes
 
 
 def find_concepts_and_attributes(root):
 
-    concepts = []
-    attribute_blocks = []
+    concepts = {}
+    attribute_blocks = {}
 
     for child in root:
 
@@ -354,7 +350,6 @@ def find_concepts_and_attributes(root):
 
         concept = {}
         attribute_block = {}
-        attribute_block["id"] = id
         attribute_block["xml_object"] = child
 
         p1, p2, p3, p4 = get_corners_rect_child(child)
@@ -423,18 +418,17 @@ def find_concepts_and_attributes(root):
 
                 attribute_block["attributes"] = attributes
                 attribute_block["concept_associated"] = child2.attrib["id"]
-                attribute_blocks.append(attribute_block)
+                attribute_blocks[id] = attribute_block
                 attributes_found = True
                 break
 
         # If after a dense one to all evaluation the object selected cannot be associated
         # to any other object it means that it is a class
         if not attributes_found:
-            concept["id"] = id
             concept["prefix"] = value.split(":")[0]
             concept["uri"] = value.split(":")[-1]
             concept["xml_object"] = child
-            concepts.append(concept)
+            concepts[id] = concept
 
     return concepts, attribute_blocks
 
