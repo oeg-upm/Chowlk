@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/associations.py" beforeDir="false" afterPath="$PROJECT_DIR$/associations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/rdf.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/rdf.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/finding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/rdf_code.ttl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/png_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/png_reader.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

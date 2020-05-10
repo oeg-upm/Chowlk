@@ -5,6 +5,7 @@ import zlib
 from urllib.parse import unquote
 import xml.etree.ElementTree as ET
 import base64
+import cv2
 
 PNG_HEAD = b"\x89\x50\x4e\x47\x0d\x0a\x1a\x0a" # Magic PNG header bytes
 PNG_IEND = b"\x49\x45\x4E\x44"
@@ -53,21 +54,25 @@ def read_section(f):
 
     return sectype,contents
 
+def image_reader(filename):
+
+    image = cv2.imread(filename)
+    cv2.imshow("frame", image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    return "Success"
 
 def main():
     ztxt = {}
     with open(sys.argv[1], "rb") as f:
         valid_png(f)
         while f.read(1) != b'':
-            print("here?")
             f.seek(-1,1)
             sectype,contents = read_section(f)
-            print("sectype: ", sectype)
             if sectype == PNG_IEND:
-                print("by here?")
                 break
             elif sectype == PNG_ZTXT:
-                print("or by here?")
                 idx=0
                 while contents[idx] != 0:
                     idx += 1
@@ -86,11 +91,9 @@ def main():
         Extras > Edit Diagram.
     """
 
-    print(ztxt)
     xml = inflate(ztxt['mxGraphModel'])
     mxfile = ET.fromstring(xml)[0].text
     diagram = inflate(mxfile,b64=True)
-    print(diagram)
 
 if __name__ == "__main__":
-    main()
+    image_reader(sys.argv[1])
