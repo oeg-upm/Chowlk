@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/associations.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/associations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/finding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/geometry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/writer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/inputs/test_concept_structure.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finding.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,10 +151,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="453" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1588710291576" />
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1588580761563">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1589226849448">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1588580761563" />
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1589226849448" />
     <state width="1345" height="217" key="GridCell.Tab.0.bottom" timestamp="1588719893131">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -194,10 +191,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1588796853213" />
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1589098071061">
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1589226836479">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1589098071061" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1589226836479" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587887772504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
