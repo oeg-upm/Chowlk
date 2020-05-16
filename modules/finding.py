@@ -121,8 +121,15 @@ def find_relations(root):
             relation["symmetric"] = True if "(S)" in value else False
 
             # Finding the property uri
-            relation["prefix"] = value.split(":")[0].split(" ")[::-1][0]
-            relation["uri"] = value.split(":")[1].split(" ")[0]
+            if len(value.split(":")) > 2:
+                relation["prefix"] = value.split(":")[1].split("</div>")[1]
+                relation["uri"] = value.split(":")[2].split("</div>")[0]
+            else:
+                reg_exp = "( [a-z]+[:])"
+                prefix = re.findall(reg_exp, value)[0][1:-1]
+                relation["prefix"] = prefix
+                relation["uri"] = value.split(prefix)[1][1:].split("</div>")[0]
+
 
             # Cardinality restriction evaluation
             reg_exp = "\(([0-9][^)]+)\)"

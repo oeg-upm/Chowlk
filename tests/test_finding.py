@@ -80,6 +80,172 @@ class TestFindingFunctions(unittest.TestCase):
             self.assertEqual(ellipse["type"], "owl:disjointWith")
             self.assertEqual(ellipse["group"], ["3", "4"])
 
+    def test_individual_1(self):
+
+        test = read_drawio_xml("tests/inputs/test_individual_1.xml")
+        individuals = find_individuals(test)
+        for id, individual in individuals.items():
+            self.assertEqual(individual["prefix"], "ns")
+            self.assertEqual(individual["uri"], "Individual1")
+            self.assertEqual(individual["type"] is None, True)
+
+    def test_individual_2(self):
+
+        test = read_drawio_xml("tests/inputs/test_individual_2.xml")
+        individuals = find_individuals(test)
+        for id, individual in individuals.items():
+            self.assertEqual(individual["prefix"], "ns")
+            self.assertEqual(individual["uri"], "Individual1")
+            self.assertEqual(individual["type"] is None, True)
+
+    def test_relations_1(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_1.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "2")
+            self.assertEqual(relation["target"], "3")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["allValuesFrom"], True)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_2(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_2.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "2")
+            self.assertEqual(relation["target"], "3")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["allValuesFrom"], True)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_3(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_3.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "2")
+            self.assertEqual(relation["target"], "3")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["allValuesFrom"], True)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_4(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_4.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "2")
+            self.assertEqual(relation["target"], "3")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["someValuesFrom"], True)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_5(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_5.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "2")
+            self.assertEqual(relation["target"], "3")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["someValuesFrom"], True)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_6(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_6.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "2")
+            self.assertEqual(relation["target"], "3")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["someValuesFrom"], True)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_7(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_7.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["type"], "rdfs:subClassOf")
+            self.assertEqual(relation["source"], "5")
+            self.assertEqual(relation["target"], "4")
+
+    def test_relations_8(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_8.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["type"], "rdfs:subClassOf")
+            self.assertEqual(relation["source"], "4")
+            self.assertEqual(relation["target"], "3")
+
+    def test_relations_9(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_9.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["type"], "owl:equivalentClass")
+            self.assertEqual(relation["source"], "5")
+            self.assertEqual(relation["target"], "4")
+
+    def test_relations_10(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_10.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["type"], "owl:equivalentClass")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+
+    def test_relations_11(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_11.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["type"], "owl:disjointWith")
+            self.assertEqual(relation["source"], "5")
+            self.assertEqual(relation["target"], "4")
+
+
 
 if __name__ == "__main__":
     unittest.main()
