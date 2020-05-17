@@ -245,6 +245,184 @@ class TestFindingFunctions(unittest.TestCase):
             self.assertEqual(relation["source"], "5")
             self.assertEqual(relation["target"], "4")
 
+    def test_relations_12(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_12.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+            self.assertEqual(relation["domain"], False)
+            self.assertEqual(relation["range"], False)
+            self.assertEqual(relation["someValuesFrom"], False)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_13(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_13.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+            self.assertEqual(relation["domain"], False)
+            self.assertEqual(relation["range"], False)
+            self.assertEqual(relation["someValuesFrom"], False)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_14(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_14.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["someValuesFrom"], False)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_15(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_15.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["someValuesFrom"], False)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+
+    def test_relations_16(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_16.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+            self.assertEqual(relation["domain"], True)
+            self.assertEqual(relation["range"], False)
+            self.assertEqual(relation["someValuesFrom"], False)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_relations_17(self):
+
+        test = read_drawio_xml("tests/inputs/test_relation_17.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["prefix"], "ns")
+            self.assertEqual(relation["uri"], "objectProperty")
+            self.assertEqual(relation["source"], "3")
+            self.assertEqual(relation["target"], "2")
+            self.assertEqual(relation["domain"], False)
+            self.assertEqual(relation["range"], True)
+            self.assertEqual(relation["someValuesFrom"], False)
+            self.assertEqual(relation["functional"], False)
+            self.assertEqual(relation["inverse_functional"], False)
+            self.assertEqual(relation["transitive"], False)
+            self.assertEqual(relation["symmetric"], False)
+
+    def test_attributes_1(self):
+
+        test = read_drawio_xml("tests/inputs/test_attributes_1.xml")
+        _, attribute_blocks = find_concepts_and_attributes(test)
+        for id, attribute_block in attribute_blocks.items():
+            self.assertEqual(attribute_block["concept_associated"], "3")
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                self.assertEqual(attribute["prefix"] in ["ns"], True)
+                self.assertEqual(attribute["uri"] in ["datatypeProperty1"], True)
+                self.assertEqual(attribute["datatype"] is None, True)
+                self.assertEqual(attribute["domain"], False)
+                self.assertEqual(attribute["range"], False)
+                self.assertEqual(attribute["allValuesFrom"], False)
+                self.assertEqual(attribute["someValuesFrom"], False)
+                self.assertEqual(attribute["functional"], False)
+                self.assertEqual(attribute["min_cardinality"] is None, True)
+                self.assertEqual(attribute["max_cardinality"] is None, True)
+
+    def test_attributes_2(self):
+
+        test = read_drawio_xml("tests/inputs/test_attributes_2.xml")
+        _, attribute_blocks = find_concepts_and_attributes(test)
+        for id, attribute_block in attribute_blocks.items():
+            self.assertEqual(attribute_block["concept_associated"], "3")
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                self.assertEqual(attribute["prefix"] in ["ns"], True)
+                self.assertEqual(attribute["uri"] in ["datatypeProperty1"], True)
+                self.assertEqual(attribute["datatype"] in ["datatype"], True)
+                self.assertEqual(attribute["domain"], True)
+                self.assertEqual(attribute["range"], True)
+                self.assertEqual(attribute["allValuesFrom"], False)
+                self.assertEqual(attribute["someValuesFrom"], False)
+                self.assertEqual(attribute["functional"], False)
+                self.assertEqual(attribute["min_cardinality"] is None, True)
+                self.assertEqual(attribute["max_cardinality"] is None, True)
+
+    def test_attributes_3(self):
+
+        test = read_drawio_xml("tests/inputs/test_attributes_3.xml")
+        _, attribute_blocks = find_concepts_and_attributes(test)
+        for id, attribute_block in attribute_blocks.items():
+            self.assertEqual(attribute_block["concept_associated"], "3")
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                self.assertEqual(attribute["prefix"] in ["ns"], True)
+                self.assertEqual(attribute["uri"] in ["datatypeProperty1"], True)
+                self.assertEqual(attribute["datatype"] is None, True)
+                self.assertEqual(attribute["domain"], True)
+                self.assertEqual(attribute["range"], False)
+                self.assertEqual(attribute["allValuesFrom"], False)
+                self.assertEqual(attribute["someValuesFrom"], False)
+                self.assertEqual(attribute["functional"], False)
+                self.assertEqual(attribute["min_cardinality"] is None, True)
+                self.assertEqual(attribute["max_cardinality"] is None, True)
+
+    def test_attributes_4(self):
+
+        test = read_drawio_xml("tests/inputs/test_attributes_4.xml")
+        _, attribute_blocks = find_concepts_and_attributes(test)
+        for id, attribute_block in attribute_blocks.items():
+            self.assertEqual(attribute_block["concept_associated"], "3")
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                self.assertEqual(attribute["prefix"] in ["ns"], True)
+                self.assertEqual(attribute["uri"] in ["datatypeProperty1"], True)
+                self.assertEqual(attribute["datatype"] in ["datatype"], True)
+                self.assertEqual(attribute["domain"], False)
+                self.assertEqual(attribute["range"], True)
+                self.assertEqual(attribute["allValuesFrom"], False)
+                self.assertEqual(attribute["someValuesFrom"], False)
+                self.assertEqual(attribute["functional"], False)
+                self.assertEqual(attribute["min_cardinality"] is None, True)
+                self.assertEqual(attribute["max_cardinality"] is None, True)
 
 
 if __name__ == "__main__":

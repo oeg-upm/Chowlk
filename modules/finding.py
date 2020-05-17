@@ -41,7 +41,8 @@ def find_relations(root):
                 # "value" parameter of the object. We can track their associated value by looking for free text
                 # and evaluating the "parent" parameter which will point to an edge.
                 for child2 in root:
-                    if "text" in child2.attrib["style"] and id == child2.attrib["parent"]:
+                    style2 = child2.attrib["style"]
+                    if ("text" in style2 or "edgeLabel" in style2) and id == child2.attrib["parent"]:
                         value = child2.attrib["value"]
                         break
 
@@ -120,15 +121,19 @@ def find_relations(root):
             relation["transitive"] = True if "(T)" in value else False
             relation["symmetric"] = True if "(S)" in value else False
 
+            reg_exp = "( [a-z]+[:])"
+            patterns = re.findall(reg_exp, value)
             # Finding the property uri
             if len(value.split(":")) > 2:
                 relation["prefix"] = value.split(":")[1].split("</div>")[1]
                 relation["uri"] = value.split(":")[2].split("</div>")[0]
-            else:
-                reg_exp = "( [a-z]+[:])"
-                prefix = re.findall(reg_exp, value)[0][1:-1]
+            elif len(patterns) > 0:
+                prefix = patterns[0][1:-1]
                 relation["prefix"] = prefix
                 relation["uri"] = value.split(prefix)[1][1:].split("</div>")[0]
+            else:
+                relation["prefix"] = value.split(":")[0].split("<div>")[-1]
+                relation["uri"] = value.split(":")[-1].split("</div>")[0]
 
 
             # Cardinality restriction evaluation
