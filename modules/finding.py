@@ -1,9 +1,7 @@
 import re
-import html
-import bs4
-from bs4 import BeautifulSoup
 import math
 from modules.geometry import get_corners_rect_child
+from modules.utils import clean_html_tags
 
 
 def find_relations(root):
@@ -14,6 +12,7 @@ def find_relations(root):
         id = child.attrib["id"]
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
+        value = clean_html_tags(value)
         discard_edge = False
 
         if "edge" in child.attrib:
@@ -121,20 +120,20 @@ def find_relations(root):
             relation["transitive"] = True if "(T)" in value else False
             relation["symmetric"] = True if "(S)" in value else False
 
-            reg_exp = "( [a-z]+[:])"
-            patterns = re.findall(reg_exp, value)
+            value = clean_html_tags(value)
             # Finding the property uri
-            if len(value.split(":")) > 2:
-                relation["prefix"] = value.split(":")[1].split("</div>")[1]
-                relation["uri"] = value.split(":")[2].split("</div>")[0]
-            elif len(patterns) > 0:
-                prefix = patterns[0][1:-1]
-                relation["prefix"] = prefix
-                relation["uri"] = value.split(prefix)[1][1:].split("</div>")[0]
-            else:
-                relation["prefix"] = value.split(":")[0].split("<div>")[-1]
-                relation["uri"] = value.split(":")[-1].split("</div>")[0]
+            splitted_value = value.split("</div>")
+            splitted_value = [item for item in splitted_value if item != ""]
+            splitted_value = splitted_value[1:] if "owl" in value else splitted_value
+            splitted_value = splitted_value[0]
 
+            prefix = splitted_value.split(":")[0].strip().split(" ")
+            prefix = [item for item in prefix if item != ""][-1].strip()
+
+            uri = splitted_value.split(":")[1].strip().split(" ")
+            uri = [item for item in uri if item != ""][0].strip()
+            relation["prefix"] = prefix
+            relation["uri"] = uri
 
             # Cardinality restriction evaluation
             reg_exp = "\(([0-9][^)]+)\)"
@@ -164,19 +163,17 @@ def find_namespaces(root):
 
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
+        value = clean_html_tags(value)
 
         # Dictionary of Namespaces
         if "shape=note" in style:
-            html_data = html.unescape(value)
-            soup = BeautifulSoup(html_data, features="html.parser")
-            for div in soup:
-                prefix = div.contents[0]
-                # Sometimes the prefix can be in bold
-                if type(prefix) == bs4.element.Tag:
-                    prefix = prefix.contents[0]
-                    prefix = prefix.split(":")[0]
-
-                ontology_uri = str(div.contents[1]).strip()
+            splitted_value = value.split("</div>")
+            splitted_value = [item for item in splitted_value if item != ""]
+            splitted_value = [re.sub("<br>", "", item) for item in splitted_value]
+            for item in splitted_value:
+                prefix = item.split(":")[0].strip()
+                ontology_uri = item.split(":")[1:]
+                ontology_uri = ":".join(ontology_uri).strip()
                 namespaces[prefix] = ontology_uri
 
     return namespaces
@@ -190,15 +187,16 @@ def find_metadata(root):
 
         style = child.attrib["style"]
         value = child.attrib["value"] if "value" in child.attrib else None
+        value = clean_html_tags(value)
 
         # Dictionary of ontology level metadata
         if "shape=document" in style:
-            html_data = html.unescape(value)
-            soup = BeautifulSoup(html_data, features="html.parser")
-            for div in soup:
-                content = div.contents[0]
-                ann_type = str(content).split(":")[0]
-                ann_value = str(content).split(":")[1].split(" ")[-1]
+            splitted_value = value.split("</div>")
+            splitted_value = [item for item in splitted_value if item != ""]
+            splitted_value = [re.sub("<br>", "", item) for item in splitted_value]
+            for item in splitted_value:
+                ann_type = item.split(":")[0].strip()
+                ann_value = item.split(":")[1].strip()
                 ontology_metadata[ann_type] = ann_value
 
     return ontology_metadata
@@ -278,18 +276,13 @@ def find_individuals(root):
             continue
 
         # List of individuals
-        # The "&lt;u&gt;" value indicates "underline" in html
-        if "fontStyle=4" in style or "&lt;u&gt;" in value or "<u>" in value:
+        if "fontStyle=4" in style or "<u>" in value:
             individual = {}
             individual["xml_object"] = child
             # The underlining is done at the style level
             if "fontStyle=4" in style:
                 individual["prefix"] = value.split(":")[0]
                 individual["uri"] = value.split(":")[1]
-            # Or at the value level (vaya mierda)
-            elif "&lt;u&gt;" in value:
-                individual["prefix"] = value.split(";")[2].split("&")[0].split(":")[0]
-                individual["uri"] = value.split(";")[2].split("&")[0].split(":")[1]
             else:
                 individual["prefix"] = value[3:-4].split(":")[0]
                 individual["uri"] = value[3:-4].split(":")[1]
@@ -355,7 +348,7 @@ def find_concepts_and_attributes(root):
             continue
         if "shape" in style:
             continue
-        if "fontStyle=4" in style or "&lt;u&gt;" in value or "<u>" in value:
+        if "fontStyle=4" in style or "<u>" in value:
             continue
         if "&quot;" in value or "\"" in value:
             continue

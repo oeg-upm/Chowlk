@@ -424,6 +424,25 @@ class TestFindingFunctions(unittest.TestCase):
                 self.assertEqual(attribute["min_cardinality"] is None, True)
                 self.assertEqual(attribute["max_cardinality"] is None, True)
 
+    def test_attributes_5(self):
+
+        test = read_drawio_xml("tests/inputs/test_attributes_5.xml")
+        _, attribute_blocks = find_concepts_and_attributes(test)
+        for id, attribute_block in attribute_blocks.items():
+            self.assertEqual(attribute_block["concept_associated"], "3")
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                self.assertEqual(attribute["prefix"] in ["ns"], True)
+                self.assertEqual(attribute["uri"] in ["datatypeProperty1"], True)
+                self.assertEqual(attribute["datatype"] is None, True)
+                self.assertEqual(attribute["domain"], True)
+                self.assertEqual(attribute["range"], False)
+                self.assertEqual(attribute["allValuesFrom"], False)
+                self.assertEqual(attribute["someValuesFrom"], False)
+                self.assertEqual(attribute["functional"], True)
+                self.assertEqual(attribute["min_cardinality"] is None, True)
+                self.assertEqual(attribute["max_cardinality"] is None, True)
+
 
 if __name__ == "__main__":
     unittest.main()
