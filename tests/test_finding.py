@@ -9,7 +9,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_concepts(self):
 
-        test = read_drawio_xml("tests/inputs/test_concepts.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_concepts.xml")
         concepts, _ = find_concepts_and_attributes(test)
         for id, concept in concepts.items():
             self.assertEqual(id, "2")
@@ -18,7 +18,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_unnamed(self):
 
-        test = read_drawio_xml("tests/inputs/test_unnamed.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_unnamed.xml")
         concepts, _ = find_concepts_and_attributes(test)
         for id, concept in concepts.items():
             self.assertEqual(concept["prefix"], "")
@@ -26,7 +26,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_namespaces(self):
 
-        test = read_drawio_xml("tests/inputs/test_namespaces.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_namespaces.xml")
         namespaces = find_namespaces(test)
         for prefix, uri in namespaces.items():
             self.assertEqual(prefix in ["base", "saref"], True)
@@ -34,7 +34,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_intersection_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_intersection_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_intersection_1.xml")
         ellipses = find_ellipses(test)
         for id, ellipse in ellipses.items():
             self.assertEqual(ellipse["type"], "owl:intersectionOf")
@@ -42,7 +42,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_intersection_2(self):
 
-        test = read_drawio_xml("tests/inputs/test_intersection_2.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_intersection_2.xml")
         ellipses = find_ellipses(test)
         for id, ellipse in ellipses.items():
             self.assertEqual(ellipse["type"], "owl:intersectionOf")
@@ -50,7 +50,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_union_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_union_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_union_1.xml")
         ellipses = find_ellipses(test)
         for id, ellipse in ellipses.items():
             self.assertEqual(ellipse["type"], "owl:unionOf")
@@ -58,7 +58,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_union_2(self):
 
-        test = read_drawio_xml("tests/inputs/test_union_2.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_union_2.xml")
         ellipses = find_ellipses(test)
         for id, ellipse in ellipses.items():
             self.assertEqual(ellipse["type"], "owl:unionOf")
@@ -66,7 +66,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_equivalent_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_equivalent_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_equivalent_1.xml")
         ellipses = find_ellipses(test)
         for id, ellipse in ellipses.items():
             self.assertEqual(ellipse["type"], "owl:equivalentClass")
@@ -74,7 +74,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_disjoint_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_disjoint_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_disjoint_1.xml")
         ellipses = find_ellipses(test)
         for id, ellipse in ellipses.items():
             self.assertEqual(ellipse["type"], "owl:disjointWith")
@@ -82,7 +82,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_individual_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_individual_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_individual_1.xml")
         individuals = find_individuals(test)
         for id, individual in individuals.items():
             self.assertEqual(individual["prefix"], "ns")
@@ -91,7 +91,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_individual_2(self):
 
-        test = read_drawio_xml("tests/inputs/test_individual_2.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_individual_2.xml")
         individuals = find_individuals(test)
         for id, individual in individuals.items():
             self.assertEqual(individual["prefix"], "ns")
@@ -100,7 +100,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_1.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -117,7 +117,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_2(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_2.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_2.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -134,7 +134,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_3(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_3.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_3.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -151,7 +151,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_4(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_4.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_4.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -168,7 +168,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_5(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_5.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_5.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -185,7 +185,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_6(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_6.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_6.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -202,7 +202,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_7(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_7.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_7.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["type"], "rdfs:subClassOf")
@@ -211,7 +211,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_8(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_8.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_8.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["type"], "rdfs:subClassOf")
@@ -220,7 +220,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_9(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_9.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_9.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["type"], "owl:equivalentClass")
@@ -229,7 +229,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_10(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_10.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_10.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["type"], "owl:equivalentClass")
@@ -238,7 +238,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_11(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_11.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_11.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["type"], "owl:disjointWith")
@@ -247,7 +247,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_12(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_12.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_12.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -264,7 +264,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_13(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_13.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_13.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -281,7 +281,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_14(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_14.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_14.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -298,7 +298,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_15(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_15.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_15.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -316,7 +316,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_16(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_16.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_16.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -333,7 +333,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_relations_17(self):
 
-        test = read_drawio_xml("tests/inputs/test_relation_17.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_relation_17.xml")
         relations = find_relations(test)
         for id, relation in relations.items():
             self.assertEqual(relation["prefix"], "ns")
@@ -348,9 +348,18 @@ class TestFindingFunctions(unittest.TestCase):
             self.assertEqual(relation["transitive"], False)
             self.assertEqual(relation["symmetric"], False)
 
+    def test_relations_18(self):
+
+        test = read_drawio_xml("tests/inputs_finding/test_relation_18.xml")
+        relations = find_relations(test)
+        for id, relation in relations.items():
+            self.assertEqual(relation["type"], "rdf:type")
+            self.assertEqual(relation["source"], "5")
+            self.assertEqual(relation["target"], "4")
+
     def test_attributes_1(self):
 
-        test = read_drawio_xml("tests/inputs/test_attributes_1.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_attributes_1.xml")
         _, attribute_blocks = find_concepts_and_attributes(test)
         for id, attribute_block in attribute_blocks.items():
             self.assertEqual(attribute_block["concept_associated"], "3")
@@ -369,7 +378,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_attributes_2(self):
 
-        test = read_drawio_xml("tests/inputs/test_attributes_2.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_attributes_2.xml")
         _, attribute_blocks = find_concepts_and_attributes(test)
         for id, attribute_block in attribute_blocks.items():
             self.assertEqual(attribute_block["concept_associated"], "3")
@@ -388,7 +397,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_attributes_3(self):
 
-        test = read_drawio_xml("tests/inputs/test_attributes_3.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_attributes_3.xml")
         _, attribute_blocks = find_concepts_and_attributes(test)
         for id, attribute_block in attribute_blocks.items():
             self.assertEqual(attribute_block["concept_associated"], "3")
@@ -407,7 +416,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_attributes_4(self):
 
-        test = read_drawio_xml("tests/inputs/test_attributes_4.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_attributes_4.xml")
         _, attribute_blocks = find_concepts_and_attributes(test)
         for id, attribute_block in attribute_blocks.items():
             self.assertEqual(attribute_block["concept_associated"], "3")
@@ -426,7 +435,7 @@ class TestFindingFunctions(unittest.TestCase):
 
     def test_attributes_5(self):
 
-        test = read_drawio_xml("tests/inputs/test_attributes_5.xml")
+        test = read_drawio_xml("tests/inputs_finding/test_attributes_5.xml")
         _, attribute_blocks = find_concepts_and_attributes(test)
         for id, attribute_block in attribute_blocks.items():
             self.assertEqual(attribute_block["concept_associated"], "3")
@@ -443,6 +452,24 @@ class TestFindingFunctions(unittest.TestCase):
                 self.assertEqual(attribute["min_cardinality"] is None, True)
                 self.assertEqual(attribute["max_cardinality"] is None, True)
 
+    def test_attributes_6(self):
+
+        test = read_drawio_xml("tests/inputs_finding/test_attributes_6.xml")
+        _, attribute_blocks = find_concepts_and_attributes(test)
+        for id, attribute_block in attribute_blocks.items():
+            self.assertEqual(attribute_block["concept_associated"], "3")
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                self.assertEqual(attribute["prefix"] in ["ns"], True)
+                self.assertEqual(attribute["uri"] in ["datatypeProperty1"], True)
+                self.assertEqual(attribute["datatype"] in ["datatype"], True)
+                self.assertEqual(attribute["domain"], True)
+                self.assertEqual(attribute["range"], True)
+                self.assertEqual(attribute["allValuesFrom"], False)
+                self.assertEqual(attribute["someValuesFrom"], False)
+                self.assertEqual(attribute["functional"], False)
+                self.assertEqual(attribute["min_cardinality"], "1")
+                self.assertEqual(attribute["max_cardinality"] is None, True)
 
 if __name__ == "__main__":
     unittest.main()

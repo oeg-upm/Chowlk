@@ -11,8 +11,7 @@ def find_relations(root):
 
         id = child.attrib["id"]
         style = child.attrib["style"]
-        value = child.attrib["value"] if "value" in child.attrib else None
-        value = clean_html_tags(value)
+        value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
         discard_edge = False
 
         if "edge" in child.attrib:
@@ -162,20 +161,21 @@ def find_namespaces(root):
     for child in root:
 
         style = child.attrib["style"]
-        value = child.attrib["value"] if "value" in child.attrib else None
-        value = clean_html_tags(value)
+        value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
 
         # Dictionary of Namespaces
         if "shape=note" in style:
             splitted_value = value.split("</div>")
             splitted_value = [item for item in splitted_value if item != ""]
-            splitted_value = [re.sub("<br>", "", item) for item in splitted_value]
+            splitted_value = [subitem for item in splitted_value for subitem in item.split("<br>")]
+            splitted_value = [item for item in splitted_value if item != ""]
+            splitted_value = [re.sub("&nbsp;", " ", item) for item in splitted_value]
             for item in splitted_value:
                 prefix = item.split(":")[0].strip()
                 ontology_uri = item.split(":")[1:]
+                ontology_uri = [item.strip() for item in ontology_uri]
                 ontology_uri = ":".join(ontology_uri).strip()
                 namespaces[prefix] = ontology_uri
-
     return namespaces
 
 
@@ -186,14 +186,15 @@ def find_metadata(root):
     for child in root:
 
         style = child.attrib["style"]
-        value = child.attrib["value"] if "value" in child.attrib else None
-        value = clean_html_tags(value)
+        value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
 
         # Dictionary of ontology level metadata
         if "shape=document" in style:
             splitted_value = value.split("</div>")
             splitted_value = [item for item in splitted_value if item != ""]
-            splitted_value = [re.sub("<br>", "", item) for item in splitted_value]
+            splitted_value = [subitem for item in splitted_value for subitem in item.split("<br>")]
+            splitted_value = [item for item in splitted_value if item != ""]
+            splitted_value = [re.sub("&nbsp;", " ", item) for item in splitted_value]
             for item in splitted_value:
                 ann_type = item.split(":")[0].strip()
                 ann_value = item.split(":")[1].strip()
@@ -334,7 +335,7 @@ def find_concepts_and_attributes(root):
 
         id = child.attrib["id"]
         style = child.attrib["style"]
-        value = child.attrib["value"] if "value" in child.attrib else None
+        value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
         attributes_found = False
 
         # Check that neither of these components passes, this is because concepts
@@ -379,14 +380,20 @@ def find_concepts_and_attributes(root):
 
             if dx < 5 and dy < 5:
                 attributes = []
-                attribute_list = value.split("<br>")
+
+                attribute_list = value.split("</div>")
+                attribute_list = [item for item in attribute_list if item != ""]
+                attribute_list = [subitem for item in attribute_list for subitem in item.split("<br>")]
+                attribute_list = [item for item in attribute_list if item != ""]
+                attribute_list = [re.sub("&nbsp;", " ", item) for item in attribute_list]
+
                 domain = False if "dashed=1" in style else True
                 for attribute_value in attribute_list:
                     attribute = {}
                     attribute["prefix"] = attribute_value.split(":")[0].split(" ")[::-1][0]
                     attribute["uri"] = attribute_value.split(":")[1].split(" ")[0]
                     if len(attribute_value.split(":")) > 2:
-                        attribute["datatype"] = attribute_value.split(":")[2][1:].lower()
+                        attribute["datatype"] = attribute_value.split(":")[2][1:].lower().strip()
                     else:
                         attribute["datatype"] = None
                     if attribute["datatype"] is None or attribute["datatype"] == "":
@@ -414,7 +421,7 @@ def find_concepts_and_attributes(root):
                         attribute["min_cardinality"] = None
 
                     attribute["max_cardinality"] = attribute_value.split("..")[1].split(")")[0] \
-                        if attribute["min_cardinality"] is not None else None
+                        if len(attribute_value.split("..")) > 1 else None
 
                     if attribute["max_cardinality"] == "N":
                         attribute["max_cardinality"] = None
