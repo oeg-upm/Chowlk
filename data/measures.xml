@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="Chrome" modified="2020-05-21T17:43:08.646Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" version="13.0.7" etag="UhXt2TzMckmK_eEztkM6" type="device">
-  <diagram id="XJR3hRPIGKShk3LHIXAj">
-    <mxGraphModel dx="5478" dy="3673" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+<mxfile host="Chrome" modified="2020-05-31T12:26:36.081Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36" version="13.0.7" etag="HwOn9U3Bu4pSuKAPMP8f" type="device">
+  <diagram id="-0PuRKsCwMaR95nOTz38">
+    <mxGraphModel dx="5126" dy="3305" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -181,6 +181,24 @@
         </mxCell>
         <mxCell id="53" value="&lt;div&gt;Version: 0.0.1&lt;/div&gt;&lt;div&gt;Author: Serge Chávez-Feria&lt;/div&gt;" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;labelBackgroundColor=#ffffff;strokeColor=#000000;fontSize=12;fontColor=#000000;size=0.23333333333333334;" vertex="1" parent="1">
           <mxGeometry x="-1018" y="-390" width="253" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="54" value="owl:inverseOf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=open;endFill=0;dashed=1;" edge="1" source="55" target="56" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="55" value="&amp;lt;&amp;lt;owl:ObjectProperty&amp;gt;&amp;gt;&lt;br&gt;rm:hasCost" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1550" y="194" width="200" height="64.5" as="geometry" />
+        </mxCell>
+        <mxCell id="56" value="&amp;lt;&amp;lt;owl:ObjectProperty&amp;gt;&amp;gt;&lt;br&gt;rm:isCostOf" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1550" y="52.5" width="200" height="64.5" as="geometry" />
+        </mxCell>
+        <mxCell id="57" value="&amp;lt;&amp;lt;owl:ObjectProperty&amp;gt;&amp;gt;&lt;br&gt;rm:affectedElement" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1280" y="52.5" width="200" height="64.5" as="geometry" />
+        </mxCell>
+        <mxCell id="58" value="owl:subPropertyOf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;endArrow=open;endFill=0;" edge="1" source="59" target="57" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="59" value="&amp;lt;&amp;lt;owl:ObjectProperty&amp;gt;&amp;gt;&lt;br&gt;rm:renovatedElement" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1280" y="194" width="200" height="64.5" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -18,7 +18,8 @@ def transform_ontology(root, filename):
 
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
-    individuals, anonymous_concepts, ontology_metadata, namespaces = all_elements[3:]
+    individuals, anonymous_concepts, ontology_metadata, namespaces, rhombuses = all_elements[3:]
+    relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
 
     associations = concept_attribute_association(concepts, attribute_blocks)

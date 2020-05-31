@@ -2,45 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/measures.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/data/unit_tests.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/data/unit_tests.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/associations.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/associations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/finding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/writer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_attributes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_attributes_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_attributes_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_attributes_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_attributes_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_attributes_3.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_attributes_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_attributes_4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_attributes_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_attributes_5.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_concepts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_concepts.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_disjoint_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_disjoint_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_equivalent_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_equivalent_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_individual_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_individual_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_individual_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_individual_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_intersection_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_intersection_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_intersection_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_intersection_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_namespaces.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_namespaces.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_10.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_11.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_11.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_12.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_13.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_13.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_14.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_14.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_15.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_15.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_16.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_17.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_17.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_3.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_5.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_6.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_7.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_8.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_relation_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_relation_9.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_union_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_union_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_union_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_union_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/inputs/test_unnamed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/inputs_finding/test_unnamed.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finding.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -250,10 +219,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1588796853213" />
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1590259097704">
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1590909844615">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1590259097704" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1590909844615" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587887772504">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -471,5 +471,25 @@ class TestFindingFunctions(unittest.TestCase):
                 self.assertEqual(attribute["min_cardinality"], "1")
                 self.assertEqual(attribute["max_cardinality"] is None, True)
 
+    def test_rhombus_1(self):
+
+        test = read_drawio_xml("tests/inputs_finding/test_rhombus_1.xml")
+        rhombuses = find_rhombuses(test)
+        for id, rhombus in rhombuses.items():
+            self.assertEqual(id, "2")
+            self.assertEqual(rhombus["type"], "owl:ObjectProperty")
+            self.assertEqual(rhombus["prefix"], "ns")
+            self.assertEqual(rhombus["uri"], "objectProperty1")
+
+    def test_rhombus_2(self):
+
+        test = read_drawio_xml("tests/inputs_finding/test_rhombus_2.xml")
+        rhombuses = find_rhombuses(test)
+        for id, rhombus in rhombuses.items():
+            self.assertEqual(id, "2")
+            self.assertEqual(rhombus["type"], "owl:DatatypeProperty")
+            self.assertEqual(rhombus["prefix"], "ns")
+            self.assertEqual(rhombus["uri"], "objectProperty1")
+
 if __name__ == "__main__":
     unittest.main()

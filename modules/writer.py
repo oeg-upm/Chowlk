@@ -98,6 +98,18 @@ def write_object_properties(file, relations, concepts, anonymous_concepts):
                     file.write("\t\t\t\t\trdf:type owl:Class\n")
                     file.write("\t\t\t\t\t]")
 
+            if "rdfs:subPropertyOf" in relation:
+                file.write(" ;\n")
+                file.write("\t\trdfs:subPropertyOf " + relation["rdfs:subPropertyOf"])
+
+            if "owl:inverseOf" in relation:
+                file.write(" ;\n")
+                file.write("\t\towl:inverseOf " + relation["owl:inverseOf"])
+
+            if "owl:equivalentProperty" in relation:
+                file.write(" ;\n")
+                file.write("\t\towl:equivalentProperty " + relation["owl:equivalentProperty"])
+
             file.write(" .\n\n")
 
     return file
@@ -140,10 +152,19 @@ def write_data_properties(file, attribute_blocks, concepts):
                 file.write(" ;\n")
                 file.write("\t\trdfs:range xsd:" + attribute["datatype"].lower())
 
+            if "owl:subPropertyOf" in attribute:
+                file.write(" ;\n")
+                file.write("\t\towl:subPropertyOf " + attribute["owl:subPropertyOf"])
+
+            if "owl:equivalentProperty" in attribute:
+                file.write(" ;\n")
+                file.write("\t\towl:equivalentProperty " + attribute["owl:equivalentProperty"])
+
             file.write(" .\n\n")
             attributes_reviewed.append(full_name)
 
     return file
+
 
 def write_concepts(file, concepts, anonymous_concepts, associations):
 

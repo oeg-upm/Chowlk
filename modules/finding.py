@@ -72,7 +72,7 @@ def find_relations(root):
                 relations[id] = relation
                 continue
             if "subPropertyOf" in value:
-                relation["type"] = "owl:subPropertyOf"
+                relation["type"] = "rdfs:subPropertyOf"
                 relations[id] = relation
                 continue
             if "equivalentProperty" in value:
@@ -81,6 +81,14 @@ def find_relations(root):
                 continue
             if "inverseOf" in value:
                 relation["type"] = "owl:inverseOf"
+                relations[id] = relation
+                continue
+            if "domain" in value:
+                relation["type"] = "rdfs:domain"
+                relations[id] = relation
+                continue
+            if "range" in value:
+                relation["type"] = "rdfs:range"
                 relations[id] = relation
                 continue
 
@@ -300,10 +308,7 @@ def find_attribute_values(root):
     for child in root:
         id = child.attrib["id"]
 
-        if "value" in child.attrib:
-            value = child.attrib["value"]
-        else:
-            continue
+        value = child.attrib["value"] if "value" in child.attrib else None
 
         if "&quot;" in value or "\"" in value:
             attribute = {}
@@ -324,6 +329,38 @@ def find_attribute_values(root):
             attributes[id] = attribute
 
     return attributes
+
+def find_rhombuses(root):
+
+    rhombuses = {}
+
+    for child in root:
+
+        id = child.attrib["id"]
+        style = child.attrib["style"]
+        value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
+
+        if "rhombus" in style:
+
+            rhombus = {}
+            rhombus["xml_object"] = child
+            type = value.split(">>")[0].split("<<")[-1].strip()
+            rhombus["type"] = type
+
+            value = value.split("</div>")
+            value = [item for item in value if item != ""]
+            value = [subitem for item in value for subitem in item.split("<br>")]
+            value = [item for item in value if item != ""]
+            value = [re.sub("&nbsp;", " ", item) for item in value]
+
+            # The value can be in one line or in two lines
+            value = value[0].split(" ")[1] if len(value) == 1 else value[1]
+            rhombus["prefix"] = value.split(":")[0].strip()
+            rhombus["uri"] = value.split(":")[1].strip()
+
+            rhombuses[id] = rhombus
+
+    return rhombuses
 
 
 def find_concepts_and_attributes(root):
@@ -346,6 +383,8 @@ def find_concepts_and_attributes(root):
         if "edge" in child.attrib:
             continue
         if "ellipse" in style:
+            continue
+        if "rhombus" in style:
             continue
         if "shape" in style:
             continue
@@ -370,6 +409,8 @@ def find_concepts_and_attributes(root):
             if "edge" in child2.attrib:
                 continue
             if "ellipse" in style2:
+                continue
+            if "rhombus" in style2:
                 continue
             if "shape" in style2:
                 continue
@@ -453,5 +494,6 @@ def find_elements(root):
     ellipses = find_ellipses(root)
     individuals = find_individuals(root)
     concepts, attribute_blocks = find_concepts_and_attributes(root)
+    rhombuses = find_rhombuses(root)
 
-    return concepts, attribute_blocks, relations, individuals, ellipses, metadata, namespaces
+    return concepts, attribute_blocks, relations, individuals, ellipses, metadata, namespaces, rhombuses

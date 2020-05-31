@@ -1,4 +1,5 @@
 from modules.geometry import get_corners, get_corners_rect_child
+import copy
 
 def resolve_concept_reference(attribute_blocks, concepts):
     """
@@ -155,3 +156,65 @@ def individual_attribute_association(associations, values, relations):
             association["attributes"][relation_id] = relation
 
     return associations
+
+
+def enrich_properties(rhombuses, relations, attribute_blocks):
+
+    relations_byname = {relation["uri"]: id for id, relation in relations.items() if "uri" in relation}
+    attributes_byname = {attribute["uri"]: [id, idx] for id, attribute_block in attribute_blocks.items()
+                         for idx, attribute in enumerate(attribute_block["attributes"])}
+    relations_copy = copy.deepcopy(relations)
+
+    for relation_id, relation in relations.items():
+
+        source_id = relation["source"]
+        target_id = relation["target"]
+        type = relation["type"]
+        cases = ["rdfs:subPropertyOf", "owl:inverseOf", "owl:equivalentProperty", "rdfs:domain", "rdfs:range"]
+
+        if type in cases:
+            # Domain and range are without the "rdfs" prefix in the data structure
+            type = type.split(":")[1] if type in ["rdfs:domain", "rdfs:range"] else type
+            source_property = rhombuses[source_id]
+            target_property = rhombuses[target_id]
+            sprop_type = source_property["type"]
+            sprop_name = source_property["uri"]
+
+            if sprop_type == "owl:ObjectProperty":
+                sprop_id = relations_byname[sprop_name]
+                relations_copy[sprop_id][type] = target_property["prefix"] + ":" + target_property["uri"]
+
+            elif sprop_type == "owl:DatatypeProperty":
+                sprop_id = attributes_byname[sprop_name][0]
+                sprop_idx = attributes_byname[sprop_name][1]
+                attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_property["prefix"] + ":" + \
+                                                                            target_property["uri"]
+
+    for rhombus_id, rhombus in rhombuses.items():
+
+        cases = ["owl:FunctionalProperty", "owl:InverseFunctionalProperty",
+                 "owl:TransitiveProperty", "owl:SymmetricProperty"]
+
+        type = rhombus["type"]
+
+        if type in cases:
+            prop_name = rhombus["uri"]
+            if type == "owl:InverseFunctionalProperty":
+                prop_id = relations_byname[prop_name]
+                relations_copy[prop_id]["inverse_functional"] = True
+            elif type == "owl:TransitiveProperty":
+                prop_id = relations_byname[prop_name]
+                relations_copy[prop_id]["transitive"] = True
+            elif type == "owl:SymmetricProperty":
+                prop_id = relations_byname[prop_name]
+                relations_copy[prop_id]["symmetric"] = True
+            else:
+                if prop_name in relations_byname:
+                    prop_id = relations_byname[prop_name]
+                    relations_copy[prop_id]["functional"] = True
+                else:
+                    prop_id = attributes_byname[prop_name][0]
+                    prop_idx = attributes_byname[prop_name][1]
+                    attribute_blocks[prop_id]["attributes"][prop_idx]["functional"] = True
+
+    return relations_copy, attribute_blocks
