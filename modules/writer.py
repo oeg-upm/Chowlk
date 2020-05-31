@@ -110,6 +110,8 @@ def write_object_properties(file, relations, concepts, anonymous_concepts):
                 file.write(" ;\n")
                 file.write("\t\towl:equivalentProperty " + relation["owl:equivalentProperty"])
 
+            file.write(" ;\n")
+            file.write("\t\trdfs:label \"" + relation["label"] + "\"")
             file.write(" .\n\n")
 
     return file
@@ -160,6 +162,8 @@ def write_data_properties(file, attribute_blocks, concepts):
                 file.write(" ;\n")
                 file.write("\t\towl:equivalentProperty " + attribute["owl:equivalentProperty"])
 
+            file.write(" ;\n")
+            file.write("\t\trdfs:label \"" + attribute["label"] + "\"")
             file.write(" .\n\n")
             attributes_reviewed.append(full_name)
 
@@ -182,7 +186,8 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
         if concept_uri == "":
             continue
         file.write("### " + concept_prefix + ":" + concept_uri + "\n")
-        file.write(concept_prefix + ":" + concept_uri + " rdf:type owl:Class")
+        file.write(concept_prefix + ":" + concept_uri + " rdf:type owl:Class ;\n")
+        file.write("\trdfs:label \"" + concept["label"] + "\"")
 
         attribute_blocks = association["attribute_blocks"]
         relations = association["relations"]

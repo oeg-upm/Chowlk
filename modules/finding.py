@@ -2,6 +2,7 @@ import re
 import math
 from modules.geometry import get_corners_rect_child
 from modules.utils import clean_html_tags
+from modules.utils import create_label
 
 
 def find_relations(root):
@@ -141,6 +142,7 @@ def find_relations(root):
             uri = [item for item in uri if item != ""][0].strip()
             relation["prefix"] = prefix
             relation["uri"] = uri
+            relation["label"] = create_label(relation["uri"], "property")
 
             # Cardinality restriction evaluation
             reg_exp = "\(([0-9][^)]+)\)"
@@ -433,6 +435,7 @@ def find_concepts_and_attributes(root):
                     attribute = {}
                     attribute["prefix"] = attribute_value.split(":")[0].split(" ")[::-1][0]
                     attribute["uri"] = attribute_value.split(":")[1].split(" ")[0]
+                    attribute["label"] = create_label(attribute["uri"], "property")
                     if len(attribute_value.split(":")) > 2:
                         attribute["datatype"] = attribute_value.split(":")[2][1:].lower().strip()
                     else:
@@ -480,6 +483,7 @@ def find_concepts_and_attributes(root):
         if not attributes_found:
             concept["prefix"] = value.split(":")[0]
             concept["uri"] = value.split(":")[-1]
+            concept["label"] = create_label(concept["uri"], "class")
             concept["xml_object"] = child
             concepts[id] = concept
 

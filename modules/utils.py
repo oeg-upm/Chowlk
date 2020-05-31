@@ -2,6 +2,28 @@ import xml.etree.ElementTree as ET
 import os
 import re
 
+def create_label(uri, type):
+
+    uppers_pos = [uri.index(char) for char in uri if char.isupper()]
+    uppers_pos.insert(0, 0) if 0 not in uppers_pos else uppers_pos
+    words = []
+    
+    for i, current_pos in enumerate(uppers_pos):
+        
+        if i+1 < len(uppers_pos):
+            next_pos = uppers_pos[i + 1]
+            word = uri[current_pos:next_pos]
+        else:
+            word = uri[current_pos:]
+
+        word = word.lower() if type == "property" else word
+        words.append(word)
+
+    label = " ".join(words)
+
+    return label
+
+
 def clean_html_tags(value):
 
     """

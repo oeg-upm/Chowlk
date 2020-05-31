@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/measures.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/unit_tests.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/data/unit_tests.drawio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/associations.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/associations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/finding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/writer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_finding.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_finding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/rm.ttl" beforeDir="false" afterPath="$PROJECT_DIR$/output/rm.ttl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,9 +219,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1590909844615" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587887772504">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1590935598955">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1587887772504" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1590935598955" />
   </component>
 </project>
