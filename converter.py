@@ -1,9 +1,8 @@
-import xml.etree.ElementTree as ET
 import argparse
 from modules.finding import *
 from modules.associations import *
 from modules.writer import *
-from modules.utils import read_drawio_xml
+from modules.utils import *
 
 """
 # This lines are for compresed XML files
@@ -19,6 +18,7 @@ def transform_ontology(root, filename):
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
     individuals, anonymous_concepts, ontology_metadata, namespaces, rhombuses = all_elements[3:]
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
     relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
 

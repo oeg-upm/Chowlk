@@ -112,6 +112,7 @@ def find_relations(root):
             elif "dashed=1" not in style and "startFill=0" in style:
                 relation["domain"] = False
                 relation["range"] = True
+
             # Existential Universal restriction evaluation
             if "allValuesFrom" in value or "(all)" in value or "∀" in value:
                 relation["allValuesFrom"] = True
@@ -128,16 +129,14 @@ def find_relations(root):
             relation["transitive"] = True if "(T)" in value else False
             relation["symmetric"] = True if "(S)" in value else False
 
-            value = clean_html_tags(value)
             # Finding the property uri
+            value = clean_html_tags(value)
             splitted_value = value.split("</div>")
             splitted_value = [item for item in splitted_value if item != ""]
             splitted_value = splitted_value[1:] if "owl" in value else splitted_value
             splitted_value = splitted_value[0]
-
             prefix = splitted_value.split(":")[0].strip().split(" ")
             prefix = [item for item in prefix if item != ""][-1].strip()
-
             uri = splitted_value.split(":")[1].strip().split(" ")
             uri = [item for item in uri if item != ""][0].strip()
             relation["prefix"] = prefix
@@ -267,6 +266,7 @@ def find_ellipses(root):
                         target_id = child2.attrib["target"]
                         ellipse["group"].append(target_id)
 
+            ellipse["xml_object"] = child
             ellipses[id] = ellipse
 
     return ellipses
