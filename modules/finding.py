@@ -205,9 +205,10 @@ def find_metadata(root):
             splitted_value = [item for item in splitted_value if item != ""]
             splitted_value = [re.sub("&nbsp;", " ", item) for item in splitted_value]
             for item in splitted_value:
-                ann_type = item.split(":")[0].strip()
-                ann_value = item.split(":")[1].strip()
-                ontology_metadata[ann_type] = ann_value
+                ann_prefix = item.split(":")[0].strip()
+                ann_type = item.split(":")[1].strip()
+                ann_value = item.split(":")[2].strip()
+                ontology_metadata[ann_prefix + ":" + ann_type] = ann_value
 
     return ontology_metadata
 

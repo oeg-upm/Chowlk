@@ -21,18 +21,10 @@ def write_ontology_metadata(file, metadata, onto_uri):
 
     file.write("<" + onto_uri + "> rdf:type owl:Ontology")
     for key, value in metadata.items():
-        key = key.lower()
+        key = key
         value = "\"" + value + "\""
-        if key == "version":
-            metadata_uri = "owl:versionInfo"
-        elif key == "author":
-            metadata_uri = "dc:creator"
-        elif key == "title":
-            metadata_uri = "dc:title"
-        else:
-            continue
         file.write(" ;\n")
-        file.write("\t\t\t" + metadata_uri + " " + value)
+        file.write("\t\t\t" + key + " " + value)
     file.write(" .\n\n")
 
     return file
