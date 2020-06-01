@@ -2,6 +2,9 @@ import xml.etree.ElementTree as ET
 from modules.geometry import proximity_to_shape
 import re
 import copy
+import base64
+from urllib.parse import unquote
+import zlib
 
 def create_label(uri, type):
 
@@ -58,7 +61,15 @@ def read_drawio_xml(diagram_path):
 
     tree = ET.parse(diagram_path)
     mxfile = tree.getroot()
-    root = mxfile[0][0][0]
+
+    try:
+        root = mxfile[0][0][0]
+    except:
+        # This lines are for compresed XML files
+        compressed_xml = mxfile[0].text
+        coded_xml = base64.b64decode(compressed_xml)
+        xml_string = unquote(zlib.decompress(coded_xml, -15).decode('utf8'))
+        root = ET.fromstring(xml_string)[0]
 
     # Eliminate children related to the whole white template
     for elem in root:

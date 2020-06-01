@@ -4,14 +4,6 @@ from modules.associations import *
 from modules.writer import *
 from modules.utils import *
 
-"""
-# This lines are for compresed XML files
-compressed_xml = root[0].text
-coded_xml = base64.b64decode(compressed_xml)
-xml_string = unquote(zlib.decompress(coded_xml, -15).decode('utf8'))
-mxGraphModel = ET.fromstring(xml_string)
-"""
-
 
 def transform_ontology(root, filename):
 
