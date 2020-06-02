@@ -84,6 +84,34 @@ def read_drawio_xml(diagram_path):
     return root
 
 
+def swap_source_target(relation):
+
+    xml_object = relation["xml_object"]
+    swapped = detect_source_target_swapped(xml_object)
+    init_source = relation["source"]
+    init_target = relation["target"]
+
+    if swapped == True:
+        relation["source"] = init_target
+        relation["target"] = init_source
+
+    return relation
+
+
+def detect_source_target_swapped(xml_object):
+
+    style = xml_object.attrib["style"]
+
+    if "startArrow" not in style or "startArrow=none" in style or "startArrow=oval" in style:
+        swapped = False
+    elif "endArrow=none" not in style:
+        swapped = False
+    else:
+        swapped = True
+
+    return swapped
+
+
 def fix_source_target(relations, shapes_list):
 
     shapes = {shape_id: shape for shapes in shapes_list for shape_id, shape in shapes.items()}
@@ -93,14 +121,19 @@ def fix_source_target(relations, shapes_list):
 
         source = relation["source"]
         target = relation["target"]
-        for side in [source, target]:
-
-            if side is None:
-                xml_object = relation["xml_object"]
-                mxpoint_object = xml_object[0][0]
-                mxpoint_x = float(mxpoint_object.attrib["x"])
-                mxpoint_y = float(mxpoint_object.attrib["y"])
-                mxpoint_side = mxpoint_object.attrib["as"].split("Point")[0]
+        xml_object = relation["xml_object"]
+        for side in [("source", source), ("target", target)]:
+            side_key = side[0]
+            side_value = side[1]
+            if side_value is None:
+                mxgeometry = xml_object[0]
+                for mxpoint in mxgeometry:
+                    #mxpoint_object = xml_object[0][0]
+                    mxpoint_side = mxpoint.attrib["as"].split("Point")[0]
+                    if mxpoint_side == side_key:
+                        mxpoint_x = float(mxpoint.attrib["x"])
+                        mxpoint_y = float(mxpoint.attrib["y"])
+                        break
 
                 for shape_id, shape in shapes.items():
                     xml_shape = shape["xml_object"]
@@ -110,11 +143,17 @@ def fix_source_target(relations, shapes_list):
                         break
 
                 if relations_copy[id][mxpoint_side] is None:
-                    raise ValueError("The " + mxpoint_side + " side of relation " + relation["prefix"] +
-                                     ":" + relation["uri"] + " is not connected or even close to any shape, verify it")
+                    try:
+                        raise ValueError("The " + mxpoint_side + " side of relation " + relation["prefix"] + ":" +
+                                         relation["uri"] + " is not connected or even close to any shape, verify it!")
+                    except:
+                        raise ValueError("The " + mxpoint_side + " side of a relation of type " + relation["type"] +
+                                         " and id " + id + " is not connected or even close to any shape, "
+                                         "verify it!")
+
+        relations_copy[id] = swap_source_target(relations_copy[id])
 
     return relations_copy
-
 
 
 
