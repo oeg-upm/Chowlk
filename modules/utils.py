@@ -156,8 +156,34 @@ def fix_source_target(relations, shapes_list):
     return relations_copy
 
 
+def find_prefixes(concepts, relations, attribute_blocks, individuals):
 
+    prefixes = []
 
+    for id, concept in concepts.items():
+        prefix = concept["prefix"]
+        if prefix not in prefixes:
+            prefixes.append(prefix)
+
+    for id, relation in relations.items():
+        if "prefix" in relation:
+            prefix = relation["prefix"]
+            if prefix not in prefixes:
+                prefixes.append(prefix)
+
+    for id, individual in individuals.items():
+        prefix = individual["prefix"]
+        if prefix not in prefixes:
+            prefixes.append(prefix)
+
+    for id, attribute_block in attribute_blocks.items():
+        attributes = attribute_block["attributes"]
+        for attribute in attributes:
+            prefix = attribute["prefix"]
+            if prefix not in prefixes:
+                prefixes.append(prefix)
+
+    return prefixes
 
 
 

@@ -10,6 +10,7 @@ def transform_ontology(root, filename):
     all_elements = find_elements(root)
     concepts, attribute_blocks, relations = all_elements[0:3]
     individuals, anonymous_concepts, ontology_metadata, namespaces, rhombuses = all_elements[3:]
+    prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
     relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
     relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
@@ -18,7 +19,7 @@ def transform_ontology(root, filename):
     associations, relations = concept_relation_association(associations, relations)
     individuals = individual_type_identification(individuals, associations, relations)
 
-    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces)
+    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
     file = write_ontology_metadata(file, ontology_metadata, onto_uri)
     file = write_object_properties(file, relations, concepts, anonymous_concepts)
     file = write_data_properties(file, attribute_blocks, concepts)
