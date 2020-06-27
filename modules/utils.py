@@ -8,7 +8,10 @@ import zlib
 
 def create_label(uri, type):
 
-    uppers_pos = [uri.index(char) for char in uri if char.isupper()]
+    uppers_pos = []
+    for i, char in enumerate(uri):
+        if char.isupper():
+            uppers_pos.append(i)
     uppers_pos.insert(0, 0) if 0 not in uppers_pos else uppers_pos
     words = []
     
@@ -39,14 +42,18 @@ def clean_html_tags(value):
     """
 
     html_tags = ["<div>", "<b>", "</b>", "</span>"]
-    reg_exp = "(<span .[^>]+\>)"
+    span_reg_exp = "(<span .[^>]+\>)"
+    div_reg_exp = "(<div .[^>]+\>)"
 
     for tag in html_tags:
         if tag in value:
             value = re.sub(tag, "", value)
 
     if "span" in value:
-        value = re.sub(reg_exp, "", value)
+        value = re.sub(span_reg_exp, "", value)
+
+    if "div" in value:
+        value = re.sub(div_reg_exp, "", value)
 
     if "&lt;" in value:
         value = re.sub("&lt;", "<", value)
@@ -65,7 +72,7 @@ def read_drawio_xml(diagram_path):
     try:
         root = mxfile[0][0][0]
     except:
-        # This lines are for compresed XML files
+        # This lines are for compressed XML files
         compressed_xml = mxfile[0].text
         coded_xml = base64.b64decode(compressed_xml)
         xml_string = unquote(zlib.decompress(coded_xml, -15).decode('utf8'))
@@ -118,7 +125,6 @@ def fix_source_target(relations, shapes_list):
     relations_copy = copy.deepcopy(relations)
 
     for id, relation in relations.items():
-
         source = relation["source"]
         target = relation["target"]
         xml_object = relation["xml_object"]
@@ -134,14 +140,12 @@ def fix_source_target(relations, shapes_list):
                         mxpoint_x = float(mxpoint.attrib["x"])
                         mxpoint_y = float(mxpoint.attrib["y"])
                         break
-
                 for shape_id, shape in shapes.items():
                     xml_shape = shape["xml_object"]
                     proximity = proximity_to_shape((mxpoint_x, mxpoint_y), xml_shape, thr=10)
                     if proximity:
                         relations_copy[id][mxpoint_side] = shape_id
                         break
-
                 if relations_copy[id][mxpoint_side] is None:
                     try:
                         raise ValueError("The " + mxpoint_side + " side of relation " + relation["prefix"] + ":" +

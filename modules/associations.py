@@ -42,7 +42,7 @@ def concept_attribute_association(concepts, attribute_blocks):
 def concept_relation_association(associations, relations):
 
     for relation_id, relation in relations.items():
-        if relation["type"] == "rdf:type":
+        if relation["type"] in ["rdf:type", "ellipse_connection"]:
             continue
         source_id = relation["source"]
         target_id = relation["target"]
@@ -51,7 +51,6 @@ def concept_relation_association(associations, relations):
                 associations[s_concept_id]["relations"][relation_id] = relation
                 relations[relation_id]["source"] = s_concept_id
                 break
-
         for t_concept_id, association in associations.items():
             if target_id == t_concept_id or target_id in association["attribute_blocks"]:
                 associations[s_concept_id]["relations"][relation_id]["target"] = t_concept_id

@@ -23,14 +23,17 @@ def get_corners_rect_child(child_element):
 def proximity_to_shape(point, xml_shape, thr):
 
     p1, _, _, p4 = get_corners_rect_child(xml_shape)
-
-    if abs(p1[0] - point[0]) <= thr and p1[1] < point[1] < p4[1]:
+    #print(abs(p1[0] - point[0]) <= thr)
+    #print(abs(p1[1] - point[1]) <= thr)
+    #print(abs(p4[0] - point[0]) <= thr)
+    #print(abs(p4[1] - point[1]) <= thr)
+    if abs(p1[0] - point[0]) <= thr and p1[1] <= point[1] <= p4[1]:
         near = True
-    elif abs(p1[1] - point[1]) <= thr and p1[0] < point[0] < p4[0]:
+    elif abs(p1[1] - point[1]) <= thr and p1[0] <= point[0] <= p4[0]:
         near = True
-    elif abs(p4[0] - point[0]) <= thr and p1[1] < point[1] < p4[1]:
+    elif abs(p4[0] - point[0]) <= thr and p1[1] <= point[1] <= p4[1]:
         near = True
-    elif abs(p4[1] - point[1]) <= thr and p1[0] < point[0] < p4[0]:
+    elif abs(p4[1] - point[1]) <= thr and p1[0] <= point[0] <= p4[0]:
         near = True
     else:
         near = False

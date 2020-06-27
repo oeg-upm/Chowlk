@@ -8,7 +8,8 @@ def get_ttl_template(filename, namespaces, prefixes_finded):
                "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n"
                "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
                "@prefix dc: <http://purl.org/dc/elements/1.1/> .\n"
-               "@prefix dcterms: <http://purl.org/dc/terms/> .\n")
+               "@prefix dcterms: <http://purl.org/dc/terms/> .\n"
+               "@prefix vann: <http://purl.org/vocab/vann/> .\n")
 
     not_found = []
     for prefix in prefixes_finded:
@@ -30,11 +31,12 @@ def get_ttl_template(filename, namespaces, prefixes_finded):
 def write_ontology_metadata(file, metadata, onto_uri):
 
     file.write("<" + onto_uri + "> rdf:type owl:Ontology")
-    for key, value in metadata.items():
-        key = key
-        value = "\"" + value + "\""
-        file.write(" ;\n")
-        file.write("\t\t\t" + key + " " + value)
+    for prefix, values in metadata.items():
+
+        for value in values:
+            value = "\"" + value + "\""
+            file.write(" ;\n")
+            file.write("\t\t\t" + prefix + " " + value)
     file.write(" .\n\n")
 
     return file

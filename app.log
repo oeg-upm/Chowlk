@@ -1,0 +1,68 @@
+ERROR:root:The source side of a relation of type rdfs:subClassOf and id 89 is not connected or even close to any shape, verify it!
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\modules\utils.py", line 152, in fix_source_target
+    relation["uri"] + " is not connected or even close to any shape, verify it!")
+KeyError: 'prefix'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 155, in fix_source_target
+    " and id " + id + " is not connected or even close to any shape, "
+ValueError: The source side of a relation of type rdfs:subClassOf and id 89 is not connected or even close to any shape, verify it!
+ERROR:root:The source side of a relation of type rdfs:subClassOf and id 89 is not connected or even close to any shape, verify it!
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\modules\utils.py", line 152, in fix_source_target
+    relation["uri"] + " is not connected or even close to any shape, verify it!")
+KeyError: 'prefix'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 155, in fix_source_target
+    " and id " + id + " is not connected or even close to any shape, "
+ValueError: The source side of a relation of type rdfs:subClassOf and id 89 is not connected or even close to any shape, verify it!
+ERROR:root:'54'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 19, in transform_ontology
+    associations, relations = concept_relation_association(associations, relations)
+  File "D:\Projects\diagram2code\modules\associations.py", line 58, in concept_relation_association
+    associations[s_concept_id]["relations"][relation_id]["target"] = t_concept_id
+KeyError: '54'
+ERROR:root:'54'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 19, in transform_ontology
+    associations, relations = concept_relation_association(associations, relations)
+  File "D:\Projects\diagram2code\modules\associations.py", line 58, in concept_relation_association
+    associations[s_concept_id]["relations"][relation_id]["target"] = t_concept_id
+KeyError: '54'
+ERROR:root:'54'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 19, in transform_ontology
+    associations, relations = concept_relation_association(associations, relations)
+  File "D:\Projects\diagram2code\modules\associations.py", line 59, in concept_relation_association
+    associations[s_concept_id]["relations"][relation_id]["target"] = t_concept_id
+KeyError: '54'
+ERROR:root:'3'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 20, in transform_ontology
+    individuals = individual_type_identification(individuals, associations, relations)
+  File "D:\Projects\diagram2code\modules\associations.py", line 70, in individual_type_identification
+    individual = individuals[source_id]
+KeyError: '3'
