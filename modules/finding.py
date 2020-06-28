@@ -200,6 +200,7 @@ class Finder():
                     ontology_uri = item.split(":")[1:]
                     ontology_uri = [item.strip() for item in ontology_uri]
                     ontology_uri = ":".join(ontology_uri).strip()
+                    ontology_uri = clean_html_tags(ontology_uri)
                     namespaces[prefix] = ontology_uri
         return namespaces
 
@@ -465,14 +466,19 @@ class Finder():
                         attribute["prefix"] = attribute_value.split(":")[0].split(" ")[::-1][0]
                         attribute["uri"] = attribute_value.split(":")[1].split(" ")[0]
                         attribute["label"] = create_label(attribute["uri"], "property")
+
                         if len(attribute_value.split(":")) > 2:
-                            attribute["datatype"] = attribute_value.split(":")[2].strip().lower()
+                            final_datatype = attribute_value.split(":")[2].strip()
+                            final_datatype = final_datatype[0].lower() + final_datatype[1:]
+                            attribute["datatype"] = final_datatype
                         else:
                             attribute["datatype"] = None
+
                         if attribute["datatype"] is None or attribute["datatype"] == "":
                             attribute["range"] = False
                         else:
                             attribute["range"] = True
+
                         attribute["domain"] = domain
 
                         # Existential Universal restriction evaluation

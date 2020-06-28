@@ -156,7 +156,7 @@ def write_data_properties(file, attribute_blocks, concepts):
 
             if attribute["range"]:
                 file.write(" ;\n")
-                file.write("\t\trdfs:range xsd:" + attribute["datatype"].lower())
+                file.write("\t\trdfs:range xsd:" + attribute["datatype"])
 
             if "owl:subPropertyOf" in attribute:
                 file.write(" ;\n")
@@ -235,11 +235,17 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                         subclassof_statement_done = True
                     else:
                         file.write(" ,\n")
+
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
-                    file.write("\t\t  owl:minQualifiedCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" +
-                               "nonNegativeInteger ;\n")
-                    file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
+
+                    if attribute["datatype"] is None:
+                        file.write("\t\t  owl:minCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" +
+                                   "nonNegativeInteger ]\n")
+                    else:
+                        file.write("\t\t  owl:minQualifiedCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" +
+                                   "nonNegativeInteger ;\n")
+                        file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
 
                 if attribute["max_cardinality"] is not None:
                     if not subclassof_statement_done:
@@ -250,9 +256,14 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                         file.write(" ,\n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
-                    file.write("\t\t  owl:maxQualifiedCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" +
-                               "nonNegativeInteger ;\n")
-                    file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
+
+                    if attribute["datatype"] is None:
+                        file.write("\t\t  owl:maxCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" +
+                                   "nonNegativeInteger ]\n")
+                    else:
+                        file.write("\t\t  owl:maxQualifiedCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" +
+                                   "nonNegativeInteger ;\n")
+                        file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
 
         for relation_id, relation in relations.items():
             if relation["type"] == "owl:ObjectProperty":

@@ -29,12 +29,12 @@ def transform_ontology(root, filename):
 
 
 def transform_rdf(root, filename):
-
-    individuals = find_individuals(root)
-    relations = find_relations(root)
-    namespaces = find_namespaces(root)
-    values = find_attribute_values(root)
-    concepts, attribute_blocks = find_concepts_and_attributes(root)
+    finder = Finder(root)
+    individuals = finder.find_individuals(root)
+    relations = finder.find_relations(root)
+    namespaces = finder.find_namespaces(root)
+    values = finder.find_attribute_values(root)
+    concepts, attribute_blocks = finder.find_concepts_and_attributes(root)
 
     prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
 

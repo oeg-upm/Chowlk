@@ -51,6 +51,7 @@ def clean_html_tags(value):
 
     if "span" in value:
         value = re.sub(span_reg_exp, "", value)
+        value = re.sub("<span>", "", value)
 
     if "div" in value:
         value = re.sub(div_reg_exp, "", value)

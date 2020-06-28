@@ -66,3 +66,47 @@ Traceback (most recent call last):
   File "D:\Projects\diagram2code\modules\associations.py", line 70, in individual_type_identification
     individual = individuals[source_id]
 KeyError: '3'
+ERROR:root:'x'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 11, in transform_ontology
+    all_elements = finder.find_elements()
+  File "D:\Projects\diagram2code\modules\finding.py", line 540, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes()
+  File "D:\Projects\diagram2code\modules\finding.py", line 448, in find_concepts_and_attributes
+    p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(child2)
+  File "D:\Projects\diagram2code\modules\geometry.py", line 16, in get_corners_rect_child
+    x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
+KeyError: 'x'
+ERROR:root:'x'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 11, in transform_ontology
+    all_elements = finder.find_elements()
+  File "D:\Projects\diagram2code\modules\finding.py", line 541, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes()
+  File "D:\Projects\diagram2code\modules\finding.py", line 449, in find_concepts_and_attributes
+    p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(child2)
+  File "D:\Projects\diagram2code\modules\geometry.py", line 16, in get_corners_rect_child
+    x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
+KeyError: 'x'
+ERROR:root:The following prefixes were not found in the namespace declaration: geo, s4blsg
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 22, in transform_ontology
+    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
+  File "D:\Projects\diagram2code\modules\writer.py", line 21, in get_ttl_template
+    raise ValueError("The following prefixes were not found in the namespace declaration: " + prefixes_string)
+ValueError: The following prefixes were not found in the namespace declaration: geo, s4blsg
+ERROR:root:must be str, not NoneType
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 26, in transform_ontology
+    file = write_concepts(file, concepts, anonymous_concepts, associations)
+  File "D:\Projects\diagram2code\modules\writer.py", line 242, in write_concepts
+    file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
+TypeError: must be str, not NoneType
