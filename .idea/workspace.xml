@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="" />
+    <list default="true" id="6345658c-71bc-4cd3-b7c8-5724d37d020e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.log" beforeDir="false" afterPath="$PROJECT_DIR$/app.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/building.xml" beforeDir="false" afterPath="$PROJECT_DIR$/data/building.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/building.ttl" beforeDir="false" afterPath="$PROJECT_DIR$/output/building.ttl" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +31,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="D:/oeg-projects/bimerr/BO2DM" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
@@ -156,7 +161,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e018f324-2f2c-40b1-abc5-f73265b4e17f" name="Default Changelist" comment="" />
+      <changelist id="6345658c-71bc-4cd3-b7c8-5724d37d020e" name="Default Changelist" comment="" />
       <created>1584654456349</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -169,10 +174,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="453" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1590076981927" />
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1591190469522">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1593507559104">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1591190469522" />
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1593507559104" />
     <state width="1345" height="346" key="GridCell.Tab.0.bottom" timestamp="1593102926734">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -209,10 +214,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1588796853213" />
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1593338243047">
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1593507251084">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1593338243047" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1593507251084" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1593292602073">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

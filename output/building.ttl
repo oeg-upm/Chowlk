@@ -152,11 +152,7 @@ building:Building rdf:type owl:Class ;
 
 ### bot:Element
 bot:Element rdf:type owl:Class ;
-	rdfs:label "Element" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasSubElement ;
-		  owl:allValuesFrom bot:Element ] .
+	rdfs:label "Element" .
 
 ### building:Space
 building:Space rdf:type owl:Class ;
@@ -221,7 +217,10 @@ building:Element rdf:type owl:Class ;
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:isPartOfSystem ;
 		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass building:System ] .
+		  owl:onClass building:System ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSubElement ;
+		  owl:allValuesFrom building:Element ] .
 
 ### building:MaterialLayerSet
 building:MaterialLayerSet rdf:type owl:Class ;

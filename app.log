@@ -110,3 +110,14 @@ Traceback (most recent call last):
   File "D:\Projects\diagram2code\modules\writer.py", line 242, in write_concepts
     file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
 TypeError: must be str, not NoneType
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 11, in transform_ontology
+    all_elements = finder.find_elements()
+  File "D:\Projects\diagram2code\modules\finding.py", line 544, in find_elements
+    ellipses = self.find_ellipses()
+  File "D:\Projects\diagram2code\modules\finding.py", line 285, in find_ellipses
+    if relation["type"] == "ellipse_connection":
+KeyError: 'type'
