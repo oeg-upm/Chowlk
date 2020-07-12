@@ -1,0 +1,54 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} Chowlk {% endblock title %}
+
+{% block head %}
+{{ super() }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.js"></script>
+<script src={{ url_for('send_static', path='sketch.js') }}></script>
+<link rel="stylesheet" href={{ url_for('.static', filename='css/style.css') }}>
+
+{% endblock head %}
+
+
+{% block content %}
+
+<img src={{ url_for('.static', filename='resources/logo.svg') }} class="center">
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4 text-center">OWL Code Generation Service</h1>
+        <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontological 
+            Diagrams.
+        </p>
+        <hr class="my-4">
+        <p class="text-center">In order to use our service you should use Drawio as the diagraming tool, and follow our specification to conceptualize your ontologies. 
+            Once it is finished, export it as XML, and load it in our drag and drop tool.</p>
+        <a class="btn btn-primary btn-lg center-button" href="https://oeg-upm.github.io/chowlk_spec/" role="button">View Specification</a>
+
+    </div>
+</div>
+
+<div class="container">
+
+    <h3 class="display-4">Previous steps before using the service</h3>
+    <br>
+    <ol>
+        <li class="new-size">The ontological diagram always should include the <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">namespace block</a>, 
+            indicating all the prefixes and namespaces used in the ontology.</li>
+        <li class="new-size">The <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">metadata block</a> must contain the actual annotation property elements, aliases are not 
+            allowed. For instance, the user should type <code>owl:versionInfo</code> instead of <b>"version"</b> to indicate the current version of the ontology.</li>
+        <li class="new-size">The user must ensure that the source and target of all the arrows in the model are connected to a block. This means that in order to represent an 
+        <code>owl:subPropertyOf</code> relationship the user should use the <a href="https://oeg-upm.github.io/chowlk_spec/#relations-between-properties">form 1</a> for this construct.</li>
+        </ol>
+
+</div>
+<br>
+<div class="container">
+    <form name="formzone">
+        <p id="dropzone" class="text-center">Drag you diagram here.</p>
+        <input type="submit" class="btn btn-primary mb-2" value="Submit">
+    </form>
+</div>
+
+{% endblock content %}

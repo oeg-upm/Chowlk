@@ -1,0 +1,482 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix building: <http://bimerr.iot.linkeddata.es/def/building#> .
+@prefix props: <http://bimerr.iot.linkeddata.es/def/material-properties#> .
+@prefix wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix bot: <https://w3id.org/bot#> .
+@base <http://bimerr.iot.linkeddata.es/def/building#> .
+
+<http://bimerr.iot.linkeddata.es/def/building#> rdf:type owl:Ontology ;
+			dc:creator "Serge Chávez-Feria" ;
+			dc:creator "María Poveda-Villalón" ;
+			owl:versionInfo "0.0.3" ;
+			dc:title "Building Ontology" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+### bot:hasStorey
+bot:hasStorey rdf:type owl:ObjectProperty ;
+		rdfs:label "has storey" .
+
+### bot:hasElement
+bot:hasElement rdf:type owl:ObjectProperty ;
+		rdfs:label "has element" .
+
+### bot:containsZone
+bot:containsZone rdf:type owl:ObjectProperty ;
+		rdfs:label "contains zone" .
+
+### building:hasApartment
+building:hasApartment rdf:type owl:ObjectProperty ;
+		rdfs:label "has apartment" .
+
+### bot:hasSpace
+bot:hasSpace rdf:type owl:ObjectProperty ;
+		rdfs:label "has space" .
+
+### building:hasConstruction
+building:hasConstruction rdf:type owl:ObjectProperty ;
+		rdfs:label "has construction" .
+
+### building:isPartOfSystem
+building:isPartOfSystem rdf:type owl:ObjectProperty ;
+		rdfs:label "is part of system" .
+
+### bot:hasSubElement
+bot:hasSubElement rdf:type owl:ObjectProperty ;
+		rdfs:label "has sub element" .
+
+### building:hasMaterialLayer
+building:hasMaterialLayer rdf:type owl:ObjectProperty ;
+		rdfs:label "has material layer" .
+
+### building:hasMaterial
+building:hasMaterial rdf:type owl:ObjectProperty ;
+		rdfs:label "has material" .
+
+### building:hasMaterialProfile
+building:hasMaterialProfile rdf:type owl:ObjectProperty ;
+		rdfs:label "has material profile" .
+
+### building:hasMaterial
+building:hasMaterial rdf:type owl:ObjectProperty ;
+		rdfs:label "has material" .
+
+### building:hasMaterialConstituent
+building:hasMaterialConstituent rdf:type owl:ObjectProperty ;
+		rdfs:label "has material constituent" .
+
+### building:hasMaterial
+building:hasMaterial rdf:type owl:ObjectProperty ;
+		rdfs:label "has material" .
+
+### building:includesElement
+building:includesElement rdf:type owl:ObjectProperty ;
+		rdfs:label "includes element" .
+
+#################################################################
+#    Data Properties
+#################################################################
+
+### building:ifcIdentifier
+building:ifcIdentifier rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:string ;
+		rdfs:label "ifc identifier" .
+
+### bot:hasSimple3DModel
+bot:hasSimple3DModel rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:string ;
+		rdfs:label "has simple3 d model" .
+
+### wgs84_pos:long
+wgs84_pos:long rdf:type owl:DatatypeProperty ;
+		rdfs:label "long" .
+
+### wgs84_pos:lat
+wgs84_pos:lat rdf:type owl:DatatypeProperty ;
+		rdfs:label "lat" .
+
+### wgs84_pos:alt
+wgs84_pos:alt rdf:type owl:DatatypeProperty ;
+		rdfs:label "alt" .
+
+### building:maxOccupants
+building:maxOccupants rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:integer ;
+		rdfs:label "max occupants" .
+
+### building:minOccupants
+building:minOccupants rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:integer ;
+		rdfs:label "min occupants" .
+
+### building:buildingAddress
+building:buildingAddress rdf:type owl:DatatypeProperty ;
+		rdfs:domain building:Building ;
+		rdfs:range xsd:string ;
+		rdfs:label "building address" .
+
+### building:thickness
+building:thickness rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:float ;
+		rdfs:label "thickness" .
+
+### building:position
+building:position rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:integer ;
+		rdfs:label "position" .
+
+#################################################################
+#    Classes
+#################################################################
+
+### building:Building
+building:Building rdf:type owl:Class ;
+	rdfs:label "Building" ;
+	rdfs:subClassOf bot:Building ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasStorey ;
+		  owl:allValuesFrom building:Storey ] .
+
+### bot:Element
+bot:Element rdf:type owl:Class ;
+	rdfs:label "Element" .
+
+### building:Space
+building:Space rdf:type owl:Class ;
+	rdfs:label "Space" ;
+	rdfs:subClassOf bot:Space ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasElement ;
+		  owl:allValuesFrom building:Element ] .
+
+### bot:Zone
+bot:Zone rdf:type owl:Class ;
+	rdfs:label "Zone" .
+
+### building:Storey
+building:Storey rdf:type owl:Class ;
+	rdfs:label "Storey" ;
+	rdfs:subClassOf bot:Storey ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:containsZone ;
+		  owl:someValuesFrom building:Apartment ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasApartment ;
+		  owl:allValuesFrom building:Apartment ] .
+
+### building:Apartment
+building:Apartment rdf:type owl:Class ;
+	rdfs:label "Apartment" ;
+	rdfs:subClassOf bot:Zone ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSpace ;
+		  owl:allValuesFrom building:Space ] .
+
+### building:Element
+building:Element rdf:type owl:Class ;
+	rdfs:label "Element" ;
+	rdfs:subClassOf bot:Element ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasConstruction ;
+		  owl:allValuesFrom [ owl:unionOf ( 
+						building:MaterialLayerSet
+						building:MaterialProfileSet
+						building:MaterialConstituentSet
+					) ;
+					rdf:type owl:Class
+					] ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:isPartOfSystem ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass building:System ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSubElement ;
+		  owl:allValuesFrom building:Element ] .
+
+### building:MaterialLayerSet
+building:MaterialLayerSet rdf:type owl:Class ;
+	rdfs:label "Material Layer Set" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasMaterialLayer ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass building:MaterialLayer ] .
+
+### building:MaterialLayer
+building:MaterialLayer rdf:type owl:Class ;
+	rdfs:label "Material Layer" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasMaterial ;
+		  owl:allValuesFrom props:Material ] .
+
+### building:Roof
+building:Roof rdf:type owl:Class ;
+	rdfs:label "Roof" ;
+	rdfs:subClassOf building:BuildingElement .
+
+### building:Slab
+building:Slab rdf:type owl:Class ;
+	rdfs:label "Slab" ;
+	rdfs:subClassOf building:BuildingElement .
+
+### building:Door
+building:Door rdf:type owl:Class ;
+	rdfs:label "Door" ;
+	rdfs:subClassOf building:BuildingElement .
+
+### building:Window
+building:Window rdf:type owl:Class ;
+	rdfs:label "Window" ;
+	rdfs:subClassOf building:BuildingElement .
+
+### building:Wall
+building:Wall rdf:type owl:Class ;
+	rdfs:label "Wall" ;
+	rdfs:subClassOf building:BuildingElement .
+
+### building:EnergyConversionDevice
+building:EnergyConversionDevice rdf:type owl:Class ;
+	rdfs:label "Energy Conversion Device" ;
+	rdfs:subClassOf building:DistributionFlowElement .
+
+### building:SolarDevice
+building:SolarDevice rdf:type owl:Class ;
+	rdfs:label "Solar Device" ;
+	rdfs:subClassOf building:EnergyConversionDevice .
+
+### building:BiomassBoiler
+building:BiomassBoiler rdf:type owl:Class ;
+	rdfs:label "Biomass Boiler" ;
+	rdfs:subClassOf building:Boiler .
+
+### building:FossilBoiler
+building:FossilBoiler rdf:type owl:Class ;
+	rdfs:label "Fossil Boiler" ;
+	rdfs:subClassOf building:Boiler .
+
+### building:HeatExchanger
+building:HeatExchanger rdf:type owl:Class ;
+	rdfs:label "Heat Exchanger" ;
+	rdfs:subClassOf building:EnergyConversionDevice .
+
+### building:TubeBundle
+building:TubeBundle rdf:type owl:Class ;
+	rdfs:label "Tube Bundle" ;
+	rdfs:subClassOf building:EnergyConversionDevice .
+
+### building:MaterialProfileSet
+building:MaterialProfileSet rdf:type owl:Class ;
+	rdfs:label "Material Profile Set" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasMaterialProfile ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass building:MaterialProfile ] .
+
+### building:MaterialProfile
+building:MaterialProfile rdf:type owl:Class ;
+	rdfs:label "Material Profile" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasMaterial ;
+		  owl:allValuesFrom props:Material ] .
+
+### props:Material
+props:Material rdf:type owl:Class ;
+	rdfs:label "Material" .
+
+### building:MaterialConstituentSet
+building:MaterialConstituentSet rdf:type owl:Class ;
+	rdfs:label "Material Constituent Set" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasMaterialConstituent ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass building:MaterialConstituent ] .
+
+### building:MaterialConstituent
+building:MaterialConstituent rdf:type owl:Class ;
+	rdfs:label "Material Constituent" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:hasMaterial ;
+		  owl:allValuesFrom props:Material ] .
+
+### bot:Space
+bot:Space rdf:type owl:Class ;
+	rdfs:label "Space" .
+
+### bot:Storey
+bot:Storey rdf:type owl:Class ;
+	rdfs:label "Storey" .
+
+### bot:Building
+bot:Building rdf:type owl:Class ;
+	rdfs:label "Building" .
+
+### building:BuildingElement
+building:BuildingElement rdf:type owl:Class ;
+	rdfs:label "Building Element" ;
+	rdfs:subClassOf building:Element .
+
+### building:Boiler
+building:Boiler rdf:type owl:Class ;
+	rdfs:label "Boiler" ;
+	rdfs:subClassOf building:EnergyConversionDevice .
+
+### building:DistributionElement
+building:DistributionElement rdf:type owl:Class ;
+	rdfs:label "Distribution Element" ;
+	rdfs:subClassOf building:Element .
+
+### building:DistributionFlowElement
+building:DistributionFlowElement rdf:type owl:Class ;
+	rdfs:label "Distribution Flow Element" ;
+	rdfs:subClassOf building:DistributionElement .
+
+### building:FlowStorageDevice
+building:FlowStorageDevice rdf:type owl:Class ;
+	rdfs:label "Flow Storage Device" ;
+	rdfs:subClassOf building:DistributionFlowElement .
+
+### building:Tank
+building:Tank rdf:type owl:Class ;
+	rdfs:label "Tank" ;
+	rdfs:subClassOf building:FlowStorageDevice .
+
+### building:FlowMovingDevice
+building:FlowMovingDevice rdf:type owl:Class ;
+	rdfs:label "Flow Moving Device" ;
+	rdfs:subClassOf building:DistributionFlowElement .
+
+### building:Pump
+building:Pump rdf:type owl:Class ;
+	rdfs:label "Pump" ;
+	rdfs:subClassOf building:FlowMovingDevice .
+
+### building:Fan
+building:Fan rdf:type owl:Class ;
+	rdfs:label "Fan" ;
+	rdfs:subClassOf building:FlowMovingDevice .
+
+### building:FlowSegment
+building:FlowSegment rdf:type owl:Class ;
+	rdfs:label "Flow Segment" ;
+	rdfs:subClassOf building:DistributionFlowElement .
+
+### building:PipeSegment
+building:PipeSegment rdf:type owl:Class ;
+	rdfs:label "Pipe Segment" ;
+	rdfs:subClassOf building:FlowSegment .
+
+### building:DuctSegment
+building:DuctSegment rdf:type owl:Class ;
+	rdfs:label "Duct Segment" ;
+	rdfs:subClassOf building:FlowSegment .
+
+### building:FlowTerminal
+building:FlowTerminal rdf:type owl:Class ;
+	rdfs:label "Flow Terminal" ;
+	rdfs:subClassOf building:DistributionFlowElement .
+
+### building:SpaceHeater
+building:SpaceHeater rdf:type owl:Class ;
+	rdfs:label "Space Heater" ;
+	rdfs:subClassOf building:FlowTerminal .
+
+### building:Element
+building:Element rdf:type owl:Class ;
+	rdfs:label "Element" .
+
+### building:Outlet
+building:Outlet rdf:type owl:Class ;
+	rdfs:label "Outlet" ;
+	rdfs:subClassOf building:FlowTerminal .
+
+### building:FlowController
+building:FlowController rdf:type owl:Class ;
+	rdfs:label "Flow Controller" ;
+	rdfs:subClassOf building:DistributionFlowElement .
+
+### building:SwitchingDevice
+building:SwitchingDevice rdf:type owl:Class ;
+	rdfs:label "Switching Device" ;
+	rdfs:subClassOf building:FlowController .
+
+### building:System
+building:System rdf:type owl:Class ;
+	rdfs:label "System" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:includesElement ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass building:Element ] .
+
+### building:PhotovoltaicSystem
+building:PhotovoltaicSystem rdf:type owl:Class ;
+	rdfs:label "Photovoltaic System" ;
+	rdfs:subClassOf building:System .
+
+### building:SolarSystem
+building:SolarSystem rdf:type owl:Class ;
+	rdfs:label "Solar System" ;
+	rdfs:subClassOf building:System .
+
+### building:VentilationSystem
+building:VentilationSystem rdf:type owl:Class ;
+	rdfs:label "Ventilation System" ;
+	rdfs:subClassOf building:System .
+
+### building:HeatingSystem
+building:HeatingSystem rdf:type owl:Class ;
+	rdfs:label "Heating System" ;
+	rdfs:subClassOf building:System .
+
+### building:CoolingSystem
+building:CoolingSystem rdf:type owl:Class ;
+	rdfs:label "Cooling System" ;
+	rdfs:subClassOf building:System .
+
+### building:FenestrationSystem
+building:FenestrationSystem rdf:type owl:Class ;
+	rdfs:label "Fenestration System" ;
+	rdfs:subClassOf building:System .
+
+#################################################################
+#    Instances
+#################################################################
+
+#################################################################
+#    General Axioms
+#################################################################
+

@@ -1,0 +1,150 @@
+ERROR:root:name 'args' is not defined
+Traceback (most recent call last):
+  File "d:\Projects\diagram2code\app.py", line 32, in diagram_upload
+    if args.type == "ontology":
+NameError: name 'args' is not defined
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:00:14] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:name 'args' is not defined
+Traceback (most recent call last):
+  File "d:\Projects\diagram2code\app.py", line 32, in diagram_upload
+    if args.type == "ontology":
+NameError: name 'args' is not defined
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:00:41] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:[Errno 13] Permission denied: 'output/'
+Traceback (most recent call last):
+  File "d:\Projects\diagram2code\app.py", line 31, in diagram_upload
+    transform_ontology(root, "output/")
+  File "d:\Projects\diagram2code\converter.py", line 22, in transform_ontology
+    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
+  File "d:\Projects\diagram2code\modules\writer.py", line 3, in get_ttl_template
+    file = open(filename, 'w')
+PermissionError: [Errno 13] Permission denied: 'output/'
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:01:38] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:[Errno 13] Permission denied: 'output'
+Traceback (most recent call last):
+  File "d:\Projects\diagram2code\app.py", line 31, in diagram_upload
+    transform_ontology(root, "output")
+  File "d:\Projects\diagram2code\converter.py", line 22, in transform_ontology
+    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
+  File "d:\Projects\diagram2code\modules\writer.py", line 3, in get_ttl_template
+    file = open(filename, 'w')
+PermissionError: [Errno 13] Permission denied: 'output'
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:02:26] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:03:46] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\converter.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:06:31] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:09:54] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:09:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:09:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:09:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:09:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:09:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:10:45] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:10:45] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:10:45] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:10:45] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:10:45] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:10:45] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\modules\\writer.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:14:34] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:14:34] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:14:34] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:14:34] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:14:34] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:14:34] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\modules\\writer.py', reloading
+ERROR:root:[Errno 2] No such file or directory: 'tmp/building.ttl'
+Traceback (most recent call last):
+  File "d:\Projects\diagram2code\app.py", line 31, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl")
+  File "d:\Projects\diagram2code\converter.py", line 22, in transform_ontology
+    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
+  File "d:\Projects\diagram2code\modules\writer.py", line 3, in get_ttl_template
+    file = open(filename, 'w')
+FileNotFoundError: [Errno 2] No such file or directory: 'tmp/building.ttl'
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:22:22] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:22:23] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:22:23] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:22:23] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:22:23] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:22:23] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:23:36] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 02:26:39] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 10:16:27] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 14:13:11] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 14:15:28] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 14:16:43] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 16:02:08] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:06:34] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:05] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:10] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:34] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:56] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:56] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:56] "GET /static/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:07:56] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:08:00] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:10:07] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:11:09] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:14:05] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:14:07] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:14:20] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:17:01] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:17:04] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:17:04] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:21:01] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:21:03] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:23:35] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:25:58] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:25:59] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:28:11] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:28:39] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:28:50] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:29:08] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:30:17] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:31:54] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:31:56] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:33:55] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:33:58] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:33:59] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:33:59] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:33:59] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:33:59] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:36:44] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:37:04] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:37:33] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:37:57] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:38:34] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:39:21] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
