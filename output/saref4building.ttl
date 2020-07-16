@@ -1,0 +1,337 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix s4bldg: <https://w3id.org/def/saref4bldg#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix saref: <https://w3id.org/saref#> .
+@base <https://w3id.org/def/saref4bldg#> .
+
+<https://w3id.org/def/saref4bldg#> rdf:type owl:Ontology ;
+			dc:creator "Raúl García-Castro" ;
+			dc:creator "María Poveda-Villalón" ;
+			owl:versionInfo "1.0" ;
+			dc:title "SAREF extension for building devices" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+### s4bldg:hasSpace
+s4bldg:hasSpace rdf:type owl:ObjectProperty ;
+		rdfs:label "has space" .
+
+### geo:location
+geo:location rdf:type owl:ObjectProperty ;
+		rdfs:label "location" .
+
+### s4bldg:contains
+s4bldg:contains rdf:type owl:ObjectProperty ;
+		rdfs:label "contains" .
+
+### s4bldg:isSpaceOf
+s4bldg:isSpaceOf rdf:type owl:ObjectProperty ;
+		rdfs:label "is space of" .
+
+### s4bldg:isContainedIn
+s4bldg:isContainedIn rdf:type owl:ObjectProperty ;
+		rdfs:label "is contained in" .
+
+### geo:location
+geo:location rdf:type owl:ObjectProperty ;
+		rdfs:label "location" .
+
+### s4bldg:hasSpace
+s4bldg:hasSpace rdf:type owl:ObjectProperty ;
+		rdfs:label "has space" .
+
+### saref:makesMeasurement
+saref:makesMeasurement rdf:type owl:ObjectProperty ;
+		rdfs:domain saref:Device ;
+		rdfs:range saref:Measurement ;
+		rdfs:label "makes measurement" .
+
+### saref:measuresProperty
+saref:measuresProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain saref:Device ;
+		rdfs:range saref:Property ;
+		rdfs:label "measures property" .
+
+### saref:isMeasuredIn
+saref:isMeasuredIn rdf:type owl:ObjectProperty ;
+		rdfs:domain saref:Measurement ;
+		rdfs:range saref:UnitOfMeasure ;
+		rdfs:label "is measured in" .
+
+### saref:relatesToProperty
+saref:relatesToProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain saref:Measurement ;
+		rdfs:range saref:Property ;
+		rdfs:label "relates to property" .
+
+### s4bldg:contains
+s4bldg:contains rdf:type owl:ObjectProperty ;
+		rdfs:label "contains" .
+
+#################################################################
+#    Data Properties
+#################################################################
+
+### saref:hasTimestamp
+saref:hasTimestamp rdf:type owl:DatatypeProperty ;
+		rdfs:range xsd:dateTime ;
+		rdfs:label "has timestamp" .
+
+### saref:hasValue
+saref:hasValue rdf:type owl:DatatypeProperty ;
+		rdfs:label "has value" .
+
+#################################################################
+#    Classes
+#################################################################
+
+### geo:SpatialThing
+geo:SpatialThing rdf:type owl:Class ;
+	rdfs:label "Spatial Thing" .
+
+### s4bldg:Building
+s4bldg:Building rdf:type owl:Class ;
+	rdfs:label "Building" ;
+	rdfs:subClassOf geo:SpatialThing ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty s4bldg:hasSpace ;
+		  owl:allValuesFrom s4bldg:BuildingSpace ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty geo:location ;
+		  owl:allValuesFrom geo:SpatialThing ] .
+
+### s4bldg:BuildingSpace
+s4bldg:BuildingSpace rdf:type owl:Class ;
+	rdfs:label "Building Space" ;
+	rdfs:subClassOf geo:SpatialThing ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty s4bldg:contains ;
+		  owl:allValuesFrom s4bldg:PhysicalObject ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty s4bldg:isSpaceOf ;
+		  owl:allValuesFrom [ owl:unionOf ( 
+						s4bldg:Building
+						s4bldg:BuildingSpace
+					) ;
+					rdf:type owl:Class
+					] ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty s4bldg:hasSpace ;
+		  owl:allValuesFrom s4bldg:BuildingSpace ] .
+
+### s4bldg:PhysicalObject
+s4bldg:PhysicalObject rdf:type owl:Class ;
+	rdfs:label "Physical Object" ;
+	rdfs:subClassOf geo:SpatialThing ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty s4bldg:isContainedIn ;
+		  owl:allValuesFrom [ owl:unionOf ( 
+						s4bldg:PhysicalObject
+						s4bldg:BuildingSpace
+					) ;
+					rdf:type owl:Class
+					] ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty geo:location ;
+		  owl:allValuesFrom geo:SpatialThing ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty s4bldg:contains ;
+		  owl:allValuesFrom s4bldg:PhysicalObject ] .
+
+### s4bldg:BuildingObject
+s4bldg:BuildingObject rdf:type owl:Class ;
+	rdfs:label "Building Object" ;
+	rdfs:subClassOf s4bldg:PhysicalObject .
+
+### saref:Device
+saref:Device rdf:type owl:Class ;
+	rdfs:label "Device" ;
+	rdfs:subClassOf s4bldg:PhysicalObject .
+
+### s4bldg:BuildingDevice
+s4bldg:BuildingDevice rdf:type owl:Class ;
+	rdfs:label "Building Device" ;
+	rdfs:subClassOf s4bldg:BuildingObject ;
+	rdfs:subClassOf saref:Device .
+
+### s4bldg:BuildingObject
+s4bldg:BuildingObject rdf:type owl:Class ;
+	rdfs:label "Building Object" .
+
+### saref:Device
+saref:Device rdf:type owl:Class ;
+	rdfs:label "Device" .
+
+### s4bldg:BuildingDevice
+s4bldg:BuildingDevice rdf:type owl:Class ;
+	rdfs:label "Building Device" ;
+	rdfs:subClassOf s4bldg:BuildingObject ;
+	rdfs:subClassOf saref:Device .
+
+### s4bldg:DistributionControlDevice
+s4bldg:DistributionControlDevice rdf:type owl:Class ;
+	rdfs:label "Distribution Control Device" ;
+	rdfs:subClassOf s4bldg:DistributionDevice .
+
+### s4bldg:Actuator
+s4bldg:Actuator rdf:type owl:Class ;
+	rdfs:label "Actuator" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice ;
+	rdfs:subClassOf saref:Actuator .
+
+### s4bldg:Alarm
+s4bldg:Alarm rdf:type owl:Class ;
+	rdfs:label "Alarm" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice .
+
+### s4bldg:Controller
+s4bldg:Controller rdf:type owl:Class ;
+	rdfs:label "Controller" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice .
+
+### s4bldg:ProtectiveDeviceTrippingUnit
+s4bldg:ProtectiveDeviceTrippingUnit rdf:type owl:Class ;
+	rdfs:label "Protective Device Tripping Unit" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice .
+
+### s4bldg:FlowInstrument
+s4bldg:FlowInstrument rdf:type owl:Class ;
+	rdfs:label "Flow Instrument" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice .
+
+### s4bldg:Sensor
+s4bldg:Sensor rdf:type owl:Class ;
+	rdfs:label "Sensor" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice ;
+	rdfs:subClassOf saref:Sensor .
+
+### s4bldg:UnitaryControlElement
+s4bldg:UnitaryControlElement rdf:type owl:Class ;
+	rdfs:label "Unitary Control Element" ;
+	rdfs:subClassOf s4bldg:DistributionControlDevice .
+
+### s4bldg:DistributionFlowDevice
+s4bldg:DistributionFlowDevice rdf:type owl:Class ;
+	rdfs:label "Distribution Flow Device" ;
+	rdfs:subClassOf s4bldg:DistributionDevice .
+
+### s4bldg:EnergyConversionDevice
+s4bldg:EnergyConversionDevice rdf:type owl:Class ;
+	rdfs:label "Energy Conversion Device" ;
+	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+### s4bldg:FlowController
+s4bldg:FlowController rdf:type owl:Class ;
+	rdfs:label "Flow Controller" ;
+	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+### s4bldg:FlowMovingDevice
+s4bldg:FlowMovingDevice rdf:type owl:Class ;
+	rdfs:label "Flow Moving Device" ;
+	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+### s4bldg:FlowStorageDevice
+s4bldg:FlowStorageDevice rdf:type owl:Class ;
+	rdfs:label "Flow Storage Device" ;
+	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+### s4bldg:FlowTerminal
+s4bldg:FlowTerminal rdf:type owl:Class ;
+	rdfs:label "Flow Terminal" ;
+	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+### s4bldg:FlowTreatmentDevice
+s4bldg:FlowTreatmentDevice rdf:type owl:Class ;
+	rdfs:label "Flow Treatment Device" ;
+	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+### s4bldg:DistributionDevice
+s4bldg:DistributionDevice rdf:type owl:Class ;
+	rdfs:label "Distribution Device" ;
+	rdfs:subClassOf s4bldg:BuildingDevice .
+
+### s4bldg:ShadingDevice
+s4bldg:ShadingDevice rdf:type owl:Class ;
+	rdfs:label "Shading Device" ;
+	rdfs:subClassOf s4bldg:BuildingDevice .
+
+### s4bldg:TransportElement
+s4bldg:TransportElement rdf:type owl:Class ;
+	rdfs:label "Transport Element" ;
+	rdfs:subClassOf saref:Device .
+
+### s4bldg:VibrationIsolator
+s4bldg:VibrationIsolator rdf:type owl:Class ;
+	rdfs:label "Vibration Isolator" ;
+	rdfs:subClassOf saref:Device .
+
+### saref:Device
+saref:Device rdf:type owl:Class ;
+	rdfs:label "Device" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:makesMeasurement ;
+		  owl:allValuesFrom saref:Measurement ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:measuresProperty ;
+		  owl:allValuesFrom saref:Property ] .
+
+### saref:Property
+saref:Property rdf:type owl:Class ;
+	rdfs:label "Property" .
+
+### saref:Measurement
+saref:Measurement rdf:type owl:Class ;
+	rdfs:label "Measurement" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:hasTimestamp ;
+		  owl:allValuesFrom xsd:dateTime ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:hasValue ;
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:isMeasuredIn ;
+		  owl:allValuesFrom saref:UnitOfMeasure ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:isMeasuredIn ;
+		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass saref:UnitOfMeasure ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:isMeasuredIn ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onClass saref:UnitOfMeasure ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:relatesToProperty ;
+		  owl:allValuesFrom saref:Property ] .
+
+### saref:UnitOfMeasure
+saref:UnitOfMeasure rdf:type owl:Class ;
+	rdfs:label "Unit Of Measure" .
+
+### saref:Actuator
+saref:Actuator rdf:type owl:Class ;
+	rdfs:label "Actuator" .
+
+### saref:Sensor
+saref:Sensor rdf:type owl:Class ;
+	rdfs:label "Sensor" .
+
+#################################################################
+#    Instances
+#################################################################
+
+#################################################################
+#    General Axioms
+#################################################################
+
