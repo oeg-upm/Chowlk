@@ -5,6 +5,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 @prefix rm: <http://bimerr.iot.linkeddata.es/def/renovation-measures#> .
 @prefix kpi: <http://bimerr.iot.linkeddata.es/def/key-performance-indicator#> .
 @prefix building: <http://bimerr.iot.linkeddata.es/def/building#> .
@@ -92,10 +93,6 @@ rm:RenovationMeasure rdf:type owl:Class ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:integer ] ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty rm:lifetime ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:integer ] ,
-		[ rdf:type owl:Restriction ;
 		  owl:onProperty qudt:unit ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onClass qudt:Unit ] ,
@@ -137,12 +134,7 @@ qudt:Unit rdf:type owl:Class ;
 
 ### building:Element
 building:Element rdf:type owl:Class ;
-	rdfs:label "Element" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] .
+	rdfs:label "Element" .
 
 ### building:Component
 building:Component rdf:type owl:Class ;

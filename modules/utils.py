@@ -126,6 +126,10 @@ def fix_source_target(relations, shapes_list):
     relations_copy = copy.deepcopy(relations)
 
     for id, relation in relations.items():
+
+        if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+            continue
+
         source = relation["source"]
         target = relation["target"]
         xml_object = relation["xml_object"]

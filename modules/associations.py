@@ -174,6 +174,10 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
         if type in cases:
             # Domain and range are without the "rdfs" prefix in the data structure
             type = type.split(":")[1] if type in ["rdfs:domain", "rdfs:range"] else type
+
+            if source_id not in rhombuses or target_id not in rhombuses:
+                continue
+
             source_property = rhombuses[source_id]
             target_property = rhombuses[target_id]
             sprop_type = source_property["type"]

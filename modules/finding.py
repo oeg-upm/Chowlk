@@ -410,7 +410,7 @@ class Finder():
             # Check that neither of these components passes, this is because concepts
             # and attributes shape do not have a specific characteristic to differentiate them
             # and we have to use the characteristics of the rest of the shapes
-            if "text" in style:
+            if "text" in style or "edgeLabel" in style:
                 continue
             if "edge" in child.attrib:
                 continue
@@ -435,7 +435,7 @@ class Finder():
             for child2 in self.root:
                 style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                 # Filter all the elements except attributes and classes
-                if "text" in style2:
+                if "text" in style2 or "edgeLabel" in style2:
                     continue
                 if "edge" in child2.attrib:
                     continue
