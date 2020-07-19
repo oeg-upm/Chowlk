@@ -148,3 +148,16 @@ INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:38:34] "POST /diagram_upload HTTP/1.
 INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
 INFO:werkzeug:127.0.0.1 - - [12/Jul/2020 20:39:21] "POST /diagram_upload HTTP/1.1" 200 -
 INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:03:42] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:04:05] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:04:54] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:06:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:06:13] "GET /static/resources/logo.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:06:16] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:06:18] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:07:57] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:08:03] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:10:39] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:10:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:11:50] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:12:30] "GET / HTTP/1.1" 200 -

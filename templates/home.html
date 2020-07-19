@@ -14,7 +14,7 @@
 
 {% block content %}
 
-<img src={{ url_for('.static', filename='resources/logo.svg') }} class="center">
+<img src={{ url_for('.static', filename='resources/logo.png') }} class="center">
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4 text-center">OWL Code Generation Service</h1>
@@ -22,8 +22,6 @@
             Diagrams.
         </p>
         <hr class="my-4">
-        <p class="text-center">In order to use our service you should use Drawio as the diagraming tool, and follow our specification to conceptualize your ontologies. 
-            Once it is finished, export it as XML, and load it in our drag and drop tool.</p>
         <a class="btn btn-primary btn-lg center-button" href="https://oeg-upm.github.io/chowlk_spec/" role="button">View Specification</a>
 
     </div>
@@ -31,23 +29,34 @@
 
 <div class="container">
 
-    <h3 class="display-4">Previous steps before using the service</h3>
+    <h3 class="display-4">Steps to use the service</h3>
     <br>
     <ol>
-        <li class="new-size">The ontological diagram always should include the <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">namespace block</a>, 
-            indicating all the prefixes and namespaces used in the ontology.</li>
-        <li class="new-size">The <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">metadata block</a> must contain the actual annotation property elements, aliases are not 
-            allowed. For instance, the user should type <code>owl:versionInfo</code> instead of <b>"version"</b> to indicate the current version of the ontology.</li>
-        <li class="new-size">The user must ensure that the source and target of all the arrows in the model are connected to a block. This means that in order to represent an 
-        <code>owl:subPropertyOf</code> relationship the user should use the <a href="https://oeg-upm.github.io/chowlk_spec/#relations-between-properties">form 1</a> for this construct.</li>
-        </ol>
+        <li class="new-size">Make an ontological diagram using the <a href="https://oeg-upm.github.io/chowlk_spec/">Chowlk Visual Notation</a> and <a href="https://www.draw.io/">drawio</a> as the diagraming tool.</li>
+        <li class="new-size">Ensure the following in your ontological diagram.</li>
+            <ul>
+                <li class="new-size">The <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">namespace block</a> must
+                    indicate all the prefixes and namespaces used in the model.</li>
+                <li class="new-size">The <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">metadata block</a> must contain the actual annotation property elements, aliases are not 
+                    allowed. For instance, the user should type <code>owl:versionInfo</code> instead of <b>"version"</b> to indicate the current version of the ontology.</li>
+                <li class="new-size">The source and target of all the arrows in the model are connected to a block. This means that in order to represent relationships 
+                    between properties the user should use the <a href="https://oeg-upm.github.io/chowlk_spec/#relations-between-properties">Option 1</a> for these constructs to actually see them in the code.</li>
+            </ul>
+        <li class="new-size">Export your drawio diagram as an XML file.</li>
+        <li class="new-size">Choose your XML file and press submit.</li>
+    </ol>
 
 </div>
 <br>
-<div class="container">
-    <form name="formzone">
-        <p id="dropzone" class="text-center">Drag you diagram here.</p>
+<div id="formzone" class="container">
+    <form method="POST" class="form-group" enctype="multipart/form-data" 
+    action={{ url_for('diagram_upload') }}>
+        <p style="font-size:30px" id="dropzone" class="text-center"><b>Choose your diagram</b></p>
+        <br>
+        <input id="files" type="file" name="diagram_data">
+        <br>
         <input type="submit" class="btn btn-primary mb-2" value="Submit">
+        <input type="reset" class="btn btn-primary mb-2" value="Reset">
     </form>
 </div>
 

@@ -22,15 +22,17 @@
             Diagrams.
         </p>
         <hr class="my-4">
-        <p class="text-center">In order to use our service you should use Drawio as the diagraming tool, and follow our specification to conceptualize your ontologies. 
-            Once it is finished, export it as XML, and load it in our drag and drop tool.</p>
         <a class="btn btn-primary btn-lg center-button" href="https://oeg-upm.github.io/chowlk_spec/" role="button">View Specification</a>
 
     </div>
 </div>
 
 <div class="container">
-    <p>{{ data }}</p>
+
+    {% for i in data %}
+    <p>{{ i }}</p>
+    {% endfor %}
+
 </div>
 
 {% endblock content %}

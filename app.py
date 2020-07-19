@@ -36,10 +36,9 @@ def diagram_upload():
             logging.error("Error occurred", e)
             logging.exception(str(e))
     
-    with open("tmp/" + filename[:-3] + "ttl", "r") as file:
-        data = file.read()
-    #return render_template("output.html", data=data)
-    return render_template("output.html")
+        with open("tmp/" + filename[:-3] + "ttl", "r") as file:
+            data = file.read()
+    return render_template("output.html", data=data.split("\n"))
 
 @app.route("/static/<path:path>")
 def send_static(path):
@@ -48,3 +47,4 @@ def send_static(path):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
+    #app.run(debug=True)
