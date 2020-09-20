@@ -494,19 +494,19 @@ class Finder():
 
                         attribute["functional"] = True if "(F)" in attribute_value else False
                         if len(attribute_value.split("..")) > 1:
-                            attribute_value = attribute_value.split("..")[0][-1]
-                            attribute_value = attribute_value.split(">")[-1]
-                            attribute["min_cardinality"] = attribute_value.split("<")[0]
+                            min_card = attribute_value.split("..")[0][-1]
+                            min_card = min_card.split(">")[-1]
+                            attribute["min_cardinality"] = min_card.split("<")[0]
                         else:
-                            attribute["min_cardinality"] =None
+                            attribute["min_cardinality"] = None
 
                         if attribute["min_cardinality"] == "0":
                             attribute["min_cardinality"] = None
 
                         if len(attribute_value.split("..")) > 1:
-                            attribute_value = attribute_value.split("..")[1].split(")")[0]
-                            attribute_value = attribute_value.split(">")[-1]
-                            attribute["max_cardinality"] = attribute_value.split("<")[0]
+                            max_card = attribute_value.split("..")[1].split(")")[0]
+                            max_card = max_card.split(">")[-1]
+                            attribute["max_cardinality"] = max_card.split("<")[0]
                         else:
                             attribute["max_cardinality"] = None
 

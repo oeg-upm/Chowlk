@@ -258,3 +258,66 @@ Traceback (most recent call last):
   File "D:\Projects\diagram2code\modules\associations.py", line 177, in enrich_properties
     source_property = rhombuses[source_id]
 KeyError: None
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 130, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 130, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 130, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 130, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 130, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 129, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'
+ERROR:root:'type'
+Traceback (most recent call last):
+  File "converter.py", line 79, in <module>
+    transform_ontology(root, args.output_path)
+  File "converter.py", line 15, in transform_ontology
+    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
+  File "D:\Projects\diagram2code\modules\utils.py", line 129, in fix_source_target
+    if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
+KeyError: 'type'

@@ -121,12 +121,10 @@ def detect_source_target_swapped(xml_object):
 
 
 def fix_source_target(relations, shapes_list):
-
     shapes = {shape_id: shape for shapes in shapes_list for shape_id, shape in shapes.items()}
     relations_copy = copy.deepcopy(relations)
 
     for id, relation in relations.items():
-
         if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
             continue
 
