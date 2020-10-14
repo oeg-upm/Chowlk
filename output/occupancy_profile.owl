@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Building">
+    <rdfs:label>Building</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL216C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL220C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL212C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL208C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL376C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#minRangeValue"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Occupant">
+    <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL359C3"/>
+    <rdfs:label>Occupant</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL351C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL339C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL355C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL367C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL363C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL347C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL343C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL435C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#definedByRange"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#ParameterRange"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL271C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL310C3">
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#probability"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#minNumberOccupants">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label>min number occupants</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL220C3">
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="https://saref.etsi.org/saref4bldg/hasSpace"/>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Space"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Meeting">
+    <rdfs:label>Meeting</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL322C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL314C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL310C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL306C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL326C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL318C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Action">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Action</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL444C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#composedOf"/>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Driver"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#">
+    <dc:creator>Serge ChÃ¡vez-Feria</dc:creator>
+    <dc:creator>MarÃ­a Poveda-VillalÃ³n</dc:creator>
+    <dc:title>Occupancy Profile Ontology</dc:title>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <owl:versionInfo>0.0.3</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Behavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL254C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL246C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL250C3"/>
+    <rdfs:label>Behavior</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL275C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL396C3">
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#EnvironmentalParameter"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#describesParameter"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL494C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#controlValue"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL506C3">
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onClass rdf:resource="https://saref.etsi.org/saref4bldg/PhysicalObject"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#interactsOver"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL347C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantAge"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#startTime">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:label>start time</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#birthDate">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>birth date</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#maxNumberOccupants">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label>max number occupants</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#describesParameter">
+    <rdfs:label>describes parameter</rdfs:label>
+    <rdfs:domain rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#ParameterRange"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#EnvironmentalParameter"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Interaction">
+    <rdfs:subClassOf rdf:nodeID="ub1bL494C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Interaction</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL498C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL506C3"/>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Action"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL514C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL502C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL510C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionConcept">
+    <rdfs:label>Interaction Concept</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/core/Device">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Device</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://saref.etsi.org/saref4bldg/PhysicalObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL502C3">
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionFormula"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#describedByFormula"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#drivenBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>driven by</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasOccupant">
+    <rdfs:label>has occupant</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL233C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#coefficientValue"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#minRangeValue">
+    <rdfs:label>min range value</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/core/Property">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Property</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL498C3">
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#describedByFormula"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionFormula"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#ParameterRange">
+    <rdfs:subClassOf rdf:nodeID="ub1bL380C3"/>
+    <rdfs:label>Parameter Range</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL396C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL388C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL392C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL384C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL376C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasIndependentVariable">
+    <rdfs:label>has independent variable</rdfs:label>
+    <rdfs:range rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#EnvironmentalParameter"/>
+    <rdfs:domain rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionFormula"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL250C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL279C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasUnitOfMeasure"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onClass rdf:resource="https://saref.etsi.org/core/UnitOfMeasure"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL339C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasCoefficient">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Coefficient"/>
+    <rdfs:domain rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionFormula"/>
+    <rdfs:label>has coefficient</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantAge">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label>occupant age</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Environment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Driver"/>
+    <rdfs:label>Environment</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL388C3">
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#maxRangeValue"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#describedByFormula">
+    <rdfs:label>described by formula</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/saref4bldg/BuildingObject">
+    <rdfs:label>Building Object</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://saref.etsi.org/saref4bldg/PhysicalObject"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Time">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Time</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Driver"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#EnvironmentalParameter">
+    <rdfs:subClassOf rdf:resource="https://saref.etsi.org/core/Property"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL279C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL275C3"/>
+    <rdfs:label>Environmental Parameter</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL271C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL283C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL314C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#startTime"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasBehavior">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>has behavior</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantLifestyle">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>occupant lifestyle</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL367C3">
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Behavior"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasBehavior"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#controlValue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:label>control value</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Coefficient">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL233C3"/>
+    <rdfs:label>Coefficient</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL229C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL208C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#buildingAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL409C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#identifier"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL417C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#minNumberOccupants"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL405C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#identifier"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Space">
+    <rdfs:subClassOf rdf:nodeID="ub1bL417C3"/>
+    <rdfs:label>Space</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL405C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL413C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL409C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/saref4bldg/hasSpace">
+    <rdfs:label>has space</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#identifier">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>identifier</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL359C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantLifestyle"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL246C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#definedByRange">
+    <rdfs:domain rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#PhysicalNeed"/>
+    <rdfs:label>defined by range</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#ParameterRange"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL343C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#probability">
+    <rdfs:label>probability</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL212C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#identifier"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#DriverSet">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL444C3"/>
+    <rdfs:label>Driver Set</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#composedOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>composed of</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL216C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#identifier"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#onHolidays">
+    <rdfs:label>on holidays</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#identifier">
+    <rdfs:label>identifier</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xmlns.com/foaf/0.1/Person">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Person</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL380C3">
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#minRangeValue"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL363C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#birthDate"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL413C3">
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#maxNumberOccupants"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL384C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#maxRangeValue"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL326C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#endTime"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#NonPhysicalNeed">
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Need"/>
+    <rdfs:label>Non Physical Need</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL355C3">
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantJobtype"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL283C3">
+    <owl:onClass rdf:resource="https://saref.etsi.org/core/UnitOfMeasure"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasUnitOfMeasure"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL318C3">
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#startTime"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2006/time#DayOfWeek">
+    <rdfs:label>Day Of Week</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL392C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#describesParameter"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#EnvironmentalParameter"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#coefficientValue">
+    <rdfs:label>coefficient value</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantGender">
+    <rdfs:label>occupant gender</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL229C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#coefficientValue"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL514C3">
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionConcept"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasInteractionType"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL254C3">
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#DriverSet"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#drivenBy"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#maxRangeValue">
+    <rdfs:label>max range value</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#leadsTo">
+    <rdfs:label>leads to</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasInteractionType">
+    <rdfs:label>has interaction type</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#influencedByNeed">
+    <rdfs:label>influenced by need</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL351C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantGender"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL306C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#probability"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionFormula">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Interaction Formula</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL297C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Window">
+    <rdfs:label>Window</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://saref.etsi.org/saref4bldg/BuildingObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Driver">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Driver</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#PhysicalNeed">
+    <rdfs:label>Physical Need</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL435C3"/>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Need"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/saref4bldg/contains">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>contains</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#occupantJobtype">
+    <rdfs:label>occupant jobtype</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasUnitOfMeasure">
+    <rdfs:label>has unit of measure</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/saref4bldg/PhysicalObject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Physical Object</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL322C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#endTime"/>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Need">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Need</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/core/UnitOfMeasure">
+    <rdfs:label>Unit Of Measure</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/core/HVAC">
+    <rdfs:label>H V A C</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://saref.etsi.org/core/Device"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasDayOfWeek">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>has day of week</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://saref.etsi.org/saref4bldg/ShadingDevice">
+    <rdfs:label>Shading Device</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://saref.etsi.org/core/Device"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#buildingAddress">
+    <rdfs:label>building address</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#endTime">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>end time</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL297C3">
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Coefficient"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasCoefficient"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasMeeting">
+    <rdfs:label>has meeting</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#Inaction">
+    <rdfs:label>Inaction</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL510C3">
+    <owl:onClass rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#InteractionConcept"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasInteractionType"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#interactsOver">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>interacts over</rdfs:label>
+  </rdf:Description>
+</rdf:RDF>

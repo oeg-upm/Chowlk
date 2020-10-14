@@ -28,6 +28,10 @@ aio:hasAnnotation rdf:type owl:ObjectProperty ;
 aio:hasFile rdf:type owl:ObjectProperty ;
 		rdfs:label "has file" .
 
+### aio:hasDocument
+aio:hasDocument rdf:type owl:ObjectProperty ;
+		rdfs:label "has document" .
+
 ### aio:hasStatus
 aio:hasStatus rdf:type owl:ObjectProperty ;
 		rdfs:label "has status" .
@@ -46,21 +50,25 @@ aio:relatedToAnnotation rdf:type owl:ObjectProperty ;
 
 ### aio:creationDate
 aio:creationDate rdf:type owl:DatatypeProperty ;
+		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:dateTime ;
 		rdfs:label "creation date" .
 
 ### aio:modificationDate
 aio:modificationDate rdf:type owl:DatatypeProperty ;
+		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:dateTime ;
 		rdfs:label "modification date" .
 
 ### aio:creationAuthor
 aio:creationAuthor rdf:type owl:DatatypeProperty ;
+		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:string ;
 		rdfs:label "creation author" .
 
 ### aio:modificationAuthor
 aio:modificationAuthor rdf:type owl:DatatypeProperty ;
+		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:dateTime ;
 		rdfs:label "modification author" .
 
@@ -111,6 +119,9 @@ aio:Annotation rdf:type owl:Class ;
 		  owl:onDataRange xsd:dateTime ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:hasFile ;
+		  owl:allValuesFrom aio:File ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty aio:hasDocument ;
 		  owl:allValuesFrom aio:File ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:hasStatus ;

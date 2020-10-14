@@ -4,11 +4,22 @@ from modules.finding import *
 from modules.associations import *
 from modules.writer import *
 from modules.utils import *
+from modules.child_tracker import ChildTracker
+import xml.etree.ElementTree as ET
+from xml.etree.ElementTree import ElementTree
+from xml.dom import minidom
+from copy import deepcopy
+import owlready2
+import owlready
+import rdflib
+import rdflib.serializer
+import tempfile
+import os
 
 
-def transform_ontology(root, filename):
+def transform_ontology(root, filename, child_tracker):
     finder = Finder(root)
-    all_elements = finder.find_elements()
+    all_elements = finder.find_elements(child_tracker)
     concepts, attribute_blocks, relations = all_elements[0:3]
     individuals, anonymous_concepts, ontology_metadata, namespaces, rhombuses = all_elements[3:]
     prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
@@ -27,6 +38,29 @@ def transform_ontology(root, filename):
     file = write_instances(file, individuals)
     file = write_general_axioms(file, concepts, anonymous_concepts)
 
+    onto_string = open(filename, encoding="utf-8", errors="ignore").read()
+    g = rdflib.Graph()
+
+    with open(filename, "r") as file:
+        g.parse(file, format="turtle")
+
+    output_filename = filename.split(".")[0] + ".owl"
+    g.serialize(destination=output_filename, format="xml")
+
+    project_path = os.path.dirname(os.path.abspath(__file__))
+    abs_onto_path = os.path.join(project_path, output_filename)
+    onto_xml = owlready2.get_ontology("file://" + abs_onto_path).load()
+
+    owlready2.close_world(onto_xml)
+    
+    inferred_onto = owlready2.get_ontology("http://test.org/test.owl")
+    with inferred_onto:
+        try:
+            owlready2.sync_reasoner()
+            inferred_onto.save(os.path.join(project_path, "output", "inferred_onto_building.xml"), format="rdfxml")
+        except:
+            print("Warning Message: It seems your model is not OWL 2 compatible.")
+    
 
 def transform_rdf(root, filename):
     finder = Finder(root)
@@ -71,14 +105,29 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     logging.basicConfig(filename="app.log", level=logging.INFO)
+    child_tracker = ChildTracker()
+    root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(args.diagram_path)
 
     try:
-        root = read_drawio_xml(args.diagram_path)
-
         if args.type == "ontology":
-            transform_ontology(root, args.output_path)
+            transform_ontology(root, args.output_path, child_tracker)
         elif args.type == "rdf":
             transform_rdf(root, args.output_path)
     except Exception as e:
-        logging.error("Error occurred", e)
+        
+        trouble_elem_id = child_tracker.get_last_child()
+        root_complete = highlight_element(root_complete, trouble_elem_id)
+        mxGraphModel[0] = root_complete
+
+        try:
+            diagram[0] = mxGraphModel
+        except:
+            diagram.text = ""
+            diagram.append(mxGraphModel)
+
+        filename = "data/problematic_diagrams/" + args.diagram_path.split("/")[-1]
+        mxfile[0] = diagram
+        ElementTree(mxfile).write(filename)
+        message = "Please follow the notation specification provided at https://oeg-upm.github.io/chowlk_spec/. See the errors highlighted in red in the diagram."
+        logging.error(message, e)
         logging.exception(str(e))
