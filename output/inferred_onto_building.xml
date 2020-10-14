@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://test.org/test.owl"
+         xmlns="http://test.org/test.owl#">
+
+<owl:Ontology rdf:about="http://test.org/test.owl"/>
+
+<rdf:Description rdf:about="http://www.w3.org/2002/07/owl#bottomObjectProperty">
+  <owl:equivalentProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasIndependentVariable"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasIndependentVariable">
+  <owl:equivalentProperty rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+</rdf:Description>
+
+
+</rdf:RDF>

@@ -1,3 +1,6 @@
 venv
 serge
 .pyc
+.pyc
+.idea
+.vs

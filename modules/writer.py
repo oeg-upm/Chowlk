@@ -1,6 +1,6 @@
 def get_ttl_template(filename, namespaces, prefixes_finded):
 
-    file = open(filename, 'w')
+    file = open(filename, 'w', encoding="utf-8")
 
     file.write("@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
                "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"

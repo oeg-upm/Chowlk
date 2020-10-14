@@ -5,6 +5,7 @@ import copy
 import base64
 from urllib.parse import unquote
 import zlib
+import copy
 
 def create_label(uri, type):
 
@@ -71,13 +72,19 @@ def read_drawio_xml(diagram_path):
     mxfile = tree.getroot()
 
     try:
-        root = mxfile[0][0][0]
+        diagram = mxfile[0]
+        mxGraphModel = diagram[0]
+        root = mxGraphModel[0]
     except:
         # This lines are for compressed XML files
-        compressed_xml = mxfile[0].text
-        coded_xml = base64.b64decode(compressed_xml)
+        diagram = mxfile[0]
+        compressed_mxGraphModel = diagram.text
+        coded_xml = base64.b64decode(compressed_mxGraphModel)
         xml_string = unquote(zlib.decompress(coded_xml, -15).decode('utf8'))
-        root = ET.fromstring(xml_string)[0]
+        mxGraphModel = ET.fromstring(xml_string)
+        root = mxGraphModel[0]
+
+    root_complete = copy.deepcopy(root)
 
     # Eliminate children related to the whole white template
     for elem in root:
@@ -89,7 +96,7 @@ def read_drawio_xml(diagram_path):
             root.remove(elem)
             break
 
-    return root
+    return root, root_complete, mxGraphModel, diagram, mxfile, tree
 
 
 def swap_source_target(relation):
@@ -121,12 +128,10 @@ def detect_source_target_swapped(xml_object):
 
 
 def fix_source_target(relations, shapes_list):
-
     shapes = {shape_id: shape for shapes in shapes_list for shape_id, shape in shapes.items()}
     relations_copy = copy.deepcopy(relations)
 
     for id, relation in relations.items():
-
         if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
             continue
 
@@ -194,7 +199,12 @@ def find_prefixes(concepts, relations, attribute_blocks, individuals):
 
     return prefixes
 
+def highlight_element(root, id):
 
+    for child in root:
 
+        if id == child.attrib["id"]:
 
+            child.attrib["style"] += "fontColor=#FF0000;strokeColor=#FF0000"
 
+    return root
