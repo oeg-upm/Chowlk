@@ -1,0 +1,738 @@
+ERROR:root:transform_ontology() missing 1 required positional argument: 'child_tracker'
+Traceback (most recent call last):
+  File "app.py", line 34, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl")
+TypeError: transform_ontology() missing 1 required positional argument: 'child_tracker'
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 39, in diagram_upload
+    with open("tmp/" + filename[:-3] + "ttl", "r") as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'tmp/annotations.ttl'
+INFO:werkzeug:127.0.0.1 - - [14/Oct/2020 20:24:42] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [14/Oct/2020 20:36:40] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Oct/2020 20:36:40] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:46:14] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:46:26] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:49:54] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [GET]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    data = file.read()
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:49:58] "GET /diagram_upload HTTP/1.1" 500 -
+ERROR:app:Exception on /diagram_upload [GET]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    data = file.read()
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:54:06] "GET /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:54:14] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [GET]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    data = file.read()
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:54:19] "GET /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:55:04] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [GET]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    data = file.read()
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:55:06] "GET /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:55:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:55:51] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [GET]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    with open(ttl_filepath, "r") as file:
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:55:54] "GET /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:58:32] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [GET]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    with open(ttl_filepath, "r") as file:
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:58:34] "GET /diagram_upload HTTP/1.1" 500 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    with open(ttl_filepath, "r") as file:
+  File "C:\Python38\lib\site-packages\flask\templating.py", line 137, in render_template
+    return _render(
+  File "C:\Python38\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "C:\Python38\lib\site-packages\jinja2\environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "C:\Python38\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "C:\Python38\lib\site-packages\jinja2\_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "D:\Projects\diagram2code\templates\output.html", line 1, in top-level template code
+    {% extends "bootstrap/base.html" %}
+  File "C:\Python38\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "C:\Python38\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block "doc"
+    {%- block html %}
+  File "C:\Python38\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block "html"
+    {% block body -%}
+  File "C:\Python38\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block "body"
+    {% block content -%}
+  File "D:\Projects\diagram2code\templates\output.html", line 33, in block "content"
+    <a id="donwload-button" type="button" class="btn btn-primary mb-2" href="{{url_for(filepath)}}" download={{filename}}>Download</a>
+  File "C:\Python38\lib\site-packages\flask\helpers.py", line 318, in url_for
+    if endpoint[:1] == ".":
+jinja2.exceptions.UndefinedError: 'filepath' is undefined
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 00:59:58] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 01:00:44] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:07:15] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:08:50] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:08:51] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:08:51] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:09:59] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:10:00] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:10:00] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:13:36] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:13:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:14:15] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:17:15] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:20:11] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:21:29] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:21:55] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:22:12] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:22:51] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:23:10] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:23:34] "POST /diagram_upload HTTP/1.1" 500 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:23:43] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:24:04] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:24:08] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:27:01] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:27:06] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:27:47] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:27:51] "POST /diagram_upload HTTP/1.1" 500 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:27:58] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:28:49] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:28:50] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 61, in diagram_upload
+    return render_template("output.html", data=data.split('\n'))
+UnboundLocalError: local variable 'data' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:28:53] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:37:51] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:38:14] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:38:24] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:38:41] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:40:59] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:41:08] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:41:08] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:41:09] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:41:29] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:41:57] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:42:17] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:43:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:43:13] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 11:43:13] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:03:25] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:03:25] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:03:25] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:03:57] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:03:57] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:04:04] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:08:37] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 12:08:45] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:16:50] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:17:12] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "app.py", line 37, in diagram_upload
+    root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(file)
+  File "D:\Projects\diagram2code\modules\utils.py", line 71, in read_drawio_xml
+    tree = ET.parse(diagram_path)
+  File "C:\Python38\lib\xml\etree\ElementTree.py", line 1202, in parse
+    tree.parse(source, parser)
+  File "C:\Python38\lib\xml\etree\ElementTree.py", line 595, in parse
+    self._root = parser._parse_whole(source)
+  File "<string>", line None
+xml.etree.ElementTree.ParseError: no element found: line 1, column 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 41, in diagram_upload
+    root_complete = highlight_element(root_complete, trouble_elem_id)
+UnboundLocalError: local variable 'root_complete' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:17:23] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:21:58] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "app.py", line 38, in diagram_upload
+    root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(file)
+  File "D:\Projects\diagram2code\modules\utils.py", line 71, in read_drawio_xml
+    tree = ET.parse(diagram_path)
+  File "C:\Python38\lib\xml\etree\ElementTree.py", line 1202, in parse
+    tree.parse(source, parser)
+  File "C:\Python38\lib\xml\etree\ElementTree.py", line 595, in parse
+    self._root = parser._parse_whole(source)
+  File "<string>", line None
+xml.etree.ElementTree.ParseError: no element found: line 1, column 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 42, in diagram_upload
+    root_complete = highlight_element(root_complete, trouble_elem_id)
+UnboundLocalError: local variable 'root_complete' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:22:03] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:22:53] "GET / HTTP/1.1" 200 -
+ERROR:app:Exception on /diagram_upload [POST]
+Traceback (most recent call last):
+  File "app.py", line 38, in diagram_upload
+    root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(file)
+  File "D:\Projects\diagram2code\modules\utils.py", line 71, in read_drawio_xml
+    tree = ET.parse(diagram_path)
+  File "C:\Python38\lib\xml\etree\ElementTree.py", line 1202, in parse
+    tree.parse(source, parser)
+  File "C:\Python38\lib\xml\etree\ElementTree.py", line 595, in parse
+    self._root = parser._parse_whole(source)
+  File "<string>", line None
+xml.etree.ElementTree.ParseError: no element found: line 1, column 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 42, in diagram_upload
+    root_complete = highlight_element(root_complete, trouble_elem_id)
+UnboundLocalError: local variable 'root_complete' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:23:01] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:56:57] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:57:21] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 20:57:21] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:11] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:11] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:11] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:11] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:14] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:14] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:15] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:15] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:16] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:16] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:16] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:16] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:16] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:16] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:17] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:17] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:01:17] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:19] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:20] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:20] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:20] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:21] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:21] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:22] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:22] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:23] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:23] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:24] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:24] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:31] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:31] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:33] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:02:33] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:01] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:03] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:04] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:20] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:21] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:21] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:21] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:22] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:22] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:23] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:23] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:24] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:24] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:24] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:25] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:25] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:25] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:30] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:31] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:35] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:35] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:38] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:03:38] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:06:59] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:01] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:10] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:10] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:10] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:10] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:13] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:15] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:15] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:16] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:16] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:16] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:17] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:17] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:18] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:18] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:18] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:19] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:19] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:21] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:21] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:54] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:54] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:55] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:55] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:56] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:56] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:56] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:57] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:57] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:58] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:59] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:07:59] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:00] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:00] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:01] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:01] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:06] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:06] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:11] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:11] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:12] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:12] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:12] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:14] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:08:14] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:50] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:51] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:51] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:51] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:57] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:57] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:58] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:59] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:12:59] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:04] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:05] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:05] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:06] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:06] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:07] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:22] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:13:23] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:29] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:29] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:29] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:29] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:31] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:31] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:38] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:38] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:40] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:40] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:40] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:40] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:41] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:41] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:42] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:43] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:43] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:44] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:44] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:48] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:49] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:49] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:49] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:50] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:50] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:51] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:51] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:51] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:52] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:52] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:52] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:52] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:53] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:53] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:53] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:53] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:53] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:54] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:14:54] "GET / HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:17:41] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:17:53] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:17:53] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:18:00] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:18:58] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:18:58] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:18:58] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:18:58] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:19:04] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 21:19:05] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:05:01] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:05:01] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:05:02] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:05:03] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:05:45] "POST /diagram_upload HTTP/1.1" 302 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:05:46] "GET / HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:32:09] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:33:47] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:34:29] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:35:08] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:35:12] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:35:36] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:37:21] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:37:28] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:37:46] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:37:47] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:39:30] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:39:32] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:45:28] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:45:30] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:46:01] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:09] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:10] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:10] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:10] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:10] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:10] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:10] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:47] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:47] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:48] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:48] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:53] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:49:54] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:50:48] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:50:50] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:51:24] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:51:31] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:52:25] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:52:32] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:52:34] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:53:31] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:53:38] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:19] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:21] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:24] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:39] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:39] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:39] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:39] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:50] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:59:52] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:00:12] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:00:14] "GET /..tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:37] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:01:58] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:02:00] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:02:59] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:03:00] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:14] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:14] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:15] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:15] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:23] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:25] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:45] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading

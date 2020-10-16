@@ -161,3 +161,34 @@ INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:10:39] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:10:42] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:11:50] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [19/Jul/2020 23:12:30] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:56:36] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:56:38] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:58:09] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:58:09] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:58:09] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:58:09] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:58:18] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 22:58:20] "GET /tmp/annotations.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:07:31] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:07:33] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:08:53] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:08:55] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:08:57] "GET /tmp/building.ttl HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:15] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:15] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:16] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:16] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:16] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:16] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:11:16] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:06] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:07] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:07] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:07] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:15:03] "POST /diagram_upload HTTP/1.1" 200 -

@@ -1,37 +1,34 @@
 {% extends "bootstrap/base.html" %}
-{% block title %} Chowlk {% endblock title %}
+{% block title %} Chowlk {% endblock %}
 
 {% block head %}
 {{ super() }}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.js"></script>
-<link rel="stylesheet" href={{ url_for('.static', filename='css/style.css') }}>
-
-{% endblock head %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" >
+{% endblock %}
 
 {% block content %}
 
-<img src={{ url_for('.static', filename='resources/logo.svg') }} class="center">
-<div class="container">
+<header>
+    <img id="logo" src="{{ url_for('static', filename='resources/logo.svg') }}">
+    <button type="button" onclick="window.location.href='https://chowlk.linkeddata.es/chowlk_spec'" class="btn btn-primary btn-md">Chowlk Notation</button>
+</header>
+<div class="container-fluid" id="banner">
     <div class="jumbotron">
-        <h1 class="display-4 text-center">OWL Code Generation Service</h1>
-        <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontological 
-            Diagrams.
-        </p>
+        <h1 class="display-4 text-center">Chowlk Code Generation Service</h1>
         <hr class="my-4">
-        <a class="btn btn-primary btn-lg center-button" href="https://oeg-upm.github.io/chowlk_spec/" role="button">View Specification</a>
-
+        <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontology 
+            Diagram made with <a href="https://www.diagrams.net/">diagrams.net</a>
+        </p>
     </div>
 </div>
 
-<div class="container">
-
-    {% for i in data %}
-    <p>{{ i }}</p>
-    {% endfor %}
-
+<div class="container" id="main-container">
+    <h3>OWL Code in TTL:</h3>
+    <div id="output-container">
+        {% for line in data %}
+            <p class="ttl-line">{{line}}</p>
+        {% endfor %}
+    </div>
 </div>
 
-{% endblock content %}
+{% endblock %}

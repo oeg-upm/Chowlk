@@ -1,63 +1,72 @@
 {% extends "bootstrap/base.html" %}
-{% block title %} Chowlk {% endblock title %}
+{% block title %} Chowlk {% endblock %}
 
 {% block head %}
 {{ super() }}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.js"></script>
-<script src={{ url_for('send_static', path='sketch.js') }}></script>
-<link rel="stylesheet" href={{ url_for('.static', filename='css/style.css') }}>
-
-{% endblock head %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" >
+{% endblock %}
 
 {% block content %}
 
-<img src={{ url_for('.static', filename='resources/logo.png') }} class="center">
-<div class="container">
+<header>
+    <a href="https://chowlk.linkeddata.es/"><img id="logo" src="{{ url_for('static', filename='resources/logo.svg') }}"></a>
+    <button type="button" onclick="window.location.href='https://chowlk.linkeddata.es/chowlk_spec'" class="btn btn-primary btn-md">Chowlk Notation</button>
+</header>
+<div class="container-fluid" id="banner">
     <div class="jumbotron">
-        <h1 class="display-4 text-center">OWL Code Generation Service</h1>
-        <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontological 
-            Diagrams.
-        </p>
+        <h1 class="display-4 text-center">Chowlk Code Generation Service</h1>
         <hr class="my-4">
-        <a class="btn btn-primary btn-lg center-button" href="https://oeg-upm.github.io/chowlk_spec/" role="button">View Specification</a>
-
+        <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontology 
+            Diagram made with <a href="https://www.diagrams.net/">diagrams.net</a>
+        </p>
     </div>
 </div>
 
-<div class="container">
+<div class="container" id="main-container">
+    <div class="row">
+        <div id="instructions-container" class="col-md-6">
+            <h3 class="display-4">Steps to use the service</h3>
+            <br>
+            <ol>
+                <li>Make an ontology diagram using the <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk Visual 
+                    Notation</a> and <a href="https://www.diagrams.net/">diagrams.net</a>.</li>
+                <li>Ensure the following in your ontology diagram.</li>
+                    <ul>
+                        <li>The <a href="https://chowlk.linkeddata.es/chowlk_spec/#basic-elements">namespace block</a> must
+                            indicate all the prefixes and namespaces used in the model.</li>
+                        <li>The <a href="https://chowlk.linkeddata.es/chowlk_spec/#basic-elements">metadata block</a> must 
+                            contain the actual annotation property elements, aliases are not 
+                            allowed. For instance, the user should type <code>owl:versionInfo</code> instead of <b>"version"</b> 
+                            to indicate the current version of the ontology.</li>
+                        <li>The source and target of all the arrows in the diagram are connected to a block. This means that 
+                            relationships between properties (e.g. <code>rdfs:subPropertyOf</code>) can only use the
+                            <a href="https://chowlk.linkeddata.es/chowlk_spec/#relations-between-properties">Option 1</a> 
+                            to being able to generate them in OWL code.</li>
+                    </ul>
+                <li>Export your drawio diagram as an XML file.</li>
+                <li>Choose your XML file and press submit.</li>
+            </ol>
 
-    <h3 class="display-4">Steps to use the service</h3>
-    <br>
-    <ol>
-        <li class="new-size">Make an ontological diagram using the <a href="https://oeg-upm.github.io/chowlk_spec/">Chowlk Visual Notation</a> and <a href="https://www.draw.io/">drawio</a> as the diagraming tool.</li>
-        <li class="new-size">Ensure the following in your ontological diagram.</li>
-            <ul>
-                <li class="new-size">The <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">namespace block</a> must
-                    indicate all the prefixes and namespaces used in the model.</li>
-                <li class="new-size">The <a href="https://oeg-upm.github.io/chowlk_spec/#basic-elements">metadata block</a> must contain the actual annotation property elements, aliases are not 
-                    allowed. For instance, the user should type <code>owl:versionInfo</code> instead of <b>"version"</b> to indicate the current version of the ontology.</li>
-                <li class="new-size">The source and target of all the arrows in the model are connected to a block. This means that in order to represent relationships 
-                    between properties the user should use the <a href="https://oeg-upm.github.io/chowlk_spec/#relations-between-properties">Option 1</a> for these constructs to actually see them in the code.</li>
-            </ul>
-        <li class="new-size">Export your drawio diagram as an XML file.</li>
-        <li class="new-size">Choose your XML file and press submit.</li>
-    </ol>
-
+        </div>
+        <div id="diagram-container" class="col-md-6">
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('diagram_upload') }}">
+                <p style="font-size:30px" id="dropzone" class="text-center"><b>Drag and drop your diagram</b></p>
+                <br>
+                <label for="file" class="btn btn-primary">Choose a diagram</label>
+                <input name="diagram_data" id="file" type="file" style="visibility: hidden;">
+                <p id="filename"></p>
+                {% if error %}
+                    <p id="error-message">{{error}}</p>
+                {% endif %}
+                <br>
+                <div>
+                    <input id="submit" type="submit" class="btn btn-primary mb-2" value="Submit">
+                    <input id="reset" type="reset" class="btn btn-primary mb-2" value="Reset">
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-<br>
-<div id="formzone" class="container">
-    <form method="POST" class="form-group" enctype="multipart/form-data" 
-    action={{ url_for('diagram_upload') }}>
-        <p style="font-size:30px" id="dropzone" class="text-center"><b>Choose your diagram</b></p>
-        <br>
-        <input id="files" type="file" name="diagram_data">
-        <br>
-        <input type="submit" class="btn btn-primary mb-2" value="Submit">
-        <input type="reset" class="btn btn-primary mb-2" value="Reset">
-    </form>
-</div>
 
-{% endblock content %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/sketch.js') }}"></script>
+{% endblock %}

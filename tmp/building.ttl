@@ -13,8 +13,8 @@
 @base <http://bimerr.iot.linkeddata.es/def/building#> .
 
 <http://bimerr.iot.linkeddata.es/def/building#> rdf:type owl:Ontology ;
-			dc:creator "Serge Ch·vez-Feria" ;
-			dc:creator "MarÌa Poveda-VillalÛn" ;
+			dc:creator "Serge Ch√°vez-Feria" ;
+			dc:creator "Mar√≠a Poveda-Villal√≥n" ;
 			owl:versionInfo "0.0.3" ;
 			dc:title "Building Ontology" .
 
@@ -147,6 +147,30 @@ building:Building rdf:type owl:Class ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:string ] ,
 		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSimple3DModel ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty wgs84_pos:long ;
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty wgs84_pos:lat ;
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty wgs84_pos:alt ;
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:buildingAddress ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:hasStorey ;
 		  owl:allValuesFrom building:Storey ] .
 
@@ -161,6 +185,22 @@ building:Space rdf:type owl:Class ;
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:ifcIdentifier ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:maxOccupants ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:integer ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:minOccupants ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:integer ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSimple3DModel ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:string ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:hasElement ;
@@ -179,6 +219,14 @@ building:Storey rdf:type owl:Class ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:string ] ,
 		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSimple3DModel ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:containsZone ;
 		  owl:someValuesFrom building:Apartment ] ,
 		[ rdf:type owl:Restriction ;
@@ -194,6 +242,14 @@ building:Apartment rdf:type owl:Class ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:string ] ,
 		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSimple3DModel ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:hasSpace ;
 		  owl:allValuesFrom building:Space ] .
 
@@ -204,6 +260,14 @@ building:Element rdf:type owl:Class ;
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:ifcIdentifier ;
 		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:ifcIdentifier ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:string ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty bot:hasSimple3DModel ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
 		  owl:onDataRange xsd:string ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:hasConstruction ;
@@ -235,6 +299,14 @@ building:MaterialLayerSet rdf:type owl:Class ;
 building:MaterialLayer rdf:type owl:Class ;
 	rdfs:label "Material Layer" ;
 	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:thickness ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:float ] ,
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty building:position ;
+		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+		  owl:onDataRange xsd:integer ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:hasMaterial ;
 		  owl:allValuesFrom props:Material ] .

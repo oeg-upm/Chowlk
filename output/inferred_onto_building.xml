@@ -8,13 +8,5 @@
 
 <owl:Ontology rdf:about="http://test.org/test.owl"/>
 
-<rdf:Description rdf:about="http://www.w3.org/2002/07/owl#bottomObjectProperty">
-  <owl:equivalentProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasIndependentVariable"/>
-</rdf:Description>
-
-<rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/occupancy-profile#hasIndependentVariable">
-  <owl:equivalentProperty rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
-</rdf:Description>
-
 
 </rdf:RDF>
