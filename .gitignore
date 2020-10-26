@@ -1,10 +1,10 @@
 venv
-serge
-.pyc
-.pyc
-__pycache__
+*.pyc
+*.py[cod]
 .idea
 .vs
-data
+.vscode
+__pycache__/
+*.log
 output
 tmp
