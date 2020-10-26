@@ -1,4 +1,10 @@
 venv
-.pyc
+*.pyc
+*.py[cod]
 .idea
 .vs
+.vscode
+__pycache__/
+*.log
+output
+tmp
