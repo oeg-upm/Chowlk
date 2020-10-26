@@ -7,13 +7,8 @@ from modules.utils import *
 from modules.child_tracker import ChildTracker
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ElementTree
-from xml.dom import minidom
-from copy import deepcopy
-import owlready2
-import owlready
 import rdflib
 import rdflib.serializer
-import tempfile
 import os
 
 
@@ -49,17 +44,6 @@ def transform_ontology(root, filename, child_tracker):
 
     project_path = os.path.dirname(os.path.abspath(__file__))
     abs_onto_path = os.path.join(project_path, output_filename)
-    onto_xml = owlready2.get_ontology("file://" + abs_onto_path).load()
-
-    owlready2.close_world(onto_xml)
-    
-    inferred_onto = owlready2.get_ontology("http://test.org/test.owl")
-    with inferred_onto:
-        try:
-            owlready2.sync_reasoner()
-            inferred_onto.save(os.path.join(project_path, "output", "inferred_onto_building.xml"), format="rdfxml")
-        except:
-            print("Warning Message: It seems your model is not OWL 2 compatible.")
     
 
 def transform_rdf(root, filename):
