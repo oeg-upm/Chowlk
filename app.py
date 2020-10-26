@@ -3,8 +3,6 @@ import os
 import flask
 from flask import request, url_for, render_template, redirect
 from flask_bootstrap import Bootstrap
-from werkzeug.utils import secure_filename
-from flask_uploads import UploadSet, configure_uploads, IMAGES, DATA, ALL
 
 from converter import transform_ontology, transform_rdf
 from modules.utils import read_drawio_xml, highlight_element
@@ -12,7 +10,6 @@ from modules.child_tracker import ChildTracker
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ElementTree
 import argparse
-
 
 
 app = flask.Flask(__name__)

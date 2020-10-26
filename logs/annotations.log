@@ -743,3 +743,4 @@ INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugg
 INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Oct/2020 18:48:29] "POST /diagram_upload HTTP/1.1" 200 -
