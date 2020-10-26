@@ -736,3 +736,10 @@ INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:23] "POST /diagram_upload HTTP/1.
 INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:25] "GET /tmp/building.ttl HTTP/1.1" 404 -
 INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:04:45] "GET /tmp/building.ttl HTTP/1.1" 404 -
 INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:57] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:57] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:57] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
