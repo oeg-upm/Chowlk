@@ -43,7 +43,7 @@ class Finder():
 
                     # Looking for ellipses in a second iteration
                     for child2 in self.root:
-                        child_tracker.update_child(child2)
+                        #child_tracker.update_child(child2)
                         style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                         if source == child2.attrib["id"] and "ellipse" in style2:
                             # This edge is part of a unionOf / intersectionOf construct
@@ -51,7 +51,7 @@ class Finder():
                             relation["type"] = "ellipse_connection"
                             ellipse_connection_detected = True
                             break
-                    child_tracker.update_child(child)
+                    #child_tracker.update_child(child)
                     if ellipse_connection_detected:
                         self.relations[id] = relation
                         continue
@@ -60,12 +60,12 @@ class Finder():
                     # "value" parameter of the object. We can track their associated value by looking for free text
                     # and evaluating the "parent" parameter which will point to an edge.
                     for child2 in self.root:
-                        child_tracker.update_child(child2)
+                        #child_tracker.update_child(child2)
                         style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                         if ("text" in style2 or "edgeLabel" in style2) and id == child2.attrib["parent"]:
                             value = child2.attrib["value"]
                             break
-                    child_tracker.update_child(child)
+                    #child_tracker.update_child(child)
                     # If after the evaluation of free text we cannot find any related text to the edge
                     # we can say for sure that it is a "subclass" or "type" relationship
                     if value == "" or value is None:
@@ -287,7 +287,7 @@ class Finder():
                     # Second iteration to find the associated free text to this blank node
                     ellipse["type"] = None
                     for child2 in self.root:
-                        child_tracker.update_child(child2)
+                        #child_tracker.update_child(child2)
                         if "text" in child2.attrib["style"]:
                             text_geom = child2[0]
                             x, y = float(text_geom.attrib["x"]), float(text_geom.attrib["y"])
@@ -302,7 +302,7 @@ class Finder():
                                 elif "unionOf" in child2.attrib["value"]:
                                     ellipse["type"] = "owl:unionOf"
                                 break
-                    child_tracker.update_child(child)
+                    #child_tracker.update_child(child)
                 # Find the associated concepts to this union / intersection restriction
                 ellipse["group"] = []
 
@@ -457,7 +457,7 @@ class Finder():
             # We need a second iteration because we need to know if there is a block
             # on top of the current block, that determines if we are dealing with a class or attributes
             for child2 in self.root:
-                child_tracker.update_child(child2)
+                #child_tracker.update_child(child2)
                 style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                 # Filter all the elements except attributes and classes
                 if "text" in style2 or "edgeLabel" in style2:
@@ -544,7 +544,7 @@ class Finder():
                     self.attribute_blocks[id] = attribute_block
                     attributes_found = True
                     break
-            child_tracker.update_child(child)
+            #child_tracker.update_child(child)
             # If after a dense one to all evaluation the object selected cannot be associated
             # to any other object it means that it is a class
             if not attributes_found and value != "":

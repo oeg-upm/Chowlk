@@ -41,9 +41,6 @@ def transform_ontology(root, filename, child_tracker):
 
     output_filename = filename.split(".")[0] + ".owl"
     g.serialize(destination=output_filename, format="xml")
-
-    project_path = os.path.dirname(os.path.abspath(__file__))
-    abs_onto_path = os.path.join(project_path, output_filename)
     
 
 def transform_rdf(root, filename):
