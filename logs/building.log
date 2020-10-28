@@ -192,3 +192,299 @@ INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:07] "GET /diagram_upload?__debugg
 INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:07] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:13:07] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [16/Oct/2020 23:15:03] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:15:27] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:17:09] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:18:31] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:24:44] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:27:10] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:34:10] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:35:37] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:37:39] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:41:17] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:41:19] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:03] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:03] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:03] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:03] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:03] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:03] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:50:04] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:52:43] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:52:43] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:52:43] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:52:43] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:52:43] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:52:44] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:36] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:36] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:55] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:55] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:55] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:55] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:55] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:54:55] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:58] "POST /diagram_upload HTTP/1.1" 500 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:59] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:59] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:59] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:59] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:59] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:55:59] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:08] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:08] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:08] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:08] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:09] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:09] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 11:56:34] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:01:09] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:03:00] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:41] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:41] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:41] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:41] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:41] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:42] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:16:42] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:17:26] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:19:00] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:19:16] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 42, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:20:00] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:20:08] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 44, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:27:39] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 44, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:34:41] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:34:47] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:34:56] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 44, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 12:35:08] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:45:17] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:45:18] "GET /url_for() HTTP/1.1" 404 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:02] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:04] "GET /download/diagram HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:04] "GET /download/diagram?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:04] "GET /download/diagram?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:04] "GET /download/diagram?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:04] "GET /download/diagram?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:05] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:47:05] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:08] "GET /download/diagram HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:08] "GET /download/diagram?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:08] "GET /download/diagram?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:08] "GET /download/diagram?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:08] "GET /download/diagram?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:09] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:43:09] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:18] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:20] "GET /download/diagram HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:20] "GET /download/diagram?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:20] "GET /download/diagram?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:20] "GET /download/diagram?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:20] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:58:21] "GET /download/diagram?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:05:32] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:05:34] "GET /download/diagram HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:09:14] "GET / HTTP/1.1" 200 -

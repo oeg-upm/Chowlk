@@ -9,7 +9,7 @@
 {% block content %}
 
 <header>
-    <a href="https://chowlk.linkeddata.es/"><img id="logo" src="{{ url_for('static', filename='resources/logo.svg') }}"></a>
+    <a href="{{url_for('home')}}"><img id="logo" src="{{ url_for('static', filename='resources/logo.svg') }}"></a>
     <button type="button" onclick="window.location.href='https://chowlk.linkeddata.es/chowlk_spec'" class="btn btn-primary btn-md">Chowlk Notation</button>
 </header>
 <div class="container-fluid" id="banner">
@@ -17,14 +17,14 @@
         <h1 class="display-4 text-center">Chowlk Code Generation Service</h1>
         <hr class="my-4">
         <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontology 
-            Diagram made with <a href="https://www.diagrams.net/">diagrams.net</a>
+            Diagram made with <a href="https://www.diagrams.net/" style="color:#124981">diagrams.net</a>
         </p>
     </div>
 </div>
 
 <div class="container" id="main-container">
     <div class="row">
-        <div id="instructions-container" class="col-md-6">
+        <div id="instructions-container" class="container col-xs-6">
             <h3 class="display-4">Steps to use the service</h3>
             <br>
             <ol>
@@ -48,16 +48,16 @@
             </ol>
 
         </div>
-        <div id="diagram-container" class="col-md-6">
+        <div id="diagram-container" class="container col-xs-6">
             <form method="POST" enctype="multipart/form-data" action="{{ url_for('diagram_upload') }}">
-                <p style="font-size:30px" id="dropzone" class="text-center"><b>Drag and drop your diagram</b></p>
+                <p style="font-size:30px" id="dropzone" class="text-center"><b>Choose a diagram</b></p>
                 <br>
                 <label for="file" class="btn btn-primary">Choose a diagram</label>
                 <input name="diagram_data" id="file" type="file" style="visibility: hidden;">
                 <p id="filename"></p>
-                {% if error %}
-                    <p id="error-message">{{error}}</p>
-                {% endif %}
+                {% for message in get_flashed_messages() %}
+                    <p id="error-message">{{message}}</p>
+                {% endfor %}
                 <br>
                 <div>
                     <input id="submit" type="submit" class="btn btn-primary mb-2" value="Submit">

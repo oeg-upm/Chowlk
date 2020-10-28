@@ -744,3 +744,142 @@ INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugg
 INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [20/Oct/2020 10:07:58] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [26/Oct/2020 18:48:29] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:07:11] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:07:36] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:07:54] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:09:05] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:09] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:19] "GET /download HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:19] "GET /download?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:19] "GET /download?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:19] "GET /download?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:19] "GET /download?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:19] "GET /download?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:20] "GET /download?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:15:57] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:16:00] "GET /download HTTP/1.1" 404 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:16:49] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:16:51] "GET /download HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:22:06] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:13] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:19] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:19] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:19] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:19] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:19] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:20] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:20] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:24] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:25] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:25] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:23:56] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:24:01] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:24:01] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:24:02] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:24:02] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:24:02] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:24:02] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:27:28] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:18] "GET / HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 48, in diagram_upload
+    transform_ontology(root, "tmp/" + filename[:-3] + "ttl", child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:23] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:23] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:24] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:28:55] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:30:35] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:36:37] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:38:34] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:38:59] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:46:17] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:46:19] "GET /download HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:37] "POST /diagram_upload HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:37] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:48:38] "GET /diagram_upload?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:49:14] "GET / HTTP/1.1" 200 -
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:49:19] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:49:21] "GET /download/ttl HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:49:23] "GET /download/xml HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:50:04] "GET / HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:45:57] "POST /diagram_upload HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:46:04] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 14:46:05] "GET /url_for('download',%20format='diagram') HTTP/1.1" 404 -
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\annotations.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:41] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:45] "GET / HTTP/1.1" 200 -
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:50] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:52] "GET /download/diagram HTTP/1.1" 500 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:52] "GET /download/diagram?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:52] "GET /download/diagram?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:52] "GET /download/diagram?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:52] "GET /download/diagram?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:53] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 15:47:53] "GET /download/diagram?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading

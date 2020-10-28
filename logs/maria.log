@@ -284,3 +284,16 @@ INFO:werkzeug:127.0.0.1 - - [20/Jul/2020 01:10:08] "GET / HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [20/Jul/2020 01:10:17] "POST /diagram_upload HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [20/Jul/2020 01:10:28] "GET / HTTP/1.1" 200 -
 INFO:werkzeug: * Detected change in 'd:\\Projects\\diagram2code\\app.py', reloading
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\maria.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:11] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:37] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:38] "GET /static/css/style.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:38] "GET /static/js/sketch.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:38] "GET /static/resources/logo.svg HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:38] "GET /static/resources/oeg-logo.gif HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:38] "GET /static/resources/fi-logo.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:41:38] "GET /static/resources/upm-logo.png HTTP/1.1" 200 -
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\maria.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:42:24] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 13:42:29] "GET /download HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\app.py', reloading

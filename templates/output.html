@@ -9,7 +9,7 @@
 {% block content %}
 
 <header>
-    <img id="logo" src="{{ url_for('static', filename='resources/logo.svg') }}">
+    <a href="{{url_for('home')}}"><img id="logo" src="{{ url_for('static', filename='resources/logo.svg') }}"></a>
     <button type="button" onclick="window.location.href='https://chowlk.linkeddata.es/chowlk_spec'" class="btn btn-primary btn-md">Chowlk Notation</button>
 </header>
 <div class="container-fluid" id="banner">
@@ -22,13 +22,42 @@
     </div>
 </div>
 
+
 <div class="container" id="main-container">
-    <h3>OWL Code in TTL:</h3>
-    <div id="output-container">
-        {% for line in data %}
-            <p class="ttl-line">{{line}}</p>
-        {% endfor %}
+    {% if ttl_data %}
+        <p><b>Conversion Successful!</b></p>
+    {% else %}
+        <h3>Error Message</h3>
+        <p>Please follow the notation provided at <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk Visual Notation</a>.<br>
+            Check the diagram with the errors highlighted in red. Use <a href="https://www.diagrams.net/">diagrams.net</a> to load the diagram 
+            and see where is the error.</p>
+       <a href="{{url_for('download', format='diagram')}}">Download Diagram</a> 
+    {% endif %}
+    {% if ttl_data %}
+    <div class="row">
+        <div class="container col-xs-6">
+            <h3>Code in TTL:</h3>
+            <div id="output-container">
+                {% for line in ttl_data %}
+                    <p class="ttl-line">{{line}}</p>
+                {% endfor %}
+            </div>
+            <a class="btn btn-primary" href="{{url_for('download', format='ttl')}}">Download</a>
+        </div>
+
+        <div class="container col-xs-6">
+            <h3>Code in RDF/XML:</h3>
+            <div id="output-container">
+                {% for line in xml_data %}
+                    <p class="ttl-line">{{line}}</p>
+                {% endfor %}
+            </div>
+            <a class="btn btn-primary" href="{{url_for('download', format='xml')}}">Download</a>
+        </div>
     </div>
+
+    {% endif %}
 </div>
+
 
 {% endblock %}
