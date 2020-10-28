@@ -516,3 +516,17 @@ IndexError: string index out of range
 INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:18:55] "POST /diagram_upload HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:18:57] "GET /download/diagram HTTP/1.1" 200 -
 INFO:werkzeug: * Detected change in 'D:\\Projects\\diagram2code\\modules\\finding.py', reloading
+ERROR:root:string index out of range
+Traceback (most recent call last):
+  File "D:\Projects\diagram2code\app.py", line 62, in diagram_upload
+    transform_ontology(root, ttl_filepath, child_tracker)
+  File "D:\Projects\diagram2code\converter.py", line 17, in transform_ontology
+    all_elements = finder.find_elements(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 571, in find_elements
+    concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
+  File "D:\Projects\diagram2code\modules\finding.py", line 497, in find_concepts_and_attributes
+    final_datatype = final_datatype[0].lower() + final_datatype[1:]
+IndexError: string index out of range
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:25:07] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:25:08] "GET /download/diagram HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:29:07] "GET / HTTP/1.1" 200 -
