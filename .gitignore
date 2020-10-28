@@ -6,5 +6,6 @@ venv
 .vscode
 __pycache__/
 *.log
+logs
 output
 tmp
