@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://base.namespace.com#Class1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Class1</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#Class2">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Class2</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#objectProperty">
+    <rdfs:label>object property</rdfs:label>
+    <rdfs:domain rdf:resource="http://base.namespace.com#Class1"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="http://base.namespace.com#Class2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+</rdf:RDF>

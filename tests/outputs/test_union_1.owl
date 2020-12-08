@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:nodeID="f535fd9fc4d6f4818a6126564a0213248b1">
+    <rdf:rest rdf:nodeID="f535fd9fc4d6f4818a6126564a0213248b2"/>
+    <rdf:first rdf:resource="http://base.namespace.com#Class2"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="f535fd9fc4d6f4818a6126564a0213248b2">
+    <rdf:first rdf:resource="http://base.namespace.com#Class3"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#Class1">
+    <rdfs:label>Class1</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub48bL33C3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#objectProperty">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>object property</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub48bL33C3">
+    <owl:onProperty rdf:resource="http://base.namespace.com#objectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:allValuesFrom rdf:nodeID="ub48bL35C23"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub48bL35C23">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:unionOf rdf:nodeID="f535fd9fc4d6f4818a6126564a0213248b1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#Class3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Class3</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://base.namespace.com#Class2">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Class2</rdfs:label>
+  </rdf:Description>
+</rdf:RDF>

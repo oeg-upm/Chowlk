@@ -1,10 +1,31 @@
 import unittest
 import sys
-from os import path
-sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-from modules.finding import *
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from modules.utils import read_drawio_xml
+from modules.child_tracker import ChildTracker
+from converter import transform_ontology
 
+
+def generate_ontologies():
+
+    
+    tests_path = os.path.dirname(os.path.abspath(__file__))
+    inputs_path = os.path.join(tests_path, "inputs")
+    outputs_path = os.path.join(tests_path, "outputs")
+
+    for filename in os.listdir(inputs_path):
+        child_tracker = ChildTracker()
+        input_filepath = os.path.join(inputs_path, filename)
+        output_filepath = os.path.join(outputs_path, filename[:-3] + "ttl")
+        root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(input_filepath)
+        transform_ontology(root, output_filepath, child_tracker)
+
+
+if __name__ == "__main__":
+
+    generate_ontologies()
+"""
 class TestFindingFunctions(unittest.TestCase):
 
     def test_concepts(self):
@@ -536,3 +557,5 @@ class TestFindingFunctions(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+"""

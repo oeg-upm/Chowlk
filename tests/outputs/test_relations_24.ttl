@@ -1,0 +1,46 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix ns: <http://base.namespace.com#> .
+@base <http://base.namespace.com#> .
+
+<http://base.namespace.com#> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ,
+			owl:SymmetricProperty ;
+		rdfs:label "object property" .
+
+#################################################################
+#    Data Properties
+#################################################################
+
+#################################################################
+#    Classes
+#################################################################
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class1
+ns:Class1 rdf:type owl:Class ;
+	rdfs:label "Class1" .
+
+#################################################################
+#    Instances
+#################################################################
+
+#################################################################
+#    General Axioms
+#################################################################
+
