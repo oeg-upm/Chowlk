@@ -16,7 +16,7 @@ app = flask.Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config["DEBUG"] = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config["SECRET_KEY"] = "development"
+app.config["SECRET_KEY"] = os.environ.get("CHOWLK_SECRET_KEY")
 app.config["OUTPUT_FOLDER"] = 'tmp'
 app.config["PROBLEMATIC_DIAGRAMS"] = "data/problematic_diagrams"
 
