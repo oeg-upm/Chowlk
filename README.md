@@ -1,4 +1,4 @@
-![Logo](https://github.com/oeg-upm/chowlk_spec/blob/webservice/static/resources/logo.png)
+![Logo](https://github.com/oeg-upm/Chowlk/blob/webservice/static/resources/logo.png)
 
 # Chowlk Converter
 Web-service to transform ontology conceptualizations made with diagrams.net into OWL code.
