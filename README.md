@@ -1,31 +1,32 @@
-# Diagram2code (aka chOWLk)
-Script to transform an ontogical diagram intro code.
+![Logo](https://github.com/oeg-upm/chowlk_spec/blob/webservice/static/resources/logo.png)
+
+# Chowlk Converter
+Web-service to transform ontology conceptualizations made with diagrams.net into OWL code.
+
+## How to use the web-service:
+
+1. Go to https://chowlk.linkeddata.es/
+2. Read the instructions / recomendations that your diagram should comply.
+3. Click on "Choose a diagram" and select one from your local machine.
+4. Click on Submit.
+5. Copy-paste or download the ontology generated in TTL or in RDF/XML
+
+## If you want to run it from the source:
+
+### Copy the project:
+```bash
+git clone https://github.com/oeg-upm/Chowlk.git
+git checkout webservice
+```
 
 ### Requirements:
-Install the requirements provided by:
 ```bash
 pip install -r requirements.txt
 ```
-It just requires:
-* beautifulsoup4==4.9.0
-* soupsieve==2.0
 
 ### How to run it:
 ```bash
-python converter.py path/diagram/xml path/output/ttlfile mode
+python app.py
 ```
-* path/diagram/xml: is the path where you have the drawio in xml format.
-* path/output/ttlfile: is the output path to store the OWL generated ontology in ttl format.
-* mode: indicates whether to transform an ontological or a rdf diagram.
 
-Example of running the algorithm:
-```bash
-python converter.py data/kpi.xml output/kpi_owl_code.ttl ontology
-```
-Currently the converter supports:
-* Classes (new and reused).
-* Object Properties.
-* Attributes.
-* Individuals.
-* Namespaces.
-* Ontology metadata.
+Currently the converter only supports the <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk visual notation</a>. Please visit the specification for more details on how to make ontology conceptualizations following the visual notation.

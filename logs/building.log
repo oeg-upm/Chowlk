@@ -530,3 +530,7 @@ IndexError: string index out of range
 INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:25:07] "POST /diagram_upload HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:25:08] "GET /download/diagram HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [28/Oct/2020 16:29:07] "GET / HTTP/1.1" 200 -
+WARNING:rdflib.term:file:///D:/Projects/diagram2code/tmp\building.ttl does not look like a valid URI, trying to serialize this will break.
+INFO:werkzeug:127.0.0.1 - - [08/Dec/2020 16:17:40] "POST /diagram_upload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Dec/2020 16:17:47] "GET /download/ttl HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Dec/2020 16:17:49] "GET /download/xml HTTP/1.1" 200 -
