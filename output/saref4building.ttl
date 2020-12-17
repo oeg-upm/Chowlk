@@ -12,8 +12,8 @@
 @base <https://w3id.org/def/saref4bldg#> .
 
 <https://w3id.org/def/saref4bldg#> rdf:type owl:Ontology ;
-			dc:creator "Raúl García-Castro" ;
-			dc:creator "María Poveda-Villalón" ;
+			dc:creator "RaÃºl GarcÃ­a-Castro" ;
+			dc:creator "MarÃ­a Poveda-VillalÃ³n" ;
 			owl:versionInfo "1.0" ;
 			dc:title "SAREF extension for building devices" .
 
@@ -301,16 +301,18 @@ saref:Measurement rdf:type owl:Class ;
 		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
+		  owl:onProperty saref:hasValue ;
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
+		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:isMeasuredIn ;
 		  owl:allValuesFrom saref:UnitOfMeasure ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:isMeasuredIn ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass saref:UnitOfMeasure ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:isMeasuredIn ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass saref:UnitOfMeasure ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:relatesToProperty ;
 		  owl:allValuesFrom saref:Property ] .

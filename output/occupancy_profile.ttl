@@ -208,20 +208,19 @@ building:Building rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:buildingAddress ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:identifier ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:identifier ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty s4bldg:hasSpace ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass building:Space ] .
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### op:Coefficient
 op:Coefficient rdf:type owl:Class ;
@@ -229,12 +228,12 @@ op:Coefficient rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:coefficientValue ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:coefficientValue ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ .
 
 ### op:Action
 op:Action rdf:type owl:Class ;
@@ -246,16 +245,15 @@ op:Behavior rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:identifier ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:identifier ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:drivenBy ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:DriverSet ] .
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### time:DayOfWeek
 time:DayOfWeek rdf:type owl:Class ;
@@ -271,20 +269,18 @@ op:EnvironmentalParameter rdf:type owl:Class ;
 	rdfs:subClassOf saref:Property ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:identifier ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:identifier ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:hasUnitOfMeasure ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass saref:UnitOfMeasure ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:hasUnitOfMeasure ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass saref:UnitOfMeasure ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### op:Environment
 op:Environment rdf:type owl:Class ;
@@ -297,8 +293,7 @@ op:InteractionFormula rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:hasCoefficient ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:Coefficient ] .
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### op:Meeting
 op:Meeting rdf:type owl:Class ;
@@ -306,28 +301,28 @@ op:Meeting rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:probability ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:probability ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:startTime ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:startTime ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:endTime ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:endTime ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ .
 
 ### op:Need
 op:Need rdf:type owl:Class ;
@@ -339,36 +334,35 @@ op:Occupant rdf:type owl:Class ;
 	rdfs:subClassOf foaf:Person ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:identifier ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:identifier ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:occupantAge ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:integer ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:occupantGender ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:occupantJobtype ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:occupantLifestyle ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:birthDate ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:hasBehavior ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:Behavior ] .
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### op:ParameterRange
 op:ParameterRange rdf:type owl:Class ;
@@ -376,28 +370,26 @@ op:ParameterRange rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:minRangeValue ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:minRangeValue ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:maxRangeValue ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:maxRangeValue ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:describesParameter ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:EnvironmentalParameter ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:describesParameter ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:EnvironmentalParameter ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### building:Space
 building:Space rdf:type owl:Class ;
@@ -405,20 +397,20 @@ building:Space rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:identifier ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:identifier ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:maxNumberOccupants ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:integer ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:minNumberOccupants ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:integer ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ .
 
 ### op:Inaction
 op:Inaction rdf:type owl:Class ;
@@ -435,8 +427,7 @@ op:PhysicalNeed rdf:type owl:Class ;
 	rdfs:subClassOf op:Need ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:definedByRange ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:ParameterRange ] .
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### op:DriverSet
 op:DriverSet rdf:type owl:Class ;
@@ -444,8 +435,7 @@ op:DriverSet rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:composedOf ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:Driver ] .
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### saref:UnitOfMeasure
 saref:UnitOfMeasure rdf:type owl:Class ;
@@ -494,28 +484,23 @@ op:Interaction rdf:type owl:Class ;
 	rdfs:subClassOf op:Action ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:controlValue ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:float ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:describedByFormula ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:InteractionFormula ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:describedByFormula ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:InteractionFormula ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:interactsOver ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass s4bldg:PhysicalObject ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:hasInteractionType ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:InteractionConcept ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty op:hasInteractionType ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onClass op:InteractionConcept ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### op:Time
 op:Time rdf:type owl:Class ;

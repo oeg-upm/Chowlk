@@ -11,8 +11,8 @@
 @base <http://bimerr.iot.linkeddata.es/def/annotated-information#> .
 
 <http://bimerr.iot.linkeddata.es/def/annotated-information#> rdf:type owl:Ontology ;
-			dc:creator "Serge Ch·vez-Feria" ;
-			dc:creator "MarÌa Poveda-VillalÛn" ;
+			dc:creator "Serge Ch√°vez-Feria" ;
+			dc:creator "Mar√≠a Poveda-Villal√≥n" ;
 			owl:versionInfo "0.0.2" ;
 			dc:title "Annotated Information Ontology" .
 
@@ -95,28 +95,28 @@ aio:Annotation rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:creationDate ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:creationDate ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:modificationDate ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:modificationDate ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:creationAuthor ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:modificationAuthor ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:dateTime ] ,
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:hasFile ;
 		  owl:allValuesFrom aio:File ] ,
@@ -139,12 +139,12 @@ aio:File rdf:type owl:Class ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:filename ;
-		  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] ,
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:filename ;
-		  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-		  owl:onDataRange xsd:string ] .
+		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+ .
 
 ### aio:Topic
 aio:Topic rdf:type owl:Class ;
