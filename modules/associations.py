@@ -46,6 +46,10 @@ def concept_relation_association(associations, relations):
             continue
         source_id = relation["source"]
         target_id = relation["target"]
+
+        if source_id is None or target_id is None:
+            continue
+
         for s_concept_id, association in associations.items():
             if source_id == s_concept_id or source_id in association["attribute_blocks"]:
                 associations[s_concept_id]["relations"][relation_id] = relation
@@ -67,7 +71,14 @@ def individual_type_identification(individuals, associations, relations):
             continue
         source_id = relation["source"]
         target_id = relation["target"]
-        individual = individuals[source_id]
+
+        if source_id is None or target_id is None:
+            continue
+
+        try:
+            individual = individuals[source_id]
+        except:
+            continue
 
         for concept_id, association in associations.items():
             if target_id == concept_id or target_id in association["attribute_blocks"]:
@@ -175,23 +186,51 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
             # Domain and range are without the "rdfs" prefix in the data structure
             type = type.split(":")[1] if type in ["rdfs:domain", "rdfs:range"] else type
 
-            if source_id not in rhombuses or target_id not in rhombuses:
-                continue
+            if source_id in rhombuses and target_id in rhombuses:
+                print(rhombuses)
+                print(source_id)
 
-            source_property = rhombuses[source_id]
-            target_property = rhombuses[target_id]
-            sprop_type = source_property["type"]
-            sprop_name = source_property["uri"]
+                source_property = rhombuses[source_id]
+                target_property = rhombuses[target_id]
+                sprop_type = source_property["type"]
+                sprop_name = source_property["uri"]
 
-            if sprop_type == "owl:ObjectProperty":
-                sprop_id = relations_byname[sprop_name]
-                relations_copy[sprop_id][type] = target_property["prefix"] + ":" + target_property["uri"]
+                if sprop_type == "owl:ObjectProperty":
+                    sprop_id = relations_byname[sprop_name]
+                    relations_copy[sprop_id][type] = target_property["prefix"] + ":" + target_property["uri"]
 
-            elif sprop_type == "owl:DatatypeProperty":
-                sprop_id = attributes_byname[sprop_name][0]
-                sprop_idx = attributes_byname[sprop_name][1]
-                attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_property["prefix"] + ":" + \
-                                                                            target_property["uri"]
+                elif sprop_type == "owl:DatatypeProperty":
+                    sprop_id = attributes_byname[sprop_name][0]
+                    sprop_idx = attributes_byname[sprop_name][1]
+                    attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_property["prefix"] + ":" + \
+                                                                                target_property["uri"]
+
+    
+
+        cases = ["rdfs:domain", "rdfs:range"]
+
+        if type in cases:
+            # Domain and range are without the "rdfs" prefix in the data structure
+            type = type.split(":")[1] if type in ["rdfs:domain", "rdfs:range"] else type
+
+            if source_id in rhombuses:
+
+                source_property = rhombuses[source_id]
+                target_property = rhombuses[target_id]
+                sprop_type = source_property["type"]
+                sprop_name = source_property["uri"]
+
+                print(sprop_type)
+
+                if sprop_type == "owl:ObjectProperty":
+                    sprop_id = relations_byname[sprop_name]
+                    relations_copy[sprop_id][type] = target_property["prefix"] + ":" + target_property["uri"]
+
+                elif sprop_type == "owl:DatatypeProperty":
+                    sprop_id = attributes_byname[sprop_name][0]
+                    sprop_idx = attributes_byname[sprop_name][1]
+                    attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_property["prefix"] + ":" + \
+                                                                                target_property["uri"]
 
     for rhombus_id, rhombus in rhombuses.items():
 

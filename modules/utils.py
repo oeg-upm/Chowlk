@@ -42,9 +42,13 @@ def clean_html_tags(value):
     :return: return the same value cleaned.
     """
 
-    html_tags = ["<div>", "<b>", "</b>", "</span>"]
+    html_tags = ["<div>", "</div>", "<b>", "</b>", "</span>", "</font>", "</p>"]
     span_reg_exp = "(<span .[^>]+\>)"
     div_reg_exp = "(<div .[^>]+\>)"
+    font_reg_exp = "(<font .[^>]+\>)"
+    br_reg_exp = "(<br .[^>]+\>)"
+    p_reg_exp = "(<p .[^>]+\>)"
+    b_reg_exp = "(<b .[^>]+\>)"
 
     for tag in html_tags:
         if tag in value:
@@ -52,10 +56,22 @@ def clean_html_tags(value):
 
     if "span" in value:
         value = re.sub(span_reg_exp, "", value)
-        value = re.sub("<span>", "", value)
+        #value = re.sub("<span>", "", value)
 
     if "div" in value:
         value = re.sub(div_reg_exp, "", value)
+
+    if "font" in value:
+        value = re.sub(font_reg_exp, "", value)
+
+    if "br" in value:
+        value = re.sub(br_reg_exp, "", value)
+
+    if "<p" in value:
+        value = re.sub(p_reg_exp, "", value)
+
+    if "<b" in value:
+        value = re.sub(b_reg_exp, "", value)
 
     if "&lt;" in value:
         value = re.sub("&lt;", "<", value)
@@ -131,6 +147,9 @@ def fix_source_target(relations, shapes_list):
     shapes = {shape_id: shape for shapes in shapes_list for shape_id, shape in shapes.items()}
     relations_copy = copy.deepcopy(relations)
 
+    mxpoint_x = None
+    mxpoint_y = None
+
     for id, relation in relations.items():
         if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
             continue
@@ -150,6 +169,10 @@ def fix_source_target(relations, shapes_list):
                         mxpoint_x = float(mxpoint.attrib["x"])
                         mxpoint_y = float(mxpoint.attrib["y"])
                         break
+                
+                if mxpoint_x is None or mxpoint_y is None:
+                    continue
+                
                 for shape_id, shape in shapes.items():
                     xml_shape = shape["xml_object"]
                     proximity = proximity_to_shape((mxpoint_x, mxpoint_y), xml_shape, thr=10)
@@ -208,3 +231,10 @@ def highlight_element(root, id):
             child.attrib["style"] += "fontColor=#FF0000;strokeColor=#FF0000"
 
     return root
+
+def clean_uri(uri):
+
+    """Function to extract only the uri of any ontology elements, eliminating any
+    other statement like (some), (all), (1..1), etc"""
+    
+    uri = re.sub("\(([0-9][^)]+)\)", "", uri).strip()

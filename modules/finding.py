@@ -19,11 +19,9 @@ class Finder():
         self.attribute_blocks = {}
         self.rhombuses = {}
 
-    def find_relations(self, child_tracker):
+    def find_relations(self):
 
         for child in self.root:
-            
-            child_tracker.update_child(child)
 
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
@@ -43,7 +41,6 @@ class Finder():
 
                     # Looking for ellipses in a second iteration
                     for child2 in self.root:
-                        #child_tracker.update_child(child2)
                         style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                         if source == child2.attrib["id"] and "ellipse" in style2:
                             # This edge is part of a unionOf / intersectionOf construct
@@ -51,7 +48,6 @@ class Finder():
                             relation["type"] = "ellipse_connection"
                             ellipse_connection_detected = True
                             break
-                    #child_tracker.update_child(child)
                     if ellipse_connection_detected:
                         self.relations[id] = relation
                         continue
@@ -60,12 +56,10 @@ class Finder():
                     # "value" parameter of the object. We can track their associated value by looking for free text
                     # and evaluating the "parent" parameter which will point to an edge.
                     for child2 in self.root:
-                        #child_tracker.update_child(child2)
                         style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                         if ("text" in style2 or "edgeLabel" in style2) and id == child2.attrib["parent"]:
                             value = child2.attrib["value"]
                             break
-                    #child_tracker.update_child(child)
                     # If after the evaluation of free text we cannot find any related text to the edge
                     # we can say for sure that it is a "subclass" or "type" relationship
                     if value == "" or value is None:
@@ -113,104 +107,151 @@ class Finder():
                     relation["type"] = "rdfs:range"
                     self.relations[id] = relation
                     continue
+
+                # Domain Range evaluation
+                if "dashed=1" in style and "startArrow=oval" not in style:
+                    relation["domain"] = False
+                    relation["range"] = False
+                elif "dashed=1" in style and "startFill=0" in style:
+                    relation["domain"] = False
+                    relation["range"] = False
+                elif "dashed=1" not in style and "startArrow=oval" not in style:
+                    relation["domain"] = True
+                    relation["range"] = True
+                elif "dashed=1" not in style and "startFill=1" in style:
+                    relation["domain"] = True
+                    relation["range"] = True
+                elif "dashed=1" in style and "startFill=1" in style:
+                    relation["domain"] = True
+                    relation["range"] = False
+                elif "dashed=1" not in style and "startFill=0" in style:
+                    relation["domain"] = False
+                    relation["range"] = True
+
+                # Existential Universal restriction evaluation
+                if "allValuesFrom" in value or "(all)" in value or "∀" in value:
+                    relation["allValuesFrom"] = True
+                else:
+                    relation["allValuesFrom"] = False
                 
-                # Multiples relations in the same arrow
-                relation_values = value.split("<br>")
+                if "someValuesFrom" in value or "(some)" in value or "∃" in value:
+                    relation["someValuesFrom"] = True
+                else:
+                    relation["someValuesFrom"] = False
 
-                for i, relation_value in enumerate(relation_values):
-                    id = child.attrib["id"]
-                    id = id + "_" + str(i)
+                # Property restriction evaluation
+                relation["functional"] = True if "(F)" in value else False
+                relation["inverse_functional"] = True if "(IF)" in value else False
+                relation["transitive"] = True if "(T)" in value else False
+                relation["symmetric"] = True if "(S)" in value else False
 
-                    relation = {}
-                    relation["source"] = source
-                    relation["target"] = target
-                    relation["xml_object"] = child
-                    # Domain Range evaluation
-                    if "dashed=1" in style and "startArrow=oval" not in style:
-                        relation["domain"] = False
-                        relation["range"] = False
-                    elif "dashed=1" in style and "startFill=0" in style:
-                        relation["domain"] = False
-                        relation["range"] = False
-                    elif "dashed=1" not in style and "startArrow=oval" not in style:
-                        relation["domain"] = True
-                        relation["range"] = True
-                    elif "dashed=1" not in style and "startFill=1" in style:
-                        relation["domain"] = True
-                        relation["range"] = True
-                    elif "dashed=1" in style and "startFill=1" in style:
-                        relation["domain"] = True
-                        relation["range"] = False
-                    elif "dashed=1" not in style and "startFill=0" in style:
-                        relation["domain"] = False
-                        relation["range"] = True
+                # Finding the property uri
+                #value = clean_html_tags(value)
+                if ">>" in value or "<<" in value:
+                    continue
+                #splitted_value = value.split("</div>")
+                #splitted_value = [item for item in splitted_value if item != ""]
+                #if len(splitted_value) == 0:
+                #    continue
+                #splitted_value = splitted_value[1:] if "owl" in value else splitted_value
+                #splitted_value = splitted_value[0]
+                #prefix = splitted_value.split(":")[0].strip().split(" ")
+                #prefix = [item for item in prefix if item != ""][-1].strip()
+                #uri = splitted_value.split(":")[-1].strip().split(" ")
+                #uri = [item for item in uri if item != ""][0].strip()
 
-                    # Existential Universal restriction evaluation
-                    if "allValuesFrom" in relation_value or "(all)" in relation_value or "∀" in relation_value:
-                        relation["allValuesFrom"] = True
-                    else:
-                        relation["allValuesFrom"] = False
-                    if "someValuesFrom" in relation_value or "(some)" in relation_value or "∃" in relation_value:
-                        relation["someValuesFrom"] = True
-                    else:
-                        relation["someValuesFrom"] = False
+                # Cardinality restriction evaluation
+                max_min_card = re.findall("\(([0-9][^)]+)\)", value)
+                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
 
-                    # Property restriction evaluation
-                    relation["functional"] = True if "(F)" in relation_value else False
-                    relation["inverse_functional"] = True if "(IF)" in relation_value else False
-                    relation["transitive"] = True if "(T)" in relation_value else False
-                    relation["symmetric"] = True if "(S)" in relation_value else False
+                uri = re.sub("\(([0-9][^)]+)\)", "", uri).strip()
 
-                    # Finding the property uri
-                    value = clean_html_tags(relation_value)
-                    splitted_value = value.split("</div>")
-                    splitted_value = [item for item in splitted_value if item != ""]
-                    splitted_value = splitted_value[1:] if "owl" in value else splitted_value
-                    splitted_value = splitted_value[0]
-                    prefix = splitted_value.split(":")[0].strip().split(" ")
-                    prefix = [item for item in prefix if item != ""][-1].strip()
-                    uri = splitted_value.split(":")[-1].strip().split(" ")
-                    uri = [item for item in uri if item != ""][0].strip()
-                    relation["prefix"] = prefix
-                    relation["uri"] = uri
-                    relation["label"] = create_label(relation["uri"], "property")
+                prefix = uri.split(":")[0].strip()
+                uri = uri.split(":")[-1].strip()
+                
+                relation["prefix"] = prefix
+                relation["uri"] = uri
+                relation["label"] = create_label(relation["uri"], "property")
 
-                    # Cardinality restriction evaluation
-                    reg_exp = "\(([0-9][^)]+)\)"
-                    max_min_card = re.findall(reg_exp, value)
-                    max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+                print(max_min_card)
+                print(uri)
+                print(value)
 
-                    if max_min_card is not None:
-                        if "<font>" in max_min_card:
-                            max_min_card = max_min_card.split("<font>")
-                            max_min_card = "".join(max_min_card)
-                        if "</font>" in max_min_card:
-                            max_min_card = max_min_card.split("</font>")
-                            max_min_card = "".join(max_min_card)
+                #if max_min_card is not None:
+                #    if "<font>" in max_min_card:
+                #        max_min_card = max_min_card.split("<font>")
+                #        max_min_card = "".join(max_min_card)
+                #    if "</font>" in max_min_card:
+                #        max_min_card = max_min_card.split("</font>")
+                #        max_min_card = "".join(max_min_card)
 
-                    relation["min_cardinality"] = max_min_card.split("..")[0] if max_min_card is not None else None
-                    if relation["min_cardinality"] == "0":
-                        relation["min_cardinality"] = None
+                if max_min_card is None:
+                    relation["min_cardinality"] = None
+                    relation["max_cardinality"] = None
+                else:
+                    max_min_card = max_min_card.split("..")
+                    relation["min_cardinality"] = max_min_card[0]
+                    relation["max_cardinality"] = max_min_card[1]
 
-                    relation["max_cardinality"] = max_min_card.split("..")[1] if max_min_card is not None else None
-                    if relation["max_cardinality"] == "N":
-                        relation["max_cardinality"] = None
+                if relation["min_cardinality"] == "0":
+                    relation["min_cardinality"] = None
 
-                    relation["type"] = "owl:ObjectProperty"
-                    
-                    self.relations[id] = relation
+                if relation["max_cardinality"] == "N":
+                    relation["max_cardinality"] = None
 
+                relation["type"] = "owl:ObjectProperty"
+                
+                self.relations[id] = relation
+
+            if "rhombus" in style:
+                
+                relation = {}
+                relation["source"] = None
+                relation["target"] = None
+                relation["xml_object"] = child
+
+                type = value.split(">>")[0].split("<<")[-1].strip()
+
+                value = value.split("</div>")
+                value = [item for item in value if item != ""]
+                value = [subitem for item in value for subitem in item.split("<br>")]
+                value = [item for item in value if item != ""]
+                value = [re.sub("&nbsp;", " ", item) for item in value]
+
+                # The value can be in one line or in two lines
+                #value = value[0].split(" ")[1] if len(value) == 1 else value[1]
+                value = value[-1].split(">>")[-1].strip()
+
+                relation["prefix"] = value.split(":")[0].strip()
+                relation["uri"] = value.split(":")[1].strip()
+                relation["label"] = create_label(relation["uri"], "property")
+
+                relation["type"] = type
+
+                relation["domain"] = False
+                relation["range"] = False
+
+                relation["allValuesFrom"] = False
+                relation["someValuesFrom"] = False
+
+                # Property restriction evaluation
+                relation["functional"] = False
+                relation["inverse_functional"] = False
+                relation["transitive"] = False
+                relation["symmetric"] = False
+
+                self.relations[id] = relation
+        
         return self.relations
 
 
-    def find_namespaces(self, child_tracker):
+    def find_namespaces(self):
 
         for child in self.root:
 
-            child_tracker.update_child(child)
-
             style = child.attrib["style"] if "style" in child.attrib else ""
-            value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
+            value = child.attrib["value"]
+            #value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
 
             # Dictionary of Namespaces
             if "shape=note" in style:
@@ -220,6 +261,7 @@ class Finder():
                 splitted_value = [item for item in splitted_value if item != ""]
                 splitted_value = [re.sub("&nbsp;", " ", item) for item in splitted_value]
                 for item in splitted_value:
+                    item = clean_html_tags(item)
                     prefix = item.split(":")[0].strip()
                     ontology_uri = item.split(":")[1:]
                     ontology_uri = [item.strip() for item in ontology_uri]
@@ -229,11 +271,9 @@ class Finder():
         return self.namespaces
 
 
-    def find_metadata(self, child_tracker):
+    def find_metadata(self):
 
         for child in self.root:
-
-            child_tracker.update_child(child)
 
             style = child.attrib["style"] if "style" in child.attrib else ""
             value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
@@ -257,11 +297,9 @@ class Finder():
         return self.ontology_metadata
 
 
-    def find_ellipses(self, child_tracker):
+    def find_ellipses(self):
 
         for child in self.root:
-
-            child_tracker.update_child(child)
 
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
@@ -287,7 +325,6 @@ class Finder():
                     # Second iteration to find the associated free text to this blank node
                     ellipse["type"] = None
                     for child2 in self.root:
-                        #child_tracker.update_child(child2)
                         if "text" in child2.attrib["style"]:
                             text_geom = child2[0]
                             x, y = float(text_geom.attrib["x"]), float(text_geom.attrib["y"])
@@ -302,7 +339,6 @@ class Finder():
                                 elif "unionOf" in child2.attrib["value"]:
                                     ellipse["type"] = "owl:unionOf"
                                 break
-                    #child_tracker.update_child(child)
                 # Find the associated concepts to this union / intersection restriction
                 ellipse["group"] = []
 
@@ -328,11 +364,9 @@ class Finder():
         return self.ellipses
 
 
-    def find_individuals(self, child_tracker):
+    def find_individuals(self):
 
         for child in self.root:
-
-            child_tracker.update_child(child)
 
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
@@ -359,11 +393,10 @@ class Finder():
         return self.individuals
 
 
-    def find_attribute_values(self, child_tracker):
+    def find_attribute_values(self):
 
         for child in self.root:
 
-            child_tracker.update_child(child)
             id = child.attrib["id"]
 
             value = child.attrib["value"] if "value" in child.attrib else None
@@ -388,11 +421,9 @@ class Finder():
 
         return self.attributes
 
-    def find_rhombuses(self, child_tracker):
+    def find_rhombuses(self):
 
         for child in self.root:
-
-            child_tracker.update_child(child)
 
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
@@ -412,7 +443,9 @@ class Finder():
                 value = [re.sub("&nbsp;", " ", item) for item in value]
 
                 # The value can be in one line or in two lines
-                value = value[0].split(" ")[1] if len(value) == 1 else value[1]
+                #value = value[0].split(" ")[1] if len(value) == 1 else value[1]
+                value = value[-1].split(">>")[-1].strip()
+                print(value)
                 rhombus["prefix"] = value.split(":")[0].strip()
                 rhombus["uri"] = value.split(":")[1].strip()
 
@@ -421,11 +454,10 @@ class Finder():
         return self.rhombuses
 
 
-    def find_concepts_and_attributes(self, child_tracker):
+    def find_concepts_and_attributes(self):
 
         for child in self.root:
 
-            child_tracker.update_child(child)
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
             value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else ""
@@ -457,7 +489,6 @@ class Finder():
             # We need a second iteration because we need to know if there is a block
             # on top of the current block, that determines if we are dealing with a class or attributes
             for child2 in self.root:
-                #child_tracker.update_child(child2)
                 style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                 # Filter all the elements except attributes and classes
                 if "text" in style2 or "edgeLabel" in style2:
@@ -544,7 +575,6 @@ class Finder():
                     self.attribute_blocks[id] = attribute_block
                     attributes_found = True
                     break
-            #child_tracker.update_child(child)
             # If after a dense one to all evaluation the object selected cannot be associated
             # to any other object it means that it is a class
             if not attributes_found and value != "":
@@ -561,14 +591,14 @@ class Finder():
         return self.concepts, self.attribute_blocks
 
 
-    def find_elements(self, child_tracker):
+    def find_elements(self):
 
-        namespaces = self.find_namespaces(child_tracker)
-        metadata = self.find_metadata(child_tracker)
-        relations = self.find_relations(child_tracker)
-        ellipses = self.find_ellipses(child_tracker)
-        individuals = self.find_individuals(child_tracker)
-        concepts, attribute_blocks = self.find_concepts_and_attributes(child_tracker)
-        rhombuses = self.find_rhombuses(child_tracker)
+        namespaces = self.find_namespaces()
+        metadata = self.find_metadata()
+        relations = self.find_relations()
+        ellipses = self.find_ellipses()
+        individuals = self.find_individuals()
+        concepts, attribute_blocks = self.find_concepts_and_attributes()
+        rhombuses = self.find_rhombuses()
 
         return concepts, attribute_blocks, relations, individuals, ellipses, metadata, namespaces, rhombuses

@@ -406,6 +406,10 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                     complement_id = blank["group"][1]
                 else:
                     complement_id = blank["group"][0]
+                
+                if complement_id is None:
+                    continue
+                
                 complement_concept = concepts[complement_id]
                 complement_name = complement_concept["prefix"] + ":" + complement_concept["uri"]
                 file.write("\t" + blank["type"] + " " + complement_name)
@@ -416,6 +420,9 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                     complement_id = blank["group"][1]
                 else:
                     complement_id = blank["group"][0]
+
+                if complement_id is None:
+                    continue
 
                 if complement_id in concepts:
                     complement = concepts[complement_id]
