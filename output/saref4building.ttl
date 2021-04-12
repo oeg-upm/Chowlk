@@ -298,21 +298,14 @@ saref:Measurement rdf:type owl:Class ;
 		  owl:allValuesFrom xsd:dateTime ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:hasValue ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty saref:hasValue ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:isMeasuredIn ;
 		  owl:allValuesFrom saref:UnitOfMeasure ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:isMeasuredIn ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty saref:isMeasuredIn ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] ,
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty saref:relatesToProperty ;
 		  owl:allValuesFrom saref:Property ] .

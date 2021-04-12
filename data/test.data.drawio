@@ -1,1 +1,22 @@
-<mxfile host="Chrome" modified="2021-03-15T15:32:21.526Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36" version="14.3.0" etag="f7iRVN2I_hpOkJN5qiYf" type="device"><diagram id="xRz55O_QoL97wA74tfZN" name="Página-1">xVZLk9MwDP41mYEDmTza7u6RPnZhBihsDwsnxo1FYupEGUdpU349Tuw0TdMWdgZmLx3pk2TJnySnTjhLqwfF8uQjcpBO4PHKCedOENwEof6tgb0BRqOxAWIluIH8DliJX2BBz6Kl4FD0HAlRksj7YIRZBhH1MKYU7vpuP1D2s+YshgGwipgcok+CU2LQ2+Cmw9+BiJM2sz+5M5aUtc72JkXCOO6OoHDhhDOFSEZKqxnImruWFxN3f8F6KExBRn8T8PDl8b3cZMXqu3xc3X3+RIslezMyp2yZLO2F16zQ0tuErXIWgba98l3Xf23vQPuWGOCaJ6uiogRjzJhcdOhUYZlxqLN7Wut8PiDmGvQ1+BOI9rbprCTUUEKptFaoBH09kr/VR7ljq80re3Kj7K1i6qyLu0iThQosVQRXuGnHjakY6IpfcGimXgLAFEjtdZwCyUhs+3UwO47xwa/rmBZs057RQP9SA6elkFxk8aBx/bbsEkFgWh3Od3qF+y2wp4MiqK4TOiSgDRjbBbAvgD+x+q7bJ79dkuRol0bef+IsuMSZHfkXJiy87RMW+i9NWDggzAkmUmedcrHVYkzNzQ20boGGVAvqtAdcE10XTpQ30n1t065uxlIoamLdCFOn/nAcYs+kuZYZKQHVHH4m+0nqxvdi7rU6TXJazcmw6Fc+r8UMCf48LWsWbeJmvpYlSZGBxTlTm6WOEtS8a643/jejNepPVjAeTlZwd2ayfO/5o6XV7uPW2I7+IYSL3w==</diagram></mxfile>
+<mxfile>
+    <diagram id="xRz55O_QoL97wA74tfZN" name="Página-1">
+        <mxGraphModel dx="1038" dy="523" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="GQRIlknsS_lRS9PNtEOa-4" value="base:haSpace (1..1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="GQRIlknsS_lRS9PNtEOa-1" target="GQRIlknsS_lRS9PNtEOa-2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="GQRIlknsS_lRS9PNtEOa-1" value="base:Building" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="100" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="GQRIlknsS_lRS9PNtEOa-2" value="base:Space" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="390" y="280" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="GQRIlknsS_lRS9PNtEOa-3" value="&lt;div&gt;&lt;b&gt;base&lt;/b&gt;: http://base.namespace.com#&lt;/div&gt;&lt;div&gt;&lt;b&gt;other:&lt;/b&gt; http://other.namespace.com#&lt;br&gt;&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="250" width="290" height="100" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

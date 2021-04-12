@@ -42,7 +42,7 @@ def write_ontology_metadata(file, metadata, onto_uri):
     return file
 
 
-def write_object_properties(file, relations, concepts, anonymous_concepts):
+def write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks):
 
     file.write("#################################################################\n"
                "#    Object Properties\n"
@@ -73,8 +73,14 @@ def write_object_properties(file, relations, concepts, anonymous_concepts):
                 file.write("\t\t\towl:InverseFunctionalProperty")
 
             if relation["domain"]:
-                concept_id = relation["source"]
-                concept = concepts[concept_id]
+                print(relation)
+                #concept_id = relation["source"]
+                concept_id = relation["domain"]
+                if concept_id in concepts:
+                    concept = concepts[concept_id]
+                elif concept_id in attribute_blocks:
+                    concept_id = attribute_blocks[concept_id]["concept_associated"]
+                    concept = concepts[concept_id]
                 domain_name = concept["prefix"] + ":" + concept["uri"]
 
                 # Avoid blank nodes
@@ -85,7 +91,8 @@ def write_object_properties(file, relations, concepts, anonymous_concepts):
             if relation["range"]:
                 file.write(" ;\n")
                 try:
-                    concept_id = relation["target"]
+                    #concept_id = relation["target"]
+                    concept_id = relation["range"]
                     concept = concepts[concept_id]
                     range_name = concept["prefix"] + ":" + concept["uri"]
                     file.write("\t\trdfs:range " + range_name)
@@ -130,8 +137,8 @@ def write_data_properties(file, attribute_blocks, concepts):
     attributes_reviewed = []
 
     for id, attribute_block in attribute_blocks.items():
-
-        source_id = attribute_block["concept_associated"]
+        
+        #source_id = attribute_block["concept_associated"]
 
         for attribute in attribute_block["attributes"]:
 
@@ -149,7 +156,9 @@ def write_data_properties(file, attribute_blocks, concepts):
                 file.write("\t\t\towl:FunctionalProperty")
 
             if attribute["domain"]:
-                concept = concepts[source_id]
+                #concept = concepts[source_id]
+                concept_id = attribute["domain"]
+                concept = concepts[concept_id]
                 domain_name = concept["prefix"] + ":" + concept["uri"]
                 file.write(" ;\n")
                 file.write("\t\trdfs:domain " + domain_name)
@@ -157,6 +166,7 @@ def write_data_properties(file, attribute_blocks, concepts):
             if attribute["range"]:
                 file.write(" ;\n")
                 file.write("\t\trdfs:range xsd:" + attribute["datatype"])
+                #file.write("\t\trdfs:range xsd:" + attribute["range"])
 
             if "rdfs:subPropertyOf" in attribute:
                 file.write(" ;\n")
@@ -238,14 +248,8 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
 
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
-
-                    #if attribute["datatype"] is None:
                     file.write("\t\t  owl:minCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" +
                                 "nonNegativeInteger ]\n")
-                    #else:
-                    #    file.write("\t\t  owl:minQualifiedCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" +
-                    #               "nonNegativeInteger ;\n")
-                    #    file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
 
                 if attribute["max_cardinality"] is not None:
                     if not subclassof_statement_done:
@@ -256,14 +260,20 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                         file.write(" ,\n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
-
-                    #if attribute["datatype"] is None:
                     file.write("\t\t  owl:maxCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" +
                                 "nonNegativeInteger ]\n")
-                    #else:
-                    #    file.write("\t\t  owl:maxQualifiedCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" +
-                    #               "nonNegativeInteger ;\n")
-                    #    file.write("\t\t  owl:onDataRange xsd:" + attribute["datatype"] + " ]")
+
+                if attribute["cardinality"] is not None:
+                    if not subclassof_statement_done:
+                        file.write(" ;\n")
+                        file.write("\trdfs:subClassOf \n")
+                        subclassof_statement_done = True
+                    else:
+                        file.write(" ,\n")
+                    file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                    file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
+                    file.write("\t\t  owl:cardinality \"" + attribute["cardinality"] + "\"^^xsd:" +
+                                "nonNegativeInteger ]\n")                
 
         for relation_id, relation in relations.items():
             if relation["type"] == "owl:ObjectProperty":
@@ -334,13 +344,8 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                         file.write(" ,\n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
-                    #file.write("\t\t  owl:minQualifiedCardinality \"" + relation["min_cardinality"] + "\"^^xsd:" +
-                    #           "nonNegativeInteger ;\n")
                     file.write("\t\t  owl:minCardinality \"" + relation["min_cardinality"] + "\"^^xsd:" +
                                "nonNegativeInteger ]")
-                    #target_id = relation["target"]
-                    #target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
-                    #file.write("\t\t  owl:onClass " + target_name + " ]")
 
                 if relation["max_cardinality"] is not None:
                     if not subclassof_statement_done:
@@ -351,13 +356,20 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                         file.write(" ,\n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
-                    #file.write("\t\t  owl:maxQualifiedCardinality \"" + relation["max_cardinality"] + "\"^^xsd:" +
-                    #           "nonNegativeInteger ;\n")
                     file.write("\t\t  owl:maxCardinality \"" + relation["max_cardinality"] + "\"^^xsd:" +
                                "nonNegativeInteger ]")
-                    #target_id = relation["target"]
-                    #target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
-                    #file.write("\t\t  owl:onClass " + target_name + " ]")
+
+                if relation["cardinality"] is not None:
+                    if not subclassof_statement_done:
+                        file.write(" ;\n")
+                        file.write("\trdfs:subClassOf \n")
+                        subclassof_statement_done = True
+                    else:
+                        file.write(" ,\n")
+                    file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                    file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
+                    file.write("\t\t  owl:cardinality \"" + relation["cardinality"] + "\"^^xsd:" +
+                               "nonNegativeInteger ]")
 
         for relation_id, relation in relations.items():
             if relation["type"] == "owl:disjointWith":

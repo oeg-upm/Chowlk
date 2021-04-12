@@ -24,10 +24,6 @@
 aio:hasAnnotation rdf:type owl:ObjectProperty ;
 		rdfs:label "has annotation" .
 
-### aio:hasFile
-aio:hasFile rdf:type owl:ObjectProperty ;
-		rdfs:label "has file" .
-
 ### aio:hasDocument
 aio:hasDocument rdf:type owl:ObjectProperty ;
 		rdfs:label "has document" .
@@ -48,34 +44,34 @@ aio:relatedToAnnotation rdf:type owl:ObjectProperty ;
 #    Data Properties
 #################################################################
 
-### aio:creationDate
-aio:creationDate rdf:type owl:DatatypeProperty ;
+### aio:creationDate 
+aio:creationDate  rdf:type owl:DatatypeProperty ;
 		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:dateTime ;
-		rdfs:label "creation date" .
+		rdfs:label "creation date " .
 
-### aio:modificationDate
-aio:modificationDate rdf:type owl:DatatypeProperty ;
+### aio:modificationDate 
+aio:modificationDate  rdf:type owl:DatatypeProperty ;
 		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:dateTime ;
-		rdfs:label "modification date" .
+		rdfs:label "modification date " .
 
-### aio:creationAuthor
-aio:creationAuthor rdf:type owl:DatatypeProperty ;
+### aio:creationAuthor 
+aio:creationAuthor  rdf:type owl:DatatypeProperty ;
 		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:string ;
-		rdfs:label "creation author" .
+		rdfs:label "creation author " .
 
-### aio:modificationAuthor
-aio:modificationAuthor rdf:type owl:DatatypeProperty ;
+### aio:modificationAuthor 
+aio:modificationAuthor  rdf:type owl:DatatypeProperty ;
 		rdfs:domain aio:Annotation ;
 		rdfs:range xsd:dateTime ;
-		rdfs:label "modification author" .
+		rdfs:label "modification author " .
 
-### aio:filename
-aio:filename rdf:type owl:DatatypeProperty ;
+### aio:filename 
+aio:filename  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
-		rdfs:label "filename" .
+		rdfs:label "filename " .
 
 #################################################################
 #    Classes
@@ -94,32 +90,29 @@ aio:Annotation rdf:type owl:Class ;
 	rdfs:label "Annotation" ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:creationDate ;
+		  owl:onProperty aio:creationDate  ;
 		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:creationDate ;
+		  owl:onProperty aio:creationDate  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:modificationDate ;
+		  owl:onProperty aio:modificationDate  ;
 		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:modificationDate ;
+		  owl:onProperty aio:modificationDate  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:creationAuthor ;
+		  owl:onProperty aio:creationAuthor  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:modificationAuthor ;
+		  owl:onProperty aio:modificationAuthor  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:hasFile ;
-		  owl:allValuesFrom aio:File ] ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty aio:hasDocument ;
 		  owl:allValuesFrom aio:File ] ,
@@ -138,11 +131,11 @@ aio:File rdf:type owl:Class ;
 	rdfs:label "File" ;
 	rdfs:subClassOf 
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:filename ;
+		  owl:onProperty aio:filename  ;
 		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty aio:filename ;
+		  owl:onProperty aio:filename  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  .
 

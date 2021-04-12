@@ -48,8 +48,8 @@ def diagram_upload():
         ttl_filename = filename[:-3] + "ttl"
         xml_filename = filename[:-3] + "owl"
         
-        ttl_filepath = os.path.join(app.config["TEMPORAL_FOLER"], ttl_filename)
-        xml_filepath = os.path.join(app.config["TEMPORAL_FOLER"], xml_filename)
+        ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
+        xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
 
         transform_ontology(root, ttl_filepath)
         session["ttl_filename"] = ttl_filename

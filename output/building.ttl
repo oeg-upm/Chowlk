@@ -37,6 +37,9 @@ bot:hasElement rdf:type owl:ObjectProperty ;
 
 ### bot:containsZone
 bot:containsZone rdf:type owl:ObjectProperty ;
+		rdfs:domain bot:Zone ;
+		rdfs:range bot:Zone ;
+		rdfs:subPropertyOf building:hasApartment ;
 		rdfs:label "contains zone" .
 
 ### building:hasApartment
@@ -59,15 +62,15 @@ bot:hasSubElement rdf:type owl:ObjectProperty ;
 #    Data Properties
 #################################################################
 
-### building:ifcIdentifier
-building:ifcIdentifier rdf:type owl:DatatypeProperty ;
+### building:ifcIdentifier 
+building:ifcIdentifier  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
-		rdfs:label "ifc identifier" .
+		rdfs:label "ifc identifier " .
 
-### bot:hasSimple3DModel
-bot:hasSimple3DModel rdf:type owl:DatatypeProperty ;
+### bot:hasSimple3DModel 
+bot:hasSimple3DModel  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
-		rdfs:label "has simple3 d model" .
+		rdfs:label "has simple3 d model " .
 
 ### wgs84_pos:long
 wgs84_pos:long rdf:type owl:DatatypeProperty ;
@@ -81,31 +84,31 @@ wgs84_pos:lat rdf:type owl:DatatypeProperty ;
 wgs84_pos:alt rdf:type owl:DatatypeProperty ;
 		rdfs:label "alt" .
 
-### building:maxOccupants
-building:maxOccupants rdf:type owl:DatatypeProperty ;
+### building:maxOccupants 
+building:maxOccupants  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:integer ;
-		rdfs:label "max occupants" .
+		rdfs:label "max occupants " .
 
-### building:minOccupants
-building:minOccupants rdf:type owl:DatatypeProperty ;
+### building:minOccupants 
+building:minOccupants  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:integer ;
-		rdfs:label "min occupants" .
+		rdfs:label "min occupants " .
 
-### building:hasObXMLFile
-building:hasObXMLFile rdf:type owl:DatatypeProperty ;
+### building:hasObXMLFile 
+building:hasObXMLFile  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
-		rdfs:label "has ob x m l file" .
+		rdfs:label "has ob x m l file " .
 
-### building:identifierInDatabase
-building:identifierInDatabase rdf:type owl:DatatypeProperty ;
+### building:identifierInDatabase 
+building:identifierInDatabase  rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
-		rdfs:label "identifier in database" .
+		rdfs:label "identifier in database " .
 
-### building:buildingAddress
-building:buildingAddress rdf:type owl:DatatypeProperty ;
+### building:buildingAddress 
+building:buildingAddress  rdf:type owl:DatatypeProperty ;
 		rdfs:domain building:Building ;
 		rdfs:range xsd:string ;
-		rdfs:label "building address" .
+		rdfs:label "building address " .
 
 #################################################################
 #    Classes
@@ -116,12 +119,8 @@ building:Building rdf:type owl:Class ;
 	rdfs:label "Building" ;
 	rdfs:subClassOf bot:Building ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+		  owl:onProperty building:ifcIdentifier  ;
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty wgs84_pos:long ;
@@ -136,7 +135,7 @@ building:Building rdf:type owl:Class ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:buildingAddress ;
+		  owl:onProperty building:buildingAddress  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
@@ -152,19 +151,15 @@ building:Space rdf:type owl:Class ;
 	rdfs:label "Space" ;
 	rdfs:subClassOf bot:Space ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+		  owl:onProperty building:ifcIdentifier  ;
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
+		  owl:onProperty building:maxOccupants  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:maxOccupants ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:minOccupants ;
+		  owl:onProperty building:minOccupants  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
@@ -180,12 +175,8 @@ building:Storey rdf:type owl:Class ;
 	rdfs:label "Storey" ;
 	rdfs:subClassOf bot:Storey ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+		  owl:onProperty building:ifcIdentifier  ;
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:hasElement ;
@@ -202,12 +193,8 @@ building:Apartment rdf:type owl:Class ;
 	rdfs:label "Apartment" ;
 	rdfs:subClassOf bot:Zone ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
+		  owl:onProperty building:ifcIdentifier  ;
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:hasElement ;
@@ -221,15 +208,11 @@ building:Element rdf:type owl:Class ;
 	rdfs:label "Element" ;
 	rdfs:subClassOf bot:Element ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+		  owl:onProperty building:ifcIdentifier  ;
+		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:identifierInDatabase ;
+		  owl:onProperty building:identifierInDatabase  ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
  ,
 		[ rdf:type owl:Restriction ;
@@ -393,9 +376,21 @@ s4bldg:BuildingDevice rdf:type owl:Class ;
 	rdfs:label "Building Device" ;
 	rdfs:subClassOf building:Element .
 
+### bot:Zone
+bot:Zone rdf:type owl:Class ;
+	rdfs:label "Zone" .
+
+### bot:Zone
+bot:Zone rdf:type owl:Class ;
+	rdfs:label "Zone" .
+
 #################################################################
 #    Instances
 #################################################################
+
+### s4bldg:TankOfWater
+s4bldg:TankOfWater rdf:type owl:NamedIndividual ,
+		building:Door .
 
 #################################################################
 #    General Axioms

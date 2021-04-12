@@ -2,10 +2,12 @@ import xml.etree.ElementTree as ET
 from modules.geometry import proximity_to_shape
 import re
 import copy
+import unicodedata
 import base64
 from urllib.parse import unquote
 import zlib
 import copy
+from bs4 import BeautifulSoup
 
 def create_label(uri, type):
 
@@ -32,54 +34,17 @@ def create_label(uri, type):
     return label
 
 
-def clean_html_tags(value):
+def clean_html_tags(text, metadata=False):
 
-    """
-    Function to clean some noisy html tags on the names of the concepts,
-    properties and other elements. Just the </div> and <br> tags are left for
-    later use in order to identify multiple attributes in the same attribute block
-    :param value: value attribute of a child, string
-    :return: return the same value cleaned.
-    """
-
-    html_tags = ["<div>", "</div>", "<b>", "</b>", "</span>", "</font>", "</p>"]
-    span_reg_exp = "(<span .[^>]+\>)"
-    div_reg_exp = "(<div .[^>]+\>)"
-    font_reg_exp = "(<font .[^>]+\>)"
-    br_reg_exp = "(<br .[^>]+\>)"
-    p_reg_exp = "(<p .[^>]+\>)"
-    b_reg_exp = "(<b .[^>]+\>)"
+    html_tags = ["<b>", "</b>", "(<span .[^>]+\>)", "<span>", "</span>"]
 
     for tag in html_tags:
-        if tag in value:
-            value = re.sub(tag, "", value)
+        text = re.sub(tag, "", text)
 
-    if "span" in value:
-        value = re.sub(span_reg_exp, "", value)
-        #value = re.sub("<span>", "", value)
-
-    if "div" in value:
-        value = re.sub(div_reg_exp, "", value)
-
-    if "font" in value:
-        value = re.sub(font_reg_exp, "", value)
-
-    if "br" in value:
-        value = re.sub(br_reg_exp, "", value)
-
-    if "<p" in value:
-        value = re.sub(p_reg_exp, "", value)
-
-    if "<b" in value:
-        value = re.sub(b_reg_exp, "", value)
-
-    if "&lt;" in value:
-        value = re.sub("&lt;", "<", value)
-
-    if "&gt;" in value:
-        value = re.sub("&gt;", ">", value)
-
-    return value
+    text_list = []
+    soup = BeautifulSoup(text, "html.parser")    
+    text = soup.get_text("|")
+    return text
 
 
 def read_drawio_xml(diagram_path):
@@ -115,84 +80,6 @@ def read_drawio_xml(diagram_path):
     return root, root_complete, mxGraphModel, diagram, mxfile, tree
 
 
-def swap_source_target(relation):
-
-    xml_object = relation["xml_object"]
-    swapped = detect_source_target_swapped(xml_object)
-    init_source = relation["source"]
-    init_target = relation["target"]
-
-    if swapped == True:
-        relation["source"] = init_target
-        relation["target"] = init_source
-
-    return relation
-
-
-def detect_source_target_swapped(xml_object):
-
-    style = xml_object.attrib["style"]
-
-    if "startArrow" not in style or "startArrow=none" in style or "startArrow=oval" in style:
-        swapped = False
-    elif "endArrow=none" not in style:
-        swapped = False
-    else:
-        swapped = True
-
-    return swapped
-
-
-def fix_source_target(relations, shapes_list):
-    shapes = {shape_id: shape for shapes in shapes_list for shape_id, shape in shapes.items()}
-    relations_copy = copy.deepcopy(relations)
-
-    mxpoint_x = None
-    mxpoint_y = None
-
-    for id, relation in relations.items():
-        if relation["type"] in ["owl:inverseOf", "rdfs:subPropertyOf", "owl:equivalentProperty"]:
-            continue
-
-        source = relation["source"]
-        target = relation["target"]
-        xml_object = relation["xml_object"]
-        for side in [("source", source), ("target", target)]:
-            side_key = side[0]
-            side_value = side[1]
-            if side_value is None:
-                mxgeometry = xml_object[0]
-                for mxpoint in mxgeometry:
-                    #mxpoint_object = xml_object[0][0]
-                    mxpoint_side = mxpoint.attrib["as"].split("Point")[0]
-                    if mxpoint_side == side_key:
-                        mxpoint_x = float(mxpoint.attrib["x"])
-                        mxpoint_y = float(mxpoint.attrib["y"])
-                        break
-                
-                if mxpoint_x is None or mxpoint_y is None:
-                    continue
-                
-                for shape_id, shape in shapes.items():
-                    xml_shape = shape["xml_object"]
-                    proximity = proximity_to_shape((mxpoint_x, mxpoint_y), xml_shape, thr=10)
-                    if proximity:
-                        relations_copy[id][mxpoint_side] = shape_id
-                        break
-                if relations_copy[id][mxpoint_side] is None:
-                    try:
-                        raise ValueError("The " + mxpoint_side + " side of relation " + relation["prefix"] + ":" +
-                                         relation["uri"] + " is not connected or even close to any shape, verify it!")
-                    except:
-                        raise ValueError("The " + mxpoint_side + " side of a relation of type " + relation["type"] +
-                                         " and id " + id + " is not connected or even close to any shape, "
-                                         "verify it!")
-
-        relations_copy[id] = swap_source_target(relations_copy[id])
-
-    return relations_copy
-
-
 def find_prefixes(concepts, relations, attribute_blocks, individuals):
 
     prefixes = []
@@ -222,19 +109,16 @@ def find_prefixes(concepts, relations, attribute_blocks, individuals):
 
     return prefixes
 
-def highlight_element(root, id):
-
-    for child in root:
-
-        if id == child.attrib["id"]:
-
-            child.attrib["style"] += "fontColor=#FF0000;strokeColor=#FF0000"
-
-    return root
-
 def clean_uri(uri):
 
-    """Function to extract only the uri of any ontology elements, eliminating any
-    other statement like (some), (all), (1..1), etc"""
-    
     uri = re.sub("\(([0-9][^)]+)\)", "", uri).strip()
+    uri = re.sub("\(all\)", "", uri).strip()
+    uri = re.sub("\(some\)", "", uri).strip()
+    uri = re.sub("\(∀\)", "", uri).strip()
+    uri = re.sub("\(∃\)", "", uri).strip()
+    uri = re.sub("\(F\)", "", uri).strip()
+    uri = re.sub("\(IF\)", "", uri).strip()
+    uri = re.sub("\(S\)", "", uri).strip()
+    uri = re.sub("\(T\)", "", uri).strip()
+
+    return uri

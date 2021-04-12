@@ -3,7 +3,6 @@ from modules.finding import *
 from modules.associations import *
 from modules.writer import *
 from modules.utils import *
-from modules.child_tracker import ChildTracker
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ElementTree
 import rdflib
@@ -13,27 +12,24 @@ import os
 
 def transform_ontology(root, filename):
     finder = Finder(root)
-    all_elements = finder.find_elements()
-    concepts, attribute_blocks, relations, individuals, anonymous_concepts, ontology_metadata, namespaces, rhombuses = all_elements
+    concepts, attribute_blocks, relations, individuals, anonymous_concepts, metadata, namespaces, rhombuses = finder.find_elements()
     prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
-    relations = fix_source_target(relations, [concepts, attribute_blocks, individuals, anonymous_concepts, rhombuses])
-    relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks)
+    relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks, concepts)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
     associations = concept_attribute_association(concepts, attribute_blocks)
     associations, relations = concept_relation_association(associations, relations)
     individuals = individual_type_identification(individuals, associations, relations)
 
     file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
-    file = write_ontology_metadata(file, ontology_metadata, onto_uri)
-    file = write_object_properties(file, relations, concepts, anonymous_concepts)
+    file = write_ontology_metadata(file, metadata, onto_uri)
+    file = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks)
     file = write_data_properties(file, attribute_blocks, concepts)
     file = write_concepts(file, concepts, anonymous_concepts, associations)
     file = write_instances(file, individuals)
     file = write_general_axioms(file, concepts, anonymous_concepts)
 
     onto_string = open(filename, encoding="utf-8", errors="ignore").read()
-    g = rdflib.Graph()
-    print(file)
+    g = rdflib.Graph()  
     with open(filename, "r") as file:
         g.parse(file, format="turtle")
 
