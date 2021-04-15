@@ -1,7 +1,8 @@
 import os
 import flask
-from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session
+from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session, jsonify
 from flask_bootstrap import Bootstrap
+import json
 
 from converter import transform_ontology
 from modules.utils import read_drawio_xml
@@ -65,6 +66,34 @@ def diagram_upload():
 
 
         return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, errors=new_namespaces)
+
+
+@app.route("/api", methods=["GET", "POST"])
+def api():
+
+    if request.method == "POST":
+        file = request.files["data"]
+        filename = file.filename
+
+        if filename == "":
+            error = "No file choosen. Please choose a diagram."
+            flash(error)
+            return redirect(url_for("home"))
+
+        root = read_drawio_xml(file)
+        ttl_filename = filename[:-3] + "ttl"
+        xml_filename = filename[:-3] + "owl"
+
+        ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
+        transform_ontology(root, ttl_filepath)
+
+        session["ttl_filename"] = ttl_filename
+
+        with open(ttl_filepath, "r") as f:
+            ttl_data = f.read()
+
+        return ttl_data
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
