@@ -65,8 +65,6 @@ def read_drawio_xml(diagram_path):
         mxGraphModel = ET.fromstring(xml_string)
         root = mxGraphModel[0]
 
-    root_complete = copy.deepcopy(root)
-
     # Eliminate children related to the whole white template
     for elem in root:
         if elem.attrib["id"] == "0":
@@ -77,7 +75,7 @@ def read_drawio_xml(diagram_path):
             root.remove(elem)
             break
 
-    return root, root_complete, mxGraphModel, diagram, mxfile, tree
+    return root
 
 
 def find_prefixes(concepts, relations, attribute_blocks, individuals):

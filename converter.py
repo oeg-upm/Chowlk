@@ -20,7 +20,7 @@ def transform_ontology(root, filename):
     associations, relations = concept_relation_association(associations, relations)
     individuals = individual_type_identification(individuals, associations, relations)
 
-    file, onto_prefix, onto_uri = get_ttl_template(filename, namespaces, prefixes_identified)
+    file, onto_prefix, onto_uri, new_namespaces = get_ttl_template(filename, namespaces, prefixes_identified)
     file = write_ontology_metadata(file, metadata, onto_uri)
     file = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks)
     file = write_data_properties(file, attribute_blocks, concepts)
@@ -35,6 +35,8 @@ def transform_ontology(root, filename):
 
     output_filename = filename.split(".")[0] + ".owl"
     g.serialize(destination=output_filename, format="xml")
+
+    return new_namespaces
     
 
 """def transform_rdf(root, filename):
@@ -79,26 +81,8 @@ if __name__ == "__main__":
     parser.add_argument("type")
     args = parser.parse_args()
 
-    root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(args.diagram_path)
-
-    #try:
+    root = read_drawio_xml(args.diagram_path)
     #if args.type == "ontology":
     transform_ontology(root, args.output_path)
     #elif args.type == "rdf":
     #    transform_rdf(root, args.output_path)
-    #except Exception as e:
-        
-    #    trouble_elem_id = child_tracker.get_last_child()
-    #    root_complete = highlight_element(root_complete, trouble_elem_id)
-    #    mxGraphModel[0] = root_complete
-
-    #    try:
-    #        diagram[0] = mxGraphModel
-    #    except:
-    #        diagram.text = ""
-    #        diagram.append(mxGraphModel)
-
-    #    filename = "data/problematic_diagrams/" + args.diagram_path.split("/")[-1]
-    #    mxfile[0] = diagram
-    #    ElementTree(mxfile).write(filename)
-    #    message = "Please follow the notation specification provided at https://oeg-upm.github.io/chowlk_spec/. See the errors highlighted in red in the diagram."

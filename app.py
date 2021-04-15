@@ -3,9 +3,8 @@ import flask
 from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session
 from flask_bootstrap import Bootstrap
 
-from converter import transform_ontology, transform_rdf
-from modules.utils import read_drawio_xml, highlight_element
-from modules.child_tracker import ChildTracker
+from converter import transform_ontology
+from modules.utils import read_drawio_xml
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ElementTree
 import argparse
@@ -43,15 +42,16 @@ def diagram_upload():
             flash(error)
             return redirect(url_for("home"))
 
-        #try:
-        root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(file)
+        root = read_drawio_xml(file)
         ttl_filename = filename[:-3] + "ttl"
         xml_filename = filename[:-3] + "owl"
         
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
 
-        transform_ontology(root, ttl_filepath)
+        # Prueba error messaging
+        new_namespaces = transform_ontology(root, ttl_filepath)
+
         session["ttl_filename"] = ttl_filename
         session["xml_filename"] = xml_filename
 
@@ -63,23 +63,8 @@ def diagram_upload():
             xml_data = f.read()
             xml_data = xml_data.split('\n')
 
-        #except Exception as e:
-        #    root_complete = highlight_element(root_complete, trouble_elem_id)
-        #    mxGraphModel[0] = root_complete
 
-        #    try:
-        #        diagram[0] = mxGraphModel
-        #    except:
-        #        diagram.text = ""
-        #        diagram.append(mxGraphModel)
-        #    diagram_filepath = os.path.join(app.config["PROBLEMATIC_DIAGRAMS"], filename)
-        #    session["diagram"] = filename
-        #    mxfile[0] = diagram
-        #    ElementTree(mxfile).write(diagram_filepath)
-        #    ttl_data = None
-        #    xml_data = None
-
-        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data)
+        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, errors=new_namespaces)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

@@ -28,7 +28,10 @@ class Finder():
             value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
             ellipse_connection_detected = False
 
-            if "edge" in child.attrib:
+            if "edge" not in child.attrib:
+                continue
+            
+            try:
                 relation = {}
                 source = child.attrib["source"] if "source" in child.attrib else None
                 target = child.attrib["target"] if "target" in child.attrib else None
@@ -72,7 +75,7 @@ class Finder():
                         continue
 
                 # Detection of special type of edges
-                edge_types = ["rdfs:subClassOf", "rdf:type", "owl:equivalentClass", "owl:disjointWith", 
+                edge_types = ["rdfs:subClassOf", "rdf:type", "owl:equivalentClass", "owl:disjointWith", "owl:complementOf", 
                                 "rdfs:subPropertyOf", "owl:equivalentProperty", "owl:inverseOf", "rdfs:domain", "rdfs:range"]
 
                 edge_type_founded = False
@@ -161,6 +164,9 @@ class Finder():
                 
                 self.relations[id] = relation
 
+            except:
+                continue
+
         return self.relations
 
 
@@ -194,13 +200,16 @@ class Finder():
                 text = clean_html_tags(value)
                 annotations = text.split("|")
                 for ann in annotations:
-                    ann_prefix = ann.split(":")[0].strip()
-                    ann_type = ann.split(":")[1].strip()
-                    ann_value = ann.split(":")[2].strip()
-                    if ann_prefix + ":" + ann_type in self.ontology_metadata:
-                        self.ontology_metadata[ann_prefix + ":" + ann_type].append(ann_value)
-                    else:
-                        self.ontology_metadata[ann_prefix + ":" + ann_type] = [ann_value]
+                    try:
+                        ann_prefix = ann.split(":")[0].strip()
+                        ann_type = ann.split(":")[1].strip()
+                        ann_value = ann.split(":")[2].strip()
+                        if ann_prefix + ":" + ann_type in self.ontology_metadata:
+                            self.ontology_metadata[ann_prefix + ":" + ann_type].append(ann_value)
+                        else:
+                            self.ontology_metadata[ann_prefix + ":" + ann_type] = [ann_value]
+                    except:
+                        continue
 
         return self.ontology_metadata
 
@@ -212,31 +221,37 @@ class Finder():
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
             value = child.attrib["value"] if "value" in child.attrib else None
+            try:
+                if "ellipse" in style:
+                    ellipse = {}
+                    ellipse["xml_object"] = child
+                    if "⨅" in value or "owl:intersectionOf" in value:
+                        ellipse["type"] = "owl:intersectionOf"
+                    elif "⨆" in value or "owl:unionOf":
+                        ellipse["type"] = "owl:unionOf"
+                    elif "≡" in value:
+                        ellipse["type"] = "owl:equivalentClass"
+                    elif "⊥" in value:
+                        ellipse["type"] = "owl:disjointWith"
 
-            if "ellipse" in style:
-                ellipse = {}
-                ellipse["xml_object"] = child
-                if "⨅" in value or "owl:intersectionOf" in value:
-                    ellipse["type"] = "owl:intersectionOf"
-                elif "⨆" in value or "owl:unionOf":
-                    ellipse["type"] = "owl:unionOf"
-                elif "≡" in value:
-                    ellipse["type"] = "owl:equivalentClass"
-                elif "⊥" in value:
-                    ellipse["type"] = "owl:disjointWith"
+                    # Find the associated concepts to this union / intersection restriction
+                    ellipse["group"] = []
 
-                # Find the associated concepts to this union / intersection restriction
-                ellipse["group"] = []
+                    for relation_id, relation in self.relations.items():
+                        
+                        if "type" not in relation:
+                            continue
 
-                for relation_id, relation in self.relations.items():
-                    if relation["type"] == "ellipse_connection":
-                        source_id = relation["source"]
-                        if id == source_id:
-                            target_id = relation["target"]
-                            ellipse["group"].append(target_id)
+                        if relation["type"] == "ellipse_connection":
+                            source_id = relation["source"]
+                            if id == source_id:
+                                target_id = relation["target"]
+                                ellipse["group"].append(target_id)
 
-                ellipse["xml_object"] = child
-                self.ellipses[id] = ellipse
+                    ellipse["xml_object"] = child
+                    self.ellipses[id] = ellipse
+            except:
+                continue
 
         return self.ellipses
 
@@ -252,16 +267,19 @@ class Finder():
                 value = child.attrib["value"]
             else:
                 continue
-
-            # List of individuals
-            if "fontStyle=4" in style or "<u>" in value:
-                individual = {}
-                individual["xml_object"] = child
-                value = clean_html_tags(value)
-                individual["prefix"] = value.split(":")[0]
-                individual["uri"] = value.split(":")[1]
-                individual["type"] = None
-                self.individuals[id] = individual
+            
+            try:
+                # List of individuals
+                if "fontStyle=4" in style or "<u>" in value:
+                    individual = {}
+                    individual["xml_object"] = child
+                    value = clean_html_tags(value)
+                    individual["prefix"] = value.split(":")[0]
+                    individual["uri"] = value.split(":")[1]
+                    individual["type"] = None
+                    self.individuals[id] = individual
+            except:
+                continue
 
         return self.individuals
 
@@ -301,77 +319,81 @@ class Finder():
             style = child.attrib["style"] if "style" in child.attrib else ""
             value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
 
-            if "rhombus" in style:
+            try:
+                if "rhombus" in style:
 
-                rhombus = {}
-                rhombus["xml_object"] = child
-                type = value.split(">>")[0].split("<<")[-1].strip()
-                rhombus["type"] = type
+                    rhombus = {}
+                    rhombus["xml_object"] = child
+                    type = value.split(">>")[0].split("<<")[-1].strip()
+                    rhombus["type"] = type
 
-                value = value.split("|")[-1].strip()
-                value = value.split(">>")[-1].strip()
-                prefix = value.split(":")[0].strip()
-                uri = value.split(":")[1].strip()
-                rhombus["prefix"] = prefix
-                rhombus["uri"] = uri
+                    value = value.split("|")[-1].strip()
+                    value = value.split(">>")[-1].strip()
+                    prefix = value.split(":")[0].strip()
+                    uri = value.split(":")[1].strip()
+                    rhombus["prefix"] = prefix
+                    rhombus["uri"] = uri
 
-                self.rhombuses[id] = rhombus
+                    self.rhombuses[id] = rhombus
 
-                if type == "owl:ObjectProperty":
+                    if type == "owl:ObjectProperty":
 
-                    relation_uris = []
+                        relation_uris = []
 
-                    for relation_id, relation in self.relations.items():
-                        if "uri" in relation:
-                            relation_uris.append(relation["uri"])
+                        for relation_id, relation in self.relations.items():
+                            if "uri" in relation:
+                                relation_uris.append(relation["uri"])
 
-                    if uri not in relation_uris:
-                        relation = {}
-                        relation["source"] = None
-                        relation["target"] = None
-                        relation["xml_object"] = child
-                        relation["type"] = type
-                        relation["prefix"] = prefix
-                        relation["uri"] = uri
-                        relation["label"] = create_label(uri, "property")
-                        relation["domain"] = False
-                        relation["range"] = False
-                        relation["allValuesFrom"] = False
-                        relation["someValuesFrom"] = False
-                        relation["functional"] = False
-                        relation["inverse_functional"] = False
-                        relation["transitive"] = False
-                        relation["symmetric"] = False
+                        if uri not in relation_uris:
+                            relation = {}
+                            relation["source"] = None
+                            relation["target"] = None
+                            relation["xml_object"] = child
+                            relation["type"] = type
+                            relation["prefix"] = prefix
+                            relation["uri"] = uri
+                            relation["label"] = create_label(uri, "property")
+                            relation["domain"] = False
+                            relation["range"] = False
+                            relation["allValuesFrom"] = False
+                            relation["someValuesFrom"] = False
+                            relation["functional"] = False
+                            relation["inverse_functional"] = False
+                            relation["transitive"] = False
+                            relation["symmetric"] = False
 
-                    self.relations[id] = relation
+                        self.relations[id] = relation
 
-                elif type == "owl:DatatypeProperty":
+                    elif type == "owl:DatatypeProperty":
 
-                    attribute_uris = []
+                        attribute_uris = []
 
-                    for attribute_block_id, attribute_block in self.attribute_blocks.items():
-                        attributes = attribute_block["attributes"]
-                        for attribute in attributes:
-                            attribute_uris.append(attribute["uri"])
+                        for attribute_block_id, attribute_block in self.attribute_blocks.items():
+                            attributes = attribute_block["attributes"]
+                            for attribute in attributes:
+                                attribute_uris.append(attribute["uri"])
 
-                    if uri not in attribute_uris:
-                        attribute = {}
-                        attribute_block = {}
-                        attribute_block["xml_object"] = child
-                        attribute["prefix"] = prefix
-                        attribute["uri"] = uri
-                        attribute["label"] = create_label(uri, "property")
-                        attribute["datatype"] = None
-                        attribute["functional"] = False
-                        attribute["domain"] = False
-                        attribute["range"] = False
-                        attribute["allValuesFrom"] = False
-                        attribute["someValuesFrom"] = False
-                        attribute["min_cardinality"] = None
-                        attribute["max_cardinality"] = None
-                        attribute_block["attributes"] = [attribute]
+                        if uri not in attribute_uris:
+                            attribute = {}
+                            attribute_block = {}
+                            attribute_block["xml_object"] = child
+                            attribute["prefix"] = prefix
+                            attribute["uri"] = uri
+                            attribute["label"] = create_label(uri, "property")
+                            attribute["datatype"] = None
+                            attribute["functional"] = False
+                            attribute["domain"] = False
+                            attribute["range"] = False
+                            attribute["allValuesFrom"] = False
+                            attribute["someValuesFrom"] = False
+                            attribute["min_cardinality"] = None
+                            attribute["max_cardinality"] = None
+                            attribute_block["attributes"] = [attribute]
 
-                    self.attribute_blocks[id] = attribute_block
+                        self.attribute_blocks[id] = attribute_block
+
+            except:
+                continue
 
         return self.rhombuses
 
@@ -385,126 +407,150 @@ class Finder():
             value = child.attrib["value"] if "value" in child.attrib else ""
             attributes_found = False
 
-            # Check that neither of these components passes, this is because concepts
-            # and attributes shape do not have a specific characteristic to differentiate them
-            # and we have to use the characteristics of the rest of the shapes
-            if "text" in style or "edgeLabel" in style:
-                continue
-            if "edge" in child.attrib:
-                continue
-            if "ellipse" in style:
-                continue
-            if "rhombus" in style:
-                continue
-            if "shape" in style:
-                continue
-            if "fontStyle=4" in style or "<u>" in value:
-                continue
-            if "&quot;" in value or "^^" in value:
-                continue
-            concept = {}
-            attribute_block = {}
-            attribute_block["xml_object"] = child
+            try:
+                # Check that neither of these components passes, this is because concepts
+                # and attributes shape do not have a specific characteristic to differentiate them
+                # and we have to use the characteristics of the rest of the shapes
+                if "text" in style or "edgeLabel" in style:
+                    continue
+                if "edge" in child.attrib:
+                    continue
+                if "ellipse" in style:
+                    continue
+                if "rhombus" in style:
+                    continue
+                if "shape" in style:
+                    continue
+                if "fontStyle=4" in style or "<u>" in value:
+                    continue
+                if "&quot;" in value or "^^" in value:
+                    continue
+                concept = {}
+                attribute_block = {}
+                attribute_block["xml_object"] = child
 
-            p1, p2, p3, p4 = get_corners_rect_child(child)
+                p1, p2, p3, p4 = get_corners_rect_child(child)
 
-            # We need a second iteration because we need to know if there is a block
-            # on top of the current block, that determines if we are dealing with a class or attributes
-            for child2 in self.root:
-                style2 = child2.attrib["style"] if "style" in child2.attrib else ""
-                # Filter all the elements except attributes and classes
-                if "text" in style2 or "edgeLabel" in style2:
-                    continue
-                if "edge" in child2.attrib:
-                    continue
-                if "ellipse" in style2:
-                    continue
-                if "rhombus" in style2:
-                    continue
-                if "shape" in style2:
-                    continue
+                # We need a second iteration because we need to know if there is a block
+                # on top of the current block, that determines if we are dealing with a class or attributes
+                for child2 in self.root:
+                    style2 = child2.attrib["style"] if "style" in child2.attrib else ""
+                    # Filter all the elements except attributes and classes
+                    if "text" in style2 or "edgeLabel" in style2:
+                        continue
+                    if "edge" in child2.attrib:
+                        continue
+                    if "ellipse" in style2:
+                        continue
+                    if "rhombus" in style2:
+                        continue
+                    if "shape" in style2:
+                        continue
 
-                p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(child2)
-                dx = abs(p1[0] - p2_support[0])
-                dy = abs(p1[1] - p2_support[1])
+                    p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(child2)
+                    dx = abs(p1[0] - p2_support[0])
+                    dy = abs(p1[1] - p2_support[1])
 
-                if dx < 5 and dy < 5:
-                    attributes = []
+                    if dx < 5 and dy < 5:
+                        attributes = []
+                        value = clean_html_tags(value)
+                        attribute_list = value.split("|")
+                        domain = False if "dashed=1" in style else child2.attrib["id"]
+                        for attribute_value in attribute_list:
+                            attribute = {}
+                            attribute_value_cleaned = clean_uri(attribute_value)
+                            attribute["prefix"] = attribute_value_cleaned.split(":")[0].strip()
+                            attribute["uri"] = attribute_value_cleaned.split(":")[1].strip()
+                            attribute["label"] = create_label(attribute["uri"], "property")
+
+                            if len(attribute_value.split(":")) > 2:
+                                final_datatype = attribute_value.split(":")[2].strip()
+                                final_datatype = final_datatype[0].lower() + final_datatype[1:]
+                                attribute["datatype"] = final_datatype
+                            else:
+                                attribute["datatype"] = None
+
+                            if attribute["datatype"] is None or attribute["datatype"] == "":
+                                attribute["range"] = False
+                            else:
+                                attribute["range"] = True
+
+                            attribute["domain"] = domain
+
+                            # Existential Universal restriction evaluation
+                            if "(all)" in attribute_value or "∀" in attribute_value:
+                                attribute["allValuesFrom"] = True
+                            else:
+                                attribute["allValuesFrom"] = False
+
+                            if "(some)" in attribute_value or "∃" in attribute_value:
+                                attribute["someValuesFrom"] = True
+                            else:
+                                attribute["someValuesFrom"] = False
+
+                            attribute["functional"] = True if "(F)" in attribute_value else False
+
+                            if len(attribute_value.split("..")) > 1:
+                                attribute["min_cardinality"] = attribute_value.split("..")[0][-1]
+                            else:
+                                attribute["min_cardinality"] = None
+
+                            if attribute["min_cardinality"] == "0":
+                                attribute["min_cardinality"] = None
+
+                            if len(attribute_value.split("..")) > 1:
+                                attribute["max_cardinality"] = attribute_value.split("..")[1].split(")")[0]
+                            else:
+                                attribute["max_cardinality"] = None
+
+                            if attribute["max_cardinality"] == "N":
+                                attribute["max_cardinality"] = None
+
+                            if attribute["min_cardinality"] == attribute["max_cardinality"]:
+                                attribute["cardinality"] = attribute["min_cardinality"]
+                                attribute["min_cardinality"] = None
+                                attribute["max_cardinality"] = None
+                            else:
+                                attribute["cardinality"] = None
+
+                            attributes.append(attribute)
+                        attribute_block["attributes"] = attributes
+                        attribute_block["concept_associated"] = child2.attrib["id"]
+                        self.attribute_blocks[id] = attribute_block
+                        attributes_found = True
+                        break
+                # If after a dense one to all evaluation the object selected cannot be associated
+                # to any other object it means that it is a class
+                if not attributes_found and value != "":
+
+                    # First we have to verify they are actually concepts
+
+                    # One way is to verify breaks in the text
+                    value = clean_html_tags(value).strip()
+                    if "|" in value:
+                        continue
+
+                    # Other option is to verify things like functionality, some, all, etc.
+                    if "(F)" in value or "some" in value or "all" in value:
+                        continue
+                    
+                    # If datatype is mentioned
+                    if len(value.split(":")) > 2:
+                        continue
+
+                    # If cardinality is indicated
+                    if len(value.split("..")) > 1:
+                        continue
+
                     value = clean_html_tags(value)
-                    attribute_list = value.split("|")
-                    domain = False if "dashed=1" in style else child2.attrib["id"]
-                    for attribute_value in attribute_list:
-                        attribute = {}
-                        attribute_value_cleaned = clean_uri(attribute_value)
-                        attribute["prefix"] = attribute_value_cleaned.split(":")[0]
-                        attribute["uri"] = attribute_value_cleaned.split(":")[1]
-                        attribute["label"] = create_label(attribute["uri"], "property")
+                    concept["prefix"] = value.split(":")[0].strip()
+                    concept["uri"] = value.split(":")[1].strip()
+                    concept["label"] = create_label(concept["uri"], "class")
+                    concept["xml_object"] = child
+                    self.concepts[id] = concept
 
-                        if len(attribute_value.split(":")) > 2:
-                            final_datatype = attribute_value.split(":")[2].strip()
-                            final_datatype = final_datatype[0].lower() + final_datatype[1:]
-                            attribute["datatype"] = final_datatype
-                        else:
-                            attribute["datatype"] = None
-
-                        if attribute["datatype"] is None or attribute["datatype"] == "":
-                            attribute["range"] = False
-                        else:
-                            attribute["range"] = True
-
-                        attribute["domain"] = domain
-
-                        # Existential Universal restriction evaluation
-                        if "(all)" in attribute_value or "∀" in attribute_value:
-                            attribute["allValuesFrom"] = True
-                        else:
-                            attribute["allValuesFrom"] = False
-
-                        if "(some)" in attribute_value or "∃" in attribute_value:
-                            attribute["someValuesFrom"] = True
-                        else:
-                            attribute["someValuesFrom"] = False
-
-                        attribute["functional"] = True if "(F)" in attribute_value else False
-
-                        if len(attribute_value.split("..")) > 1:
-                            attribute["min_cardinality"] = attribute_value.split("..")[0][-1]
-                        else:
-                            attribute["min_cardinality"] = None
-
-                        if attribute["min_cardinality"] == "0":
-                            attribute["min_cardinality"] = None
-
-                        if len(attribute_value.split("..")) > 1:
-                            attribute["max_cardinality"] = attribute_value.split("..")[1].split(")")[0]
-                        else:
-                            attribute["max_cardinality"] = None
-
-                        if attribute["max_cardinality"] == "N":
-                            attribute["max_cardinality"] = None
-
-                        if attribute["min_cardinality"] == attribute["max_cardinality"]:
-                            attribute["cardinality"] = attribute["min_cardinality"]
-                            attribute["min_cardinality"] = None
-                            attribute["max_cardinality"] = None
-                        else:
-                            attribute["cardinality"] = None
-
-                        attributes.append(attribute)
-                    attribute_block["attributes"] = attributes
-                    attribute_block["concept_associated"] = child2.attrib["id"]
-                    self.attribute_blocks[id] = attribute_block
-                    attributes_found = True
-                    break
-            # If after a dense one to all evaluation the object selected cannot be associated
-            # to any other object it means that it is a class
-            if not attributes_found and value != "":
-                value = clean_html_tags(value)
-                concept["prefix"] = value.split(":")[0].strip()
-                concept["uri"] = value.split(":")[1].strip()
-                concept["label"] = create_label(concept["uri"], "class")
-                concept["xml_object"] = child
-                self.concepts[id] = concept
+            except:
+                continue
 
         return self.concepts, self.attribute_blocks
 

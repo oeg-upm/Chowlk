@@ -49,7 +49,8 @@ def concept_attribute_association(concepts, attribute_blocks):
 def concept_relation_association(associations, relations):
 
     for relation_id, relation in relations.items():
-        if relation["type"] in ["rdf:type", "ellipse_connection", "rdfs:range", "rdfs:domain"]:
+        type = relation["type"] if "type" in relation else None
+        if type in ["rdf:type", "ellipse_connection", "rdfs:range", "rdfs:domain"]:
             continue
         source_id = relation["source"]
         target_id = relation["target"]
@@ -74,11 +75,15 @@ def concept_relation_association(associations, relations):
 def individual_type_identification(individuals, associations, relations):
 
     for id, relation in relations.items():
+
+        if "type" not in relation:
+            continue
+
         if relation["type"] != "rdf:type":
             continue
         source_id = relation["source"]
         target_id = relation["target"]
-
+        
         if source_id is None or target_id is None:
             continue
 
@@ -88,7 +93,9 @@ def individual_type_identification(individuals, associations, relations):
             continue
 
         for concept_id, association in associations.items():
+
             if target_id == concept_id or target_id in association["attribute_blocks"]:
+
                 prefix = association["concept"]["prefix"]
                 uri = association["concept"]["uri"]
                 individual["type"] = prefix + ":" + uri
@@ -181,21 +188,18 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
     attributes_byname = {attribute["uri"]: [id, idx] for id, attribute_block in attribute_blocks.items()
                          for idx, attribute in enumerate(attribute_block["attributes"])}
     relations_copy = copy.deepcopy(relations)
-    print(rhombuses)
     for relation_id, relation in relations.items():
 
         source_id = relation["source"]
         target_id = relation["target"]
-        type = relation["type"]
+        
+        if source_id is None or target_id is None:
+            continue
+
+        type = relation["type"] if "type" in relation else None
         cases = ["rdfs:subPropertyOf", "owl:inverseOf", "owl:equivalentProperty", "rdfs:domain", "rdfs:range"]
 
         if type in cases:
-
-            print(type)
-
-            print(source_id)
-            print(target_id)
-            
             # Domain and range are without the "rdfs" prefix in the data structure
             type = type.split(":")[1] if type in ["rdfs:domain", "rdfs:range"] else type
 
@@ -218,51 +222,47 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
             elif source_id in rhombuses and type in ["domain", "range"]:
 
                 source_property = rhombuses[source_id]
-                target_concept = concepts[target_id]
                 sprop_type = source_property["type"]
                 sprop_name = source_property["uri"]
 
                 if sprop_type == "owl:ObjectProperty":
                     sprop_id = relations_byname[sprop_name]
-                    #relations_copy[sprop_id][type] = target_concept["prefix"] + ":" + target_concept["uri"]
                     relations_copy[sprop_id][type] = target_id
-                    print(target_concept)
 
                 elif sprop_type == "owl:DatatypeProperty":
-                    print("Here")
                     sprop_id = attributes_byname[sprop_name][0]
                     sprop_idx = attributes_byname[sprop_name][1]
-                    #attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_concept["prefix"] + ":" + target_concept["uri"]
-                    print(attribute_blocks[sprop_id]["attributes"])
-                    print(type)
                     attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_id
-                    print(attribute_blocks[sprop_id]["attributes"])
-                    print(attribute_blocks[sprop_id])
-                    print(attribute_blocks)
 
 
 
 
     for rhombus_id, rhombus in rhombuses.items():
 
-        type = rhombus["type"]
-        prop_name = rhombus["uri"]
-        if type == "owl:InverseFunctionalProperty":
-            prop_id = relations_byname[prop_name]
-            relations_copy[prop_id]["inverse_functional"] = True
-        elif type == "owl:TransitiveProperty":
-            prop_id = relations_byname[prop_name]
-            relations_copy[prop_id]["transitive"] = True
-        elif type == "owl:SymmetricProperty":
-            prop_id = relations_byname[prop_name]
-            relations_copy[prop_id]["symmetric"] = True
-        elif type == "owl:FunctionalProperty":
-            if prop_name in relations_byname:
+        try:
+            type = rhombus["type"]
+            prop_name = rhombus["uri"]
+            if type == "owl:InverseFunctionalProperty":
                 prop_id = relations_byname[prop_name]
-                relations_copy[prop_id]["functional"] = True
-            else:
-                prop_id = attributes_byname[prop_name][0]
-                prop_idx = attributes_byname[prop_name][1]
-                attribute_blocks[prop_id]["attributes"][prop_idx]["functional"] = True
+                relations_copy[prop_id]["inverse_functional"] = True
+            elif type == "owl:TransitiveProperty":
+                prop_id = relations_byname[prop_name]
+                relations_copy[prop_id]["transitive"] = True
+            elif type == "owl:SymmetricProperty":
+                prop_id = relations_byname[prop_name]
+                relations_copy[prop_id]["symmetric"] = True
+            elif type == "owl:FunctionalProperty":
+                if prop_name in relations_byname:
+                    prop_id = relations_byname[prop_name]
+                    relations_copy[prop_id]["functional"] = True
+                else:
+                    print("hello")
+                    print(prop_name)
+                    print(attributes_byname)
+                    prop_id = attributes_byname[prop_name][0]
+                    prop_idx = attributes_byname[prop_name][1]
+                    attribute_blocks[prop_id]["attributes"][prop_idx]["functional"] = True
+        except:
+            continue
 
     return relations_copy, attribute_blocks

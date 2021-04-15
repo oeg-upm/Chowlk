@@ -29,10 +29,18 @@
     {% else %}
         <h3>Error Message</h3>
         <p>Please follow the notation provided at <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk Visual Notation</a>.<br>
-            Check the diagram with the errors highlighted in red. Use <a href="https://www.diagrams.net/">diagrams.net</a> to load the diagram 
-            and see where is the error.</p>
-       <a href="{{url_for('download', format='diagram')}}">Download Diagram</a> 
     {% endif %}
+
+    {% if errors %}
+
+        <p>The following namespaces where found in the ontology but not in the namespace declaration block. Please check them:</p>
+
+        {% for error in errors %}
+            <p><b>{{ error }}: </b>{{ errors[error] }}</p>
+        {% endfor %}
+
+    {% endif %}
+
     {% if ttl_data %}
     <div class="row">
         <div class="container col-xs-6">

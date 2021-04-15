@@ -1,4 +1,4 @@
-def get_ttl_template(filename, namespaces, prefixes_finded):
+def get_ttl_template(filename, namespaces, prefixes_fonded):
 
     file = open(filename, 'w', encoding="utf-8")
 
@@ -12,21 +12,28 @@ def get_ttl_template(filename, namespaces, prefixes_finded):
                "@prefix vann: <http://purl.org/vocab/vann/> .\n")
 
     not_found = []
-    for prefix in prefixes_finded:
+    for prefix in prefixes_fonded:
         if prefix not in namespaces:
             not_found.append(prefix)
 
-    if len(not_found) > 0:
-        prefixes_string = ", ".join(not_found)
-        raise ValueError("The following prefixes were not found in the namespace declaration: " + prefixes_string)
+    default_uri = "http://www.owl-ontologies.com/{}#"
+    new_namespaces = dict()
+
+    for ns in not_found:
+        new_namespaces[ns] = default_uri.format(ns)
 
     onto_prefix = list(namespaces.keys())[0]
     onto_uri = namespaces[onto_prefix]
+
     for prefix, uri in namespaces.items():
         file.write("@prefix " + prefix + ": <" + uri + "> .\n")
+
+    for prefix, uri in new_namespaces.items():
+        file.write("@prefix " + prefix + ": <" + uri + "> .\n")
+    
     file.write("@base <" + onto_uri + "> .\n\n")
 
-    return file, onto_prefix, onto_uri
+    return file, onto_prefix, onto_uri, new_namespaces
 
 def write_ontology_metadata(file, metadata, onto_uri):
 
@@ -49,6 +56,9 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                "#################################################################\n\n")
 
     for relation_id, relation in relations.items():
+
+        if "type" not in relation:
+            continue
 
         if relation["type"] == "owl:ObjectProperty":
             uri = relation["uri"]
@@ -163,7 +173,7 @@ def write_data_properties(file, attribute_blocks, concepts):
                 file.write(" ;\n")
                 file.write("\t\trdfs:domain " + domain_name)
 
-            if attribute["range"]:
+            if attribute["range"] and attribute["datatype"]:
                 file.write(" ;\n")
                 file.write("\t\trdfs:range xsd:" + attribute["datatype"])
                 #file.write("\t\trdfs:range xsd:" + attribute["range"])
@@ -207,6 +217,10 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
         relations = association["relations"]
         subclassof_statement_done = False
         for relation_id, relation in relations.items():
+
+            if "type" not in relation:
+                continue
+
             if relation["type"] == "rdfs:subClassOf":
                 target_id = relation["target"]
                 target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
@@ -276,6 +290,10 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                                 "nonNegativeInteger ]\n")                
 
         for relation_id, relation in relations.items():
+
+            if "type" not in relation:
+                continue
+
             if relation["type"] == "owl:ObjectProperty":
                 if relation["allValuesFrom"]:
                     if not subclassof_statement_done:
@@ -372,11 +390,21 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                                "nonNegativeInteger ]")
 
         for relation_id, relation in relations.items():
+            
+            if "type" not in relation:
+                continue
+
             if relation["type"] == "owl:disjointWith":
                 file.write(" ;\n")
                 target_id = relation["target"]
                 target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
                 file.write("\towl:disjointWith " + target_name)
+
+            elif relation["type"] == "owl:complementOf":
+                file.write(" ;\n")
+                target_id = relation["target"]
+                target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
+                file.write("\towl:complementOf " + target_name)
 
             elif relation["type"] == "owl:equivalentClass":
                 file.write(" ;\n")
@@ -413,6 +441,21 @@ def write_concepts(file, concepts, anonymous_concepts, associations):
                 continue
 
             if concept_id in blank["group"] and blank["type"] == "owl:disjointWith":
+                file.write(" ;\n")
+                if blank["group"].index(concept_id) == 0:
+                    complement_id = blank["group"][1]
+                else:
+                    complement_id = blank["group"][0]
+                
+                if complement_id is None:
+                    continue
+                
+                complement_concept = concepts[complement_id]
+                complement_name = complement_concept["prefix"] + ":" + complement_concept["uri"]
+                file.write("\t" + blank["type"] + " " + complement_name)
+
+
+            elif concept_id in blank["group"] and blank["type"] == "owl:complementOf":
                 file.write(" ;\n")
                 if blank["group"].index(concept_id) == 0:
                     complement_id = blank["group"][1]
@@ -480,8 +523,11 @@ def write_instances(file, individuals):
         uri = individual["uri"]
         type = individual["type"]
         file.write("### " + prefix + ":" + uri + "\n")
-        file.write(prefix + ":" + uri + " rdf:type owl:NamedIndividual ,\n")
-        file.write("\t\t" + type + " .\n\n")
+        file.write(prefix + ":" + uri + " rdf:type owl:NamedIndividual")
+        if type is None:
+            file.write(" .\n")
+        else:
+            file.write(",\n\t\t" + type + " .\n\n")
 
     return file
 
