@@ -235,8 +235,6 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
                     attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_id
 
 
-
-
     for rhombus_id, rhombus in rhombuses.items():
 
         try:
@@ -256,9 +254,6 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
                     prop_id = relations_byname[prop_name]
                     relations_copy[prop_id]["functional"] = True
                 else:
-                    print("hello")
-                    print(prop_name)
-                    print(attributes_byname)
                     prop_id = attributes_byname[prop_name][0]
                     prop_idx = attributes_byname[prop_name][1]
                     attribute_blocks[prop_id]["attributes"][prop_idx]["functional"] = True

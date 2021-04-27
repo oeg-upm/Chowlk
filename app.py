@@ -24,7 +24,7 @@ def home():
 
 @app.route("/download/<path:format>", methods=["GET", "POST"])
 def download(format):
-    ontology_directory = os.path.join(current_app.root_path, app.config["OUTPUT_FOLDER"])
+    ontology_directory = os.path.join(current_app.root_path, app.config["TEMPORAL_FOLDER"])
     if format == "ttl":
         return send_from_directory(ontology_directory, session.get("ttl_filename"), as_attachment=True)
     elif format == "xml":
@@ -51,7 +51,7 @@ def diagram_upload():
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
 
         # Prueba error messaging
-        new_namespaces = transform_ontology(root, ttl_filepath)
+        new_namespaces, errors = transform_ontology(root, ttl_filepath)
 
         session["ttl_filename"] = ttl_filename
         session["xml_filename"] = xml_filename
@@ -65,7 +65,7 @@ def diagram_upload():
             xml_data = xml_data.split('\n')
 
 
-        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, errors=new_namespaces)
+        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, namespaces=new_namespaces, errors=errors)
 
 
 @app.route("/api", methods=["GET", "POST"])

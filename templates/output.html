@@ -25,20 +25,61 @@
 
 <div class="container" id="main-container">
     {% if ttl_data %}
-        <p><b>Conversion Successful!</b></p>
+        <h3><b>Conversion Successful!</b></h3>
     {% else %}
         <h3>Error Message</h3>
         <p>Please follow the notation provided at <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk Visual Notation</a>.<br>
     {% endif %}
+    {% if namespaces %}
+        <div>
+            <h4><b>Namespaces</b></h4>
+            <p>
+                The following namespaces were found in the ontology but not in the namespace declaration block.<br>
+                We created the following namespaces for you, please check them:
+            </p>
+
+            {% for namespace in namespaces %}
+                <ul>
+                    <li><b>{{ namespace }}: </b>{{ namespaces[namespace] }}</li>
+                </ul>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {% if errors %}
+    <div>
 
-        <p>The following namespaces where found in the ontology but not in the namespace declaration block. Please check them:</p>
-
-        {% for error in errors %}
-            <p><b>{{ error }}: </b>{{ errors[error] }}</p>
-        {% endfor %}
-
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            {% for error in errors %}
+                {% if errors[error] %}
+                    {% if loop.index == 1 %}
+                        <h4><b>Errors</b></h4>
+                    {% endif %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="heading{{loop.index}}">
+                            <h5 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapseTwo">
+                                    {{error}}
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapse{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{loop.index}}">
+                            <div class="panel-body">
+                                <ul>
+                                    {% for shape in errors[error] %}
+                                        <li>
+                                            <b>Value: </b>{{shape["value"]}}, <b>Problem: </b>{{shape["message"]}}, <b>Shape id: </b>{{shape["shape_id"]}}
+                                        </li>
+                                    
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
     {% endif %}
 
     {% if ttl_data %}

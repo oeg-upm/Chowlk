@@ -12,7 +12,7 @@ import os
 
 def transform_ontology(root, filename):
     finder = Finder(root)
-    concepts, attribute_blocks, relations, individuals, anonymous_concepts, metadata, namespaces, rhombuses = finder.find_elements()
+    concepts, attribute_blocks, relations, individuals, anonymous_concepts, metadata, namespaces, rhombuses, errors = finder.find_elements()
     prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
     relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks, concepts)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
@@ -29,14 +29,14 @@ def transform_ontology(root, filename):
     file = write_general_axioms(file, concepts, anonymous_concepts)
 
     onto_string = open(filename, encoding="utf-8", errors="ignore").read()
-    g = rdflib.Graph()  
+    g = rdflib.Graph()
     with open(filename, "r") as file:
         g.parse(file, format="turtle")
 
     output_filename = filename.split(".")[0] + ".owl"
     g.serialize(destination=output_filename, format="xml")
 
-    return new_namespaces
+    return new_namespaces, errors
     
 
 """def transform_rdf(root, filename):
