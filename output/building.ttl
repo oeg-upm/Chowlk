@@ -17,7 +17,8 @@
 			dc:creator "Serge Chávez-Feria" ;
 			dc:creator "María Poveda-Villalón" ;
 			owl:versionInfo "0.0.5" ;
-			dc:title "Building Ontology" .
+			dc:title "Building Ontology" ;
+			dc:description "Ontology code created by Chowlk" .
 
 #################################################################
 #    Object Properties
@@ -137,10 +138,7 @@ building:Building rdf:type owl:Class ;
 		[ rdf:type owl:Restriction ;
 		  owl:onProperty building:buildingAddress ;
 		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasStorey ;
-		  owl:allValuesFrom building:Storey ] .
+ .
 
 ### bot:Element
 bot:Element rdf:type owl:Class ;
@@ -169,24 +167,6 @@ building:Space rdf:type owl:Class ;
 ### bot:Zone
 bot:Zone rdf:type owl:Class ;
 	rdfs:label "Zone" .
-
-### building:Storey
-building:Storey rdf:type owl:Class ;
-	rdfs:label "Storey" ;
-	rdfs:subClassOf bot:Storey ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasElement ;
-		  owl:allValuesFrom building:Element ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:containsZone ;
-		  owl:someValuesFrom building:Apartment ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:hasApartment ;
-		  owl:allValuesFrom building:Apartment ] .
 
 ### building:Apartment
 building:Apartment rdf:type owl:Class ;
@@ -239,11 +219,6 @@ building:Window rdf:type owl:Class ;
 	rdfs:label "Window" ;
 	rdfs:subClassOf building:BuildingElement .
 
-### building:Wall
-building:Wall rdf:type owl:Class ;
-	rdfs:label "Wall" ;
-	rdfs:subClassOf building:BuildingElement .
-
 ### s4bldg:EnergyConversionDevice
 s4bldg:EnergyConversionDevice rdf:type owl:Class ;
 	rdfs:label "Energy Conversion Device" ;
@@ -277,10 +252,6 @@ s4bldg:TubeBundle rdf:type owl:Class ;
 ### bot:Space
 bot:Space rdf:type owl:Class ;
 	rdfs:label "Space" .
-
-### bot:Storey
-bot:Storey rdf:type owl:Class ;
-	rdfs:label "Storey" .
 
 ### bot:Building
 bot:Building rdf:type owl:Class ;

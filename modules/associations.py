@@ -18,7 +18,7 @@ def resolve_concept_reference(attribute_blocks, concepts):
             continue
         source_id = attribute_block["concept_associated"]
         # Check if the object associated to this set of attributes (attribute block) is really a concept
-        if source_id not in concepts:
+        if source_id not in concepts and source_id in attribute_blocks:
             # If a the id was not from a concept look for the attributes associated
             # and take its concept associated
             real_id = attribute_blocks[source_id]["concept_associated"]
@@ -41,7 +41,8 @@ def concept_attribute_association(concepts, attribute_blocks):
     for id, attribute_block in attribute_blocks.items():
         if "concept_associated" in attribute_block:
             concept_id = attribute_block["concept_associated"]
-            associations[concept_id]["attribute_blocks"][id] = attribute_block
+            if concept_id in associations:
+                associations[concept_id]["attribute_blocks"][id] = attribute_block
 
     return associations
 
