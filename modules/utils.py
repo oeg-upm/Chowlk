@@ -36,7 +36,7 @@ def create_label(uri, type):
 
 def clean_html_tags(text, metadata=False):
 
-    html_tags = ["<b>", "</b>", "(<span .[^>]+\>)", "<span>", "</span>"]
+    html_tags = ["<b>", "</b>", "(<span .[^>]+\>)", "(<font .[^>]+\>)", "<span>", "</span>"]
 
     for tag in html_tags:
         text = re.sub(tag, "", text)

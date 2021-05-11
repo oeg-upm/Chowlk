@@ -633,6 +633,7 @@ class Finder():
                         break
                 # If after a dense one to all evaluation the object selected cannot be associated
                 # to any other object it means that it is a class
+                #value = clean_html_tags(value).strip()
                 if not attributes_found and value != "":
 
                     # First we have to verify they are actually concepts

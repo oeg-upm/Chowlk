@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2021-05-11T14:12:21.937Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36" version="14.6.9" etag="-jB1IAw18Ei-Zpe8T4Qm" type="google">
+  <diagram id="dqVtgFSzXbZSjmIcoLpS">
+    <mxGraphModel dx="1929" dy="2188" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="&lt;div&gt;&lt;b&gt;renp&lt;/b&gt;:&amp;nbsp;http://bimerr.iot.linkeddata.es/def/renovation-processes#&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;text-align: left&quot;&gt;&lt;b&gt;kpi:&lt;/b&gt;&amp;nbsp;&lt;/span&gt;&lt;span&gt;http://bimerr.iot.linkeddata.es/def/key-performance-indicators#&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;time:&lt;/b&gt;&amp;nbsp;http://www.w3.org/2006/time#&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;building:&lt;/b&gt;&amp;nbsp;http://bimerr.iot.linkeddata.es/def/building#&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+          <mxGeometry x="70" y="-610" width="420" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="&lt;div&gt;&lt;b&gt;dc:creator:&lt;/b&gt;&amp;nbsp;Serge Chávez-Feria&lt;/div&gt;&lt;div&gt;&lt;b&gt;dc:creator:&lt;/b&gt; María Poveda-Villalón&lt;/div&gt;&lt;div&gt;&lt;b&gt;owl:versionInfo:&lt;/b&gt; 0.0.2&lt;/div&gt;&lt;div&gt;&lt;b&gt;dc:title:&lt;/b&gt; Renovation Processes Ontology&lt;/div&gt;" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;labelBackgroundColor=#ffffff;strokeColor=#000000;fontSize=12;fontColor=#000000;size=0.23333333333333334;" vertex="1" parent="1">
+          <mxGeometry x="104.99999999999977" y="-490" width="350" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="renp:hasProcess (1..N)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" source="5" target="13" parent="1">
+          <mxGeometry x="-0.2552" relative="1" as="geometry">
+            <mxPoint x="200" y="-931" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5" value="kpi:Project" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+          <mxGeometry x="80" y="-1023" width="160" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="renp:plannedStart (1..1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.362;exitY=-0.019;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" source="13" target="17" parent="1">
+          <mxGeometry x="0.332" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7" value="renp:performedOverComponent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;" edge="1" source="13" target="15" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="renp:performedAtSpace" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;" edge="1" source="13" target="16" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="renp:performedAtStorey" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="13" target="25" parent="1">
+          <mxGeometry x="0.4271" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="610" y="-911" />
+              <mxPoint x="610" y="-766" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" value="renp:plannedFinish (1..1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" source="13" target="17" parent="1">
+          <mxGeometry x="0.3097" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" value="renp:actualStart (1..1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.624;exitY=-0.016;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" source="13" target="23" parent="1">
+          <mxGeometry x="0.28" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" value="renp:actualFinish (1..1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" source="13" target="23" parent="1">
+          <mxGeometry x="0.234" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" value="renp:Process" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="390" y="-931" width="200" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="renp:Worker" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="50" y="-740" width="180" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="building:&lt;font face=&quot;roboto, robotodraft, helvetica, arial, sans-serif&quot;&gt;&lt;span style=&quot;white-space: pre-wrap&quot;&gt;Element&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="760" y="-979" width="185.87" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="building:&lt;font face=&quot;roboto, robotodraft, helvetica, arial, sans-serif&quot;&gt;&lt;span style=&quot;white-space: pre-wrap&quot;&gt;Space&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="760" y="-880" width="185.87" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="time:&lt;font face=&quot;roboto, robotodraft, helvetica, arial, sans-serif&quot;&gt;&lt;span style=&quot;white-space: pre-wrap&quot;&gt;Instant&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="655.87" y="-1070" width="290" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="renp:executedBy (1..1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=oval;startFill=0;" edge="1" source="13" target="14" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="renp:hasTask" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="20" target="27" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="renp:name (1..1) : String&lt;br&gt;renp:identifier (1..1) : String&lt;br&gt;renp:executionStatus (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="-904" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="renp:name (1..1) : String&lt;br&gt;building:ifcIdentifier (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="-853" width="185.87" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="renp:name (1..1) : String&lt;br&gt;building:ifcIdentifier (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="-952" width="185.87" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="time:inXSDDateTimeStamp (1..1) : DateTimeStamp" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="655.87" y="-1043" width="290" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="renp:name (1..1) : String&lt;br&gt;renp:identifier (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="-996" width="160" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="building:&lt;font face=&quot;roboto, robotodraft, helvetica, arial, sans-serif&quot;&gt;&lt;span style=&quot;white-space: pre-wrap&quot;&gt;Storey&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="760" y="-780" width="185.87" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="renp:name (1..1) : String&lt;br&gt;building:ifcIdentifier (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="-753" width="185.87" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="27" value="renp:Task" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="390" y="-740" width="200" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="renp:name (1..1) : String&lt;br&gt;renp:identifier (1..1) : String&lt;br&gt;renp:result (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="-713" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="29" value="renp:identifier (1..1) : String&lt;br&gt;renp:email (1..1) : String" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="-713" width="180" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="renp:executedBy (1..N)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=oval;startFill=0;" edge="1" source="27" target="14" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
