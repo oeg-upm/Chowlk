@@ -85,15 +85,34 @@ def api():
         xml_filename = filename[:-3] + "owl"
 
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
-        namespaces, errors = transform_ontology(root, ttl_filepath)
+        transform_ontology(root, ttl_filepath)
 
         session["ttl_filename"] = ttl_filename
 
         with open(ttl_filepath, "r") as f:
             ttl_data = f.read()
 
-        return ttl_data, errors
+        return ttl_data
 
+@app.route("/errors", methods=["GET", "POST"])
+def errors():
+
+    if request.method == "POST":
+        file = request.files["data"]
+        filename = file.filename
+
+        if filename == "":
+            error = "No file choosen. Please choose a diagram."
+            flash(error)
+            return redirect(url_for("home"))
+
+        root = read_drawio_xml(file)
+        ttl_filename = filename[:-3] + "ttl"
+
+        ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
+        namespaces, errors = transform_ontology(root, ttl_filepath)
+
+        return jsonify(errors)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

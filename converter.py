@@ -83,6 +83,7 @@ if __name__ == "__main__":
 
     root = read_drawio_xml(args.diagram_path)
     #if args.type == "ontology":
-    transform_ontology(root, args.output_path)
+    namespaces, errors = transform_ontology(root, args.output_path)
+    print(errors)
     #elif args.type == "rdf":
     #    transform_rdf(root, args.output_path)
