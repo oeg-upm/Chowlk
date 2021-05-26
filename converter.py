@@ -28,13 +28,14 @@ def transform_ontology(root, filename):
     file = write_instances(file, individuals)
     file = write_general_axioms(file, concepts, anonymous_concepts)
 
-    onto_string = open(filename, encoding="utf-8", errors="ignore").read()
     g = rdflib.Graph()
     with open(filename, "r") as file:
         g.parse(file, format="turtle")
 
-    output_filename = filename.split(".")[0] + ".owl"
-    g.serialize(destination=output_filename, format="xml")
+    ttl_output_filename = filename.split(".")[0] + ".ttl"
+    xml_output_filename = filename.split(".")[0] + ".owl"
+    g.serialize(destination=ttl_output_filename, format="turtle")
+    g.serialize(destination=xml_output_filename, format="xml")
 
     return new_namespaces, errors
     

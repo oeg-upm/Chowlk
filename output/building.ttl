@@ -1,307 +1,250 @@
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix vann: <http://purl.org/vocab/vann/> .
-@prefix building: <http://bimerr.iot.linkeddata.es/def/building#> .
-@prefix props: <http://bimerr.iot.linkeddata.es/def/material-properties#> .
-@prefix wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix bot: <https://w3id.org/bot#> .
+@prefix building: <http://bimerr.iot.linkeddata.es/def/building#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s4bldg: <https://w3id.org/def/saref4bldg#> .
-@base <http://bimerr.iot.linkeddata.es/def/building#> .
+@prefix wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://bimerr.iot.linkeddata.es/def/building#> rdf:type owl:Ontology ;
-			dc:creator "Serge Chávez-Feria" ;
-			dc:creator "María Poveda-Villalón" ;
-			owl:versionInfo "0.0.5" ;
-			dc:title "Building Ontology" ;
-			dc:description "Ontology code created by Chowlk" .
+building: a owl:Ontology ;
+    dc:creator "María Poveda-Villalón",
+        "Serge Chávez-Feria" ;
+    dc:description "Ontology code created by Chowlk" ;
+    dc:title "Building Ontology" ;
+    owl:versionInfo "0.0.5" .
 
-#################################################################
-#    Object Properties
-#################################################################
+building:Apartment a owl:Class ;
+    rdfs:label "Apartment" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:ifcIdentifier ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom building:Element ;
+            owl:onProperty bot:hasElement ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom building:Space ;
+            owl:onProperty bot:hasSpace ],
+        bot:Zone .
 
-### bot:hasStorey
-bot:hasStorey rdf:type owl:ObjectProperty ;
-		rdfs:label "has storey" .
+building:BiomassBoiler a owl:Class ;
+    rdfs:label "Biomass Boiler" ;
+    rdfs:subClassOf s4bldg:Boiler .
 
-### bot:hasElement
-bot:hasElement rdf:type owl:ObjectProperty ;
-		rdfs:label "has element" .
+building:DuctSegment a owl:Class ;
+    rdfs:label "Duct Segment" ;
+    rdfs:subClassOf building:FlowSegment .
 
-### bot:hasElement
-bot:hasElement rdf:type owl:ObjectProperty ;
-		rdfs:label "has element" .
+building:FossilBoiler a owl:Class ;
+    rdfs:label "Fossil Boiler" ;
+    rdfs:subClassOf s4bldg:Boiler .
 
-### bot:containsZone
-bot:containsZone rdf:type owl:ObjectProperty ;
-		rdfs:domain bot:Zone ;
-		rdfs:range bot:Zone ;
-		rdfs:subPropertyOf building:hasApartment ;
-		rdfs:label "contains zone" .
+building:Kitchen a owl:Class ;
+    rdfs:label "Kitchen" ;
+    rdfs:subClassOf building:Space .
 
-### building:hasApartment
-building:hasApartment rdf:type owl:ObjectProperty ;
-		rdfs:label "has apartment" .
+building:PipeSegment a owl:Class ;
+    rdfs:label "Pipe Segment" ;
+    rdfs:subClassOf building:FlowSegment .
 
-### bot:hasElement
-bot:hasElement rdf:type owl:ObjectProperty ;
-		rdfs:label "has element" .
+building:Roof a owl:Class ;
+    rdfs:label "Roof" ;
+    rdfs:subClassOf building:BuildingElement .
 
-### bot:hasSpace
-bot:hasSpace rdf:type owl:ObjectProperty ;
-		rdfs:label "has space" .
+building:Slab a owl:Class ;
+    rdfs:label "Slab" ;
+    rdfs:subClassOf building:BuildingElement .
 
-### bot:hasSubElement
-bot:hasSubElement rdf:type owl:ObjectProperty ;
-		rdfs:label "has sub element" .
+building:Window a owl:Class ;
+    rdfs:label "Window" ;
+    rdfs:subClassOf building:BuildingElement .
 
-#################################################################
-#    Data Properties
-#################################################################
+building:buildingAddress a owl:DatatypeProperty ;
+    rdfs:label "building address" ;
+    rdfs:range xsd:string .
 
-### bot:hasSimple3DModel
-bot:hasSimple3DModel rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "has simple3 d model" .
+building:hasObXMLFile a owl:DatatypeProperty ;
+    rdfs:label "has ob x m l file" ;
+    rdfs:range xsd:string .
 
-### building:ifcIdentifier
-building:ifcIdentifier rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "ifc identifier" .
+wgs84_pos:alt a owl:DatatypeProperty ;
+    rdfs:label "alt" .
 
-### building:identifierInDatabase
-building:identifierInDatabase rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "identifier in database" .
+wgs84_pos:lat a owl:DatatypeProperty ;
+    rdfs:label "lat" .
 
-#################################################################
-#    Classes
-#################################################################
+wgs84_pos:long a owl:DatatypeProperty ;
+    rdfs:label "long" .
 
-### bot:Element
-bot:Element rdf:type owl:Class ;
-	rdfs:label "Element" .
+bot:Building a owl:Class ;
+    rdfs:label "Building" .
 
-### building:Space
-building:Space rdf:type owl:Class ;
-	rdfs:label "Space" ;
-	rdfs:subClassOf bot:Space ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasElement ;
-		  owl:allValuesFrom building:Element ] .
+bot:Storey a owl:Class ;
+    rdfs:label "Storey" .
 
-### bot:Zone
-bot:Zone rdf:type owl:Class ;
-	rdfs:label "Zone" .
+bot:containsZone a owl:ObjectProperty ;
+    rdfs:label "contains zone" ;
+    rdfs:domain bot:Zone ;
+    rdfs:range bot:Zone ;
+    rdfs:subPropertyOf building:hasApartment .
 
-### building:Apartment
-building:Apartment rdf:type owl:Class ;
-	rdfs:label "Apartment" ;
-	rdfs:subClassOf bot:Zone ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasElement ;
-		  owl:allValuesFrom building:Element ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasSpace ;
-		  owl:allValuesFrom building:Space ] .
+bot:hasSimple3DModel a owl:DatatypeProperty ;
+    rdfs:label "has simple3 d model" ;
+    rdfs:range xsd:string .
 
-### building:Element
-building:Element rdf:type owl:Class ;
-	rdfs:label "Element" ;
-	rdfs:subClassOf bot:Element ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:identifierInDatabase ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasSubElement ;
-		  owl:allValuesFrom building:Element ] .
+bot:hasStorey a owl:ObjectProperty ;
+    rdfs:label "has storey" .
 
-### building:Roof
-building:Roof rdf:type owl:Class ;
-	rdfs:label "Roof" ;
-	rdfs:subClassOf building:BuildingElement .
+s4bldg:Fan a owl:Class ;
+    rdfs:label "Fan" ;
+    rdfs:subClassOf s4bldg:FlowMovingDevice .
 
-### building:Slab
-building:Slab rdf:type owl:Class ;
-	rdfs:label "Slab" ;
-	rdfs:subClassOf building:BuildingElement .
+s4bldg:HeatExchanger a owl:Class ;
+    rdfs:label "Heat Exchanger" ;
+    rdfs:subClassOf s4bldg:EnergyConversionDevice .
 
-### building:Door
-building:Door rdf:type owl:Class ;
-	rdfs:label "Door" ;
-	rdfs:subClassOf building:BuildingElement .
+s4bldg:Outlet a owl:Class ;
+    rdfs:label "Outlet" ;
+    rdfs:subClassOf s4bldg:FlowTerminal .
 
-### building:Window
-building:Window rdf:type owl:Class ;
-	rdfs:label "Window" ;
-	rdfs:subClassOf building:BuildingElement .
+s4bldg:Pump a owl:Class ;
+    rdfs:label "Pump" ;
+    rdfs:subClassOf s4bldg:FlowMovingDevice .
 
-### s4bldg:EnergyConversionDevice
-s4bldg:EnergyConversionDevice rdf:type owl:Class ;
-	rdfs:label "Energy Conversion Device" ;
-	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+s4bldg:SolarDevice a owl:Class ;
+    rdfs:label "Solar Device" ;
+    rdfs:subClassOf s4bldg:EnergyConversionDevice .
 
-### s4bldg:SolarDevice
-s4bldg:SolarDevice rdf:type owl:Class ;
-	rdfs:label "Solar Device" ;
-	rdfs:subClassOf s4bldg:EnergyConversionDevice .
+s4bldg:SpaceHeater a owl:Class ;
+    rdfs:label "Space Heater" ;
+    rdfs:subClassOf s4bldg:FlowTerminal .
 
-### building:BiomassBoiler
-building:BiomassBoiler rdf:type owl:Class ;
-	rdfs:label "Biomass Boiler" ;
-	rdfs:subClassOf s4bldg:Boiler .
+s4bldg:SwitchingDevice a owl:Class ;
+    rdfs:label "Switching Device" ;
+    rdfs:subClassOf s4bldg:FlowController .
 
-### building:FossilBoiler
-building:FossilBoiler rdf:type owl:Class ;
-	rdfs:label "Fossil Boiler" ;
-	rdfs:subClassOf s4bldg:Boiler .
+s4bldg:Tank a owl:Class ;
+    rdfs:label "Tank" ;
+    rdfs:subClassOf s4bldg:FlowStorageDevice .
 
-### s4bldg:HeatExchanger
-s4bldg:HeatExchanger rdf:type owl:Class ;
-	rdfs:label "Heat Exchanger" ;
-	rdfs:subClassOf s4bldg:EnergyConversionDevice .
+s4bldg:TankOfWater a building:Door,
+        owl:NamedIndividual .
 
-### s4bldg:TubeBundle
-s4bldg:TubeBundle rdf:type owl:Class ;
-	rdfs:label "Tube Bundle" ;
-	rdfs:subClassOf s4bldg:EnergyConversionDevice .
+s4bldg:TubeBundle a owl:Class ;
+    rdfs:label "Tube Bundle" ;
+    rdfs:subClassOf s4bldg:EnergyConversionDevice .
 
-### bot:Space
-bot:Space rdf:type owl:Class ;
-	rdfs:label "Space" .
+building:Door a owl:Class ;
+    rdfs:label "Door" ;
+    rdfs:subClassOf building:BuildingElement .
 
-### bot:Storey
-bot:Storey rdf:type owl:Class ;
-	rdfs:label "Storey" .
+building:hasApartment a owl:ObjectProperty ;
+    rdfs:label "has apartment" .
 
-### bot:Building
-bot:Building rdf:type owl:Class ;
-	rdfs:label "Building" .
+building:identifierInDatabase a owl:DatatypeProperty ;
+    rdfs:label "identifier in database" ;
+    rdfs:range xsd:string .
 
-### building:BuildingElement
-building:BuildingElement rdf:type owl:Class ;
-	rdfs:label "Building Element" ;
-	rdfs:subClassOf building:Element .
+building:maxOccupants a owl:DatatypeProperty ;
+    rdfs:label "max occupants" ;
+    rdfs:range xsd:integer .
 
-### s4bldg:Boiler
-s4bldg:Boiler rdf:type owl:Class ;
-	rdfs:label "Boiler" ;
-	rdfs:subClassOf s4bldg:EnergyConversionDevice .
+building:minOccupants a owl:DatatypeProperty ;
+    rdfs:label "min occupants" ;
+    rdfs:range xsd:integer .
 
-### s4bldg:DistributionDevice
-s4bldg:DistributionDevice rdf:type owl:Class ;
-	rdfs:label "Distribution Device" ;
-	rdfs:subClassOf s4bldg:BuildingDevice .
+bot:Element a owl:Class ;
+    rdfs:label "Element" .
 
-### s4bldg:DistributionFlowDevice
-s4bldg:DistributionFlowDevice rdf:type owl:Class ;
-	rdfs:label "Distribution Flow Device" ;
-	rdfs:subClassOf s4bldg:DistributionDevice .
+bot:Space a owl:Class ;
+    rdfs:label "Space" .
 
-### s4bldg:FlowStorageDevice
-s4bldg:FlowStorageDevice rdf:type owl:Class ;
-	rdfs:label "Flow Storage Device" ;
-	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+bot:hasSpace a owl:ObjectProperty ;
+    rdfs:label "has space" .
 
-### s4bldg:Tank
-s4bldg:Tank rdf:type owl:Class ;
-	rdfs:label "Tank" ;
-	rdfs:subClassOf s4bldg:FlowStorageDevice .
+bot:hasSubElement a owl:ObjectProperty ;
+    rdfs:label "has sub element" .
 
-### s4bldg:FlowMovingDevice
-s4bldg:FlowMovingDevice rdf:type owl:Class ;
-	rdfs:label "Flow Moving Device" ;
-	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+s4bldg:BuildingDevice a owl:Class ;
+    rdfs:label "Building Device" ;
+    rdfs:subClassOf building:Element .
 
-### s4bldg:Pump
-s4bldg:Pump rdf:type owl:Class ;
-	rdfs:label "Pump" ;
-	rdfs:subClassOf s4bldg:FlowMovingDevice .
+s4bldg:DistributionDevice a owl:Class ;
+    rdfs:label "Distribution Device" ;
+    rdfs:subClassOf s4bldg:BuildingDevice .
 
-### s4bldg:Fan
-s4bldg:Fan rdf:type owl:Class ;
-	rdfs:label "Fan" ;
-	rdfs:subClassOf s4bldg:FlowMovingDevice .
+s4bldg:FlowController a owl:Class ;
+    rdfs:label "Flow Controller" ;
+    rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
-### building:FlowSegment
-building:FlowSegment rdf:type owl:Class ;
-	rdfs:label "Flow Segment" ;
-	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+s4bldg:FlowStorageDevice a owl:Class ;
+    rdfs:label "Flow Storage Device" ;
+    rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
-### building:PipeSegment
-building:PipeSegment rdf:type owl:Class ;
-	rdfs:label "Pipe Segment" ;
-	rdfs:subClassOf building:FlowSegment .
+building:FlowSegment a owl:Class ;
+    rdfs:label "Flow Segment" ;
+    rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
-### building:DuctSegment
-building:DuctSegment rdf:type owl:Class ;
-	rdfs:label "Duct Segment" ;
-	rdfs:subClassOf building:FlowSegment .
+building:Space a owl:Class ;
+    rdfs:label "Space" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:ifcIdentifier ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:maxOccupants ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:minOccupants ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom building:Element ;
+            owl:onProperty bot:hasElement ],
+        bot:Space .
 
-### s4bldg:FlowTerminal
-s4bldg:FlowTerminal rdf:type owl:Class ;
-	rdfs:label "Flow Terminal" ;
-	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+bot:hasElement a owl:ObjectProperty ;
+    rdfs:label "has element" .
 
-### s4bldg:SpaceHeater
-s4bldg:SpaceHeater rdf:type owl:Class ;
-	rdfs:label "Space Heater" ;
-	rdfs:subClassOf s4bldg:FlowTerminal .
+s4bldg:Boiler a owl:Class ;
+    rdfs:label "Boiler" ;
+    rdfs:subClassOf s4bldg:EnergyConversionDevice .
 
-### s4bldg:Outlet
-s4bldg:Outlet rdf:type owl:Class ;
-	rdfs:label "Outlet" ;
-	rdfs:subClassOf s4bldg:FlowTerminal .
+s4bldg:FlowMovingDevice a owl:Class ;
+    rdfs:label "Flow Moving Device" ;
+    rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
-### s4bldg:FlowController
-s4bldg:FlowController rdf:type owl:Class ;
-	rdfs:label "Flow Controller" ;
-	rdfs:subClassOf s4bldg:DistributionFlowDevice .
+s4bldg:FlowTerminal a owl:Class ;
+    rdfs:label "Flow Terminal" ;
+    rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
-### s4bldg:SwitchingDevice
-s4bldg:SwitchingDevice rdf:type owl:Class ;
-	rdfs:label "Switching Device" ;
-	rdfs:subClassOf s4bldg:FlowController .
+building:ifcIdentifier a owl:DatatypeProperty ;
+    rdfs:label "ifc identifier" ;
+    rdfs:range xsd:string .
 
-### s4bldg:BuildingDevice
-s4bldg:BuildingDevice rdf:type owl:Class ;
-	rdfs:label "Building Device" ;
-	rdfs:subClassOf building:Element .
+bot:Zone a owl:Class ;
+    rdfs:label "Zone" .
 
-### bot:Zone
-bot:Zone rdf:type owl:Class ;
-	rdfs:label "Zone" .
+building:BuildingElement a owl:Class ;
+    rdfs:label "Building Element" ;
+    rdfs:subClassOf building:Element .
 
-### bot:Zone
-bot:Zone rdf:type owl:Class ;
-	rdfs:label "Zone" .
+s4bldg:EnergyConversionDevice a owl:Class ;
+    rdfs:label "Energy Conversion Device" ;
+    rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
-### building:Kitchen
-building:Kitchen rdf:type owl:Class ;
-	rdfs:label "Kitchen" .
+building:Element a owl:Class ;
+    rdfs:label "Element" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:ifcIdentifier ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:identifierInDatabase ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom building:Element ;
+            owl:onProperty bot:hasSubElement ],
+        bot:Element .
 
-#################################################################
-#    Instances
-#################################################################
-
-### s4bldg:TankOfWater
-s4bldg:TankOfWater rdf:type owl:NamedIndividual,
-		building:Door .
-
-#################################################################
-#    General Axioms
-#################################################################
+s4bldg:DistributionFlowDevice a owl:Class ;
+    rdfs:label "Distribution Flow Device" ;
+    rdfs:subClassOf s4bldg:DistributionDevice .
 
