@@ -110,6 +110,7 @@ def find_prefixes(concepts, relations, attribute_blocks, individuals):
 def clean_uri(uri):
 
     uri = re.sub("\(([0-9][^)]+)\)", "", uri).strip()
+    uri = re.sub("\(([^)]+)\)", "", uri).strip()
     uri = re.sub("\(all\)", "", uri).strip()
     uri = re.sub("\(some\)", "", uri).strip()
     uri = re.sub("\(∀\)", "", uri).strip()

@@ -63,85 +63,24 @@ bot:hasSubElement rdf:type owl:ObjectProperty ;
 #    Data Properties
 #################################################################
 
-### building:ifcIdentifier
-building:ifcIdentifier rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "ifc identifier" .
-
 ### bot:hasSimple3DModel
 bot:hasSimple3DModel rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
 		rdfs:label "has simple3 d model" .
 
-### wgs84_pos:long
-wgs84_pos:long rdf:type owl:DatatypeProperty ;
-		rdfs:label "long" .
-
-### wgs84_pos:lat
-wgs84_pos:lat rdf:type owl:DatatypeProperty ;
-		rdfs:label "lat" .
-
-### wgs84_pos:alt
-wgs84_pos:alt rdf:type owl:DatatypeProperty ;
-		rdfs:label "alt" .
-
-### building:maxOccupants
-building:maxOccupants rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:integer ;
-		rdfs:label "max occupants" .
-
-### building:minOccupants
-building:minOccupants rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:integer ;
-		rdfs:label "min occupants" .
-
-### building:hasObXMLFile
-building:hasObXMLFile rdf:type owl:DatatypeProperty ;
+### building:ifcIdentifier
+building:ifcIdentifier rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
-		rdfs:label "has ob x m l file" .
+		rdfs:label "ifc identifier" .
 
 ### building:identifierInDatabase
 building:identifierInDatabase rdf:type owl:DatatypeProperty ;
 		rdfs:range xsd:string ;
 		rdfs:label "identifier in database" .
 
-### building:buildingAddress
-building:buildingAddress rdf:type owl:DatatypeProperty ;
-		rdfs:domain building:Building ;
-		rdfs:range xsd:string ;
-		rdfs:label "building address" .
-
 #################################################################
 #    Classes
 #################################################################
-
-### building:Building
-building:Building rdf:type owl:Class ;
-	rdfs:label "Building" ;
-	rdfs:subClassOf bot:Building ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty wgs84_pos:long ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty wgs84_pos:lat ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty wgs84_pos:alt ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:buildingAddress ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasStorey ;
-		  owl:allValuesFrom building:Storey ] .
 
 ### bot:Element
 bot:Element rdf:type owl:Class ;
@@ -152,38 +91,12 @@ building:Space rdf:type owl:Class ;
 	rdfs:label "Space" ;
 	rdfs:subClassOf bot:Space ,
 		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:ifcIdentifier ;
-		  owl:cardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:maxOccupants ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:minOccupants ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
 		  owl:onProperty bot:hasElement ;
 		  owl:allValuesFrom building:Element ] .
 
 ### bot:Zone
 bot:Zone rdf:type owl:Class ;
 	rdfs:label "Zone" .
-
-### building:Storey
-building:Storey rdf:type owl:Class ;
-	rdfs:label "Storey" ;
-	rdfs:subClassOf bot:Storey ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:hasElement ;
-		  owl:allValuesFrom building:Element ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty bot:containsZone ;
-		  owl:someValuesFrom building:Apartment ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:hasApartment ;
-		  owl:allValuesFrom building:Apartment ] .
 
 ### building:Apartment
 building:Apartment rdf:type owl:Class ;
@@ -378,11 +291,7 @@ bot:Zone rdf:type owl:Class ;
 
 ### building:Kitchen
 building:Kitchen rdf:type owl:Class ;
-	rdfs:label "Kitchen" ;
-	rdfs:subClassOf building:Space ;
-	rdfs:subClassOf building:Space ;
-	rdfs:subClassOf building:Space ;
-	rdfs:subClassOf building:Space .
+	rdfs:label "Kitchen" .
 
 #################################################################
 #    Instances

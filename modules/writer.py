@@ -172,10 +172,11 @@ def write_data_properties(file, attribute_blocks, concepts):
 
             if attribute["domain"]:
                 concept_id = attribute["domain"]
-                concept = concepts[concept_id]
-                domain_name = concept["prefix"] + ":" + concept["uri"]
-                file.write(" ;\n")
-                file.write("\t\trdfs:domain " + domain_name)
+                if concept_id in concepts:
+                    concept = concepts[concept_id]
+                    domain_name = concept["prefix"] + ":" + concept["uri"]
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:domain " + domain_name)
 
             if attribute["range"] and attribute["datatype"]:
                 file.write(" ;\n")
