@@ -22,6 +22,11 @@ bootstrap = Bootstrap(app)
 def home():
     return render_template("home.html")
 
+@app.route("/poster", methods=["GET", "POST"])
+def poster():
+    return render_template("chowlk_poster.html")
+
+
 @app.route("/download/<path:format>", methods=["GET", "POST"])
 def download(format):
     ontology_directory = os.path.join(current_app.root_path, app.config["TEMPORAL_FOLDER"])
