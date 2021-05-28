@@ -22,7 +22,7 @@ bootstrap = Bootstrap(app)
 def home():
     return render_template("home.html")
 
-@app.route("/poster", methods=["GET", "POST"])
+@app.route("/demoeswc2021", methods=["GET", "POST"])
 def poster():
     return render_template("chowlk_poster.html")
 
