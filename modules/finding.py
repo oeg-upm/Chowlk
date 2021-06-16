@@ -155,6 +155,8 @@ class Finder():
 
                 check = prefix[0] # Check if error in text
                 check = uri[0] # Check if error in text
+
+                uri = re.sub(" ", "", uri)
                 
                 relation["prefix"] = prefix
                 relation["uri"] = uri
@@ -342,6 +344,9 @@ class Finder():
                     individual["prefix"][0] # Check if error
                     individual["uri"][1] # Check if error
                     individual["type"] = None
+
+                    individual["uri"] = re.sub(" ", "", individual["uri"])
+
                 except:
                     error = {
                         "message": "Problems in the text of the Metadata",
@@ -406,6 +411,9 @@ class Finder():
                     value = value.split(">>")[-1].strip()
                     prefix = value.split(":")[0].strip()
                     uri = value.split(":")[1].strip()
+
+                    uri = re.sub(" ", "", uri)
+                    
                     rhombus["prefix"] = prefix
                     rhombus["uri"] = uri
 
@@ -428,6 +436,9 @@ class Finder():
                             relation_uris.append(relation["uri"])
 
                     if uri not in relation_uris:
+
+                        uri = re.sub(" ", "", uri)
+
                         relation = {}
                         relation["source"] = None
                         relation["target"] = None
@@ -543,6 +554,10 @@ class Finder():
                                 attribute["prefix"] = attribute_value_cleaned.split(":")[0].strip()
                                 attribute["prefix"][0] # Check if error in text
                                 attribute["uri"] = attribute_value_cleaned.split(":")[1].strip()
+                                
+                                # Taking into account possible spaces in the uri of the concept
+                                attribute["uri"] = re.sub(" ", "", attribute["uri"])
+
                                 attribute["prefix"][1] # Check if error in text
                                 attribute["label"] = create_label(attribute["uri"], "property")
                             except:
@@ -687,6 +702,9 @@ class Finder():
 
                         concept["prefix"][0] # Check if error
                         concept["uri"][1] # Check if error
+
+                        # Taking into account possible spaces in the uri of the concept
+                        concept["uri"] = re.sub(" ", "", concept["uri"])
 
                         concept["label"] = create_label(concept["uri"], "class")
                         concept["xml_object"] = child
