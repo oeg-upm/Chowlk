@@ -3,11 +3,8 @@ from modules.finding import *
 from modules.associations import *
 from modules.writer import *
 from modules.utils import *
-import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import ElementTree
 import rdflib
 import rdflib.serializer
-import os
 
 
 def transform_ontology(root, filename):
@@ -79,7 +76,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("diagram_path")
     parser.add_argument("output_path")
-    parser.add_argument("type")
     args = parser.parse_args()
 
     root = read_drawio_xml(args.diagram_path)

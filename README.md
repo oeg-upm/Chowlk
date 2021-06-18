@@ -24,9 +24,15 @@ git checkout webservice
 pip install -r requirements.txt
 ```
 
-### How to run it:
+### To convert a diagram:
+```bash
+python converter.py path/to/diagram.xml output/path/ontology.ttl
+```
+
+### To run the app locally:
 ```bash
 python app.py
 ```
+
 
 Currently the converter only supports the <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk visual notation</a>. Please visit the specification for more details on how to make ontology conceptualizations following the visual notation.
