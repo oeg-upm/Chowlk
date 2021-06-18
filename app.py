@@ -56,7 +56,7 @@ def diagram_upload():
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
 
         # Prueba error messaging
-        new_namespaces, errors = transform_ontology(root, ttl_filepath)
+        turtle_file_string, new_namespaces, errors = transform_ontology(root, ttl_filepath)
 
         session["ttl_filename"] = ttl_filename
         session["xml_filename"] = xml_filename
@@ -115,7 +115,7 @@ def errors():
         ttl_filename = filename[:-3] + "ttl"
 
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
-        namespaces, errors = transform_ontology(root, ttl_filepath)
+        turtle_file_string, namespaces, errors = transform_ontology(root, ttl_filepath)
 
         return jsonify(errors)
 

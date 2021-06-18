@@ -5,171 +5,228 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 >
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#SolarDevice">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Outlet">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Solar Device</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL149C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL117C3">
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#maxOccupants">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>max occupants</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Apartment">
-    <rdfs:subClassOf rdf:nodeID="ub1bL187C3"/>
-    <rdfs:label>Apartment</rdfs:label>
-    <rdfs:subClassOf rdf:nodeID="ub1bL191C3"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Zone"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Window">
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Window</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL199C3">
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#Zone">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Zone</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#containsZone">
-    <rdfs:domain rdf:resource="https://w3id.org/bot#Zone"/>
-    <rdfs:range rdf:resource="https://w3id.org/bot#Zone"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:subPropertyOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#hasApartment"/>
-    <rdfs:label>contains zone</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#long">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>long</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#alt">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>alt</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowTerminal"/>
+    <rdfs:label>Outlet</rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Space">
-    <rdfs:subClassOf rdf:nodeID="ub1bL153C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL161C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL149C3"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Space"/>
     <rdfs:label>Space</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL153C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL149C3"/>
     <rdfs:subClassOf rdf:nodeID="ub1bL157C3"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Space"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL161C3"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Tank">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowStorageDevice"/>
-    <rdfs:label>Tank</rdfs:label>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowController">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL137C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Storey"/>
-    <owl:onProperty rdf:resource="https://w3id.org/bot#hasStorey"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL203C3">
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#identifierInDatabase"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#">
-    <dc:title>Building Ontology</dc:title>
-    <dc:creator>María Poveda-Villalón</dc:creator>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
-    <dc:description>Ontology code created by Chowlk</dc:description>
-    <dc:creator>Serge Chávez-Feria</dc:creator>
-    <owl:versionInfo>0.0.5</owl:versionInfo>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowStorageDevice">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Flow Controller</rdfs:label>
     <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
-    <rdfs:label>Flow Storage Device</rdfs:label>
   </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#hasSimple3DModel">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:label>has simple3 d model</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Building">
+  <rdf:Description rdf:about="https://w3id.org/bot#Building">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL117C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL121C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL137C3"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Building"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL125C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL129C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL133C3"/>
     <rdfs:label>Building</rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Element">
     <rdfs:subClassOf rdf:nodeID="ub1bL207C3"/>
     <rdfs:subClassOf rdf:nodeID="ub1bL203C3"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Element"/>
     <rdfs:subClassOf rdf:nodeID="ub1bL199C3"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Element"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:label>Element</rdfs:label>
   </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#SpaceHeater">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowTerminal"/>
+    <rdfs:label>Space Heater</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
   <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowMovingDevice">
-    <rdfs:label>Flow Moving Device</rdfs:label>
     <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
+    <rdfs:label>Flow Moving Device</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Fan">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowMovingDevice"/>
-    <rdfs:label>Fan</rdfs:label>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#TankOfWater">
+    <rdf:type rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Door"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#BiomassBoiler">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Biomass Boiler</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#Boiler"/>
+  <rdf:Description rdf:about="https://w3id.org/bot#hasStorey">
+    <rdfs:label>has storey</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Wall">
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
-    <rdfs:label>Wall</rdfs:label>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Storey">
+    <rdfs:subClassOf rdf:nodeID="ub1bL176C3"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Storey"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL173C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL179C3"/>
+    <rdfs:label>Storey</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>ifc identifier</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#">
+    <dc:title>Building Ontology</dc:title>
+    <owl:versionInfo>0.0.5</owl:versionInfo>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <dc:description>Ontology code created by Chowlk</dc:description>
+    <dc:creator>Serge Chávez-Feria</dc:creator>
+    <dc:creator>María Poveda-Villalón</dc:creator>
   </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#FossilBoiler">
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#DistributionFlowDevice">
+    <rdfs:label>Distribution Flow Device</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionDevice"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Fossil Boiler</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#Boiler"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#DuctSegment">
-    <rdfs:label>Duct Segment</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#FlowSegment"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://w3id.org/bot#hasElement">
     <rdfs:label>has element</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL199C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Building">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Building</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub1bL117C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL121C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL133C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL129C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL125C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL137C3"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Building"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#hasObXMLFile">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>has ob x m l file</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#hasApartment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>has apartment</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Window">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
+    <rdfs:label>Window</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL149C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL173C3">
+    <owl:onProperty rdf:resource="https://w3id.org/bot#hasElement"/>
+    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Door">
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Door</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#Storey">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Storey</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL129C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#alt"/>
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL161C3">
+    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://w3id.org/bot#hasElement"/>
   </rdf:Description>
   <rdf:Description rdf:nodeID="ub1bL157C3">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#minOccupants"/>
     <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
   </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#BuildingElement">
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
-    <rdfs:label>Building Element</rdfs:label>
+  <rdf:Description rdf:nodeID="ub1bL117C3">
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowStorageDevice">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
+    <rdfs:label>Flow Storage Device</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#Space">
+    <rdfs:label>Space</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#maxOccupants">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>max occupants</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#FlowSegment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
+    <rdfs:label>Flow Segment</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL121C3">
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#long"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL176C3">
+    <owl:someValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Apartment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://w3id.org/bot#containsZone"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL137C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Storey"/>
+    <owl:onProperty rdf:resource="https://w3id.org/bot#hasStorey"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#SwitchingDevice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowController"/>
+    <rdfs:label>Switching Device</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL133C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#buildingAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#hasSubElement">
+    <rdfs:label>has sub element</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#HeatExchanger">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
+    <rdfs:label>Heat Exchanger</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Tank">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowStorageDevice"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Tank</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Apartment">
+    <rdfs:subClassOf rdf:nodeID="ub1bL187C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub1bL191C3"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Zone"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Apartment</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Kitchen">
+    <rdfs:label>Kitchen</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Space"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#hasSimple3DModel">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>has simple3 d model</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#BiomassBoiler">
+    <rdfs:label>Biomass Boiler</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#Boiler"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Slab">
     <rdfs:label>Slab</rdfs:label>
@@ -177,218 +234,161 @@
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#buildingAddress">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Building"/>
     <rdfs:label>building address</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL133C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#buildingAddress"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#SpaceHeater">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Space Heater</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowTerminal"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#HeatExchanger">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Heat Exchanger</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#Building">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Building</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#minOccupants">
-    <rdfs:label>min occupants</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#Element">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Element</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#EnergyConversionDevice">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Energy Conversion Device</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#TankOfWater">
-    <rdf:type rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Door"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowController">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
-    <rdfs:label>Flow Controller</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#DistributionFlowDevice">
-    <rdfs:label>Distribution Flow Device</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionDevice"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#TubeBundle">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Tube Bundle</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL179C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#hasApartment"/>
-    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Apartment"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#Storey">
-    <rdfs:label>Storey</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Roof">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
-    <rdfs:label>Roof</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#identifierInDatabase">
-    <rdfs:label>identifier in database</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL207C3">
-    <owl:onProperty rdf:resource="https://w3id.org/bot#hasSubElement"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL173C3">
-    <owl:onProperty rdf:resource="https://w3id.org/bot#hasElement"/>
-    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#DistributionDevice">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#BuildingDevice"/>
-    <rdfs:label>Distribution Device</rdfs:label>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Fan">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL161C3">
-    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
-    <owl:onProperty rdf:resource="https://w3id.org/bot#hasElement"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Boiler">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Boiler</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Pump">
+    <rdfs:label>Fan</rdfs:label>
     <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowMovingDevice"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Pump</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#BuildingDevice">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Building Device</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#SwitchingDevice">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowController"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Switching Device</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL191C3">
-    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
-    <owl:onProperty rdf:resource="https://w3id.org/bot#hasElement"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL125C3">
-    <owl:onProperty rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#lat"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#PipeSegment">
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#FlowSegment"/>
-    <rdfs:label>Pipe Segment</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#hasSubElement">
-    <rdfs:label>has sub element</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#hasStorey">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>has storey</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#lat">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>lat</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#FlowSegment">
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
-    <rdfs:label>Flow Segment</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Kitchen">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Kitchen</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Space"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#hasObXMLFile">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>has ob x m l file</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Storey">
-    <rdfs:subClassOf rdf:nodeID="ub1bL179C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL173C3"/>
-    <rdfs:label>Storey</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/bot#Storey"/>
-    <rdfs:subClassOf rdf:nodeID="ub1bL176C3"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL176C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/bot#containsZone"/>
-    <owl:someValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Apartment"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL121C3">
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-    <owl:onProperty rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#long"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#hasApartment">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>has apartment</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Outlet">
-    <rdfs:label>Outlet</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowTerminal"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL129C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-    <owl:onProperty rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#alt"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowTerminal">
-    <rdfs:label>Flow Terminal</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub1bL153C3">
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#maxOccupants"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
   </rdf:Description>
   <rdf:Description rdf:nodeID="ub1bL187C3">
     <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Door">
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Boiler">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
+    <rdfs:label>Boiler</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL179C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#hasApartment"/>
+    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Apartment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL191C3">
+    <owl:onProperty rdf:resource="https://w3id.org/bot#hasElement"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Roof">
+    <rdfs:label>Roof</rdfs:label>
     <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
-    <rdfs:label>Door</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/bot#Space">
-    <rdfs:label>Space</rdfs:label>
+  <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#long">
+    <rdfs:label>long</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#lat">
+    <rdfs:label>lat</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#Element">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Element</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#DistributionDevice">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#BuildingDevice"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Distribution Device</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#Pump">
+    <rdfs:label>Pump</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#FlowMovingDevice"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#Wall">
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#BuildingElement"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Wall</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#BuildingDevice">
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Building Device</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#FossilBoiler">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#Boiler"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Fossil Boiler</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#Zone">
+    <rdfs:label>Zone</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#identifierInDatabase">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>identifier in database</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#BuildingElement">
+    <rdfs:label>Building Element</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#ifcIdentifier">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>ifc identifier</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/bot#containsZone">
+    <rdfs:subPropertyOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#hasApartment"/>
+    <rdfs:domain rdf:resource="https://w3id.org/bot#Zone"/>
+    <rdfs:label>contains zone</rdfs:label>
+    <rdfs:range rdf:resource="https://w3id.org/bot#Zone"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL125C3">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+    <owl:onProperty rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#lat"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2003/01/geo/wgs84_pos#alt">
+    <rdfs:label>alt</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#SolarDevice">
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
+    <rdfs:label>Solar Device</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL207C3">
+    <owl:onProperty rdf:resource="https://w3id.org/bot#hasSubElement"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:allValuesFrom rdf:resource="http://bimerr.iot.linkeddata.es/def/building#Element"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#TubeBundle">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#EnergyConversionDevice"/>
+    <rdfs:label>Tube Bundle</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL153C3">
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#maxOccupants"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#EnergyConversionDevice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Energy Conversion Device</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub1bL203C3">
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://bimerr.iot.linkeddata.es/def/building#identifierInDatabase"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#DuctSegment">
+    <rdfs:label>Duct Segment</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#FlowSegment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/def/saref4bldg#FlowTerminal">
+    <rdfs:label>Flow Terminal</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/def/saref4bldg#DistributionFlowDevice"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#minOccupants">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>min occupants</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bimerr.iot.linkeddata.es/def/building#PipeSegment">
+    <rdfs:subClassOf rdf:resource="http://bimerr.iot.linkeddata.es/def/building#FlowSegment"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Pipe Segment</rdfs:label>
   </rdf:Description>
 </rdf:RDF>

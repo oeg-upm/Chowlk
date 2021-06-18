@@ -1,12 +1,8 @@
 import xml.etree.ElementTree as ET
-from modules.geometry import proximity_to_shape
 import re
-import copy
-import unicodedata
 import base64
 from urllib.parse import unquote
 import zlib
-import copy
 from bs4 import BeautifulSoup
 
 def create_label(uri, type):
@@ -41,7 +37,6 @@ def clean_html_tags(text, metadata=False):
     for tag in html_tags:
         text = re.sub(tag, "", text)
 
-    text_list = []
     soup = BeautifulSoup(text, "html.parser")    
     text = soup.get_text("|")
     return text
