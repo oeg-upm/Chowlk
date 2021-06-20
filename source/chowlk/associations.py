@@ -1,4 +1,4 @@
-from modules.geometry import get_corners, get_corners_rect_child
+from source.chowlk.geometry import get_corners, get_corners_rect_child
 import copy
 
 def resolve_concept_reference(attribute_blocks, concepts):

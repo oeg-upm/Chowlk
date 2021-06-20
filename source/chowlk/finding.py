@@ -1,8 +1,6 @@
 import re
-import math
-from modules.geometry import get_corners_rect_child
-from modules.utils import clean_html_tags, clean_uri
-from modules.utils import create_label
+from source.chowlk.geometry import get_corners_rect_child
+from source.chowlk.utils import clean_html_tags, clean_uri, create_label
 
 class Finder():
 

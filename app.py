@@ -2,13 +2,10 @@ import os
 import flask
 from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session, jsonify
 from flask_bootstrap import Bootstrap
-import json
 
-from converter import transform_ontology
-from modules.utils import read_drawio_xml
+from source.chowlk.transformations import transform_ontology
+from source.chowlk.utils import read_drawio_xml
 import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import ElementTree
-import argparse
 from config import config
 
 
@@ -56,7 +53,7 @@ def diagram_upload():
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
 
         # Prueba error messaging
-        turtle_file_string, new_namespaces, errors = transform_ontology(root, ttl_filepath)
+        turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
 
         session["ttl_filename"] = ttl_filename
         session["xml_filename"] = xml_filename
@@ -90,7 +87,7 @@ def api():
         xml_filename = filename[:-3] + "owl"
 
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
-        transform_ontology(root, ttl_filepath)
+        transform_ontology(root)
 
         session["ttl_filename"] = ttl_filename
 
@@ -115,7 +112,7 @@ def errors():
         ttl_filename = filename[:-3] + "ttl"
 
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
-        turtle_file_string, namespaces, errors = transform_ontology(root, ttl_filepath)
+        turtle_file_string, xml_file_string, namespaces, errors = transform_ontology(root)
 
         return jsonify(errors)
 

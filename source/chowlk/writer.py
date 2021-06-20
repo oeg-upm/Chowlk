@@ -1,6 +1,10 @@
-def get_ttl_template(filename, namespaces, prefixes_fonded):
+import tempfile
 
-    file = open(filename, 'w', encoding="utf-8")
+def get_ttl_template(namespaces, prefixes_fonded):
+
+    file = tempfile.TemporaryFile(mode='w+', encoding="utf-8")
+
+    #file = open(filename, 'w', encoding="utf-8")
 
     file.write("@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
                "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
