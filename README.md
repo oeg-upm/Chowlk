@@ -47,7 +47,7 @@ python converter.py path/to/diagram.xml output/path/ontology.ttl --format ttl
 
 * If the desired format is rdf/xml:
 ```bash
-python converter.py path/to/diagram.xml output/path/ontology.ttl --format xml
+python converter.py path/to/diagram.xml output/path/ontology.xml --format xml
 ```
 
 ### To run the app locally:
