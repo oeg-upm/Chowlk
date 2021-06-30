@@ -102,25 +102,26 @@ def individual_type_identification(individuals, associations, relations):
                 individual["type"] = prefix + ":" + uri
 
     for ind_id, individual in individuals.items():
-
-        if individual["type"] is None:
-            geometry = individual["xml_object"][0]
-            x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
-            width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
-            p1, p2, p3, p4 = get_corners(x, y, width, height)
-
-            for concept_id, association in associations.items():
-                concept = association["concept"]
-                geometry = concept["xml_object"][0]
+        try:
+            if individual["type"] is None:
+                geometry = individual["xml_object"][0]
                 x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
                 width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
-                p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
-                dx = abs(p1[0] - p2_support[0])
-                dy = abs(p1[1] - p2_support[1])
-                if dx < 5 and dy < 5:
-                    individual["type"] = concept["prefix"] + ":" + concept["uri"]
-                    break
+                p1, p2, p3, p4 = get_corners(x, y, width, height)
 
+                for concept_id, association in associations.items():
+                    concept = association["concept"]
+                    geometry = concept["xml_object"][0]
+                    x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
+                    width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
+                    p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
+                    dx = abs(p1[0] - p2_support[0])
+                    dy = abs(p1[1] - p2_support[1])
+                    if dx < 5 and dy < 5:
+                        individual["type"] = concept["prefix"] + ":" + concept["uri"]
+                        break
+        except:
+            continue
     return individuals
 
 

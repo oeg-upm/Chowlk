@@ -23,7 +23,8 @@ class Finder():
             "Attributes": [],
             "Namespaces": [],
             "Metadata": [],
-            "Rhombuses": []
+            "Rhombuses": [],
+            "Individual": []
         }
         self.warnings = {
             "Arrows": []
