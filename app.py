@@ -48,6 +48,9 @@ def diagram_upload():
         root = read_drawio_xml(file)
         ttl_filename = filename[:-3] + "ttl"
         xml_filename = filename[:-3] + "owl"
+
+        if not os.path.exists(app.config["TEMPORAL_FOLDER"]):
+            os.makedirs(app.config["TEMPORAL_FOLDER"])
         
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
@@ -55,8 +58,15 @@ def diagram_upload():
         # Prueba error messaging
         turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
 
+        with open(ttl_filepath, "w") as file:
+            file.write(turtle_file_string)
+
+        with open(xml_filepath, "w") as file:
+            file.write(xml_file_string)
+
         session["ttl_filename"] = ttl_filename
         session["xml_filename"] = xml_filename
+
 
         with open(ttl_filepath, "r", encoding='utf-8') as f:
             ttl_data = f.read()
@@ -65,7 +75,6 @@ def diagram_upload():
         with open(xml_filepath, "r", encoding='utf-8') as f:
             xml_data = f.read()
             xml_data = xml_data.split('\n')
-
 
         return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, namespaces=new_namespaces, errors=errors)
 

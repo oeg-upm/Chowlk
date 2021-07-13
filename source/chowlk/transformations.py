@@ -46,8 +46,8 @@ def transform_ontology(root):
     turtle_string = turtle_output_file.read().decode("utf-8")
     xml_string = xml_output_file.read().decode("utf-8")
 
-    file.close()
-    turtle_output_file.close()
-    xml_output_file.close()
+    #file.close()
+    #turtle_output_file.close()
+    #xml_output_file.close()
 
-    return turtle_string, xml_string, new_namespaces, errors
+    return turtle_string, turtle_output_file, xml_string, xml_output_file, new_namespaces, errors
