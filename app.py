@@ -3,7 +3,7 @@ import flask
 from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session, jsonify
 from flask_bootstrap import Bootstrap
 
-from source.chowlk.transformations import transform_ontology
+from source.chowlk.transformations import transform_ontology, transform_rdf
 from source.chowlk.utils import read_drawio_xml
 import xml.etree.ElementTree as ET
 from config import config
@@ -38,10 +38,19 @@ def diagram_upload():
 
     if request.method == "POST" and "diagram_data" in request.files:
         file = request.files["diagram_data"]
+        form = request.form
+
+        file_type = [key for key in form.keys()]
+        
         filename = file.filename
 
         if filename == "":
             error = "No file choosen. Please choose a diagram."
+            flash(error)
+            return redirect(url_for("home"))
+
+        elif len(file_type) == 0:
+            error = "Choose the type of file."
             flash(error)
             return redirect(url_for("home"))
 
@@ -55,8 +64,12 @@ def diagram_upload():
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
 
-        # Prueba error messaging
-        turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
+        if file_type[0] == "ontology":
+            turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
+        elif file_type[0] == "rdf":
+            turtle_file_string, xml_file_string = transform_rdf(root)
+            new_namespaces = None
+            errors = None
 
         with open(ttl_filepath, "w") as file:
             file.write(turtle_file_string)

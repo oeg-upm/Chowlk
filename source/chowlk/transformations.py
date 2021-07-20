@@ -46,8 +46,43 @@ def transform_ontology(root):
     turtle_string = turtle_output_file.read().decode("utf-8")
     xml_string = xml_output_file.read().decode("utf-8")
 
-    #file.close()
-    #turtle_output_file.close()
-    #xml_output_file.close()
+    return turtle_string, xml_string, new_namespaces, errors
 
-    return turtle_string, turtle_output_file, xml_string, xml_output_file, new_namespaces, errors
+
+def transform_rdf(root):
+
+    finder = Finder(root)
+    individuals = finder.find_individuals()
+    relations = finder.find_relations()
+    namespaces = finder.find_namespaces()
+    values = finder.find_attribute_values()
+    concepts, attribute_blocks = finder.find_concepts_and_attributes()
+
+    prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
+
+    individuals = individual_type_identification_rdf(individuals, concepts, relations)
+    
+    associations = individual_relation_association(individuals, relations)
+    associations = individual_attribute_association(associations, values, relations)
+    file, onto_prefix, onto_uri, new_namespaces = get_ttl_template(namespaces, prefixes_identified)
+
+    file = write_triplets(file, individuals, associations, values)
+
+    file.seek(os.SEEK_SET)
+
+    g = rdflib.Graph()
+    g.parse(data=file.read(), format="turtle")
+
+    turtle_output_file = tempfile.NamedTemporaryFile()
+    xml_output_file = tempfile.NamedTemporaryFile()
+
+    g.serialize(destination=turtle_output_file, format="turtle")
+    g.serialize(destination=xml_output_file, format="xml")
+
+    turtle_output_file.seek(0)
+    xml_output_file.seek(0)
+
+    turtle_string = turtle_output_file.read().decode("utf-8")
+    xml_string = xml_output_file.read().decode("utf-8")
+
+    return turtle_string, xml_string

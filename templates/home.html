@@ -54,6 +54,14 @@
                 <br>
                 <label for="file" class="btn btn-primary">Choose a diagram</label>
                 <input name="diagram_data" id="file" type="file" style="visibility: hidden;">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="ontology" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">Ontology</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="rdf" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">RDF data</label>
+                </div>
                 <p id="filename"></p>
                 {% for message in get_flashed_messages() %}
                     <p id="error-message">{{message}}</p>

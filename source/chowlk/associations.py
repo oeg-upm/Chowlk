@@ -206,3 +206,59 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
             continue
 
     return relations_copy, attribute_blocks
+
+
+
+
+"""Functions for RDF Data"""
+
+def individual_type_identification_rdf(individuals, concepts, relations):
+
+    for id, relation in relations.items():
+        if relation["type"] != "rdf:type":
+            continue
+        source_id = relation["source"]
+        target_id = relation["target"]
+        individual = individuals[source_id]
+        concept = concepts[target_id]
+        individual["type"] = concept["prefix"] + ":" + concept["uri"]
+    for ind_id, individual in individuals.items():
+        if individual["type"] is None:
+            p1 = get_corners_rect_child(individual["xml_object"])[0]
+            for concept_id, concept in concepts.items():
+                p2_concept = get_corners_rect_child(concept["xml_object"])[1]
+                dx = abs(p1[0] - p2_concept[0])
+                dy = abs(p1[1] - p2_concept[1])
+                if dx < 5 and dy < 5:
+                    individual["type"] = concept["prefix"] + ":" + concept["uri"]
+                    break
+    return individuals
+
+
+
+def individual_relation_association(individuals, relations):
+
+    associations = {}
+
+    for id, individual in individuals.items():
+        associations[id] = {"individual": individual, "relations": {}, "attributes": {}}
+    for relation_id, relation in relations.items():
+        if relation["type"] != "owl:ObjectProperty":
+            continue
+        source_id = relation["source"]
+        target_id = relation["target"]
+        association = associations[source_id]
+        if target_id in individuals:
+            association["relations"][relation_id] = relation
+    return associations
+
+
+def individual_attribute_association(associations, values, relations):
+    
+    for relation_id, relation in relations.items():
+        source_id = relation["source"]
+        target_id = relation["target"]
+        association = associations[source_id]
+        if target_id in values:
+            association["attributes"][relation_id] = relation
+    return associations

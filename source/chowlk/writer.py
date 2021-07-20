@@ -560,3 +560,31 @@ def write_general_axioms(file, concepts, anonymous_concepts):
             file.write("] .")
 
     return file
+
+def write_triplets(file, individuals, associations, values):
+
+    for id, association in associations.items():
+        subject = association["individual"]["prefix"] + ":" + association["individual"]["uri"]
+        concept = association["individual"]["type"]
+        relations = association["relations"]
+        attributes = association["attributes"]
+        file.write(subject + " rdf:type " + concept)
+
+        for relation_id, relation in relations.items():
+            file.write(" ;\n")
+            predicate = relation["prefix"] + ":" + relation["uri"]
+            target_id = relation["target"]
+            object = individuals[target_id]["prefix"] + ":" + individuals[target_id]["uri"]
+            file.write("\t" + predicate + " " + object)
+
+        for attribute_id, attribute in attributes.items():
+            file.write(" ;\n")
+            predicate = attribute["prefix"] + ":" + attribute["uri"]
+            target_id = attribute["target"]
+            object = "\"" + values[target_id]["value"] + "\"" + "^^" + values[target_id]["type"]
+            file.write("\t" + predicate + " " + object)
+
+        file.write(" .\n\n")
+
+    return file
+    
