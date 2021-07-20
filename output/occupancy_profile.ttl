@@ -1,521 +1,347 @@
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix vann: <http://purl.org/vocab/vann/> .
-@prefix op: <http://bimerr.iot.linkeddata.es/def/occupancy-profile#> .
 @prefix building: <http://bimerr.iot.linkeddata.es/def/building#> .
-@prefix time: <http://www.w3.org/2006/time#> .
-@prefix saref: <https://saref.etsi.org/core/> .
-@prefix s4bldg: <https://saref.etsi.org/saref4bldg/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@base <http://bimerr.iot.linkeddata.es/def/occupancy-profile#> .
-
-<http://bimerr.iot.linkeddata.es/def/occupancy-profile#> rdf:type owl:Ontology ;
-			dc:creator "Serge Chávez-Feria" ;
-			dc:creator "María Poveda-Villalón" ;
-			owl:versionInfo "0.0.3" ;
-			dc:title "Occupancy Profile Ontology" .
-
-#################################################################
-#    Object Properties
-#################################################################
-
-### s4bldg:hasSpace
-s4bldg:hasSpace rdf:type owl:ObjectProperty ;
-		rdfs:label "has space" .
-
-### op:drivenBy
-op:drivenBy rdf:type owl:ObjectProperty ;
-		rdfs:label "driven by" .
-
-### op:influencedByNeed
-op:influencedByNeed rdf:type owl:ObjectProperty ;
-		rdfs:label "influenced by need" .
-
-### op:hasUnitOfMeasure
-op:hasUnitOfMeasure rdf:type owl:ObjectProperty ;
-		rdfs:label "has unit of measure" .
-
-### op:hasCoefficient
-op:hasCoefficient rdf:type owl:ObjectProperty ;
-		rdfs:domain op:InteractionFormula ;
-		rdfs:range op:Coefficient ;
-		rdfs:label "has coefficient" .
-
-### op:hasIndependentVariable
-op:hasIndependentVariable rdf:type owl:ObjectProperty ;
-		rdfs:domain op:InteractionFormula ;
-		rdfs:range op:EnvironmentalParameter ;
-		rdfs:label "has independent variable" .
-
-### op:hasBehavior
-op:hasBehavior rdf:type owl:ObjectProperty ;
-		rdfs:label "has behavior" .
-
-### op:describesParameter
-op:describesParameter rdf:type owl:ObjectProperty ;
-		rdfs:domain op:ParameterRange ;
-		rdfs:range op:EnvironmentalParameter ;
-		rdfs:label "describes parameter" .
-
-### op:hasMeeting
-op:hasMeeting rdf:type owl:ObjectProperty ;
-		rdfs:label "has meeting" .
-
-### op:hasOccupant
-op:hasOccupant rdf:type owl:ObjectProperty ;
-		rdfs:label "has occupant" .
-
-### op:definedByRange
-op:definedByRange rdf:type owl:ObjectProperty ;
-		rdfs:domain op:PhysicalNeed ;
-		rdfs:range op:ParameterRange ;
-		rdfs:label "defined by range" .
-
-### s4bldg:contains
-s4bldg:contains rdf:type owl:ObjectProperty ;
-		rdfs:label "contains" .
-
-### op:leadsTo
-op:leadsTo rdf:type owl:ObjectProperty ;
-		rdfs:label "leads to" .
-
-### op:composedOf
-op:composedOf rdf:type owl:ObjectProperty ;
-		rdfs:label "composed of" .
-
-### op:describedByFormula
-op:describedByFormula rdf:type owl:ObjectProperty ;
-		rdfs:label "described by formula" .
-
-### op:interactsOver
-op:interactsOver rdf:type owl:ObjectProperty ;
-		rdfs:label "interacts over" .
-
-### op:hasDayOfWeek
-op:hasDayOfWeek rdf:type owl:ObjectProperty ;
-		rdfs:label "has day of week" .
-
-### op:hasInteractionType
-op:hasInteractionType rdf:type owl:ObjectProperty ;
-		rdfs:label "has interaction type" .
-
-#################################################################
-#    Data Properties
-#################################################################
-
-### building:buildingAddress
-building:buildingAddress rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "building address" .
-
-### building:identifier
-building:identifier rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "identifier" .
-
-### building:maxNumberOccupants
-building:maxNumberOccupants rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:integer ;
-		rdfs:label "max number occupants" .
-
-### building:minNumberOccupants
-building:minNumberOccupants rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:integer ;
-		rdfs:label "min number occupants" .
-
-### op:probability
-op:probability rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:float ;
-		rdfs:label "probability" .
-
-### op:startTime
-op:startTime rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:dateTime ;
-		rdfs:label "start time" .
-
-### op:endTime
-op:endTime rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:dateTime ;
-		rdfs:label "end time" .
-
-### op:identifier
-op:identifier rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "identifier" .
-
-### op:occupantAge
-op:occupantAge rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:integer ;
-		rdfs:label "occupant age" .
-
-### op:occupantGender
-op:occupantGender rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "occupant gender" .
-
-### op:occupantJobtype
-op:occupantJobtype rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "occupant jobtype" .
-
-### op:occupantLifestyle
-op:occupantLifestyle rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:string ;
-		rdfs:label "occupant lifestyle" .
-
-### op:birthDate
-op:birthDate rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:dateTime ;
-		rdfs:label "birth date" .
-
-### op:coefficientValue
-op:coefficientValue rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:float ;
-		rdfs:label "coefficient value" .
-
-### op:minRangeValue
-op:minRangeValue rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:float ;
-		rdfs:label "min range value" .
-
-### op:maxRangeValue
-op:maxRangeValue rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:float ;
-		rdfs:label "max range value" .
-
-### op:controlValue
-op:controlValue rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:float ;
-		rdfs:label "control value" .
-
-### op:onHolidays
-op:onHolidays rdf:type owl:DatatypeProperty ;
-		rdfs:range xsd:dateTime ;
-		rdfs:label "on holidays" .
-
-#################################################################
-#    Classes
-#################################################################
-
-### building:Building
-building:Building rdf:type owl:Class ;
-	rdfs:label "Building" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:buildingAddress ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:identifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:identifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty s4bldg:hasSpace ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### op:Coefficient
-op:Coefficient rdf:type owl:Class ;
-	rdfs:label "Coefficient" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:coefficientValue ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:coefficientValue ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- .
-
-### op:Action
-op:Action rdf:type owl:Class ;
-	rdfs:label "Action" .
-
-### op:Behavior
-op:Behavior rdf:type owl:Class ;
-	rdfs:label "Behavior" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:identifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:identifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:drivenBy ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### time:DayOfWeek
-time:DayOfWeek rdf:type owl:Class ;
-	rdfs:label "Day Of Week" .
-
-### op:Driver
-op:Driver rdf:type owl:Class ;
-	rdfs:label "Driver" .
-
-### op:EnvironmentalParameter
-op:EnvironmentalParameter rdf:type owl:Class ;
-	rdfs:label "Environmental Parameter" ;
-	rdfs:subClassOf saref:Property ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:identifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:identifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:hasUnitOfMeasure ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:hasUnitOfMeasure ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### op:Environment
-op:Environment rdf:type owl:Class ;
-	rdfs:label "Environment" ;
-	rdfs:subClassOf op:Driver .
-
-### op:InteractionFormula
-op:InteractionFormula rdf:type owl:Class ;
-	rdfs:label "Interaction Formula" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:hasCoefficient ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### op:Meeting
-op:Meeting rdf:type owl:Class ;
-	rdfs:label "Meeting" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:probability ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:probability ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:startTime ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:startTime ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:endTime ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:endTime ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- .
-
-### op:Need
-op:Need rdf:type owl:Class ;
-	rdfs:label "Need" .
-
-### op:Occupant
-op:Occupant rdf:type owl:Class ;
-	rdfs:label "Occupant" ;
-	rdfs:subClassOf foaf:Person ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:identifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:identifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:occupantAge ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:occupantGender ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:occupantJobtype ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:occupantLifestyle ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:birthDate ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:hasBehavior ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### op:ParameterRange
-op:ParameterRange rdf:type owl:Class ;
-	rdfs:label "Parameter Range" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:minRangeValue ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:minRangeValue ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:maxRangeValue ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:maxRangeValue ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:describesParameter ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:describesParameter ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### building:Space
-building:Space rdf:type owl:Class ;
-	rdfs:label "Space" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:identifier ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:identifier ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:maxNumberOccupants ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty building:minNumberOccupants ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- .
-
-### op:Inaction
-op:Inaction rdf:type owl:Class ;
-	rdfs:label "Inaction" .
-
-### op:NonPhysicalNeed
-op:NonPhysicalNeed rdf:type owl:Class ;
-	rdfs:label "Non Physical Need" ;
-	rdfs:subClassOf op:Need .
-
-### op:PhysicalNeed
-op:PhysicalNeed rdf:type owl:Class ;
-	rdfs:label "Physical Need" ;
-	rdfs:subClassOf op:Need ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:definedByRange ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### op:DriverSet
-op:DriverSet rdf:type owl:Class ;
-	rdfs:label "Driver Set" ;
-	rdfs:subClassOf 
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:composedOf ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### saref:UnitOfMeasure
-saref:UnitOfMeasure rdf:type owl:Class ;
-	rdfs:label "Unit Of Measure" .
-
-### saref:Property
-saref:Property rdf:type owl:Class ;
-	rdfs:label "Property" .
-
-### foaf:Person
-foaf:Person rdf:type owl:Class ;
-	rdfs:label "Person" .
-
-### saref:Device
-saref:Device rdf:type owl:Class ;
-	rdfs:label "Device" ;
-	rdfs:subClassOf s4bldg:PhysicalObject .
-
-### saref:HVAC
-saref:HVAC rdf:type owl:Class ;
-	rdfs:label "H V A C" ;
-	rdfs:subClassOf saref:Device .
-
-### s4bldg:ShadingDevice
-s4bldg:ShadingDevice rdf:type owl:Class ;
-	rdfs:label "Shading Device" ;
-	rdfs:subClassOf saref:Device .
-
-### s4bldg:BuildingObject
-s4bldg:BuildingObject rdf:type owl:Class ;
-	rdfs:label "Building Object" ;
-	rdfs:subClassOf s4bldg:PhysicalObject .
-
-### s4bldg:PhysicalObject
-s4bldg:PhysicalObject rdf:type owl:Class ;
-	rdfs:label "Physical Object" .
-
-### op:Window
-op:Window rdf:type owl:Class ;
-	rdfs:label "Window" ;
-	rdfs:subClassOf s4bldg:BuildingObject .
-
-### op:Interaction
-op:Interaction rdf:type owl:Class ;
-	rdfs:label "Interaction" ;
-	rdfs:subClassOf op:Action ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:controlValue ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ]
- ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:describedByFormula ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:describedByFormula ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:interactsOver ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:hasInteractionType ;
-		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] ,
-		[ rdf:type owl:Restriction ;
-		  owl:onProperty op:hasInteractionType ;
-		  owl:maxCardinality "1"^^xsd:nonNegativeInteger ] .
-
-### op:Time
-op:Time rdf:type owl:Class ;
-	rdfs:label "Time" ;
-	rdfs:subClassOf op:Driver .
-
-### op:InteractionConcept
-op:InteractionConcept rdf:type owl:Class ;
-	rdfs:label "Interaction Concept" .
-
-#################################################################
-#    Instances
-#################################################################
-
-#################################################################
-#    General Axioms
-#################################################################
+@prefix op: <http://bimerr.iot.linkeddata.es/def/occupancy-profile#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s4bldg: <https://saref.etsi.org/saref4bldg/> .
+@prefix saref: <https://saref.etsi.org/core/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+building:Building a owl:Class ;
+    rdfs:label "Building" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:buildingAddress ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:identifier ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty s4bldg:hasSpace ] .
+
+building:Space a owl:Class ;
+    rdfs:label "Space" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:identifier ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:maxNumberOccupants ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:minNumberOccupants ] .
+
+op: a owl:Ontology ;
+    dc:creator "María Poveda-Villalón",
+        "Serge Chávez-Feria" ;
+    dc:description "Ontology code created by Chowlk" ;
+    dc:title "Occupancy Profile Ontology" ;
+    owl:versionInfo "0.0.3" .
+
+op:Behavior a owl:Class ;
+    rdfs:label "Behavior" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:identifier ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:drivenBy ] .
+
+op:DriverSet a owl:Class ;
+    rdfs:label "Driver Set" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:composedOf ] .
+
+op:Environment a owl:Class ;
+    rdfs:label "Environment" ;
+    rdfs:subClassOf op:Driver .
+
+op:Inaction a owl:Class ;
+    rdfs:label "Inaction" .
+
+op:Interaction a owl:Class ;
+    rdfs:label "Interaction" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:controlValue ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:describedByFormula ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:interactsOver ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:hasInteractionType ],
+        op:Action .
+
+op:InteractionConcept a owl:Class ;
+    rdfs:label "Interaction Concept" .
+
+op:Meeting a owl:Class ;
+    rdfs:label "Meeting" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:probability ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:startTime ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:endTime ] .
+
+op:NonPhysicalNeed a owl:Class ;
+    rdfs:label "Non Physical Need" ;
+    rdfs:subClassOf op:Need .
+
+op:Occupant a owl:Class ;
+    rdfs:label "Occupant" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:identifier ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:occupantAge ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:occupantGender ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:occupantJobtype ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:occupantLifestyle ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:birthDate ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:hasBehavior ],
+        foaf:Person .
+
+op:Time a owl:Class ;
+    rdfs:label "Time" ;
+    rdfs:subClassOf op:Driver .
+
+op:Window a owl:Class ;
+    rdfs:label "Window" ;
+    rdfs:subClassOf s4bldg:BuildingObject .
+
+op:hasDayOfWeek a owl:ObjectProperty ;
+    rdfs:label "has day of week" .
+
+op:hasIndependentVariable a owl:ObjectProperty ;
+    rdfs:label "has independent variable" ;
+    rdfs:domain op:InteractionFormula ;
+    rdfs:range op:EnvironmentalParameter .
+
+op:hasMeeting a owl:ObjectProperty ;
+    rdfs:label "has meeting" .
+
+op:hasOccupant a owl:ObjectProperty ;
+    rdfs:label "has occupant" .
+
+op:influencedByNeed a owl:ObjectProperty ;
+    rdfs:label "influenced by need" .
+
+op:leadsTo a owl:ObjectProperty ;
+    rdfs:label "leads to" .
+
+op:onHolidays a owl:DatatypeProperty ;
+    rdfs:label "on holidays" ;
+    rdfs:range xsd:dateTime .
+
+time:DayOfWeek a owl:Class ;
+    rdfs:label "Day Of Week" .
+
+saref:HVAC a owl:Class ;
+    rdfs:label "H V A C" ;
+    rdfs:subClassOf saref:Device .
+
+saref:UnitOfMeasure a owl:Class ;
+    rdfs:label "Unit Of Measure" .
+
+s4bldg:ShadingDevice a owl:Class ;
+    rdfs:label "Shading Device" ;
+    rdfs:subClassOf saref:Device .
+
+s4bldg:contains a owl:ObjectProperty ;
+    rdfs:label "contains" .
+
+building:buildingAddress a owl:DatatypeProperty ;
+    rdfs:label "building address" ;
+    rdfs:range xsd:string .
+
+building:maxNumberOccupants a owl:DatatypeProperty ;
+    rdfs:label "max number occupants" ;
+    rdfs:range xsd:integer .
+
+building:minNumberOccupants a owl:DatatypeProperty ;
+    rdfs:label "min number occupants" ;
+    rdfs:range xsd:integer .
+
+op:Action a owl:Class ;
+    rdfs:label "Action" .
+
+op:Coefficient a owl:Class ;
+    rdfs:label "Coefficient" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:coefficientValue ] .
+
+op:PhysicalNeed a owl:Class ;
+    rdfs:label "Physical Need" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:definedByRange ],
+        op:Need .
+
+op:birthDate a owl:DatatypeProperty ;
+    rdfs:label "birth date" ;
+    rdfs:range xsd:dateTime .
+
+op:coefficientValue a owl:DatatypeProperty ;
+    rdfs:label "coefficient value" ;
+    rdfs:range xsd:float .
+
+op:composedOf a owl:ObjectProperty ;
+    rdfs:label "composed of" .
+
+op:controlValue a owl:DatatypeProperty ;
+    rdfs:label "control value" ;
+    rdfs:range xsd:float .
+
+op:definedByRange a owl:ObjectProperty ;
+    rdfs:label "defined by range" ;
+    rdfs:domain op:PhysicalNeed ;
+    rdfs:range op:ParameterRange .
+
+op:describedByFormula a owl:ObjectProperty ;
+    rdfs:label "described by formula" .
+
+op:describesParameter a owl:ObjectProperty ;
+    rdfs:label "describes parameter" ;
+    rdfs:domain op:ParameterRange ;
+    rdfs:range op:EnvironmentalParameter .
+
+op:drivenBy a owl:ObjectProperty ;
+    rdfs:label "driven by" .
+
+op:endTime a owl:DatatypeProperty ;
+    rdfs:label "end time" ;
+    rdfs:range xsd:dateTime .
+
+op:hasBehavior a owl:ObjectProperty ;
+    rdfs:label "has behavior" .
+
+op:hasCoefficient a owl:ObjectProperty ;
+    rdfs:label "has coefficient" ;
+    rdfs:domain op:InteractionFormula ;
+    rdfs:range op:Coefficient .
+
+op:hasInteractionType a owl:ObjectProperty ;
+    rdfs:label "has interaction type" .
+
+op:hasUnitOfMeasure a owl:ObjectProperty ;
+    rdfs:label "has unit of measure" .
+
+op:interactsOver a owl:ObjectProperty ;
+    rdfs:label "interacts over" .
+
+op:maxRangeValue a owl:DatatypeProperty ;
+    rdfs:label "max range value" ;
+    rdfs:range xsd:float .
+
+op:minRangeValue a owl:DatatypeProperty ;
+    rdfs:label "min range value" ;
+    rdfs:range xsd:float .
+
+op:occupantAge a owl:DatatypeProperty ;
+    rdfs:label "occupant age" ;
+    rdfs:range xsd:integer .
+
+op:occupantGender a owl:DatatypeProperty ;
+    rdfs:label "occupant gender" ;
+    rdfs:range xsd:string .
+
+op:occupantJobtype a owl:DatatypeProperty ;
+    rdfs:label "occupant jobtype" ;
+    rdfs:range xsd:string .
+
+op:occupantLifestyle a owl:DatatypeProperty ;
+    rdfs:label "occupant lifestyle" ;
+    rdfs:range xsd:string .
+
+op:probability a owl:DatatypeProperty ;
+    rdfs:label "probability" ;
+    rdfs:range xsd:float .
+
+op:startTime a owl:DatatypeProperty ;
+    rdfs:label "start time" ;
+    rdfs:range xsd:dateTime .
+
+foaf:Person a owl:Class ;
+    rdfs:label "Person" .
+
+saref:Property a owl:Class ;
+    rdfs:label "Property" .
+
+s4bldg:BuildingObject a owl:Class ;
+    rdfs:label "Building Object" ;
+    rdfs:subClassOf s4bldg:PhysicalObject .
+
+s4bldg:hasSpace a owl:ObjectProperty ;
+    rdfs:label "has space" .
+
+building:identifier a owl:DatatypeProperty ;
+    rdfs:label "identifier" ;
+    rdfs:range xsd:string .
+
+op:Driver a owl:Class ;
+    rdfs:label "Driver" .
+
+op:EnvironmentalParameter a owl:Class ;
+    rdfs:label "Environmental Parameter" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:identifier ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:hasUnitOfMeasure ],
+        saref:Property .
+
+op:InteractionFormula a owl:Class ;
+    rdfs:label "Interaction Formula" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:hasCoefficient ] .
+
+op:Need a owl:Class ;
+    rdfs:label "Need" .
+
+op:ParameterRange a owl:Class ;
+    rdfs:label "Parameter Range" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:minRangeValue ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:maxRangeValue ],
+        [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty op:describesParameter ] .
+
+saref:Device a owl:Class ;
+    rdfs:label "Device" ;
+    rdfs:subClassOf s4bldg:PhysicalObject .
+
+s4bldg:PhysicalObject a owl:Class ;
+    rdfs:label "Physical Object" .
+
+op:identifier a owl:DatatypeProperty ;
+    rdfs:label "identifier" ;
+    rdfs:range xsd:string .
 

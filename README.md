@@ -42,12 +42,12 @@ pip install -r requirements.txt
 
 * If the desired format is ttl:
 ```bash
-python converter.py path/to/diagram.xml output/path/ontology.ttl --format ttl
+python converter.py path/to/diagram.xml output/path/ontology.ttl --type ontology --format ttl
 ```
 
 * If the desired format is rdf/xml:
 ```bash
-python converter.py path/to/diagram.xml output/path/ontology.xml --format xml
+python converter.py path/to/diagram.xml output/path/ontology.xml --type ontology --format xml
 ```
 
 ### To run the app locally:
