@@ -38,19 +38,11 @@ def diagram_upload():
 
     if request.method == "POST" and "diagram_data" in request.files:
         file = request.files["diagram_data"]
-        form = request.form
-
-        file_type = [key for key in form.keys()]
         
         filename = file.filename
 
         if filename == "":
             error = "No file choosen. Please choose a diagram."
-            flash(error)
-            return redirect(url_for("home"))
-
-        elif len(file_type) == 0:
-            error = "Choose the type of file."
             flash(error)
             return redirect(url_for("home"))
 
@@ -63,13 +55,7 @@ def diagram_upload():
         
         ttl_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], ttl_filename)
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
-
-        if file_type[0] == "ontology":
-            turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
-        elif file_type[0] == "rdf":
-            turtle_file_string, xml_file_string = transform_rdf(root)
-            new_namespaces = None
-            errors = None
+        turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
 
         with open(ttl_filepath, "w") as file:
             file.write(turtle_file_string)

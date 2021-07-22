@@ -90,6 +90,7 @@ def individual_type_identification(individuals, associations, relations):
 
         try:
             individual = individuals[source_id]
+            individual["type"] = []
         except:
             continue
 
@@ -99,29 +100,29 @@ def individual_type_identification(individuals, associations, relations):
 
                 prefix = association["concept"]["prefix"]
                 uri = association["concept"]["uri"]
-                individual["type"] = prefix + ":" + uri
+                individual["type"].append(prefix + ":" + uri)
 
     for ind_id, individual in individuals.items():
         try:
-            if individual["type"] is None:
-                geometry = individual["xml_object"][0]
+            geometry = individual["xml_object"][0]
+            x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
+            width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
+            p1, p2, p3, p4 = get_corners(x, y, width, height)
+
+            for concept_id, association in associations.items():
+                concept = association["concept"]
+                geometry = concept["xml_object"][0]
                 x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
                 width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
-                p1, p2, p3, p4 = get_corners(x, y, width, height)
-
-                for concept_id, association in associations.items():
-                    concept = association["concept"]
-                    geometry = concept["xml_object"][0]
-                    x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
-                    width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
-                    p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
-                    dx = abs(p1[0] - p2_support[0])
-                    dy = abs(p1[1] - p2_support[1])
-                    if dx < 5 and dy < 5:
-                        individual["type"] = concept["prefix"] + ":" + concept["uri"]
-                        break
+                p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
+                dx = abs(p1[0] - p2_support[0])
+                dy = abs(p1[1] - p2_support[1])
+                if dx < 5 and dy < 5:
+                    individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+                    break
         except:
             continue
+
     return individuals
 
 
@@ -221,17 +222,21 @@ def individual_type_identification_rdf(individuals, concepts, relations):
         target_id = relation["target"]
         individual = individuals[source_id]
         concept = concepts[target_id]
-        individual["type"] = concept["prefix"] + ":" + concept["uri"]
+        if len(individual["type"]) != 0:
+            individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+        else:
+            individual["type"] = [concept["prefix"] + ":" + concept["uri"]]
     for ind_id, individual in individuals.items():
         if individual["type"] is None:
-            p1 = get_corners_rect_child(individual["xml_object"])[0]
-            for concept_id, concept in concepts.items():
-                p2_concept = get_corners_rect_child(concept["xml_object"])[1]
-                dx = abs(p1[0] - p2_concept[0])
-                dy = abs(p1[1] - p2_concept[1])
-                if dx < 5 and dy < 5:
-                    individual["type"] = concept["prefix"] + ":" + concept["uri"]
-                    break
+            individual["type"] = []
+        p1 = get_corners_rect_child(individual["xml_object"])[0]
+        for concept_id, concept in concepts.items():
+            p2_concept = get_corners_rect_child(concept["xml_object"])[1]
+            dx = abs(p1[0] - p2_concept[0])
+            dy = abs(p1[1] - p2_concept[1])
+            if dx < 5 and dy < 5:
+                individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+                break
     return individuals
 
 
@@ -247,8 +252,8 @@ def individual_relation_association(individuals, relations):
             continue
         source_id = relation["source"]
         target_id = relation["target"]
-        association = associations[source_id]
-        if target_id in individuals:
+        if target_id in individuals and source_id in associations:
+            association = associations[source_id]
             association["relations"][relation_id] = relation
     return associations
 
@@ -258,7 +263,8 @@ def individual_attribute_association(associations, values, relations):
     for relation_id, relation in relations.items():
         source_id = relation["source"]
         target_id = relation["target"]
-        association = associations[source_id]
-        if target_id in values:
+        if target_id in values and source_id in associations:
+            relation["type"] = "owl:DatatypeProperty"
+            association = associations[source_id]
             association["attributes"][relation_id] = relation
     return associations

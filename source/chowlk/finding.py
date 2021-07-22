@@ -369,21 +369,34 @@ class Finder():
             id = child.attrib["id"]
             value = child.attrib["value"] if "value" in child.attrib else None
 
+            if value is None:
+                continue
+
             if "&quot;" in value or "\"" in value:
                 attribute = {}
                 attribute["xml_object"] = child
                 attribute["type"] = None
 
-                # Finding the value
-                if "&quot;" in value:
-                    attribute["value"] = value.split("&quot;")[1]
-                elif "\"" in value:
-                    reg_exp = '"(.*?)"'
-                    attribute["value"] = re.findall(reg_exp, value)[0]
+                try:
+                    # Finding the value
+                    if "&quot;" in value:
+                        attribute["value"] = value.split("&quot;")[1]
+                    elif "\"" in value:
+                        reg_exp = '"(.*?)"'
+                        attribute["value"] = re.findall(reg_exp, value)[0]
 
-                # Finding the type
-                if "^^" in value:
-                    attribute["type"] = value.split("^^")[-1]
+                    # Finding the type
+                    if "^^" in value:
+                        attribute["type"] = value.split("^^")[-1]
+
+                except:
+                    error = {
+                        "message": "Problems in the text of the literal",
+                        "shape_id": id,
+                        "value": value
+                    }
+                    self.errors["Individual"].append(error)
+                    continue
 
                 self.attributes[id] = attribute
 

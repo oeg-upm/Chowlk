@@ -1,5 +1,6 @@
 @prefix bot: <https://w3id.org/bot#> .
 @prefix building: <http://bimerr.iot.linkeddata.es/def/building#> .
+@prefix data: <https://data.com/> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -18,6 +19,10 @@ building:BiomassBoiler a owl:Class ;
     rdfs:label "Biomass Boiler" ;
     rdfs:subClassOf s4bldg:Boiler .
 
+building:Door a owl:Class ;
+    rdfs:label "Door" ;
+    rdfs:subClassOf building:BuildingElement .
+
 building:DuctSegment a owl:Class ;
     rdfs:label "Duct Segment" ;
     rdfs:subClassOf building:FlowSegment .
@@ -25,10 +30,6 @@ building:DuctSegment a owl:Class ;
 building:FossilBoiler a owl:Class ;
     rdfs:label "Fossil Boiler" ;
     rdfs:subClassOf s4bldg:Boiler .
-
-building:Kitchen a owl:Class ;
-    rdfs:label "Kitchen" ;
-    rdfs:subClassOf building:Space .
 
 building:PipeSegment a owl:Class ;
     rdfs:label "Pipe Segment" ;
@@ -53,6 +54,13 @@ building:Window a owl:Class ;
 building:hasObXMLFile a owl:DatatypeProperty ;
     rdfs:label "has ob x m l file" ;
     rdfs:range xsd:string .
+
+data:Kitchen01 a building:Kitchen,
+        building:Space,
+        building:Zone,
+        owl:NamedIndividual ;
+    building:ifcIdentifier "someGuid"^^xsd:string ;
+    bot:hasElement data:TankOfWater .
 
 bot:hasSimple3DModel a owl:DatatypeProperty ;
     rdfs:label "has simple3 d model" ;
@@ -86,13 +94,6 @@ s4bldg:SwitchingDevice a owl:Class ;
     rdfs:label "Switching Device" ;
     rdfs:subClassOf s4bldg:FlowController .
 
-s4bldg:Tank a owl:Class ;
-    rdfs:label "Tank" ;
-    rdfs:subClassOf s4bldg:FlowStorageDevice .
-
-s4bldg:TankOfWater a building:Door,
-        owl:NamedIndividual .
-
 s4bldg:TubeBundle a owl:Class ;
     rdfs:label "Tube Bundle" ;
     rdfs:subClassOf s4bldg:EnergyConversionDevice .
@@ -119,25 +120,9 @@ building:Building a owl:Class ;
             owl:onProperty bot:hasStorey ],
         bot:Building .
 
-building:Door a owl:Class ;
-    rdfs:label "Door" ;
-    rdfs:subClassOf building:BuildingElement .
-
-building:Space a owl:Class ;
-    rdfs:label "Space" ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:cardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onProperty building:ifcIdentifier ],
-        [ a owl:Restriction ;
-            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onProperty building:maxOccupants ],
-        [ a owl:Restriction ;
-            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onProperty building:minOccupants ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom building:Element ;
-            owl:onProperty bot:hasElement ],
-        bot:Space .
+building:Kitchen a owl:Class ;
+    rdfs:label "Kitchen" ;
+    rdfs:subClassOf building:Space .
 
 building:Storey a owl:Class ;
     rdfs:label "Storey" ;
@@ -151,6 +136,9 @@ building:Storey a owl:Class ;
             owl:allValuesFrom building:Apartment ;
             owl:onProperty building:hasApartment ],
         bot:Storey .
+
+building:Zone a owl:Class ;
+    rdfs:label "Zone" .
 
 building:buildingAddress a owl:DatatypeProperty ;
     rdfs:label "building address" ;
@@ -177,6 +165,9 @@ wgs84_pos:lat a owl:DatatypeProperty ;
 
 wgs84_pos:long a owl:DatatypeProperty ;
     rdfs:label "long" .
+
+data:TankOfWater a owl:NamedIndividual,
+        s4bldg:Tank .
 
 bot:Building a owl:Class ;
     rdfs:label "Building" .
@@ -218,6 +209,10 @@ s4bldg:FlowStorageDevice a owl:Class ;
     rdfs:label "Flow Storage Device" ;
     rdfs:subClassOf s4bldg:DistributionFlowDevice .
 
+s4bldg:Tank a owl:Class ;
+    rdfs:label "Tank" ;
+    rdfs:subClassOf s4bldg:FlowStorageDevice .
+
 building:Apartment a owl:Class ;
     rdfs:label "Apartment" ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -231,6 +226,22 @@ building:Apartment a owl:Class ;
 building:FlowSegment a owl:Class ;
     rdfs:label "Flow Segment" ;
     rdfs:subClassOf s4bldg:DistributionFlowDevice .
+
+building:Space a owl:Class ;
+    rdfs:label "Space" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:cardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:ifcIdentifier ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:maxOccupants ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty building:minOccupants ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom building:Element ;
+            owl:onProperty bot:hasElement ],
+        bot:Space .
 
 building:hasApartment a owl:ObjectProperty ;
     rdfs:label "has apartment" .

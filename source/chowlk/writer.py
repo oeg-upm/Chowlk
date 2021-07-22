@@ -531,13 +531,16 @@ def write_instances(file, individuals):
 
         prefix = individual["prefix"]
         uri = individual["uri"]
-        type = individual["type"]
+        types = individual["type"]
         file.write("### " + prefix + ":" + uri + "\n")
         file.write(prefix + ":" + uri + " rdf:type owl:NamedIndividual")
-        if type is None:
+        if types is None:
             file.write(" .\n")
         else:
-            file.write(",\n\t\t" + type + " .\n\n")
+            for type in types:
+                file.write(",\n\t\t" + type)
+
+        file.write(" .\n\n")
 
     return file
 
@@ -565,26 +568,27 @@ def write_triplets(file, individuals, associations, values):
 
     for id, association in associations.items():
         subject = association["individual"]["prefix"] + ":" + association["individual"]["uri"]
-        concept = association["individual"]["type"]
+        types = association["individual"]["type"]
         relations = association["relations"]
         attributes = association["attributes"]
-        file.write(subject + " rdf:type " + concept)
+
+        """for idx, type in enumerate(types):
+            file.write(subject + " rdf:type " + types)"""
 
         for relation_id, relation in relations.items():
-            file.write(" ;\n")
             predicate = relation["prefix"] + ":" + relation["uri"]
             target_id = relation["target"]
             object = individuals[target_id]["prefix"] + ":" + individuals[target_id]["uri"]
-            file.write("\t" + predicate + " " + object)
+            file.write(subject + " " + predicate + " " + object + " .\n")
 
         for attribute_id, attribute in attributes.items():
-            file.write(" ;\n")
             predicate = attribute["prefix"] + ":" + attribute["uri"]
             target_id = attribute["target"]
-            object = "\"" + values[target_id]["value"] + "\"" + "^^" + values[target_id]["type"]
-            file.write("\t" + predicate + " " + object)
-
-        file.write(" .\n\n")
+            if values[target_id]["type"] is not None:
+                object = "\"" + values[target_id]["value"] + "\"" + "^^" + values[target_id]["type"]
+            else:
+                object = "\"" + values[target_id]["value"] + "\""
+            file.write(subject + " " + predicate + " " + object + " .\n")
 
     return file
     
