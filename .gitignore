@@ -13,3 +13,4 @@ output
 tmp
 source/*egg-info
 dist
+data
