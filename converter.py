@@ -1,31 +1,20 @@
 import argparse
 
-from source.chowlk.transformations import transform_ontology, transform_rdf
+from source.chowlk.transformations import transform_ontology
 from source.chowlk.utils import read_drawio_xml
 
 
 def main(diagram_path, output_path, type, format):
 
     root = read_drawio_xml(diagram_path)
+    ontology_turtle, ontology_xml, namespaces, errors = transform_ontology(root)
 
-    if type == "ontology":
-        ontology_turtle, ontology_xml, namespaces, errors = transform_ontology(root)
+    file = open(output_path, mode="w")
 
-        file = open(output_path, mode="w")
-    
-        if format == "ttl":
-            file.write(ontology_turtle)
-        elif format == "xml":
-            file.write(ontology_xml)
-
-    elif type == "rdf":
-        rdf_turtle, rdf_xml = transform_rdf(root)
-        file = open(output_path, mode="w")
-        
-        if format == "ttl":
-            file.write(rdf_turtle)
-        elif format == "xml":
-            file.write(rdf_xml)
+    if format == "ttl":
+        file.write(ontology_turtle)
+    elif format == "xml":
+        file.write(ontology_xml)
     
     file.close()
 

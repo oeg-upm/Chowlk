@@ -538,7 +538,7 @@ def write_instances(file, individuals):
             file.write(" .\n")
         else:
             for type in types:
-                file.write(",\n\t\t" + type)
+                file.write(";\n\t\trdf:type " + type)
 
         file.write(" .\n\n")
 
@@ -572,9 +572,6 @@ def write_triplets(file, individuals, associations, values):
         relations = association["relations"]
         attributes = association["attributes"]
 
-        """for idx, type in enumerate(types):
-            file.write(subject + " rdf:type " + types)"""
-
         for relation_id, relation in relations.items():
             predicate = relation["prefix"] + ":" + relation["uri"]
             target_id = relation["target"]
@@ -586,6 +583,9 @@ def write_triplets(file, individuals, associations, values):
             target_id = attribute["target"]
             if values[target_id]["type"] is not None:
                 object = "\"" + values[target_id]["value"] + "\"" + "^^" + values[target_id]["type"]
+            
+            elif values[target_id]["lang"] is not None:
+                object = "\"" + values[target_id]["value"] + "\"" + "@" + values[target_id]["lang"]
             else:
                 object = "\"" + values[target_id]["value"] + "\""
             file.write(subject + " " + predicate + " " + object + " .\n")

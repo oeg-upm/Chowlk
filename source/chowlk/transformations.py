@@ -1,4 +1,5 @@
 import tempfile
+import sys
 from source.chowlk.finding import *
 from source.chowlk.associations import *
 from source.chowlk.writer import *
@@ -32,25 +33,40 @@ def transform_ontology(root):
 
     file.seek(os.SEEK_SET)
 
-    g = rdflib.Graph()
-    g.parse(data=file.read(), format="turtle")
-
     turtle_output_file = tempfile.NamedTemporaryFile()
     xml_output_file = tempfile.NamedTemporaryFile()
 
-    g.serialize(destination=turtle_output_file, format="turtle")
-    g.serialize(destination=xml_output_file, format="xml")
+    file_read = file.read()
 
-    turtle_output_file.seek(0)
-    xml_output_file.seek(0)
+    try:
+        g = rdflib.Graph()
+        g.parse(data=file_read, format="turtle")
 
-    turtle_string = turtle_output_file.read().decode("utf-8")
-    xml_string = xml_output_file.read().decode("utf-8")
+        g.serialize(destination=turtle_output_file, format="turtle")
+        g.serialize(destination=xml_output_file, format="xml")
+
+        turtle_output_file.seek(0)
+        xml_output_file.seek(0)
+
+        turtle_string = turtle_output_file.read().decode("utf-8")
+        xml_string = xml_output_file.read().decode("utf-8")
+
+    except:
+        print("Please check your syntax on the diagram, here you have a hint of the possible error:")
+        print(sys.exc_info()[1])
+
+        errors["Syntax"] = {
+            "message": "Please check your syntax on the diagram, here you have a hint of  \
+                    the possible error:\n" + str(sys.exc_info()[1])
+        }
+
+        turtle_string = file_read
+        xml_string = file_read
 
     return turtle_string, xml_string, new_namespaces, errors
 
 
-def transform_rdf(root):
+"""def transform_rdf(root):
 
     finder = Finder(root)
     individuals = finder.find_individuals()
@@ -86,4 +102,4 @@ def transform_rdf(root):
     turtle_string = turtle_output_file.read().decode("utf-8")
     xml_string = xml_output_file.read().decode("utf-8")
 
-    return turtle_string, xml_string
+    return turtle_string, xml_string"""

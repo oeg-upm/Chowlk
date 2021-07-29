@@ -1,9 +1,10 @@
 import os
 import flask
+import copy
 from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session, jsonify
 from flask_bootstrap import Bootstrap
 
-from source.chowlk.transformations import transform_ontology, transform_rdf
+from source.chowlk.transformations import transform_ontology
 from source.chowlk.utils import read_drawio_xml
 import xml.etree.ElementTree as ET
 from config import config
@@ -57,6 +58,12 @@ def diagram_upload():
         xml_filepath = os.path.join(app.config["TEMPORAL_FOLDER"], xml_filename)
         turtle_file_string, xml_file_string, new_namespaces, errors = transform_ontology(root)
 
+        # Eliminating keys that do not contain errors
+        new_errors = copy.copy(errors)
+        for key, error in errors.items():
+            if len(error) == 0:
+                del new_errors[key]
+
         with open(ttl_filepath, "w") as file:
             file.write(turtle_file_string)
 
@@ -75,7 +82,7 @@ def diagram_upload():
             xml_data = f.read()
             xml_data = xml_data.split('\n')
 
-        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, namespaces=new_namespaces, errors=errors)
+        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, namespaces=new_namespaces, errors=new_errors)
 
 
 @app.route("/api", methods=["GET", "POST"])

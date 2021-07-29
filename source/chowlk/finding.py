@@ -1,4 +1,5 @@
 import re
+import string
 from source.chowlk.geometry import get_corners_rect_child
 from source.chowlk.utils import clean_html_tags, clean_uri, create_label
 
@@ -25,9 +26,6 @@ class Finder():
             "Metadata": [],
             "Rhombuses": [],
             "Individual": []
-        }
-        self.warnings = {
-            "Arrows": []
         }
 
     def find_relations(self):
@@ -73,6 +71,22 @@ class Finder():
                     if ("text" in style2 or "edgeLabel" in style2) and id == child2.attrib["parent"]:
                         value = clean_html_tags(child2.attrib["value"])
                         break
+
+                if relation["source"] is None:
+                    error = {
+                        "message": "Domain side of the relation is not connected to any shape, please check this",
+                        "shape_id": id,
+                        "value": value
+                    }
+                    self.errors["Arrows"].append(error)
+
+                if relation["target"] is None:
+                    error = {
+                        "message": "Range side of the relation is not connected to any shape, please check this",
+                        "shape_id": id,
+                        "value": value
+                    }
+                    self.errors["Arrows"].append(error)
                 # If after the evaluation of free text we cannot find any related text to the edge
                 # we can say for sure that it is a "subclass" or "type" relationship
                 if value is None or len(value) == 0:
@@ -82,12 +96,12 @@ class Finder():
                     elif "endArrow=open" in style or "startArrow=open" in style:
                         relation["type"] = "rdf:type"
                     else:
-                        warning = {
+                        error = {
                             "message": "Could not recognize type of arrow",
                             "shape_id": id,
                             "value": "No value"
                         }
-                        self.warnings["Arrows"].append(warning)
+                        self.errors["Arrows"].append(error)
                     self.relations[id] = relation
                     continue
 
@@ -252,7 +266,11 @@ class Finder():
                     try:
                         ann_prefix = ann.split(":")[0].strip()
                         ann_type = ann.split(":")[1].strip()
-                        ann_value = ann.split(":")[2].strip()
+                        if ann_type == "imports":
+                            ann_value = ann.split(":")[2:]
+                            ann_value = ":".join(ann_value).strip()
+                        else:
+                            ann_value = ann.split(":")[2].strip()
                         if ann_prefix + ":" + ann_type in self.ontology_metadata:
                             self.ontology_metadata[ann_prefix + ":" + ann_type].append(ann_value)
                         else:
@@ -372,14 +390,18 @@ class Finder():
             if value is None:
                 continue
 
+            value = clean_html_tags(value)
+
             if "&quot;" in value or "\"" in value:
                 attribute = {}
                 attribute["xml_object"] = child
                 attribute["type"] = None
+                attribute["lang"] = None
 
                 try:
                     # Finding the value
                     if "&quot;" in value:
+                        
                         attribute["value"] = value.split("&quot;")[1]
                     elif "\"" in value:
                         reg_exp = '"(.*?)"'
@@ -388,6 +410,9 @@ class Finder():
                     # Finding the type
                     if "^^" in value:
                         attribute["type"] = value.split("^^")[-1]
+
+                    elif "@" in value:
+                        attribute["lang"] = value.split("@")[-1]
 
                 except:
                     error = {
@@ -700,11 +725,14 @@ class Finder():
                     # If cardinality is indicated
                     if len(value.split("..")) > 1:
                         error = {
-                            "message": "PAttributes not attached to any concept",
+                            "message": "Attributes not attached to any concept",
                             "shape_id": id,
                             "value": value
                         }
                         self.errors["Attributes"].append(error)
+                        continue
+
+                    if "\"" in value:
                         continue
 
                     value = clean_html_tags(value)

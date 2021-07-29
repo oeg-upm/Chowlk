@@ -218,14 +218,18 @@ def individual_type_identification_rdf(individuals, concepts, relations):
     for id, relation in relations.items():
         if relation["type"] != "rdf:type":
             continue
+
         source_id = relation["source"]
         target_id = relation["target"]
-        individual = individuals[source_id]
-        concept = concepts[target_id]
-        if len(individual["type"]) != 0:
-            individual["type"].append(concept["prefix"] + ":" + concept["uri"])
-        else:
-            individual["type"] = [concept["prefix"] + ":" + concept["uri"]]
+
+        if source_id in individuals and target_id in concepts:
+            individual = individuals[source_id]
+            concept = concepts[target_id]
+            if len(individual["type"]) != 0:
+                individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+            else:
+                individual["type"] = [concept["prefix"] + ":" + concept["uri"]]
+
     for ind_id, individual in individuals.items():
         if individual["type"] is None:
             individual["type"] = []

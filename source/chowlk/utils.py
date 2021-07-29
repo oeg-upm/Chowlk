@@ -32,12 +32,12 @@ def create_label(uri, type):
 
 def clean_html_tags(text, metadata=False):
 
-    html_tags = ["<b>", "</b>", "(<span .[^>]+\>)", "(<font .[^>]+\>)", "<span>", "</span>"]
+    html_tags = ["<u>", "</u>", "<b>", "</b>", "(<span .[^>]+\>)", "(<font .[^>]+\>)", "</font>", "<span>", "</span>"]
 
     for tag in html_tags:
         text = re.sub(tag, "", text)
 
-    soup = BeautifulSoup(text, "html.parser")    
+    soup = BeautifulSoup(text, "html.parser")
     text = soup.get_text("|")
     return text
 

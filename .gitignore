@@ -1,4 +1,3 @@
-venv
 .venv
 .test
 *.pyc

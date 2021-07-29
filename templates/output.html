@@ -55,27 +55,47 @@
                     {% if loop.index == 1 %}
                         <h4><b>Errors</b></h4>
                     {% endif %}
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading{{loop.index}}">
-                            <h5 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapseTwo">
-                                    {{error}}
-                                </a>
-                            </h5>
-                        </div>
-                        <div id="collapse{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{loop.index}}">
-                            <div class="panel-body">
-                                <ul>
-                                    {% for shape in errors[error] %}
-                                        <li>
-                                            <b>Value: </b>{{shape["value"]}}, <b>Problem: </b>{{shape["message"]}}, <b>Shape id: </b>{{shape["shape_id"]}}
-                                        </li>
-                                    
-                                    {% endfor %}
-                                </ul>
+
+                    {% if error == 'Syntax' %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading{{loop.index}}">
+                                <h5 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapseTwo">
+                                        {{error}}
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapse{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{loop.index}}">
+                                <div class="panel-body">
+                                    <b>Message:</b>{{errors[error]["message"]}}
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                    {% else %}
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading{{loop.index}}">
+                                <h5 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapseTwo">
+                                        {{error}}
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapse{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{loop.index}}">
+                                <div class="panel-body">
+                                    <ul>
+                                        {% for shape in errors[error] %}
+                                            <li>
+                                                <b>Value: </b>{{shape["value"]}}, <b>Problem: </b>{{shape["message"]}}, <b>Shape id: </b>{{shape["shape_id"]}}
+                                            </li>
+                                        
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>
