@@ -38,9 +38,9 @@ The service will return the following dictionary:
 }
 ```
 
-* ttl_data: Contains the ontology generated from the diagram in Turtle format. It is returned in string format.
-* namespaces: Contains the new namespaces created for the ontology, when prefixes are founded in the model but are not declared in the namespace block in the diagram. The returned object is a dictionary with the following format: {"prefix1": "namespace1", "prefix2": "namespace2"}
-* errors: Contains the errors founded in the ontology diagram, organized by types. The following keywords can be founded: "Concepts", "Arrows", "Rhombuses", "Ellipses", "Attributes", "Namespaces", "Metadata", "Hexagons", "Individual". It is important to mention that this dictionary will contain these keywords only if there are errors in the diagram, otherwise it will be an empty dictionary. The value for these keywords is an array of objects that have the following structure:
+* **ttl_data:** Contains the ontology generated from the diagram in Turtle format. It is returned in string format.
+* **namespaces:** Contains the new namespaces created for the ontology, when prefixes are founded in the model but are not declared in the namespace block in the diagram. The returned object is a dictionary with the following format: {"prefix1": "namespace1", "prefix2": "namespace2"}
+* **errors:** Contains the errors founded in the ontology diagram, organized by types. The following keywords can be founded: "Concepts", "Arrows", "Rhombuses", "Ellipses", "Attributes", "Namespaces", "Metadata", "Hexagons", "Individual". It is important to mention that this dictionary will contain these keywords only if there are errors in the diagram, otherwise it will be an empty dictionary. The value for these keywords is an array of objects that have the following structure:
 
 ```json
 {
@@ -49,9 +49,6 @@ The service will return the following dictionary:
   "value": "the actual text related with the shape"
 }
 ```
-
-
-The value for the keywork "errors" is a another object that contains the syntax errors in the diagram
 
 
 ### 3. Running it from source:
