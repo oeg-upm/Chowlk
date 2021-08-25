@@ -34,7 +34,7 @@ The service will return the following dictionary:
   "errors": {"Concepts": [{"message": "Problem in text", "shape_id": "13", "value": "ns:Building Element"}],
              "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}],
              "Arrows": [...],
-             "Rhombuses: [...]", ...}
+             "Rhombuses": [...]}
 }
 ```
 
