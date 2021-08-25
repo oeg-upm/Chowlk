@@ -33,14 +33,19 @@ The service will return the following dictionary:
   "namespaces": {"ns1": "https://namespace1.com#", "ns2": "https://namespace2.com#"},
   "errors": {"Concepts": [{"message": "Problem in text", "shape_id": "13", "value": "ns:Building Element"}],
              "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}],
-             "Arrows": [...],
-             "Rhombuses": [...]}
+             "Arrows": [],
+             "Rhombuses": [],
+             "Ellipses": [],
+             "Namespaces": [],
+             "Metadata": [],
+             "Hexagons": [],
+             "Individual": []}
 }
 ```
 
 * **ttl_data:** Contains the ontology generated from the diagram in Turtle format. It is returned in string format.
 * **namespaces:** Contains the new namespaces created for the ontology, when prefixes are founded in the model but are not declared in the namespace block in the diagram. The returned object is a dictionary with the following format: {"prefix1": "namespace1", "prefix2": "namespace2"}
-* **errors:** Contains the errors founded in the ontology diagram, organized by types. The following keywords can be founded: "Concepts", "Arrows", "Rhombuses", "Ellipses", "Attributes", "Namespaces", "Metadata", "Hexagons", "Individual". It is important to mention that this dictionary will contain these keywords only if there are errors in the diagram, otherwise it will be an empty dictionary. The value for these keywords is an array of objects that have the following structure:
+* **errors:** Contains the errors founded in the ontology diagram, organized by types. The following keywords can be founded: "Concepts", "Arrows", "Rhombuses", "Ellipses", "Attributes", "Namespaces", "Metadata", "Hexagons", "Individual". The value for these keywords is an array that may contain objects that have the following structure:
 
 ```json
 {
