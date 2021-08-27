@@ -17,13 +17,44 @@ You have several options to use this tool.
 4. Click on Submit.
 5. Copy-paste or download the ontology generated in TTL or in RDF/XML.
 
-### 2. The web service:
+### 2. The API:
 
 The following command line will return the ontology in Turtle format.
 
 ```bash
 curl -F 'data=@/path/to/diagram.xml' https://chowlk.linkeddata.es/api
 ```
+
+The service will return the following dictionary:
+
+```json
+{
+  "ttl_data": "@prefix ns: ...",
+  "new_namespaces": {"ns1": "https://namespace1.com#", "ns2": "https://namespace2.com#"},
+  "errors": {"Concepts": [{"message": "Problem in text", "shape_id": "13", "value": "ns:Building Element"}],
+             "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}],
+             "Arrows": [],
+             "Rhombuses": [],
+             "Ellipses": [],
+             "Namespaces": [],
+             "Metadata": [],
+             "Hexagons": [],
+             "Individual": []}
+}
+```
+
+* **ttl_data:** Contains the ontology generated from the diagram in Turtle format. It is returned in string format.
+* **new_namespaces:** Contains the new namespaces created for the ontology, when prefixes are founded in the model but are not declared in the namespace block in the diagram. The returned object is a dictionary with the following format: {"prefix1": "namespace1", "prefix2": "namespace2"}
+* **errors:** Contains the errors founded in the ontology diagram, organized by types. The following keywords can be founded: "Concepts", "Arrows", "Rhombuses", "Ellipses", "Attributes", "Namespaces", "Metadata", "Hexagons", "Individual". The value for these keywords is an array that may contain objects that have the following structure:
+
+```json
+{
+  "message": "Some message related to the problem",
+  "shape_id": "An integer id that identify the problematic shape in the diagram",
+  "value": "the actual text related with the shape"
+}
+```
+
 
 ### 3. Running it from source:
 
