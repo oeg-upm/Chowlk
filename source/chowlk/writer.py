@@ -545,7 +545,7 @@ def write_instances(file, individuals):
     return file
 
 
-def write_general_axioms(file, concepts, anonymous_concepts):
+def write_general_axioms(file, concepts, anonymous_concepts, individuals, hexagons):
 
     file.write("#################################################################\n"
                "#    General Axioms\n"
@@ -558,6 +558,19 @@ def write_general_axioms(file, concepts, anonymous_concepts):
 
             concept_names = [concepts[id]["prefix"] + ":" + concepts[id]["uri"] for id in blank["group"]]
             for name in concept_names:
+                file.write("\t\t" + name + "\n")
+            file.write("\t\t)")
+            file.write("] .")
+
+    for hex_id, hexagon in hexagons.items():
+
+        if len(hexagon["group"]) > 2 and hexagon["type"] in ["owl:AllDifferent"]:
+            file.write("[ rdf:type owl:AllDifferent ;\n")
+            file.write("  owl:distinctMembers ( \n")
+
+            individual_names = [individuals[id]["prefix"] + ":" + individuals[id]["uri"] for id in hexagon["group"]]
+
+            for name in individual_names:
                 file.write("\t\t" + name + "\n")
             file.write("\t\t)")
             file.write("] .")

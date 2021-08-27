@@ -9,7 +9,7 @@ import os
 
 def transform_ontology(root):
     finder = Finder(root)
-    concepts, attribute_blocks, relations, individuals, anonymous_concepts, metadata, namespaces, rhombuses, errors = finder.find_elements()
+    concepts, attribute_blocks, relations, individuals, anonymous_concepts, hexagons, metadata, namespaces, rhombuses, errors = finder.find_elements()
     values = finder.find_attribute_values()
     prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
     relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks)
@@ -29,7 +29,7 @@ def transform_ontology(root):
     file = write_concepts(file, concepts, anonymous_concepts, associations)
     file = write_instances(file, individuals)
     file = write_triplets(file, individuals, associations_individuals, values)
-    file = write_general_axioms(file, concepts, anonymous_concepts)
+    file = write_general_axioms(file, concepts, anonymous_concepts, individuals, hexagons)
 
     file.seek(os.SEEK_SET)
 
