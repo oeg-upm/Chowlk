@@ -252,13 +252,36 @@ def individual_relation_association(individuals, relations):
     for id, individual in individuals.items():
         associations[id] = {"individual": individual, "relations": {}, "attributes": {}}
     for relation_id, relation in relations.items():
-        if relation["type"] != "owl:ObjectProperty":
-            continue
-        source_id = relation["source"]
-        target_id = relation["target"]
-        if target_id in individuals and source_id in associations:
-            association = associations[source_id]
-            association["relations"][relation_id] = relation
+
+        if relation["type"] == "owl:ObjectProperty":
+
+            source_id = relation["source"]
+            target_id = relation["target"]
+            if target_id in individuals and source_id in associations:
+                association = associations[source_id]
+                association["relations"][relation_id] = relation
+        
+
+        elif relation["type"] == "owl:sameAs":
+
+            source_id = relation["source"]
+            target_id = relation["target"]
+            if target_id in individuals and source_id in associations:
+                association = associations[source_id]
+                association["relations"][relation_id] = relation
+                association["relations"][relation_id]["prefix"] = "owl"
+                association["relations"][relation_id]["uri"] = "sameAs"
+
+        elif relation["type"] == "owl:differentFrom":
+
+            source_id = relation["source"]
+            target_id = relation["target"]
+            if target_id in individuals and source_id in associations:
+                association = associations[source_id]
+                association["relations"][relation_id] = relation
+                association["relations"][relation_id]["prefix"] = "owl"
+                association["relations"][relation_id]["uri"] = "differentFrom"
+                
     return associations
 
 

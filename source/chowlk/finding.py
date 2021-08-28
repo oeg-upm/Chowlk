@@ -17,6 +17,7 @@ class Finder():
         self.concepts = {}
         self.attribute_blocks = {}
         self.rhombuses = {}
+        self.hexagons = {}
         self.errors = {
             "Concepts": [],
             "Arrows": [],
@@ -25,6 +26,7 @@ class Finder():
             "Namespaces": [],
             "Metadata": [],
             "Rhombuses": [],
+            "Hexagons": [],
             "Individual": []
         }
 
@@ -53,7 +55,7 @@ class Finder():
                 # Looking for ellipses in a second iteration
                 for child2 in self.root:
                     style2 = child2.attrib["style"] if "style" in child2.attrib else ""
-                    if source == child2.attrib["id"] and "ellipse" in style2:
+                    if source == child2.attrib["id"] and ("ellipse" in style2 or "hexagon" in style2):
                         # This edge is part of a unionOf / intersectionOf construct
                         # it is not useful beyond that construction
                         relation["type"] = "ellipse_connection"
@@ -107,7 +109,7 @@ class Finder():
 
             # Detection of special type of edges
             edge_types = ["rdfs:subClassOf", "rdf:type", "owl:equivalentClass", "owl:disjointWith", "owl:complementOf", 
-                            "rdfs:subPropertyOf", "owl:equivalentProperty", "owl:inverseOf", "rdfs:domain", "rdfs:range"]
+                            "rdfs:subPropertyOf", "owl:equivalentProperty", "owl:inverseOf", "rdfs:domain", "rdfs:range", "owl:sameAs", "owl:differentFrom"]
 
             edge_type_founded = False
 
@@ -301,7 +303,7 @@ class Finder():
                     ellipse["xml_object"] = child
                     if "⨅" in value or "owl:intersectionOf" in value:
                         ellipse["type"] = "owl:intersectionOf"
-                    elif "⨆" in value or "owl:unionOf":
+                    elif "⨆" in value or "owl:unionOf" in value:
                         ellipse["type"] = "owl:unionOf"
                     elif "≡" in value:
                         ellipse["type"] = "owl:equivalentClass"
@@ -525,6 +527,53 @@ class Finder():
 
         return self.rhombuses, self.errors
 
+
+    def find_hexagons(self):
+
+        for child in self.root:
+
+            id = child.attrib["id"]
+            style = child.attrib["style"] if "style" in child.attrib else ""
+            value = child.attrib["value"] if "value" in child.attrib else None
+            ellipse_corrupted = False
+            try:
+                if "hexagon" in style:
+                    hexagon = {}
+                    hexagon["xml_object"] = child
+                    if "owl:AllDifferent" in value:
+                        hexagon["type"] = "owl:AllDifferent"
+                    elif "owl:oneOf" in value:
+                        hexagon["type"] = "owl:oneOf"
+
+                    # Find the associated concepts to this union / intersection restriction
+                    hexagon["group"] = []
+
+                    for relation_id, relation in self.relations.items():
+                        
+                        if "type" not in relation:
+                            continue
+                        if relation["type"] == "ellipse_connection":
+                            print("here")
+                            source_id = relation["source"]
+                            if id == source_id:
+                                target_id = relation["target"]
+                                if target_id is None:
+                                    ellipse_corrupted = True
+                                    break
+                                hexagon["group"].append(target_id)
+                    
+                    if len(hexagon["group"]) < 2:
+                        ellipse_corrupted = True
+
+                    if ellipse_corrupted:
+                        continue
+
+                    hexagon["xml_object"] = child
+                    self.hexagons[id] = hexagon
+            except:
+                continue
+
+        return self.hexagons
 
     def find_concepts_and_attributes(self):
 
@@ -771,8 +820,9 @@ class Finder():
         metadata = self.find_metadata()
         relations = self.find_relations()
         ellipses = self.find_ellipses()
+        hexagons = self.find_hexagons()
         individuals = self.find_individuals()
         concepts, attribute_blocks = self.find_concepts_and_attributes()
         rhombuses, errors = self.find_rhombuses()
 
-        return concepts, attribute_blocks, relations, individuals, ellipses, metadata, namespaces, rhombuses, errors
+        return concepts, attribute_blocks, relations, individuals, ellipses, hexagons, metadata, namespaces, rhombuses, errors
