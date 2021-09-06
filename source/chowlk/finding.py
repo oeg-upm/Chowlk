@@ -623,7 +623,7 @@ class Finder():
                         continue
                     if "shape" in style2:
                         continue
-
+                    
                     p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(child2)
                     dx = abs(p1[0] - p2_support[0])
                     dy = abs(p1[1] - p2_support[1])
@@ -809,6 +809,7 @@ class Finder():
                     self.concepts[id] = concept
 
             except:
+                print("here")
                 continue
 
         return self.concepts, self.attribute_blocks
