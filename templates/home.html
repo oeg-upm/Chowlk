@@ -17,69 +17,23 @@
 
 {% block content %}
 
-<header>
-    <a href="{{url_for('home')}}"><img id="logo" src="{{ url_for('static', filename='resources/logo.png') }}"></a>
-    <button type="button" onclick="window.location.href='https://chowlk.linkeddata.es/chowlk_spec'" class="btn btn-primary btn-md">Chowlk Notation</button>
-</header>
 <div class="container-fluid" id="banner">
     <div class="jumbotron">
-        <h1 class="display-4 text-center">Chowlk Code Generation Service</h1>
+        <h1 class="display-4 text-center">Chowlk Framework</h1>
         <hr class="my-4">
-        <p class="lead text-center">Chowlk is a web service that automatically generates the OWL code from your Ontology 
-            Diagram made with <a href="https://www.diagrams.net/" style="color:#124981">diagrams.net</a>
-        </p>
+        <p class="lead text-center">All the content has been moved to <a style="color: white;" href="https://chowlk.linkeddata.es/">https://chowlk.linkeddata.es/</a></p>
     </div>
 </div>
 
 <div class="container" id="main-container">
     <div class="row">
-        <div id="instructions-container" class="container col-xs-6">
-            <h3 class="display-4">Steps to use the service</h3>
-            <br>
-            <ol>
-                <li>Make an ontology diagram using the <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk Visual 
-                    Notation</a> and <a href="https://www.diagrams.net/">diagrams.net</a>.</li>
-                <li>Ensure the following in your ontology diagram.</li>
-                    <ul>
-                        <li>The <a href="https://chowlk.linkeddata.es/chowlk_spec/#basic-elements">namespace block</a> must
-                            indicate all the prefixes and namespaces used in the model.</li>
-                        <li>The <a href="https://chowlk.linkeddata.es/chowlk_spec/#basic-elements">metadata block</a> must 
-                            contain the actual annotation property elements, aliases are not 
-                            allowed. For instance, the user should type <code>owl:versionInfo</code> instead of <b>"version"</b> 
-                            to indicate the current version of the ontology.</li>
-                        <li>The source and target of all the arrows in the diagram are connected to a block. This means that 
-                            relationships between properties (e.g. <code>rdfs:subPropertyOf</code>) can only use the
-                            <a href="https://chowlk.linkeddata.es/chowlk_spec/#relations-between-properties">Option 1</a> 
-                            to being able to generate them in OWL code.</li>
-                    </ul>
-                <li>Export your drawio diagram as an XML file.</li>
-                <li>Choose your XML file and press submit.</li>
-            </ol>
-
-        </div>
-        <div id="diagram-container" class="container col-xs-6">
-            <form method="POST" enctype="multipart/form-data" action="{{ url_for('diagram_upload') }}">
-                <p style="font-size:30px" id="dropzone" class="text-center"><b>Choose a diagram</b></p>
-                <br>
-                <label for="file" class="btn btn-primary">Choose a diagram</label>
-                <input name="diagram_data" id="file" type="file" style="visibility: hidden;">
-                <p id="filename"></p>
-                {% for message in get_flashed_messages() %}
-                    <p id="error-message">{{message}}</p>
-                {% endfor %}
-                <br>
-                <div>
-                    <input id="submit" type="submit" class="btn btn-primary mb-2" value="Submit">
-                    <input id="reset" type="reset" class="btn btn-primary mb-2" value="Reset">
-                </div>
-            </form>
-        </div>
+        <p class="lead"></p>
     </div>
-    <div class="row">
-        <footer class="col-md-6">
-            <a href="https://www.oeg-upm.net/"><img src="static/resources/oeg-logo.gif" width="15%" alt="oeg-logo"/></a>
-            <a href="https://www.fi.upm.es/"><img src="static/resources/fi-logo.png" width="15%" alt="fi-logo"/></a>
-            <a href="https://www.upm.es/"><img src="static/resources/upm-logo.png" width="15%" alt="upm-logo"/></a>
+    <div class="row text-center justify-content-center">
+        <footer class="col-md-12">
+            <a href="https://www.oeg-upm.net/"><img src="static/resources/oeg-logo.gif" width="5%" alt="oeg-logo"/></a>
+            <a href="https://www.fi.upm.es/"><img src="static/resources/fi-logo.png" width="5%" alt="fi-logo"/></a>
+            <a href="https://www.upm.es/"><img src="static/resources/upm-logo.png" width="5%" alt="upm-logo"/></a>
             <br>
             <span class="site-footer-owner"><a href="https://github.com/oeg-upm/Chowlk">Chowlk</a> is maintained by <a href="https://github.com/oeg-upm">oeg-upm</a>.</span>
         </footer>

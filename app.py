@@ -68,21 +68,21 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 def home():
     return render_template("home.html")
 
-@app.route("/demoeswc2021", methods=["GET", "POST"])
+"""@app.route("/demoeswc2021", methods=["GET", "POST"])
 def poster():
-    return render_template("chowlk_poster.html")
+    return render_template("chowlk_poster.html")"""
 
 
-@app.route("/download/<path:format>", methods=["GET", "POST"])
+"""@app.route("/download/<path:format>", methods=["GET", "POST"])
 def download(format):
     ontology_directory = os.path.join(current_app.root_path, app.config["TEMPORAL_FOLDER"])
     if format == "ttl":
         return send_from_directory(ontology_directory, session.get("ttl_filename"), as_attachment=True)
     elif format == "xml":
-        return send_from_directory(ontology_directory, session.get("xml_filename"), as_attachment=True)
+        return send_from_directory(ontology_directory, session.get("xml_filename"), as_attachment=True)"""
 
 
-@app.route("/diagram_upload", methods=["GET", "POST"])
+"""@app.route("/diagram_upload", methods=["GET", "POST"])
 def diagram_upload():
 
     if request.method == "POST" and "diagram_data" in request.files:
@@ -142,7 +142,7 @@ def diagram_upload():
         db.session.add(user)
         db.session.commit()
 
-        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, namespaces=new_namespaces, errors=new_errors)
+        return render_template("output.html", ttl_data=ttl_data, xml_data=xml_data, namespaces=new_namespaces, errors=new_errors)"""
 
 
 @app.route("/api", methods=["GET", "POST"])
