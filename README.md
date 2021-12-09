@@ -3,7 +3,7 @@
 # Chowlk Converter
 Tool to transform ontology conceptualizations made with diagrams.net into OWL code.
 
-The conceptualizations should follow the <a href="https://chowlk.linkeddata.es/chowlk_spec">Chowlk visual notation</a>. Please visit the specification for more details.
+The conceptualizations should follow the <a href="https://chowlk.linkeddata.es/notation.html">Chowlk visual notation</a>. Please visit the specification for more details.
 
 ## How to use the tool
 
@@ -12,10 +12,19 @@ You have several options to use this tool.
 ### 1. The web application:
 
 1. Go to https://chowlk.linkeddata.es/ web application.
-2. Read the instructions / recomendations that your diagram should comply.
-3. Click on "Choose a diagram" and select one from your local machine.
-4. Click on Submit.
-5. Copy-paste or download the ontology generated in TTL or in RDF/XML.
+2. Download the Chowlk template.
+  
+  * Complete version of the template:
+    https://github.com/oeg-upm/chowlk_spec/blob/master/resources/chowlk-library-complete.xml
+
+  * Lightweight version of the template:
+    https://github.com/oeg-upm/chowlk_spec/blob/master/resources/chowlk-library-lightweight.xml
+     
+3. In diagrams.net go to File > Open Library from > Device ...
+4. Select the library downloaded.
+5. Make your conceptualization using the blocks that will appear on the side bar.
+6. Download the diagram in xml format.
+7. Drag and drop your diagram in the Service dropping area and download your TTL file.
 
 ### 2. The API:
 
