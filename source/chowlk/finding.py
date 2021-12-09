@@ -368,7 +368,7 @@ class Finder():
 
                 except:
                     error = {
-                        "message": "Problems in the text of the Metadata",
+                        "message": "Problems in the text of the Individual",
                         "shape_id": id,
                         "value": value
                     }
