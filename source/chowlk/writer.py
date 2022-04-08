@@ -49,9 +49,12 @@ def write_ontology_metadata(file, metadata, onto_uri):
     for prefix, values in metadata.items():
 
         for value in values:
-            value = "\"" + value + "\""
             file.write(" ;\n")
-            file.write("\t\t\t" + prefix + " " + value)
+            if "imports" in prefix:
+                file.write("\t\t\t" + prefix + " " + "<" + value + ">")
+            else:
+                value = "\"" + value + "\""
+                file.write("\t\t\t" + prefix + " " + value)
     file.write(" ;\n")
     file.write("\t\t\t" + "dc:description \"Ontology code created by Chowlk\"")
     file.write(" .\n\n")
