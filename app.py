@@ -1,15 +1,10 @@
 import os
 import flask
 import copy
-from datetime import datetime
-from flask import request, url_for, render_template, redirect, flash, send_from_directory, current_app, session, jsonify
-from flask import json
-from flask.helpers import make_response
+from flask import request, url_for, render_template, redirect, flash, \
+                    send_from_directory, session, jsonify
 from flask_bootstrap import Bootstrap
 from flask_cors import CORS
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.dialects.postgresql import JSON
 
 from source.chowlk.transformations import transform_ontology
 from source.chowlk.utils import read_drawio_xml
@@ -27,18 +22,6 @@ bootstrap = Bootstrap(app)
 @app.route("/static/<path:path>")
 def send_static(path):
     return send_from_directory("static", path)
-
-SWAGGER_URL = "/swagger"
-API_URL = "/static/swagger.json"
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        "app_name": "Chowlk"
-    }
-)
-
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 
 @app.route("/", methods=["GET", "POST"])
