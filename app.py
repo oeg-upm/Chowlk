@@ -21,7 +21,6 @@ config_name = os.environ.get("APP_MODE") or "development"
 
 app = flask.Flask(__name__)
 app.config.from_object(config[config_name])
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 CORS(app)
 bootstrap = Bootstrap(app)
 
