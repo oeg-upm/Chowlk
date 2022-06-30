@@ -96,7 +96,10 @@ python app.py
 ```
 
 ## Publications
-Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2021). <i>Converting UML-based ontology conceptualizations to OWL with Chowlk. In ESWC (Poster and Demo Track)</i>
+
+* Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2022). Chowlk: from UML-Based Ontology Conceptualizations to OWL. In: , et al. The Semantic Web. ESWC 2022. Lecture Notes in Computer Science, vol 13261. Springer, Cham. https://doi.org/10.1007/978-3-031-06981-9_20
+
+* Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2021). <i>Converting UML-based ontology conceptualizations to OWL with Chowlk. In ESWC (Poster and Demo Track)</i>
 
 
 
