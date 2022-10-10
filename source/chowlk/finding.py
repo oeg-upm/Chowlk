@@ -160,8 +160,35 @@ class Finder():
 
             # Prefix and uri
             try:
-                uri = clean_uri(value)
+
+                uri = clean_uri(value)             
                 uri = uri.split("|")[-1].strip().split(">>")[-1].strip()
+
+                #In order to implement @base directive
+                    #If uri contains ':' && uri does not start with ':' => normal prefix
+                    #If uri starts with ':' => empty prefix
+                    #If uri does not contain ':' => prefix is @base
+                        #If uri contains ':' && uri does not start with ':' => len(uri_split) > 1 and uri_split[0] != ""
+                        #If uri starts with ':' => len(uri_split) > 1 and uri_split[0] == ""
+                        #If uri does not contain ':' => len(uri_split) == 1
+                uri_split = uri.split(":")
+                if(len(uri_split)>1):
+                    #normal prefix || empty prefix (both are in namespace)
+                    prefix = uri_split[0].strip()
+                    if(prefix == ""):
+                        prefix = "cambiar_a_prefijo_vacio"
+                    uri = uri_split[-1].strip()
+                else:
+                    #prefix is @base
+                    #store prefix with an auxiliar name in order
+                    #write the relations with base directive in to write_object_properties
+                    prefix = "<cambiar_a_base"
+                    uri = uri_split[0].strip() + ">"
+
+                """#Como estaba hecho antes
+                print(uri)
+                uri = uri.split("|")[-1].strip().split(">>")[-1].strip()
+                print(uri)
 
                 check = uri.split(":")[1] # Check if error in text
 
@@ -169,7 +196,7 @@ class Finder():
                 uri = uri.split(":")[-1].strip()
 
                 check = prefix[0] # Check if error in text
-                check = uri[0] # Check if error in text
+                check = uri[0] # Check if error in text"""
 
                 uri = re.sub(" ", "", uri)
                 
@@ -358,10 +385,34 @@ class Finder():
                 individual["xml_object"] = child
                 value = clean_html_tags(value)
                 try:
+                    #In order to implement @base directive
+                            #If value contains ':' && value does not start with ':' => normal prefix
+                            #If value starts with ':' => empty prefix (which is the same as @base)
+                            #If value does not contain ':' => prefix is @base
+                                #If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                                #If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                                #If value does not contain ':' => len(value_split) == 1
+
+                    value_split = value.split(":")
+                    if(len(value_split) > 1):
+                        #normal prefix || empty prefix (both are in namespace)
+                        individual["prefix"] = value_split[0].strip()
+                        if(individual["prefix"] == ""):
+                            individual["prefix"] = "cambiar_a_prefijo_vacio"
+                        individual["uri"] = value_split[1].strip()
+                    else:
+                        #prefix is @base
+                        #store concept["prefix"] with an auxiliar name in order
+                        #write the concepts with base directive in to write_concepts
+                        individual["prefix"] = "<cambiar_a_base"
+                        individual["uri"] = value_split[0].strip() + ">"
+
+                    """#Asi estaba hecho
                     individual["prefix"] = value.split(":")[0]
                     individual["uri"] = value.split(":")[1]
                     individual["prefix"][0] # Check if error
-                    individual["uri"][1] # Check if error
+                    individual["uri"][1] # Check if error"""
+
                     individual["type"] = None
 
                     individual["uri"] = re.sub(" ", "", individual["uri"])
@@ -448,8 +499,31 @@ class Finder():
 
                     value = value_html_clean.split("|")[-1].strip()
                     value = value.split(">>")[-1].strip()
+
+                    #In order to implement @base directive
+                    #If uri contains ':' && uri does not start with ':' => normal prefix
+                    #If uri starts with ':' => empty prefix
+                    #If uri does not contain ':' => prefix is @base
+                        #If uri contains ':' && uri does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                        #If uri starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                        #If uri does not contain ':' => len(value_split) == 1
+                    value_split = value.split(":")
+                    if(len(value_split)>1):
+                        #normal prefix || empty prefix (both are in namespace)
+                        prefix = value_split[0].strip()
+                        if(prefix == ""):
+                            prefix = "cambiar_a_prefijo_vacio"
+                        uri = value_split[-1].strip()
+                    else:
+                        #prefix is @base
+                        #store prefix with an auxiliar name in order
+                        #write the relations with base directive in to write_object_properties
+                        prefix = "<cambiar_a_base"
+                        uri = value_split[0].strip() + ">"
+
+                    """#Como estaba hecho antes
                     prefix = value.split(":")[0].strip()
-                    uri = value.split(":")[1].strip()
+                    uri = value.split(":")[1].strip()"""
 
                     uri = re.sub(" ", "", uri)
                     
@@ -637,6 +711,37 @@ class Finder():
                             attribute = {}
                             attribute_value_cleaned = clean_uri(attribute_value)
                             try:
+                                
+                                #get the prefix:uri
+                                attribute_value_split = attribute_value_cleaned.split(" ")[0].strip()
+                                # If the datatype has range => remove the last :
+                                if(attribute_value_split[-1] == ":"):
+                                    attribute_value_split = attribute_value_split[:-1]
+
+                                #In order to implement @base directive
+                                    #If value contains ':' && value does not start with ':' => normal prefix
+                                    #If value starts with ':' => empty prefix (which is the same as @base)
+                                    #If value does not contain ':' => prefix is @base
+                                        #If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                                        #If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                                        #If value does not contain ':' => len(value_split) == 1
+
+                                attribute_value_split = attribute_value_split.split(":")
+                                if(len(attribute_value_split) > 1):
+                                    #normal prefix || empty prefix (both are in namespace)
+                                    attribute["prefix"] = attribute_value_split[0].strip()
+                                    if(attribute["prefix"] == ""):
+                                        attribute["prefix"] = "cambiar_a_prefijo_vacio"
+                                    attribute["uri"] = attribute_value_split[1].strip()
+                                else:
+                                    #prefix is @base
+                                    #store concept["prefix"] with an auxiliar name in order
+                                    #write the concepts with base directive in to write_concepts
+                                    attribute["prefix"] = "<cambiar_a_base"
+                                    attribute["uri"] = attribute_value_split[0].strip() + ">"
+
+
+                                """print(attribute_value_cleaned.split(":"))
                                 attribute["prefix"] = attribute_value_cleaned.split(":")[0].strip()
                                 attribute["prefix"][0] # Check if error in text
                                 attribute["uri"] = attribute_value_cleaned.split(":")[1].strip()
@@ -645,7 +750,11 @@ class Finder():
                                 attribute["uri"] = re.sub(" ", "", attribute["uri"])
 
                                 attribute["prefix"][1] # Check if error in text
+                                attribute["label"] = create_label(attribute["uri"], "property")"""
+
+                                attribute["uri"] = re.sub(" ", "", attribute["uri"])
                                 attribute["label"] = create_label(attribute["uri"], "property")
+                
                             except:
                                 error = {
                                     "message": "Problems in the text of the attribute",
@@ -786,12 +895,36 @@ class Finder():
 
                     value = clean_html_tags(value)
                     try:
+
+                        #In order to implement @base directive
+                            #If value contains ':' && value does not start with ':' => normal prefix
+                            #If value starts with ':' => empty prefix (which is the same as @base)
+                            #If value does not contain ':' => prefix is @base
+                                #If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                                #If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                                #If value does not contain ':' => len(value_split) == 1
+
+                        value_split = value.split(":")
+                        if(len(value_split) > 1):
+                            #normal prefix || empty prefix (both are in namespace)
+                            concept["prefix"] = value_split[0].strip()
+                            if(concept["prefix"] == ""):
+                                concept["prefix"] = "cambiar_a_prefijo_vacio"
+                            concept["uri"] = value_split[1].strip()
+                        else:
+                            #prefix is @base
+                            #store concept["prefix"] with an auxiliar name in order
+                            #write the concepts with base directive in to write_concepts
+                            concept["prefix"] = "<cambiar_a_base"
+                            concept["uri"] = value_split[0].strip() + ">"
+
+                        """#Como estaba hecho antes
                         concept["prefix"] = value.split(":")[0].strip()
                         concept["uri"] = value.split(":")[1].strip()
 
                         concept["prefix"][0] # Check if error
-                        concept["uri"][1] # Check if error
-
+                        concept["uri"][1] # Check if error"""
+                          
                         # Taking into account possible spaces in the uri of the concept
                         concept["uri"] = re.sub(" ", "", concept["uri"])
 

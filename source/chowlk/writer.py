@@ -1,6 +1,6 @@
 import tempfile
 
-def get_ttl_template(namespaces, prefixes_fonded):
+def get_ttl_template(namespaces, prefixes_fonded, errors):
 
     file = tempfile.TemporaryFile(mode='w+', encoding="utf-8")
 
@@ -24,7 +24,8 @@ def get_ttl_template(namespaces, prefixes_fonded):
     new_namespaces = dict()
 
     for ns in not_found:
-        new_namespaces[ns] = default_uri.format(ns)
+        if(ns != "" and ns != "<cambiar_a_base" and ns != "cambiar_a_prefijo_vacio"):
+            new_namespaces[ns] = default_uri.format(ns)
 
     if len(namespaces) == 0:
         onto_prefix = list(new_namespaces.keys())[0]
@@ -33,15 +34,40 @@ def get_ttl_template(namespaces, prefixes_fonded):
         onto_prefix = list(namespaces.keys())[0]
         onto_uri = namespaces[onto_prefix]
 
+    empty_prefix_declared = True
+    base_declared = True
+    prefixes = []
     for prefix, uri in namespaces.items():
-        file.write("@prefix " + prefix + ": <" + uri + "> .\n")
+        if(prefix == ""):
+            empty_prefix_declared = False
+        if(prefix == "base"):
+            base_declared = False
+            onto_uri = uri
+            onto_prefix = prefix
+        else:
+            prefixes.append("@prefix " + prefix + ": <" + uri + "> .\n")
+
+    if(base_declared):
+        errors["Base"] = {
+            "message": "A base has not been declared. The fist namespace   \
+                    has been taken as base\n"
+        }
+
+    #Add empty prefix with same uri as @base if the user has not declared the
+    #empty prefix in namespace (the empty prefix has to be above the other prefixes
+    # because of rdflib)
+    if(empty_prefix_declared):
+        file.write("@prefix : <" + onto_uri + "> .\n")
+
+    for prefix in prefixes:
+        file.write(prefix)
 
     for prefix, uri in new_namespaces.items():
         file.write("@prefix " + prefix + ": <" + uri + "> .\n")
-    
+
     file.write("@base <" + onto_uri + "> .\n\n")
 
-    return file, onto_prefix, onto_uri, new_namespaces
+    return file, onto_prefix, onto_uri, new_namespaces, errors
 
 def write_ontology_metadata(file, metadata, onto_uri):
 

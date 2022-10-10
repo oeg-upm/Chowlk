@@ -6,6 +6,8 @@ from source.chowlk.writer import *
 from source.chowlk.utils import *
 import rdflib
 import os
+import re
+
 
 def transform_ontology(root):
     finder = Finder(root)
@@ -22,7 +24,7 @@ def transform_ontology(root):
     associations_individuals = individual_relation_association(individuals, relations)
     associations_individuals = individual_attribute_association(associations_individuals, values, relations)
 
-    file, onto_prefix, onto_uri, new_namespaces = get_ttl_template(namespaces, prefixes_identified)
+    file, onto_prefix, onto_uri, new_namespaces, errors = get_ttl_template(namespaces, prefixes_identified, errors)
     file = write_ontology_metadata(file, metadata, onto_uri)
     file = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks)
     file = write_data_properties(file, attribute_blocks, concepts)
@@ -30,13 +32,22 @@ def transform_ontology(root):
     file = write_instances(file, individuals)
     file = write_triplets(file, individuals, associations_individuals, values)
     file = write_general_axioms(file, concepts, anonymous_concepts, individuals, hexagons)
-
-    file.seek(os.SEEK_SET)
+    
+    #print(file.read())
+    #file.seek(os.SEEK_SET)
 
     turtle_output_file = tempfile.NamedTemporaryFile()
     xml_output_file = tempfile.NamedTemporaryFile()
-
+    
+    file.seek(0)
     file_read = file.read()
+
+    #Change cambiar_a_base prefix by base directive
+    file_read = file_read.replace("<cambiar_a_base:","<" + onto_uri)
+    #file_read = re.sub("<cambiar_a_base:", "<" + onto_uri, file_read)
+
+    #Change cambiar_a_prefijo_vacio prefix by empty prefix(":")
+    file_read = file_read.replace("cambiar_a_prefijo_vacio:",":")
 
     try:
         g = rdflib.Graph()
