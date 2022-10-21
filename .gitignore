@@ -1,4 +1,6 @@
 .venv
+venv
+.vscode
 .test
 *.pyc
 *.py[cod]
@@ -8,7 +10,6 @@
 __pycache__/
 *.log
 logs
-output
 tmp
 source/*egg-info
 dist

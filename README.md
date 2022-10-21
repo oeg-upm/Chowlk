@@ -1,9 +1,33 @@
-![Logo](https://github.com/oeg-upm/Chowlk/blob/webservice/static/resources/logo.png)
+![Logo](https://github.com/oeg-upm/Chowlk/blob/webservice/resources/logo.png)
 
 # Chowlk Converter
 Tool to transform ontology conceptualizations made with diagrams.net into OWL code.
 
 The conceptualizations should follow the <a href="https://chowlk.linkeddata.es/notation.html">Chowlk visual notation</a>. Please visit the specification for more details.
+
+Citing Chowlk: If you used Chowlk in your work, please cite the [ESWC paper](https://2022.eswc-conferences.org/wp-content/uploads/2022/05/paper_90_Chavez-Feria_et_al.pdf):
+
+```bib
+@InProceedings{10.1007/978-3-031-06981-9_20,
+author="Ch{\'a}vez-Feria, Serge
+and Garc{\'i}a-Castro, Ra{\'u}l
+and Poveda-Villal{\'o}n, Mar{\'i}a",
+editor="Groth, Paul
+and Vidal, Maria-Esther
+and Suchanek, Fabian
+and Szekley, Pedro
+and Kapanipathi, Pavan
+and Pesquita, Catia
+and Skaf-Molli, Hala
+and Tamper, Minna",
+title="Chowlk: from UML-Based Ontology Conceptualizations to OWL",
+booktitle="The Semantic Web",
+year="2022",
+publisher="Springer International Publishing",
+address="Cham",
+pages="338--352"
+}
+```
 
 ## How to use the tool
 
@@ -96,7 +120,10 @@ python app.py
 ```
 
 ## Publications
-Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2021). <i>Converting UML-based ontology conceptualizations to OWL with Chowlk. In ESWC (Poster and Demo Track)</i>
+
+* Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2022). Chowlk: from UML-Based Ontology Conceptualizations to OWL. In: , et al. The Semantic Web. ESWC 2022. Lecture Notes in Computer Science, vol 13261. Springer, Cham. https://doi.org/10.1007/978-3-031-06981-9_20
+
+* Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2021). <i>Converting UML-based ontology conceptualizations to OWL with Chowlk. In ESWC (Poster and Demo Track)</i>
 
 
 
