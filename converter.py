@@ -15,7 +15,8 @@ def main(diagram_path, output_path, type, format):
         file.write(ontology_turtle)
     elif format == "xml":
         file.write(ontology_xml)
-    
+    print()
+    print(errors)
     file.close()
 
 

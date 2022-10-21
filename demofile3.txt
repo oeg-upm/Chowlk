@@ -1,0 +1,144 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix : <https://w3id.org/def/saref4bldg#> .
+@prefix s4bldg: <https://w3id.org/def/saref4bldg#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix ns: <https://w3id.org/saref#> .
+@base <https://w3id.org/def/saref4bldg#> .
+
+<https://w3id.org/def/saref4bldg#> rdf:type owl:Ontology ;
+			dc:creator "Raúl García-Castro" ;
+			dc:creator "María Poveda-Villalón" ;
+			owl:versionInfo "1.0" ;
+			dc:title "SAREF extension for building devices" ;
+			dc:description "Ontology code created by Chowlk" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:label "object property" .
+
+### ns:objectProperty3
+ns:objectProperty3 rdf:type owl:ObjectProperty ;
+		rdfs:label "object property3" .
+
+#################################################################
+#    Data Properties
+#################################################################
+
+#################################################################
+#    Classes
+#################################################################
+
+### ns:Class1
+ns:Class1 rdf:type owl:Class ;
+	rdfs:label "Class1" .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" ;
+	rdfs:subClassOf ns:Class1 .
+
+### ns:Class3
+ns:Class3 rdf:type owl:Class ;
+	rdfs:label "Class3" ; 
+	rdfs:subClassOf [ rdf:type owl:Class ;
+	owl:oneOf (
+				ns:Individual2
+				ns:Individual3
+				ns:Individual1
+				)		] .
+
+### ns:Class6
+ns:Class6 rdf:type owl:Class ;
+	rdfs:label "Class6" ;
+	rdfs:subClassOf 
+
+	[ rdf:type owl:Restriction ;
+	 owl:onProperty ns:objectProperty ;
+	 owl:allValuesFrom ns:Class2] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class7
+ns:Class7 rdf:type owl:Class ;
+	rdfs:label "Class7" ;	rdfs:subClassOf 
+	[ rdf:type owl:Restriction ;
+	 owl:onProperty ns:objectProperty3 ;
+	 owl:allValuesFrom ns:Class2] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class4
+ns:Class4 rdf:type owl:Class ;
+	rdfs:label "Class4" ;	rdfs:subClassOf [ rdf:type owl:Class ;
+	owl:intersectionOf ( 
+				ns:Class1
+				ns:Class2
+				)		] .
+
+### ns:Class1
+ns:Class1 rdf:type owl:Class ;
+	rdfs:label "Class1" .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class1
+ns:Class1 rdf:type owl:Class ;
+	rdfs:label "Class1" .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class5
+ns:Class5 rdf:type owl:Class ;
+	rdfs:label "Class5" ;	rdfs:subClassOf [ rdf:type owl:Class ;
+	owl:unionOf ( 
+				ns:Class1
+				ns:Class2
+				)		] .
+
+### ns:Class8
+ns:Class8 rdf:type owl:Class ;
+	rdfs:label "Class8" ;	rdfs:subClassOf [ rdf:type owl:Class ;
+	owl:complementOf 
+				ns:Class2
+						] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+#################################################################
+#    Instances
+#################################################################
+
+### ns:Individual1
+ns:Individual1 rdf:type owl:NamedIndividual .
+
+### ns:Individual2
+ns:Individual2 rdf:type owl:NamedIndividual .
+
+### ns:Individual3
+ns:Individual3 rdf:type owl:NamedIndividual .
+
+#################################################################
+#    General Axioms
+#################################################################
+

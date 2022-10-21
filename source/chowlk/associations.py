@@ -51,7 +51,7 @@ def concept_relation_association(associations, relations):
 
     for relation_id, relation in relations.items():
         type = relation["type"] if "type" in relation else None
-        if type in ["rdf:type", "ellipse_connection", "rdfs:range", "rdfs:domain"]:
+        if type in ["ellipse_connection", "rdfs:range", "rdfs:domain"]:
             continue
         source_id = relation["source"]
         target_id = relation["target"]
@@ -73,7 +73,7 @@ def concept_relation_association(associations, relations):
     return associations, relations
 
 
-def individual_type_identification(individuals, associations, relations):
+def individual_type_identification(individuals, associations, relations, hexagons, errors):
 
     for id, relation in relations.items():
 
@@ -82,6 +82,7 @@ def individual_type_identification(individuals, associations, relations):
 
         if relation["type"] != "rdf:type":
             continue
+
         source_id = relation["source"]
         target_id = relation["target"]
         
@@ -93,6 +94,32 @@ def individual_type_identification(individuals, associations, relations):
             individual["type"] = []
         except:
             continue
+
+        #instance of an anonymous class formed by a owl:oneOf statement
+        if target_id in hexagons:
+            complement = hexagons[target_id]
+            if complement["type"] == "owl:oneOf":
+                ids = complement["group"]
+                text = "[ rdf:type owl:Class ; owl:oneOf ("
+                for id in ids:
+                    try:
+                        individuals_involved = individuals[id]["prefix"] + ":" + individuals[id]["uri"]
+                        text = text + " " + individuals_involved
+                    except:
+                        error = {
+                                "message": "An element of owl:oneOf is not an individual",
+                                "shape_id": id
+                            }
+                        errors["owl:oneOf"] = error
+                        continue
+                text = text + " ) ]"
+                if individual["prefix"] + ":" + individual["uri"] in text:
+                    individual["type"].append(text)
+                else:
+                    error = {
+                                individual["prefix"] + ":" + individual["uri"] + " not in owl:oneOf"
+                            }
+                    errors["owl:oneOf_inidividual"] = error
 
         for concept_id, association in associations.items():
 
@@ -214,7 +241,6 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
 """Functions for RDF Data"""
 
 def individual_type_identification_rdf(individuals, concepts, relations):
-
     for id, relation in relations.items():
         if relation["type"] != "rdf:type":
             continue

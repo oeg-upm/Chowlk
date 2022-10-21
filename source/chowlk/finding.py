@@ -18,6 +18,7 @@ class Finder():
         self.attribute_blocks = {}
         self.rhombuses = {}
         self.hexagons = {}
+        self.anonimous_classes = {}
         self.errors = {
             "Concepts": [],
             "Arrows": [],
@@ -50,10 +51,28 @@ class Finder():
             relation["target"] = target
             relation["xml_object"] = child
 
-            if value is None or len(value) == 0:
+            source_xml_object = {}
+            parent_xml_object = {}
 
-                # Looking for ellipses in a second iteration
+            if value is None or len(value) == 0:
+                # This bucle find the xml object of the source of the edge
+                # and the xml object of the parent of the edge
                 for child2 in self.root:
+                    if source == child2.attrib["id"]:
+                        source_xml_object = child2.attrib
+                    elif id == child2.attrib["parent"]:
+                        parent_xml_object = child2.attrib
+
+                # Looking for ellipses
+                if "style" in source_xml_object and ("ellipse" in source_xml_object["style"] or "hexagon" in source_xml_object["style"]) and parent_xml_object == {}:
+                    # This edge is part of a unionOf / intersectionOf construct
+                    # it is not useful beyond that construction
+                    relation["type"] = "ellipse_connection"
+                    self.relations[id] = relation
+                    continue
+                
+
+                """for child2 in self.root:
                     style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                     if source == child2.attrib["id"] and ("ellipse" in style2 or "hexagon" in style2):
                         # This edge is part of a unionOf / intersectionOf construct
@@ -63,16 +82,19 @@ class Finder():
                         break
                 if ellipse_connection_detected:
                     self.relations[id] = relation
-                    continue
+                    continue"""
 
                 # Sometimes edges have their value not embedded into the edge itself, at least not in the
                 # "value" parameter of the object. We can track their associated value by looking for free text
                 # and evaluating the "parent" parameter which will point to an edge.
-                for child2 in self.root:
+                if "style" in parent_xml_object and ("text" in parent_xml_object["style"] or "edgeLabel" in parent_xml_object["style"]):
+                    value = clean_html_tags(parent_xml_object["value"])
+
+                """for child2 in self.root:
                     style2 = child2.attrib["style"] if "style" in child2.attrib else ""
                     if ("text" in style2 or "edgeLabel" in style2) and id == child2.attrib["parent"]:
                         value = clean_html_tags(child2.attrib["value"])
-                        break
+                        break"""
 
                 if relation["source"] is None:
                     error = {
@@ -89,6 +111,7 @@ class Finder():
                         "value": value
                     }
                     self.errors["Arrows"].append(error)
+
                 # If after the evaluation of free text we cannot find any related text to the edge
                 # we can say for sure that it is a "subclass" or "type" relationship
                 if value is None or len(value) == 0:
@@ -150,6 +173,11 @@ class Finder():
                 relation["someValuesFrom"] = True
             else:
                 relation["someValuesFrom"] = False
+
+            if "(has)" in value:
+                relation["hasValue"] = True
+            else:
+                relation["hasValue"] = False
 
             # Property restriction evaluation
             relation["functional"] = True if "(F)" in value else False
@@ -336,12 +364,13 @@ class Finder():
                         ellipse["type"] = "owl:equivalentClass"
                     elif "⊥" in value:
                         ellipse["type"] = "owl:disjointWith"
+                    elif "owl:oneOf" in value:
+                        ellipse["type"] = "owl:oneOf"
 
                     # Find the associated concepts to this union / intersection restriction
                     ellipse["group"] = []
 
                     for relation_id, relation in self.relations.items():
-                        
                         if "type" not in relation:
                             continue
 
@@ -353,6 +382,18 @@ class Finder():
                                     ellipse_corrupted = True
                                     break
                                 ellipse["group"].append(target_id)
+                        
+                        # anonymousClass owl:complementOf anonymousClass
+                        elif relation["type"] == "owl:complementOf":
+                            source_id = relation["source"]
+                            if id == source_id:
+                                ellipse["group"].append(relation_id)
+
+                        # anonymousClass objectProperty anonymousClass
+                        elif relation["type"] == "owl:ObjectProperty":
+                            source_id = relation["source"]
+                            if id == source_id:
+                                ellipse["group"].append(relation_id)
                     
                     if len(ellipse["group"]) < 2:
                         ellipse_corrupted = True
@@ -627,7 +668,7 @@ class Finder():
                         if "type" not in relation:
                             continue
                         if relation["type"] == "ellipse_connection":
-                            print("here")
+                            #print("here")
                             source_id = relation["source"]
                             if id == source_id:
                                 target_id = relation["target"]
@@ -765,12 +806,31 @@ class Finder():
                                 continue
                             
                             try:
-                                if len(attribute_value.split(":")) > 2:
-                                    final_datatype = attribute_value.split(":")[2].strip()
-                                    final_datatype = final_datatype[0].lower() + final_datatype[1:]
-                                    attribute["datatype"] = final_datatype
+                                if(attribute["prefix"] != "<cambiar_a_base"):
+                                    if len(attribute_value.split(":")) > 2:
+                                        final_datatype = attribute_value.split(":")[-1].strip()
+                                        final_datatype = final_datatype[0].lower() + final_datatype[1:]
+                                        attribute["datatype"] = final_datatype
+                                        if len(attribute_value.split(":")) > 3:
+                                            attribute["prefix_datatype"] = attribute_value.split(":")[2].strip()
+                                            if (attribute["prefix_datatype"] == ""):
+                                                attribute["prefix_datatype"] = "cambiar_a_prefijo_vacio"
+                                        else:
+                                            attribute["prefix_datatype"] = "xsd"
+                                    else:
+                                        attribute["datatype"] = None
+
                                 else:
-                                    attribute["datatype"] = None
+                                    if len(attribute_value.split(":")) > 1:
+                                        final_datatype = attribute_value.split(":")[-1].strip()
+                                        final_datatype = final_datatype[0].lower() + final_datatype[1:]
+                                        attribute["datatype"] = final_datatype
+                                        if len(attribute_value.split(":")) > 2:
+                                            attribute["prefix_datatype"] = attribute_value.split(":")[1].strip()
+                                        else:
+                                            attribute["prefix_datatype"] = "xsd"
+                                    else:
+                                        attribute["datatype"] = None
                             except:
                                 error = {
                                     "message": "Problems in the datatype of the attribute",
@@ -797,6 +857,12 @@ class Finder():
                                 attribute["someValuesFrom"] = True
                             else:
                                 attribute["someValuesFrom"] = False
+                            
+                            # owl:hasValue
+                            if "(has)" in attribute_value:
+                                attribute["hasValue"] = True
+                            else:
+                                attribute["hasValue"] = False
 
                             attribute["functional"] = True if "(F)" in attribute_value else False
                             
@@ -941,11 +1007,18 @@ class Finder():
 
                     self.concepts[id] = concept
 
+                elif not attributes_found and value == "":
+                    anonymousClass = {}
+                    anonymousClass["xml_object"] = child
+                    anonymousClass["relations"] = []
+                    self.anonimous_classes[id] = anonymousClass
+
+
             except:
-                print("here")
+                #print("here")
                 continue
 
-        return self.concepts, self.attribute_blocks
+        return self.concepts, self.attribute_blocks, self.anonimous_classes
 
 
     def find_elements(self):
@@ -956,7 +1029,7 @@ class Finder():
         ellipses = self.find_ellipses()
         hexagons = self.find_hexagons()
         individuals = self.find_individuals()
-        concepts, attribute_blocks = self.find_concepts_and_attributes()
+        concepts, attribute_blocks, anonimous_classes = self.find_concepts_and_attributes()
         rhombuses, errors = self.find_rhombuses()
 
-        return concepts, attribute_blocks, relations, individuals, ellipses, hexagons, metadata, namespaces, rhombuses, errors
+        return concepts, attribute_blocks, relations, individuals, ellipses, hexagons, metadata, namespaces, rhombuses, errors, anonimous_classes
