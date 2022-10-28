@@ -146,8 +146,10 @@ def complement_of(complement, concepts, errors, hexagons, anonymous_concepts, in
 
 def restrictions(restriction, concepts, errors, hexagons, anonymous_concepts, individuals, relations, anonimous_classes):
     text = ""
-    if (restriction["allValuesFrom"] or restriction["someValuesFrom"]) and "range" in restriction:
-        complement = restriction["range"]
+    more_than_one_restriction = False
+    if (restriction["allValuesFrom"] or restriction["someValuesFrom"]) and "target" in restriction:
+        more_than_one_restriction = True
+        complement = restriction["target"]
         type = "owl:allValuesFrom" if restriction["allValuesFrom"] else "owl:someValuesFrom"
         text = "\n\t[ rdf:type owl:Restriction ;"
         text = text + "\n\t owl:onProperty " + restriction["prefix"] + ":" + restriction["uri"] + " ;"
@@ -214,8 +216,52 @@ def restrictions(restriction, concepts, errors, hexagons, anonymous_concepts, in
                 text = text + "]"""
         else:
             text = text + "]"    
-    else:
-        print()
+    
+    
+    # owl:hasValue
+    # The target is an individual
+    if restriction["hasValue"]:
+        if restriction["target"] in individuals:
+            if more_than_one_restriction:
+                text = text + ",\n"
+            else:
+                more_than_one_restriction = True
+            text = text + "\t\t[ rdf:type owl:Restriction ;\n"
+            text = text + "\t\t  owl:onProperty " + restriction["prefix"] + ":" + restriction["uri"] + " ;\n"
+            target_id = restriction["target"]
+            target_name = individuals[target_id]["prefix"] + ":" + individuals[target_id]["uri"]
+            text = text + "\t\t  owl:hasValue " + target_name + " ]"
+
+        else:
+            print("error el rango de un hass Value no es una instancia")
+
+    if restriction["min_cardinality"] is not None:
+        if more_than_one_restriction:
+            text = text + ",\n"
+        else:
+            more_than_one_restriction = True 
+        text = text + "\t\t[ rdf:type owl:Restriction ;\n"
+        text = text + "\t\t  owl:onProperty " + restriction["prefix"] + ":" + restriction["uri"] + " ;\n"
+        text = text + "\t\t  owl:minCardinality \"" + restriction["min_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]"
+
+    if restriction["max_cardinality"] is not None:
+        if more_than_one_restriction:
+            text = text + ",\n"
+        else:
+            more_than_one_restriction = True
+        text = text + "\t\t[ rdf:type owl:Restriction ;\n"
+        text = text + "\t\t  owl:onProperty " + restriction["prefix"] + ":" + restriction["uri"] + " ;\n"
+        text = text + "\t\t  owl:maxCardinality \"" + restriction["max_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]"
+
+    if restriction["cardinality"] is not None:
+        if more_than_one_restriction:
+            text = text + ",\n"
+        else:
+            more_than_one_restriction = True
+        text = text + "\t\t[ rdf:type owl:Restriction ;\n"
+        text = text + "\t\t  owl:onProperty " + restriction["prefix"] + ":" + restriction["uri"] + " ;\n"
+        text = text + "\t\t  owl:cardinality \"" + restriction["cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]"
+
     return text
 
 def intersection_of(intersection, concepts, errors, hexagons, anonymous_concepts, individuals, relations, anonimous_classes):

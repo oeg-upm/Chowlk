@@ -54,7 +54,7 @@ def transform_ontology(root):
     """print("\n anonymous classes")
     print(anonimous_classes)"""
     file = write_ontology_metadata(file, metadata, onto_uri)
-    file = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals)
+    file, errors = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals, errors)
     file = write_data_properties(file, attribute_blocks, concepts)
     """print("\n hexagons")
     print(hexagons)"""

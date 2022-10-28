@@ -174,10 +174,23 @@ class Finder():
             else:
                 relation["someValuesFrom"] = False
 
-            if "(has)" in value:
+            #owl:hasValue
+            if "hasValue" in value or "(value)" in value or "∋" in value:
                 relation["hasValue"] = True
             else:
                 relation["hasValue"] = False
+
+            # class_description predicate restriction
+            # A named class can be a subClass, an equivalentClass or disjointWith a class restriction
+            # When the user wants to declare this relation, it is specified inside the "relation" in diagrams
+            if "(sub)" in value:
+                relation["predicate_restriction"] = "rdfs:subClassOf"
+            elif "(eq)" in value:
+                relation["predicate_restriction"] = "owl:equivalentClass"
+            elif "(dis)" in value:
+                relation["predicate_restriction"] = "owl:disjointWith"
+            else:
+                relation["predicate_restriction"] = "rdfs:subClassOf"
 
             # Property restriction evaluation
             relation["functional"] = True if "(F)" in value else False
@@ -859,10 +872,22 @@ class Finder():
                                 attribute["someValuesFrom"] = False
                             
                             # owl:hasValue
-                            if "(has)" in attribute_value:
+                            if "(value)" in attribute_value or "∋" in attribute_value:
                                 attribute["hasValue"] = True
                             else:
                                 attribute["hasValue"] = False
+
+                            # class_description predicate restriction
+                            # A named class can be a subClass, an equivalentClass or disjointWith a class restriction
+                            # When the user wants to declare this relation, it is specified inside the "relation" in diagrams
+                            if "(sub)" in attribute_value:
+                                attribute["predicate_restriction"] = "rdfs:subClassOf"
+                            elif "(eq)" in attribute_value:
+                                attribute["predicate_restriction"] = "owl:equivalentClass"
+                            elif "(dis)" in attribute_value:
+                                attribute["predicate_restriction"] = "owl:disjointWith"
+                            else:
+                                attribute["predicate_restriction"] = "rdfs:subClassOf"
 
                             attribute["functional"] = True if "(F)" in attribute_value else False
                             

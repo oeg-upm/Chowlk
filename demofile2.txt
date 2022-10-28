@@ -25,11 +25,14 @@
 
 ### ns:objectProperty
 ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class3 ;
+		rdfs:range [ owl:intersectionOf ( 
+						ns:Class1
+						ns:Class2
+					) ;
+					rdf:type owl:Class
+					] ;
 		rdfs:label "object property" .
-
-### ns:objectProperty3
-ns:objectProperty3 rdf:type owl:ObjectProperty ;
-		rdfs:label "object property3" .
 
 #################################################################
 #    Data Properties
@@ -39,87 +42,13 @@ ns:objectProperty3 rdf:type owl:ObjectProperty ;
 #    Classes
 #################################################################
 
-### ns:Class1
-ns:Class1 rdf:type owl:Class ;
-	rdfs:label "Class1" .
-
-### ns:Class2
-ns:Class2 rdf:type owl:Class ;
-	rdfs:label "Class2" ;
-	rdfs:subClassOf ns:Class1 .
-
 ### ns:Class3
 ns:Class3 rdf:type owl:Class ;
-	rdfs:label "Class3" ; 
-	rdfs:subClassOf [ rdf:type owl:Class ;
-	owl:oneOf (
-				ns:Individual2
-				ns:Individual3
-				ns:Individual1
-				)		] .
-
-### ns:Class6
-ns:Class6 rdf:type owl:Class ;
-	rdfs:label "Class6" ;
-	rdfs:subClassOf 
-
-	[ rdf:type owl:Restriction ;
-	 owl:onProperty ns:objectProperty ;
-	 owl:allValuesFrom ns:Class2] .
-
-### ns:Class2
-ns:Class2 rdf:type owl:Class ;
-	rdfs:label "Class2" .
-
-### ns:Class7
-ns:Class7 rdf:type owl:Class ;
-	rdfs:label "Class7" ;	rdfs:subClassOf 
-	[ rdf:type owl:Restriction ;
-	 owl:onProperty ns:objectProperty3 ;
-	 owl:allValuesFrom ns:Class2] .
-
-### ns:Class2
-ns:Class2 rdf:type owl:Class ;
-	rdfs:label "Class2" .
-
-### ns:Class4
-ns:Class4 rdf:type owl:Class ;
-	rdfs:label "Class4" ;	rdfs:subClassOf [ rdf:type owl:Class ;
-	owl:intersectionOf ( 
-				ns:Class1
-				ns:Class2
-				)		] .
+	rdfs:label "Class3" .
 
 ### ns:Class1
 ns:Class1 rdf:type owl:Class ;
 	rdfs:label "Class1" .
-
-### ns:Class2
-ns:Class2 rdf:type owl:Class ;
-	rdfs:label "Class2" .
-
-### ns:Class1
-ns:Class1 rdf:type owl:Class ;
-	rdfs:label "Class1" .
-
-### ns:Class2
-ns:Class2 rdf:type owl:Class ;
-	rdfs:label "Class2" .
-
-### ns:Class5
-ns:Class5 rdf:type owl:Class ;
-	rdfs:label "Class5" ;	rdfs:subClassOf [ rdf:type owl:Class ;
-	owl:unionOf ( 
-				ns:Class1
-				ns:Class2
-				)		] .
-
-### ns:Class8
-ns:Class8 rdf:type owl:Class ;
-	rdfs:label "Class8" ;	rdfs:subClassOf [ rdf:type owl:Class ;
-	owl:complementOf 
-				ns:Class2
-						] .
 
 ### ns:Class2
 ns:Class2 rdf:type owl:Class ;
@@ -128,15 +57,6 @@ ns:Class2 rdf:type owl:Class ;
 #################################################################
 #    Instances
 #################################################################
-
-### ns:Individual1
-ns:Individual1 rdf:type owl:NamedIndividual .
-
-### ns:Individual2
-ns:Individual2 rdf:type owl:NamedIndividual .
-
-### ns:Individual3
-ns:Individual3 rdf:type owl:NamedIndividual .
 
 #################################################################
 #    General Axioms

@@ -89,7 +89,7 @@ def write_ontology_metadata(file, metadata, onto_uri):
     return file
 
 
-def write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals):
+def write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals, errors):
 
     file.write("#################################################################\n"
                "#    Object Properties\n"
@@ -124,11 +124,12 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
             # restrictions have not domain or/and range
             if not relation["allValuesFrom"] and not relation["someValuesFrom"] and not relation["hasValue"]:
                 if relation["domain"]:
-                    print(relation)
                     concept_id = relation["domain"]
+
                     if concept_id in concepts:
                         concept = concepts[concept_id]
                         domain_name = concept["prefix"] + ":" + concept["uri"]
+
                     elif concept_id in attribute_blocks:
                         concept_id = attribute_blocks[concept_id]["concept_associated"]
                         concept = concepts[concept_id]
@@ -142,6 +143,14 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                         domain_name = domain_name +  one_of(complement, individuals, {}) 
                         domain_name = domain_name + "\t\t]"  
 
+                    elif relation["domain"] in individuals:
+                        error = {
+                            "message": "The domain of an object property is an individual",
+                            "shape_id": relation_id
+                        }
+                        errors["objectProperty_domain"]= error
+                        domain_name = ":"
+                    
                     else:
                         domain_name = ":"
 
@@ -159,7 +168,7 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                         file.write("\t\trdfs:range " + range_name)
 
                     # range owl:oneOf
-                    elif  "range" in relation and relation["range"] in hexagons:
+                    elif  relation["range"] in hexagons:
                         target_id = relation["range"]
                         complement = hexagons[target_id]
                         file.write(" ; \n")
@@ -167,6 +176,13 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                         text =  one_of(complement, individuals, {})
                         file.write(text)
                         file.write("\t\t]")  
+
+                    elif relation["range"] in individuals:
+                        error = {
+                            "message": "The range of an object property is an individual",
+                            "shape_id": relation_id
+                        }
+                        errors["objectProperty_range"]= error
                     
                     else:
                         blank_id = relation["target"]
@@ -202,7 +218,7 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
             file.write("\t\trdfs:label \"" + relation["label"] + "\"")
             file.write(" .\n\n")
 
-    return file
+    return file, errors
 
 
 def write_data_properties(file, attribute_blocks, concepts):
@@ -228,21 +244,20 @@ def write_data_properties(file, attribute_blocks, concepts):
             if attribute["functional"]:
                 file.write(" ,\n")
                 file.write("\t\t\towl:FunctionalProperty")
+            if not attribute["allValuesFrom"] and not attribute["someValuesFrom"] and not attribute["hasValue"]:
+                if attribute["domain"]:
+                    concept_id = attribute["domain"]
+                    if concept_id in concepts:
+                        concept = concepts[concept_id]
+                        domain_name = concept["prefix"] + ":" + concept["uri"]
+                        file.write(" ;\n")
+                        file.write("\t\trdfs:domain " + domain_name)
 
-            if attribute["domain"]:
-                concept_id = attribute["domain"]
-                if concept_id in concepts:
-                    concept = concepts[concept_id]
-                    domain_name = concept["prefix"] + ":" + concept["uri"]
-                    file.write(" ;\n")
-                    file.write("\t\trdfs:domain " + domain_name)
+                if attribute["range"] and attribute["datatype"]:
 
-            if attribute["range"] and attribute["datatype"]:
-                print("\nattribute")
-                print(attribute)
-                if attribute["hasValue"] == False:
-                    file.write(" ;\n")
-                    file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])
+                    if attribute["hasValue"] == False:
+                        file.write(" ;\n")
+                        file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])
 
             if "rdfs:subPropertyOf" in attribute:
                 file.write(" ;\n")
@@ -297,7 +312,7 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                     file.write(" ;\n")
                     file.write("\trdfs:subClassOf " + target_name)
 
-                #owl:subClassOf owl:oneOf (enumerated class)
+                #rdfs:subClassOf owl:oneOf (enumerated class)
                 elif relation["target"] in hexagons:
                     target_id = relation["target"]
                     complement = hexagons[target_id]
@@ -307,7 +322,7 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                     file.write(text)
                     file.write("\t\t]")
 
-                #owl:subClassOf owl:unionOf or owl:intersectionOf
+                #rdfs:subClassOf owl:unionOf or owl:intersectionOf
                 elif relation["target"] in anonymous_concepts:
                     complement = anonymous_concepts[relation["target"]]
 
@@ -325,7 +340,7 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                         file.write(text)
                         file.write("\t\t]")
 
-                #owl:subClassOf restriction or owl:complementOf
+                #rdfs:subClassOf restriction or owl:complementOf
                 elif relation["target"] in anonimous_classes:
                     complement = anonimous_classes[relation["target"]]["relations"]
                     if len(complement) > 0:
@@ -387,7 +402,9 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                 #the target is a data value
                 if attribute["hasValue"] and attribute["prefix"] and attribute["uri"] and attribute["datatype"]:
                     file.write(" ;\n")
-                    file.write("\towl:equivalentClass \n")
+                    print("attribute")
+                    print(attribute)
+                    file.write("\t" + attribute["predicate_restriction"] + " \n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")
                     file.write("\t\t  owl:hasValue " + attribute["prefix_datatype"] + ":" + attribute["datatype"] + " ]")
@@ -397,7 +414,19 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
             if "type" not in relation:
                 continue
 
-            if relation["type"] == "owl:ObjectProperty" and (relation["target"] in concepts or \
+            # named_class predicate restriction
+            # where restriction can be:
+            #   - rdfs:subClassOf (default)
+            #   - owl:equivalentClass
+            #   - owl:disjointWith
+            if relation["type"] == "owl:ObjectProperty":
+                text = restrictions(relation, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                # if text is "" that means that the class is not relationate with a restriction
+                if text != "":
+                    file.write(" ;\n")
+                    file.write("\t" + relation["predicate_restriction"] + "\n")
+                    file.write(text)
+            """if relation["type"] == "owl:ObjectProperty" and (relation["target"] in concepts or \
                 relation["target"] in anonymous_concepts or relation["target"] in hexagons or relation["target"] in anonimous_classes):
                 
                 if relation["allValuesFrom"]:
@@ -405,78 +434,12 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                     file.write("\trdfs:subClassOf \n")
                     text = restrictions(relation, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
                     file.write(text)
-                    """file.write(" ;\n")
-                    file.write("\trdfs:subClassOf \n")   
-                    file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                    file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
-                    # Target name only applies when the target is a class
-                    if relation["target"] in concepts:
-                        target_id = relation["target"]
-                        target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
-                        file.write("\t\t  owl:allValuesFrom " + target_name + " ]")
-                    
-                    # Target is a hexagon (owl:oneOf)
-                    elif relation["target"] in hexagons:
-                        target_id = relation["target"]
-                        complement = hexagons[target_id]
-                        file.write("\t\t  owl:allValuesFrom [ rdf:type owl:Class ;")
-                        text =  one_of(complement, individuals, errors)
-                        file.write(text)
-                        file.write("\t\t] ]")
-
-                    # Otherwise the target is an blank node of type intersection, union, etc.
-                    else:
-                        target_id = relation["target"]
-                        group_node = anonymous_concepts[target_id]
-                        concept_ids = group_node["group"]
-                        concept_names = [concepts[id]["prefix"] + ":" + concepts[id]["uri"] for id in concept_ids]
-
-                        file.write("\t\t  owl:allValuesFrom [ " + group_node["type"] + " ( \n")
-                        for name in concept_names:
-                            file.write("\t\t\t\t\t\t" + name + "\n")
-
-                        file.write("\t\t\t\t\t) ;\n")
-                        file.write("\t\t\t\t\trdf:type owl:Class\n")
-                        file.write("\t\t\t\t\t] ]")"""
-
 
                 elif relation["someValuesFrom"] :
                     file.write(" ;\n")
                     file.write("\trdfs:subClassOf \n")
                     text = restrictions(relation, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
                     file.write(text)
-                    """file.write(" ;\n")
-                    file.write("\trdfs:subClassOf \n") 
-                    file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                    file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
-                    # Target name only applies when the target is a class
-                    if relation["target"] in concepts:
-                        target_id = relation["target"]
-                        target_name = concepts[target_id]["prefix"] + ":" + concepts[target_id]["uri"]
-                        file.write("\t\t  owl:someValuesFrom " + target_name + " ]")
-                    
-                    # Target is a hexagon (owl:oneOf)
-                    elif relation["target"] in hexagons:
-                        target_id = relation["target"]
-                        complement = hexagons[target_id]
-                        file.write("\t\t  owl:someValuesFrom [ rdf:type owl:Class ;")
-                        text =  one_of(complement, individuals, errors)
-                        file.write(text)
-                        file.write("\t\t] ]")
-
-                    # Otherwise the target is an blank node of type intersection, union, etc.
-                    else:
-                        target_id = relation["target"]
-                        group_node = anonymous_concepts[target_id]
-                        concept_ids = group_node["group"]
-                        concept_names = [concepts[id]["prefix"] + ":" + concepts[id]["uri"] for id in concept_ids]
-                        file.write("\t\t  owl:someValuesFrom [ " + group_node["type"] + " ( \n")
-                        for name in concept_names:
-                            file.write("\t\t\t\t\t\t" + name + "\n")
-
-                        file.write("\t\t\t\t\t) ;\n")
-                        file.write("\t\t\t\t\trdf:type owl:Class\n")
-                        file.write("\t\t\t\t\t] ]")"""
 
                 if relation["min_cardinality"] is not None:
                     file.write(" ;\n")
@@ -507,12 +470,12 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
             elif relation["type"] == "owl:ObjectProperty" and relation["hasValue"]:
                 if relation["target"] in individuals:
                     file.write(" ;\n")
-                    file.write("\towl:equivalentClass \n")
+                    file.write("\trdfs:subClassOf \n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + relation["prefix"] + ":" + relation["uri"] + " ;\n")
                     target_id = relation["target"]
                     target_name = individuals[target_id]["prefix"] + ":" + individuals[target_id]["uri"]
-                    file.write("\t\t  owl:hasValue " + target_name + " ]")
+                    file.write("\t\t  owl:hasValue " + target_name + " ]")"""
 
         for relation_id, relation in relations.items():
             if "type" not in relation:
@@ -552,6 +515,24 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                         text = union_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
                         file.write(text)
                         file.write("\t\t]")
+                
+                #owl:disjointWith restriction or owl:complementOf
+                elif relation["target"] in anonimous_classes:
+                    complement = anonimous_classes[relation["target"]]["relations"]
+                    if len(complement) > 0:
+                        complement = all_relations[complement[0]]
+                        if(complement["type"] == "owl:ObjectProperty"):
+                            file.write(" ;")
+                            file.write("\towl:disjointWith ")
+                            text = restrictions(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            file.write(text)
+
+                        elif(complement["type"] == "owl:complementOf"):
+                            file.write(" ;")
+                            file.write("\towl:disjointWith [ rdf:type owl:Class ;")
+                            text = complement_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            file.write(text)
+                            file.write("\t\t]")
 
             elif relation["type"] == "owl:complementOf":
                 file.write(" ;\n")
@@ -683,6 +664,22 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                         text = union_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
                         file.write(text)
                         file.write("\t\t]")
+
+                #owl:disjointWith restriction or owl:complementOf
+                elif complement_id in anonimous_classes:
+                    complement = anonimous_classes[complement_id]["relations"]
+                    if len(complement) > 0:
+                        complement = all_relations[complement[0]]
+                        if(complement["type"] == "owl:ObjectProperty"):
+                            file.write("\towl:disjointWith ")
+                            text = restrictions(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            file.write(text)
+
+                        elif(complement["type"] == "owl:complementOf"):
+                            file.write("\towl:disjointWith [ rdf:type owl:Class ;")
+                            text = complement_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            file.write(text)
+                            file.write("\t\t]")
 
             elif concept_id in blank["group"] and blank["type"] == "owl:complementOf":
                 file.write(" ;\n")
