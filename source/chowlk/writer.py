@@ -402,8 +402,6 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                 #the target is a data value
                 if attribute["hasValue"] and attribute["prefix"] and attribute["uri"] and attribute["datatype"]:
                     file.write(" ;\n")
-                    print("attribute")
-                    print(attribute)
                     file.write("\t" + attribute["predicate_restriction"] + " \n")
                     file.write("\t\t[ rdf:type owl:Restriction ;\n")
                     file.write("\t\t  owl:onProperty " + attribute["prefix"] + ":" + attribute["uri"] + " ;\n")

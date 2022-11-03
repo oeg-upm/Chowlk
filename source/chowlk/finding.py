@@ -28,7 +28,8 @@ class Finder():
             "Metadata": [],
             "Rhombuses": [],
             "Hexagons": [],
-            "Individual": []
+            "Individual": [],
+            "Cardinality-Restrictions": []
         }
 
     def find_relations(self):
@@ -255,7 +256,8 @@ class Finder():
             
             # Cardinality restriction evaluation
             try: 
-                max_min_card = re.findall("\(([0-9][^)]+)\)", value)
+                #max_min_card = re.findall("\(([0-9][^)]+)\)", value)
+                max_min_card = re.findall("\((.*\.\..*)\)", value)
                 max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
 
                 if max_min_card is None:
@@ -274,11 +276,71 @@ class Finder():
                 self.errors["Arrows"].append(error)
                 continue
 
-            if relation["min_cardinality"] == "0":
+            #If min_cardinality == 0 this means it is not necessary to create 
+            # a min_cardinality restrictions
+            if relation["min_cardinality"] == '0':
                 relation["min_cardinality"] = None
 
-            if relation["max_cardinality"] == "N":
+            #If max_cardinality == N this means it is not necessary to create 
+            # a max_cardinality restrictions
+            if relation["max_cardinality"] == 'N':
                 relation["max_cardinality"] = None
+
+            #Check if min_cardinality represents a non negative integer
+            if  relation["min_cardinality"] != None:
+                try:
+                    aux = float(relation["min_cardinality"])
+                    if not aux.is_integer() or aux < 0:
+                        message = ("min_cardinality is "+ relation["min_cardinality"] + 
+                            " which is not a non negative integer, in restriction " + relation["prefix"] + ":" 
+                            + relation["uri"])
+                        relation["min_cardinality"] = None
+                        error = {
+                            "message": message,
+                            "shape_id": id,
+                            "value": value
+                        }
+                        self.errors["Cardinality-Restrictions"].append(error)
+            
+                except:
+                    message = ("min_cardinality is not a number, in relation " 
+                        + relation["prefix"] + ":" 
+                        + relation["uri"])
+                    relation["min_cardinality"] = None
+                    error = {
+                            "message": message,
+                            "shape_id": id,
+                            "value": value
+                        }
+                    self.errors["Cardinality-Restrictions"].append(error)
+
+            if  relation["max_cardinality"] != None:
+            #Check if max_cardinality represents a non negative integer
+                try:
+                    aux = float(relation["max_cardinality"])
+                    if not aux.is_integer() or aux < 0:
+                        message = ("max_cardinality is "+ relation["max_cardinality"] + 
+                            " which is not a non negative integer, in restriction " + relation["prefix"] + ":" 
+                            + relation["uri"])
+                        relation["max_cardinality"] = None
+                        error = {
+                            "message": message,
+                            "shape_id": id,
+                            "value": value
+                        }
+                        self.errors["Cardinality-Restrictions"].append(error)
+                    
+                except:
+                    message = ("max_cardinality is not a number, in restriction " 
+                        + relation["prefix"] + ":" 
+                        + relation["uri"])
+                    relation["max_cardinality"] = None
+                    error = {
+                            "message": message,
+                            "shape_id": id,
+                            "value": value
+                        }
+                    self.errors["Cardinality-Restrictions"].append(error)
 
             if relation["min_cardinality"] == relation["max_cardinality"]:
                 relation["cardinality"] = relation["min_cardinality"]
@@ -287,12 +349,29 @@ class Finder():
             else:
                 relation["cardinality"] = None
 
+            #max_cardinality must be greater than min_cardinality
+            if(relation["max_cardinality"] != None and relation["min_cardinality"] != None 
+                and float(relation["max_cardinality"]) < float(relation["min_cardinality"])):
+                message = ("max_cardinality is lower than min_cardinality" + 
+                        " in restriction " + relation["prefix"] + ":" 
+                        + relation["uri"])
+                relation["max_cardinality"] = None
+                relation["min_cardinality"] = None
+                error = {
+                            "message": message,
+                            "shape_id": id,
+                            "value": value
+                        }
+                self.errors["Cardinality-Restrictions"].append(error)
+
+            
+
+
             relation["type"] = "owl:ObjectProperty"
             
             self.relations[id] = relation
 
         return self.relations
-
 
     def find_namespaces(self):
 
@@ -728,7 +807,9 @@ class Finder():
                     continue
                 if "fontStyle=4" in style or "<u>" in value:
                     continue
-                if "&quot;" in value or "^^" in value:
+                """if "&quot;" in value or "^^" in value:
+                    continue"""
+                if "&quot;" in value:
                     continue
                 concept = {}
                 attribute_block = {}
@@ -873,7 +954,10 @@ class Finder():
                             
                             # owl:hasValue
                             if "(value)" in attribute_value or "∋" in attribute_value:
+                                #In these cases the object is a data value of the form 
+                                # "data_value"^^prefix_datatype:datatype
                                 attribute["hasValue"] = True
+
                             else:
                                 attribute["hasValue"] = False
 
@@ -895,7 +979,8 @@ class Finder():
 
                             # Cardinality restriction evaluation
                             try: 
-                                max_min_card = re.findall("\(([0-9][^)]+)\)", attribute_value)
+                                #max_min_card = re.findall("\(([0-9][^)]+)\)", attribute_value)
+                                max_min_card = re.findall("\((.*\.\..*)\)", attribute_value)
                                 max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
                                 if max_min_card is None:
                                     attribute["min_cardinality"] = None
@@ -913,11 +998,71 @@ class Finder():
                                 self.errors["Attributes"].append(error)
                                 continue
 
-                            if attribute["min_cardinality"] == "0":
+                            #If min_cardinality == 0 this means it is not necessary to create 
+                            # a min_cardinality restrictions
+                            if attribute["min_cardinality"] == '0':
                                 attribute["min_cardinality"] = None
 
-                            if attribute["max_cardinality"] == "N":
+                            #If max_cardinality == N this means it is not necessary to create 
+                            # a max_cardinality restrictions
+                            if attribute["max_cardinality"] == 'N':
                                 attribute["max_cardinality"] = None
+
+                            #Check if min_cardinality represents a non negative integer
+                            if  attribute["min_cardinality"] != None:
+                                try:
+                                    aux = float(attribute["min_cardinality"])
+                                    if not aux.is_integer() or aux < 0:
+                                        message = ("min_cardinality is "+ attribute["min_cardinality"] + 
+                                            " which is not a non negative integer, in restriction " + attribute["prefix"] + ":" 
+                                            + attribute["uri"])
+                                        attribute["min_cardinality"] = None
+                                        error = {
+                                            "message": message,
+                                            "shape_id": id,
+                                            "value": attribute_value_cleaned
+                                        }
+                                        self.errors["Cardinality-Restrictions"].append(error)
+                            
+                                except:
+                                    message = ("min_cardinality is not a number, in relation " 
+                                        + attribute["prefix"] + ":" 
+                                        + attribute["uri"])
+                                    attribute["min_cardinality"] = None
+                                    error = {
+                                            "message": message,
+                                            "shape_id": id,
+                                            "value": attribute_value_cleaned
+                                        }
+                                    self.errors["Cardinality-Restrictions"].append(error)
+
+                            if  attribute["max_cardinality"] != None:
+                            #Check if max_cardinality represents a non negative integer
+                                try:
+                                    aux = float(attribute["max_cardinality"])
+                                    if not aux.is_integer() or aux < 0:
+                                        message = ("max_cardinality is "+ attribute["max_cardinality"] + 
+                                            " which is not a non negative integer, in restriction " + attribute["prefix"] + ":" 
+                                            + attribute["uri"])
+                                        attribute["max_cardinality"] = None
+                                        error = {
+                                            "message": message,
+                                            "shape_id": id,
+                                            "value": attribute_value_cleaned
+                                        }
+                                        self.errors["Cardinality-Restrictions"].append(error)
+                                    
+                                except:
+                                    message = ("max_cardinality is not a number, in restriction " 
+                                        + attribute["prefix"] + ":" 
+                                        + attribute["uri"])
+                                    attribute["max_cardinality"] = None
+                                    error = {
+                                            "message": message,
+                                            "shape_id": id,
+                                            "value": attribute_value_cleaned
+                                        }
+                                    self.errors["Cardinality-Restrictions"].append(error)
 
                             if attribute["min_cardinality"] == attribute["max_cardinality"]:
                                 attribute["cardinality"] = attribute["min_cardinality"]
@@ -926,7 +1071,23 @@ class Finder():
                             else:
                                 attribute["cardinality"] = None
 
+                            #max_cardinality must be greater than min_cardinality
+                            if(attribute["max_cardinality"] != None and attribute["min_cardinality"] != None 
+                                and float(attribute["max_cardinality"]) < float(attribute["min_cardinality"])):
+                                message = ("max_cardinality is lower than min_cardinality" + 
+                                        " in restriction " + attribute["prefix"] + ":" 
+                                        + attribute["uri"])
+                                attribute["max_cardinality"] = None
+                                attribute["min_cardinality"] = None
+                                error = {
+                                            "message": message,
+                                            "shape_id": id,
+                                            "value": attribute_value_cleaned
+                                        }
+                                self.errors["Cardinality-Restrictions"].append(error)
+
                             attributes.append(attribute)
+
                         attribute_block["attributes"] = attributes
                         attribute_block["concept_associated"] = child2.attrib["id"]
                         self.attribute_blocks[id] = attribute_block

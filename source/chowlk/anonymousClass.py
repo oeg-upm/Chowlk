@@ -233,7 +233,7 @@ def restrictions(restriction, concepts, errors, hexagons, anonymous_concepts, in
             text = text + "\t\t  owl:hasValue " + target_name + " ]"
 
         else:
-            print("error el rango de un hass Value no es una instancia")
+            print("error el rango de un has Value no es una instancia")
 
     if restriction["min_cardinality"] is not None:
         if more_than_one_restriction:

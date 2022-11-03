@@ -25,34 +25,222 @@
 
 ### ns:objectProperty
 ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class1 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
 		rdfs:domain ns:Class3 ;
-		rdfs:range [ owl:intersectionOf ( 
-						ns:Class1
-						ns:Class2
-					) ;
-					rdf:type owl:Class
-					] ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class4 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class5 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class6 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class7 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class8 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class9 ;
+		rdfs:range ns:Class2 ;
+		rdfs:label "object property" .
+
+### ns:objectProperty
+ns:objectProperty rdf:type owl:ObjectProperty ;
+		rdfs:domain ns:Class10 ;
+		rdfs:range ns:Class2 ;
 		rdfs:label "object property" .
 
 #################################################################
 #    Data Properties
 #################################################################
 
+### ns:datatypeProperty1
+ns:datatypeProperty1 rdf:type owl:DatatypeProperty ;
+		rdfs:label "datatype property1" .
+
 #################################################################
 #    Classes
 #################################################################
 
-### ns:Class3
-ns:Class3 rdf:type owl:Class ;
-	rdfs:label "Class3" .
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
 
 ### ns:Class1
 ns:Class1 rdf:type owl:Class ;
-	rdfs:label "Class1" .
+	rdfs:label "Class1" ;
+	rdfs:subClassOf
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:objectProperty ;
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
 
 ### ns:Class2
 ns:Class2 rdf:type owl:Class ;
 	rdfs:label "Class2" .
+
+### ns:Class3
+ns:Class3 rdf:type owl:Class ;
+	rdfs:label "Class3" ;
+	rdfs:subClassOf
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:objectProperty ;
+		  owl:maxCardinality "2"^^xsd:nonNegativeInteger ] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class4
+ns:Class4 rdf:type owl:Class ;
+	rdfs:label "Class4" .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class5
+ns:Class5 rdf:type owl:Class ;
+	rdfs:label "Class5" ;
+	rdfs:subClassOf
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:objectProperty ;
+		  owl:maxCardinality "2"^^xsd:nonNegativeInteger ] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class6
+ns:Class6 rdf:type owl:Class ;
+	rdfs:label "Class6" ;
+	rdfs:subClassOf
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:objectProperty ;
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class7
+ns:Class7 rdf:type owl:Class ;
+	rdfs:label "Class7" .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class8
+ns:Class8 rdf:type owl:Class ;
+	rdfs:label "Class8" ;
+	rdfs:subClassOf
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:objectProperty ;
+		  owl:cardinality "3"^^xsd:nonNegativeInteger ] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class9
+ns:Class9 rdf:type owl:Class ;
+	rdfs:label "Class9" .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
+
+### ns:Class10
+ns:Class10 rdf:type owl:Class ;
+	rdfs:label "Class10" .
+
+### ns:Class11
+ns:Class11 rdf:type owl:Class ;
+	rdfs:label "Class11" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:datatypeProperty1 ;
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ .
+
+### ns:Class12
+ns:Class12 rdf:type owl:Class ;
+	rdfs:label "Class12" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:datatypeProperty1 ;
+		  owl:maxCardinality "2"^^xsd:nonNegativeInteger ]
+ .
+
+### ns:Class13
+ns:Class13 rdf:type owl:Class ;
+	rdfs:label "Class13" .
+
+### ns:Class14
+ns:Class14 rdf:type owl:Class ;
+	rdfs:label "Class14" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:datatypeProperty1 ;
+		  owl:maxCardinality "2"^^xsd:nonNegativeInteger ]
+ .
+
+### ns:Class15
+ns:Class15 rdf:type owl:Class ;
+	rdfs:label "Class15" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:datatypeProperty1 ;
+		  owl:minCardinality "1"^^xsd:nonNegativeInteger ]
+ .
+
+### ns:Class16
+ns:Class16 rdf:type owl:Class ;
+	rdfs:label "Class16" .
+
+### ns:Class17
+ns:Class17 rdf:type owl:Class ;
+	rdfs:label "Class17" ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty ns:datatypeProperty1 ;
+		  owl:cardinality "3"^^xsd:nonNegativeInteger ]
+ .
+
+### ns:Class18
+ns:Class18 rdf:type owl:Class ;
+	rdfs:label "Class18" .
+
+### ns:Class19
+ns:Class19 rdf:type owl:Class ;
+	rdfs:label "Class19" .
 
 #################################################################
 #    Instances
