@@ -2,8 +2,7 @@ import unittest
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from modules.utils import read_drawio_xml
-from modules.child_tracker import ChildTracker
+from source.chowlk.utils import read_drawio_xml
 from converter import transform_ontology
 
 
@@ -15,11 +14,11 @@ def generate_ontologies():
     outputs_path = os.path.join(tests_path, "outputs")
 
     for filename in os.listdir(inputs_path):
-        child_tracker = ChildTracker()
         input_filepath = os.path.join(inputs_path, filename)
         output_filepath = os.path.join(outputs_path, filename[:-3] + "ttl")
-        root, root_complete, mxGraphModel, diagram, mxfile, tree = read_drawio_xml(input_filepath)
-        transform_ontology(root, output_filepath, child_tracker)
+        command = r'python C:\Chowlk\Chowlk\converter.py '+ input_filepath + ' '+ output_filepath + r' --type ontology --format ttl'
+        os.system(command)
+
 
 
 if __name__ == "__main__":
