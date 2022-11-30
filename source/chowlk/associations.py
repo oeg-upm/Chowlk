@@ -1,6 +1,7 @@
 from source.chowlk.geometry import get_corners, get_corners_rect_child
 import copy
 
+
 def resolve_concept_reference(attribute_blocks, concepts):
     """
     This function resolves the relative references that attribute blocks could have.
@@ -36,7 +37,8 @@ def concept_attribute_association(concepts, attribute_blocks):
     associations = {}
 
     for id, concept in concepts.items():
-        associations[id] = {"concept": concept, "attribute_blocks": {}, "relations": {}}
+        associations[id] = {"concept": concept,
+                            "attribute_blocks": {}, "relations": {}}
 
     for id, attribute_block in attribute_blocks.items():
         if "concept_associated" in attribute_block:
@@ -85,7 +87,7 @@ def individual_type_identification(individuals, associations, relations, hexagon
 
         source_id = relation["source"]
         target_id = relation["target"]
-        
+
         if source_id is None or target_id is None:
             continue
 
@@ -95,7 +97,7 @@ def individual_type_identification(individuals, associations, relations, hexagon
         except:
             continue
 
-        #instance of an anonymous class formed by a owl:oneOf statement
+        # instance of an anonymous class formed by a owl:oneOf statement
         if target_id in hexagons:
             complement = hexagons[target_id]
             if complement["type"] == "owl:oneOf":
@@ -103,13 +105,14 @@ def individual_type_identification(individuals, associations, relations, hexagon
                 text = "[ rdf:type owl:Class ; owl:oneOf ("
                 for id in ids:
                     try:
-                        individuals_involved = individuals[id]["prefix"] + ":" + individuals[id]["uri"]
+                        individuals_involved = individuals[id]["prefix"] + \
+                            ":" + individuals[id]["uri"]
                         text = text + " " + individuals_involved
                     except:
                         error = {
-                                "message": "An element of owl:oneOf is not an individual",
-                                "shape_id": id
-                            }
+                            "message": "An element of owl:oneOf is not an individual",
+                            "shape_id": id
+                        }
                         errors["owl:oneOf"] = error
                         continue
                 text = text + " ) ]"
@@ -117,8 +120,9 @@ def individual_type_identification(individuals, associations, relations, hexagon
                     individual["type"].append(text)
                 else:
                     error = {
-                                individual["prefix"] + ":" + individual["uri"] + " not in owl:oneOf"
-                            }
+                        individual["prefix"] + ":" +
+                        individual["uri"] + " not in owl:oneOf"
+                    }
                     errors["owl:oneOf_inidividual"] = error
 
         for concept_id, association in associations.items():
@@ -133,19 +137,23 @@ def individual_type_identification(individuals, associations, relations, hexagon
         try:
             geometry = individual["xml_object"][0]
             x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
-            width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
+            width, height = float(geometry.attrib["width"]), float(
+                geometry.attrib["height"])
             p1, p2, p3, p4 = get_corners(x, y, width, height)
 
             for concept_id, association in associations.items():
                 concept = association["concept"]
                 geometry = concept["xml_object"][0]
                 x, y = float(geometry.attrib["x"]), float(geometry.attrib["y"])
-                width, height = float(geometry.attrib["width"]), float(geometry.attrib["height"])
-                p1_support, p2_support, p3_support, p4_support = get_corners(x, y, width, height)
+                width, height = float(geometry.attrib["width"]), float(
+                    geometry.attrib["height"])
+                p1_support, p2_support, p3_support, p4_support = get_corners(
+                    x, y, width, height)
                 dx = abs(p1[0] - p2_support[0])
                 dy = abs(p1[1] - p2_support[1])
                 if dx < 5 and dy < 5:
-                    individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+                    individual["type"].append(
+                        concept["prefix"] + ":" + concept["uri"])
                     break
         except:
             continue
@@ -153,11 +161,10 @@ def individual_type_identification(individuals, associations, relations, hexagon
     return individuals
 
 
+def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
 
-
-def enrich_properties(rhombuses, relations, attribute_blocks):
-
-    relations_byname = {relation["uri"]: id for id, relation in relations.items() if "uri" in relation}
+    relations_byname = {relation["uri"]: id for id,
+                        relation in relations.items() if "uri" in relation}
     attributes_byname = {attribute["uri"]: [id, idx] for id, attribute_block in attribute_blocks.items()
                          for idx, attribute in enumerate(attribute_block["attributes"])}
     relations_copy = copy.deepcopy(relations)
@@ -165,16 +172,18 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
 
         source_id = relation["source"]
         target_id = relation["target"]
-        
+
         if source_id is None or target_id is None:
             continue
 
         type = relation["type"] if "type" in relation else None
-        cases = ["rdfs:subPropertyOf", "owl:inverseOf", "owl:equivalentProperty", "rdfs:domain", "rdfs:range"]
+        cases = ["rdfs:subPropertyOf", "owl:inverseOf",
+                 "owl:equivalentProperty", "rdfs:domain", "rdfs:range"]
 
         if type in cases:
             # Domain and range are without the "rdfs" prefix in the data structure
-            type = type.split(":")[1] if type in ["rdfs:domain", "rdfs:range"] else type
+            type = type.split(":")[1] if type in [
+                "rdfs:domain", "rdfs:range"] else type
 
             if source_id in rhombuses and target_id in rhombuses:
 
@@ -185,12 +194,14 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
 
                 if sprop_type == "owl:ObjectProperty":
                     sprop_id = relations_byname[sprop_name]
-                    relations_copy[sprop_id][type] = target_property["prefix"] + ":" + target_property["uri"]
+                    relations_copy[sprop_id][type] = target_property["prefix"] + \
+                        ":" + target_property["uri"]
 
                 elif sprop_type == "owl:DatatypeProperty":
                     sprop_id = attributes_byname[sprop_name][0]
                     sprop_idx = attributes_byname[sprop_name][1]
-                    attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_property["prefix"] + ":" + target_property["uri"]
+                    attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_property["prefix"] + \
+                        ":" + target_property["uri"]
 
             elif source_id in rhombuses and type in ["domain", "range"]:
 
@@ -205,8 +216,22 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
                 elif sprop_type == "owl:DatatypeProperty":
                     sprop_id = attributes_byname[sprop_name][0]
                     sprop_idx = attributes_byname[sprop_name][1]
-                    attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_id
-
+                    if type == "range":
+                        # In this case, the dataype has been identified incorrectly as a concept.
+                        # The "datatype" and "prefix_datatype" information can be retreived from concepts
+                        # Moreover, it is neccesary to remove that concept (because it is not really a concept)
+                        attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = True
+                        incorrect_concept = concepts.pop(target_id)
+                        prefix_datatype = incorrect_concept["prefix"]
+                        datatype = incorrect_concept["uri"]
+                        # If there is not a prefix, the default prefix for a datatype is xsd (not the base)
+                        if prefix_datatype == "<cambiar_a_base":
+                            prefix_datatype = "xsd"
+                            datatype = datatype[:-1]
+                        attribute_blocks[sprop_id]["attributes"][sprop_idx]["datatype"] = datatype
+                        attribute_blocks[sprop_id]["attributes"][sprop_idx]["prefix_datatype"] = prefix_datatype
+                    else:
+                        attribute_blocks[sprop_id]["attributes"][sprop_idx][type] = target_id
 
     for rhombus_id, rhombus in rhombuses.items():
 
@@ -236,9 +261,8 @@ def enrich_properties(rhombuses, relations, attribute_blocks):
     return relations_copy, attribute_blocks
 
 
-
-
 """Functions for RDF Data"""
+
 
 def individual_type_identification_rdf(individuals, concepts, relations):
     for id, relation in relations.items():
@@ -252,7 +276,8 @@ def individual_type_identification_rdf(individuals, concepts, relations):
             individual = individuals[source_id]
             concept = concepts[target_id]
             if len(individual["type"]) != 0:
-                individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+                individual["type"].append(
+                    concept["prefix"] + ":" + concept["uri"])
             else:
                 individual["type"] = [concept["prefix"] + ":" + concept["uri"]]
 
@@ -265,10 +290,10 @@ def individual_type_identification_rdf(individuals, concepts, relations):
             dx = abs(p1[0] - p2_concept[0])
             dy = abs(p1[1] - p2_concept[1])
             if dx < 5 and dy < 5:
-                individual["type"].append(concept["prefix"] + ":" + concept["uri"])
+                individual["type"].append(
+                    concept["prefix"] + ":" + concept["uri"])
                 break
     return individuals
-
 
 
 def individual_relation_association(individuals, relations):
@@ -276,7 +301,8 @@ def individual_relation_association(individuals, relations):
     associations = {}
 
     for id, individual in individuals.items():
-        associations[id] = {"individual": individual, "relations": {}, "attributes": {}}
+        associations[id] = {"individual": individual,
+                            "relations": {}, "attributes": {}}
     for relation_id, relation in relations.items():
 
         if relation["type"] == "owl:ObjectProperty":
@@ -286,7 +312,6 @@ def individual_relation_association(individuals, relations):
             if target_id in individuals and source_id in associations:
                 association = associations[source_id]
                 association["relations"][relation_id] = relation
-        
 
         elif relation["type"] == "owl:sameAs":
 
@@ -307,12 +332,12 @@ def individual_relation_association(individuals, relations):
                 association["relations"][relation_id] = relation
                 association["relations"][relation_id]["prefix"] = "owl"
                 association["relations"][relation_id]["uri"] = "differentFrom"
-                
+
     return associations
 
 
 def individual_attribute_association(associations, values, relations):
-    
+
     for relation_id, relation in relations.items():
         source_id = relation["source"]
         target_id = relation["target"]

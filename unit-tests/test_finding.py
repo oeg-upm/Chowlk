@@ -1,29 +1,83 @@
+
 import unittest
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from source.chowlk.utils import read_drawio_xml
-from converter import transform_ontology
 
 
 def generate_ontologies():
 
-    
     tests_path = os.path.dirname(os.path.abspath(__file__))
     inputs_path = os.path.join(tests_path, "inputs")
     outputs_path = os.path.join(tests_path, "outputs")
+    converter_path = os.path.join(tests_path, "..\converter.py")
 
     for filename in os.listdir(inputs_path):
         input_filepath = os.path.join(inputs_path, filename)
         output_filepath = os.path.join(outputs_path, filename[:-3] + "ttl")
-        command = r'python C:\Chowlk\Chowlk\converter.py '+ input_filepath + ' '+ output_filepath + r' --type ontology --format ttl'
+        print("\nGenerating ontology (output) " + filename + "\n")
+        command = r'python ' + converter_path + ' ' + input_filepath + \
+            ' ' + output_filepath + r' --type ontology --format ttl'
         os.system(command)
 
+
+def test():
+    tests_path = os.path.dirname(os.path.abspath(__file__))
+    desired_outputs_path = os.path.join(tests_path, "desired_outputs")
+    outputs_path = os.path.join(tests_path, "outputs")
+    outputs_tests = os.listdir(outputs_path)
+
+    for filename in os.listdir(desired_outputs_path):
+        if filename in outputs_tests:
+            print("Performing test " + filename + ". Result: ")
+            output_filepath = os.path.join(outputs_path, filename)
+            desired_output_filepath = os.path.join(
+                desired_outputs_path, filename)
+            compare_ontologies(output_filepath, desired_output_filepath)
+        else:
+            print("Output " + filename +
+                  " file has not been generated correctly.\n")
+    return
+
+
+def compare_ontologies(o1, o2):
+    # We want to compare two fields in order to find
+    # the first line where they are not equals
+    file1 = open(o1, 'r')
+    linesFile1 = file1.readlines()
+    file2 = open(o2, 'r')
+    linesFile2 = file2.readlines()
+    equals = True
+    # The files can have different length
+    # For that reason it is neccesary to find the minimun length
+    minimun_length = len(linesFile1)
+    if minimun_length > len(linesFile2):
+        minimun_length = len(linesFile2)
+
+    for i in range(minimun_length):
+        if linesFile1[i] != linesFile2[i]:
+            print("Test failed. Files are not equal in line " + str(i+1) + "\n")
+            equals = False
+            break
+
+    # If they have different lengths and until minimum_length
+    # are equal, it is neccesary to indicate that one is greater
+    # than the other
+    if equals and len(linesFile1) != len(linesFile2):
+        print("Test failed. One file is greater than the other. The minimun lenght is " +
+              str(i+1) + ". Until that line they are equals\n")
+    elif equals:
+        print("Test passed\n")
+
+    file1.close()
+    file2.close()
+    return
 
 
 if __name__ == "__main__":
 
     generate_ontologies()
+    test()
 """
 class TestFindingFunctions(unittest.TestCase):
 

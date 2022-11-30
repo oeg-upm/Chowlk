@@ -3,6 +3,7 @@ import string
 from source.chowlk.geometry import get_corners_rect_child
 from source.chowlk.utils import clean_html_tags, clean_uri, create_label
 
+
 class Finder():
 
     def __init__(self, root):
@@ -38,12 +39,13 @@ class Finder():
 
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
-            value = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
+            value = clean_html_tags(
+                child.attrib["value"]) if "value" in child.attrib else None
             ellipse_connection_detected = False
 
             if "edge" not in child.attrib:
                 continue
-            
+
             relation = {}
             source = child.attrib["source"] if "source" in child.attrib else None
             target = child.attrib["target"] if "target" in child.attrib else None
@@ -71,7 +73,6 @@ class Finder():
                     relation["type"] = "ellipse_connection"
                     self.relations[id] = relation
                     continue
-                
 
                 """for child2 in self.root:
                     style2 = child2.attrib["style"] if "style" in child2.attrib else ""
@@ -132,8 +133,8 @@ class Finder():
                     continue
 
             # Detection of special type of edges
-            edge_types = ["rdfs:subClassOf", "rdf:type", "owl:equivalentClass", "owl:disjointWith", "owl:complementOf", 
-                            "rdfs:subPropertyOf", "owl:equivalentProperty", "owl:inverseOf", "rdfs:domain", "rdfs:range", "owl:sameAs", "owl:differentFrom"]
+            edge_types = ["rdfs:subClassOf", "rdf:type", "owl:equivalentClass", "owl:disjointWith", "owl:complementOf",
+                          "rdfs:subPropertyOf", "owl:equivalentProperty", "owl:inverseOf", "rdfs:domain", "rdfs:range", "owl:sameAs", "owl:differentFrom"]
 
             edge_type_founded = False
 
@@ -169,13 +170,13 @@ class Finder():
                 relation["allValuesFrom"] = True
             else:
                 relation["allValuesFrom"] = False
-            
+
             if "someValuesFrom" in value or "(some)" in value or "∃" in value:
                 relation["someValuesFrom"] = True
             else:
                 relation["someValuesFrom"] = False
 
-            #owl:hasValue
+            # owl:hasValue
             if "hasValue" in value or "(value)" in value or "∋" in value:
                 relation["hasValue"] = True
             else:
@@ -199,31 +200,30 @@ class Finder():
             relation["transitive"] = True if "(T)" in value else False
             relation["symmetric"] = True if "(S)" in value else False
 
-
             # Prefix and uri
             try:
 
-                uri = clean_uri(value)             
+                uri = clean_uri(value)
                 uri = uri.split("|")[-1].strip().split(">>")[-1].strip()
 
-                #In order to implement @base directive
-                    #If uri contains ':' && uri does not start with ':' => normal prefix
-                    #If uri starts with ':' => empty prefix
-                    #If uri does not contain ':' => prefix is @base
-                        #If uri contains ':' && uri does not start with ':' => len(uri_split) > 1 and uri_split[0] != ""
-                        #If uri starts with ':' => len(uri_split) > 1 and uri_split[0] == ""
-                        #If uri does not contain ':' => len(uri_split) == 1
+                # In order to implement @base directive
+                # If uri contains ':' && uri does not start with ':' => normal prefix
+                # If uri starts with ':' => empty prefix
+                # If uri does not contain ':' => prefix is @base
+                # If uri contains ':' && uri does not start with ':' => len(uri_split) > 1 and uri_split[0] != ""
+                # If uri starts with ':' => len(uri_split) > 1 and uri_split[0] == ""
+                # If uri does not contain ':' => len(uri_split) == 1
                 uri_split = uri.split(":")
-                if(len(uri_split)>1):
-                    #normal prefix || empty prefix (both are in namespace)
+                if(len(uri_split) > 1):
+                    # normal prefix || empty prefix (both are in namespace)
                     prefix = uri_split[0].strip()
                     if(prefix == ""):
                         prefix = "cambiar_a_prefijo_vacio"
                     uri = uri_split[-1].strip()
                 else:
-                    #prefix is @base
-                    #store prefix with an auxiliar name in order
-                    #write the relations with base directive in to write_object_properties
+                    # prefix is @base
+                    # store prefix with an auxiliar name in order
+                    # write the relations with base directive in to write_object_properties
                     prefix = "<cambiar_a_base"
                     uri = uri_split[0].strip() + ">"
 
@@ -241,7 +241,7 @@ class Finder():
                 check = uri[0] # Check if error in text"""
 
                 uri = re.sub(" ", "", uri)
-                
+
                 relation["prefix"] = prefix
                 relation["uri"] = uri
                 relation["label"] = create_label(relation["uri"], "property")
@@ -253,12 +253,13 @@ class Finder():
                 }
                 self.errors["Arrows"].append(error)
                 continue
-            
+
             # Cardinality restriction evaluation
-            try: 
+            try:
                 #max_min_card = re.findall("\(([0-9][^)]+)\)", value)
-                max_min_card = re.findall("\((.*\.\..*)\)", value)
-                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+                max_min_card = re.findall("\((\S*[.][.]\S*)\)", value)
+                max_min_card = max_min_card[-1] if len(
+                    max_min_card) > 0 else None
 
                 if max_min_card is None:
                     relation["min_cardinality"] = None
@@ -276,24 +277,25 @@ class Finder():
                 self.errors["Arrows"].append(error)
                 continue
 
-            #If min_cardinality == 0 this means it is not necessary to create 
+            # If min_cardinality == 0 this means it is not necessary to create
             # a min_cardinality restrictions
             if relation["min_cardinality"] == '0':
                 relation["min_cardinality"] = None
 
-            #If max_cardinality == N this means it is not necessary to create 
+            # If max_cardinality == N this means it is not necessary to create
             # a max_cardinality restrictions
             if relation["max_cardinality"] == 'N':
                 relation["max_cardinality"] = None
 
-            #Check if min_cardinality represents a non negative integer
-            if  relation["min_cardinality"] != None:
+            # Check if min_cardinality represents a non negative integer
+            if relation["min_cardinality"] != None:
                 try:
                     aux = float(relation["min_cardinality"])
                     if not aux.is_integer() or aux < 0:
-                        message = ("min_cardinality is "+ relation["min_cardinality"] + 
-                            " which is not a non negative integer, in restriction " + relation["prefix"] + ":" 
-                            + relation["uri"])
+                        message = ("min_cardinality is " + relation["min_cardinality"] +
+                                   " which is not a non negative integer, in restriction " +
+                                   relation["prefix"] + ":"
+                                   + relation["uri"])
                         relation["min_cardinality"] = None
                         error = {
                             "message": message,
@@ -301,27 +303,32 @@ class Finder():
                             "value": value
                         }
                         self.errors["Cardinality-Restrictions"].append(error)
-            
+
                 except:
-                    message = ("min_cardinality is not a number, in relation " 
-                        + relation["prefix"] + ":" 
-                        + relation["uri"])
+                    print("\n relation")
+                    print(relation)
+                    print(value)
+                    print(max_min_card)
+                    message = ("min_cardinality is not a number, in relation "
+                               + relation["prefix"] + ":"
+                               + relation["uri"])
                     relation["min_cardinality"] = None
                     error = {
-                            "message": message,
-                            "shape_id": id,
-                            "value": value
-                        }
+                        "message": message,
+                        "shape_id": id,
+                        "value": value
+                    }
                     self.errors["Cardinality-Restrictions"].append(error)
 
-            if  relation["max_cardinality"] != None:
-            #Check if max_cardinality represents a non negative integer
+            if relation["max_cardinality"] != None:
+                # Check if max_cardinality represents a non negative integer
                 try:
                     aux = float(relation["max_cardinality"])
                     if not aux.is_integer() or aux < 0:
-                        message = ("max_cardinality is "+ relation["max_cardinality"] + 
-                            " which is not a non negative integer, in restriction " + relation["prefix"] + ":" 
-                            + relation["uri"])
+                        message = ("max_cardinality is " + relation["max_cardinality"] +
+                                   " which is not a non negative integer, in restriction " +
+                                   relation["prefix"] + ":"
+                                   + relation["uri"])
                         relation["max_cardinality"] = None
                         error = {
                             "message": message,
@@ -329,17 +336,17 @@ class Finder():
                             "value": value
                         }
                         self.errors["Cardinality-Restrictions"].append(error)
-                    
+
                 except:
-                    message = ("max_cardinality is not a number, in restriction " 
-                        + relation["prefix"] + ":" 
-                        + relation["uri"])
+                    message = ("max_cardinality is not a number, in restriction "
+                               + relation["prefix"] + ":"
+                               + relation["uri"])
                     relation["max_cardinality"] = None
                     error = {
-                            "message": message,
-                            "shape_id": id,
-                            "value": value
-                        }
+                        "message": message,
+                        "shape_id": id,
+                        "value": value
+                    }
                     self.errors["Cardinality-Restrictions"].append(error)
 
             if relation["min_cardinality"] == relation["max_cardinality"]:
@@ -349,26 +356,23 @@ class Finder():
             else:
                 relation["cardinality"] = None
 
-            #max_cardinality must be greater than min_cardinality
-            if(relation["max_cardinality"] != None and relation["min_cardinality"] != None 
-                and float(relation["max_cardinality"]) < float(relation["min_cardinality"])):
-                message = ("max_cardinality is lower than min_cardinality" + 
-                        " in restriction " + relation["prefix"] + ":" 
-                        + relation["uri"])
+            # max_cardinality must be greater than min_cardinality
+            if(relation["max_cardinality"] != None and relation["min_cardinality"] != None
+                    and float(relation["max_cardinality"]) < float(relation["min_cardinality"])):
+                message = ("max_cardinality is lower than min_cardinality" +
+                           " in restriction " + relation["prefix"] + ":"
+                           + relation["uri"])
                 relation["max_cardinality"] = None
                 relation["min_cardinality"] = None
                 error = {
-                            "message": message,
-                            "shape_id": id,
-                            "value": value
-                        }
+                    "message": message,
+                    "shape_id": id,
+                    "value": value
+                }
                 self.errors["Cardinality-Restrictions"].append(error)
 
-            
-
-
             relation["type"] = "owl:ObjectProperty"
-            
+
             self.relations[id] = relation
 
         return self.relations
@@ -382,7 +386,8 @@ class Finder():
             if "shape=note" in style:
                 text = clean_html_tags(value)
                 namespaces = text.split("|")
-                namespaces = [item for item in namespaces if item.strip() != ""]
+                namespaces = [
+                    item for item in namespaces if item.strip() != ""]
                 for ns in namespaces:
                     try:
                         ns = ns.strip()
@@ -399,7 +404,6 @@ class Finder():
                         self.errors["Namespaces"].append(error)
                         continue
         return self.namespaces
-
 
     def find_metadata(self):
 
@@ -421,9 +425,11 @@ class Finder():
                         else:
                             ann_value = ann.split(":")[2].strip()
                         if ann_prefix + ":" + ann_type in self.ontology_metadata:
-                            self.ontology_metadata[ann_prefix + ":" + ann_type].append(ann_value)
+                            self.ontology_metadata[ann_prefix +
+                                                   ":" + ann_type].append(ann_value)
                         else:
-                            self.ontology_metadata[ann_prefix + ":" + ann_type] = [ann_value]
+                            self.ontology_metadata[ann_prefix +
+                                                   ":" + ann_type] = [ann_value]
                     except:
                         error = {
                             "message": "Problems in the text of the Metadata",
@@ -434,7 +440,6 @@ class Finder():
                         continue
 
         return self.ontology_metadata
-
 
     def find_ellipses(self):
 
@@ -474,7 +479,7 @@ class Finder():
                                     ellipse_corrupted = True
                                     break
                                 ellipse["group"].append(target_id)
-                        
+
                         # anonymousClass owl:complementOf anonymousClass
                         elif relation["type"] == "owl:complementOf":
                             source_id = relation["source"]
@@ -486,7 +491,7 @@ class Finder():
                             source_id = relation["source"]
                             if id == source_id:
                                 ellipse["group"].append(relation_id)
-                    
+
                     if len(ellipse["group"]) < 2:
                         ellipse_corrupted = True
 
@@ -499,7 +504,6 @@ class Finder():
                 continue
 
         return self.ellipses
-
 
     def find_individuals(self):
 
@@ -518,25 +522,25 @@ class Finder():
                 individual["xml_object"] = child
                 value = clean_html_tags(value)
                 try:
-                    #In order to implement @base directive
-                            #If value contains ':' && value does not start with ':' => normal prefix
-                            #If value starts with ':' => empty prefix (which is the same as @base)
-                            #If value does not contain ':' => prefix is @base
-                                #If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                                #If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                                #If value does not contain ':' => len(value_split) == 1
+                    # In order to implement @base directive
+                    # If value contains ':' && value does not start with ':' => normal prefix
+                    # If value starts with ':' => empty prefix (which is the same as @base)
+                    # If value does not contain ':' => prefix is @base
+                    # If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                    # If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                    # If value does not contain ':' => len(value_split) == 1
 
                     value_split = value.split(":")
                     if(len(value_split) > 1):
-                        #normal prefix || empty prefix (both are in namespace)
+                        # normal prefix || empty prefix (both are in namespace)
                         individual["prefix"] = value_split[0].strip()
                         if(individual["prefix"] == ""):
                             individual["prefix"] = "cambiar_a_prefijo_vacio"
                         individual["uri"] = value_split[1].strip()
                     else:
-                        #prefix is @base
-                        #store concept["prefix"] with an auxiliar name in order
-                        #write the concepts with base directive in to write_concepts
+                        # prefix is @base
+                        # store concept["prefix"] with an auxiliar name in order
+                        # write the concepts with base directive in to write_concepts
                         individual["prefix"] = "<cambiar_a_base"
                         individual["uri"] = value_split[0].strip() + ">"
 
@@ -560,11 +564,10 @@ class Finder():
                     continue
 
                 self.individuals[id] = individual
-                
+
                 continue
 
         return self.individuals
-
 
     def find_attribute_values(self):
 
@@ -587,7 +590,7 @@ class Finder():
                 try:
                     # Finding the value
                     if "&quot;" in value:
-                        
+
                         attribute["value"] = value.split("&quot;")[1]
                     elif "\"" in value:
                         reg_exp = '"(.*?)"'
@@ -619,7 +622,8 @@ class Finder():
 
             id = child.attrib["id"]
             style = child.attrib["style"] if "style" in child.attrib else ""
-            value_html_clean = clean_html_tags(child.attrib["value"]) if "value" in child.attrib else None
+            value_html_clean = clean_html_tags(
+                child.attrib["value"]) if "value" in child.attrib else None
 
             if "rhombus" in style:
 
@@ -627,30 +631,31 @@ class Finder():
                 rhombus["xml_object"] = child
 
                 try:
-                    type = value_html_clean.split(">>")[0].split("<<")[-1].strip()
+                    type = value_html_clean.split(
+                        ">>")[0].split("<<")[-1].strip()
                     rhombus["type"] = type
 
                     value = value_html_clean.split("|")[-1].strip()
                     value = value.split(">>")[-1].strip()
 
-                    #In order to implement @base directive
-                    #If uri contains ':' && uri does not start with ':' => normal prefix
-                    #If uri starts with ':' => empty prefix
-                    #If uri does not contain ':' => prefix is @base
-                        #If uri contains ':' && uri does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                        #If uri starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                        #If uri does not contain ':' => len(value_split) == 1
+                    # In order to implement @base directive
+                    # If uri contains ':' && uri does not start with ':' => normal prefix
+                    # If uri starts with ':' => empty prefix
+                    # If uri does not contain ':' => prefix is @base
+                    # If uri contains ':' && uri does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                    # If uri starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                    # If uri does not contain ':' => len(value_split) == 1
                     value_split = value.split(":")
-                    if(len(value_split)>1):
-                        #normal prefix || empty prefix (both are in namespace)
+                    if(len(value_split) > 1):
+                        # normal prefix || empty prefix (both are in namespace)
                         prefix = value_split[0].strip()
                         if(prefix == ""):
                             prefix = "cambiar_a_prefijo_vacio"
                         uri = value_split[-1].strip()
                     else:
-                        #prefix is @base
-                        #store prefix with an auxiliar name in order
-                        #write the relations with base directive in to write_object_properties
+                        # prefix is @base
+                        # store prefix with an auxiliar name in order
+                        # write the relations with base directive in to write_object_properties
                         prefix = "<cambiar_a_base"
                         uri = value_split[0].strip() + ">"
 
@@ -659,7 +664,7 @@ class Finder():
                     uri = value.split(":")[1].strip()"""
 
                     uri = re.sub(" ", "", uri)
-                    
+
                     rhombus["prefix"] = prefix
                     rhombus["uri"] = uri
 
@@ -697,6 +702,7 @@ class Finder():
                         relation["range"] = False
                         relation["allValuesFrom"] = False
                         relation["someValuesFrom"] = False
+                        relation["hasValue"] = False
                         relation["functional"] = False
                         relation["inverse_functional"] = False
                         relation["transitive"] = False
@@ -726,6 +732,7 @@ class Finder():
                         attribute["range"] = False
                         attribute["allValuesFrom"] = False
                         attribute["someValuesFrom"] = False
+                        attribute["hasValue"] = False
                         attribute["min_cardinality"] = None
                         attribute["max_cardinality"] = None
                         attribute_block["attributes"] = [attribute]
@@ -733,7 +740,6 @@ class Finder():
                     self.attribute_blocks[id] = attribute_block
 
         return self.rhombuses, self.errors
-
 
     def find_hexagons(self):
 
@@ -756,11 +762,11 @@ class Finder():
                     hexagon["group"] = []
 
                     for relation_id, relation in self.relations.items():
-                        
+
                         if "type" not in relation:
                             continue
                         if relation["type"] == "ellipse_connection":
-                            #print("here")
+                            # print("here")
                             source_id = relation["source"]
                             if id == source_id:
                                 target_id = relation["target"]
@@ -768,7 +774,7 @@ class Finder():
                                     ellipse_corrupted = True
                                     break
                                 hexagon["group"].append(target_id)
-                    
+
                     if len(hexagon["group"]) < 2:
                         ellipse_corrupted = True
 
@@ -832,8 +838,9 @@ class Finder():
                         continue
                     if "shape" in style2:
                         continue
-                    
-                    p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(child2)
+
+                    p1_support, p2_support, p3_support, p4_support = get_corners_rect_child(
+                        child2)
                     dx = abs(p1[0] - p2_support[0])
                     dy = abs(p1[1] - p2_support[1])
 
@@ -844,37 +851,42 @@ class Finder():
                         domain = False if "dashed=1" in style else child2.attrib["id"]
                         for attribute_value in attribute_list:
                             attribute = {}
-                            attribute_value_cleaned = clean_uri(attribute_value)
+                            attribute_value_cleaned = clean_uri(
+                                attribute_value)
                             try:
-                                
-                                #get the prefix:uri
-                                attribute_value_split = attribute_value_cleaned.split(" ")[0].strip()
+
+                                # get the prefix:uri
+                                attribute_value_split = attribute_value_cleaned.split(" ")[
+                                    0].strip()
                                 # If the datatype has range => remove the last :
                                 if(attribute_value_split[-1] == ":"):
                                     attribute_value_split = attribute_value_split[:-1]
 
-                                #In order to implement @base directive
-                                    #If value contains ':' && value does not start with ':' => normal prefix
-                                    #If value starts with ':' => empty prefix (which is the same as @base)
-                                    #If value does not contain ':' => prefix is @base
-                                        #If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                                        #If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                                        #If value does not contain ':' => len(value_split) == 1
+                                # In order to implement @base directive
+                                    # If value contains ':' && value does not start with ':' => normal prefix
+                                    # If value starts with ':' => empty prefix (which is the same as @base)
+                                    # If value does not contain ':' => prefix is @base
+                                    # If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                                    # If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                                    # If value does not contain ':' => len(value_split) == 1
 
-                                attribute_value_split = attribute_value_split.split(":")
+                                attribute_value_split = attribute_value_split.split(
+                                    ":")
                                 if(len(attribute_value_split) > 1):
-                                    #normal prefix || empty prefix (both are in namespace)
-                                    attribute["prefix"] = attribute_value_split[0].strip()
+                                    # normal prefix || empty prefix (both are in namespace)
+                                    attribute["prefix"] = attribute_value_split[0].strip(
+                                    )
                                     if(attribute["prefix"] == ""):
                                         attribute["prefix"] = "cambiar_a_prefijo_vacio"
-                                    attribute["uri"] = attribute_value_split[1].strip()
+                                    attribute["uri"] = attribute_value_split[1].strip(
+                                    )
                                 else:
-                                    #prefix is @base
-                                    #store concept["prefix"] with an auxiliar name in order
-                                    #write the concepts with base directive in to write_concepts
+                                    # prefix is @base
+                                    # store concept["prefix"] with an auxiliar name in order
+                                    # write the concepts with base directive in to write_concepts
                                     attribute["prefix"] = "<cambiar_a_base"
-                                    attribute["uri"] = attribute_value_split[0].strip() + ">"
-
+                                    attribute["uri"] = attribute_value_split[0].strip(
+                                    ) + ">"
 
                                 """print(attribute_value_cleaned.split(":"))
                                 attribute["prefix"] = attribute_value_cleaned.split(":")[0].strip()
@@ -887,9 +899,11 @@ class Finder():
                                 attribute["prefix"][1] # Check if error in text
                                 attribute["label"] = create_label(attribute["uri"], "property")"""
 
-                                attribute["uri"] = re.sub(" ", "", attribute["uri"])
-                                attribute["label"] = create_label(attribute["uri"], "property")
-                
+                                attribute["uri"] = re.sub(
+                                    " ", "", attribute["uri"])
+                                attribute["label"] = create_label(
+                                    attribute["uri"], "property")
+
                             except:
                                 error = {
                                     "message": "Problems in the text of the attribute",
@@ -898,15 +912,18 @@ class Finder():
                                 }
                                 self.errors["Attributes"].append(error)
                                 continue
-                            
+
                             try:
                                 if(attribute["prefix"] != "<cambiar_a_base"):
                                     if len(attribute_value.split(":")) > 2:
-                                        final_datatype = attribute_value.split(":")[-1].strip()
-                                        final_datatype = final_datatype[0].lower() + final_datatype[1:]
+                                        final_datatype = attribute_value.split(
+                                            ":")[-1].strip()
+                                        final_datatype = final_datatype[0].lower(
+                                        ) + final_datatype[1:]
                                         attribute["datatype"] = final_datatype
                                         if len(attribute_value.split(":")) > 3:
-                                            attribute["prefix_datatype"] = attribute_value.split(":")[2].strip()
+                                            attribute["prefix_datatype"] = attribute_value.split(":")[
+                                                2].strip()
                                             if (attribute["prefix_datatype"] == ""):
                                                 attribute["prefix_datatype"] = "cambiar_a_prefijo_vacio"
                                         else:
@@ -916,11 +933,14 @@ class Finder():
 
                                 else:
                                     if len(attribute_value.split(":")) > 1:
-                                        final_datatype = attribute_value.split(":")[-1].strip()
-                                        final_datatype = final_datatype[0].lower() + final_datatype[1:]
+                                        final_datatype = attribute_value.split(
+                                            ":")[-1].strip()
+                                        final_datatype = final_datatype[0].lower(
+                                        ) + final_datatype[1:]
                                         attribute["datatype"] = final_datatype
                                         if len(attribute_value.split(":")) > 2:
-                                            attribute["prefix_datatype"] = attribute_value.split(":")[1].strip()
+                                            attribute["prefix_datatype"] = attribute_value.split(":")[
+                                                1].strip()
                                         else:
                                             attribute["prefix_datatype"] = "xsd"
                                     else:
@@ -951,10 +971,10 @@ class Finder():
                                 attribute["someValuesFrom"] = True
                             else:
                                 attribute["someValuesFrom"] = False
-                            
+
                             # owl:hasValue
                             if "(value)" in attribute_value or "∋" in attribute_value:
-                                #In these cases the object is a data value of the form 
+                                # In these cases the object is a data value of the form
                                 # "data_value"^^prefix_datatype:datatype
                                 attribute["hasValue"] = True
 
@@ -974,14 +994,14 @@ class Finder():
                                 attribute["predicate_restriction"] = "rdfs:subClassOf"
 
                             attribute["functional"] = True if "(F)" in attribute_value else False
-                            
-
 
                             # Cardinality restriction evaluation
-                            try: 
+                            try:
                                 #max_min_card = re.findall("\(([0-9][^)]+)\)", attribute_value)
-                                max_min_card = re.findall("\((.*\.\..*)\)", attribute_value)
-                                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+                                max_min_card = re.findall(
+                                    "\((\S*[.][.]\S*)\)", attribute_value)
+                                max_min_card = max_min_card[-1] if len(
+                                    max_min_card) > 0 else None
                                 if max_min_card is None:
                                     attribute["min_cardinality"] = None
                                     attribute["max_cardinality"] = None
@@ -998,71 +1018,77 @@ class Finder():
                                 self.errors["Attributes"].append(error)
                                 continue
 
-                            #If min_cardinality == 0 this means it is not necessary to create 
+                            # If min_cardinality == 0 this means it is not necessary to create
                             # a min_cardinality restrictions
                             if attribute["min_cardinality"] == '0':
                                 attribute["min_cardinality"] = None
 
-                            #If max_cardinality == N this means it is not necessary to create 
+                            # If max_cardinality == N this means it is not necessary to create
                             # a max_cardinality restrictions
                             if attribute["max_cardinality"] == 'N':
                                 attribute["max_cardinality"] = None
 
-                            #Check if min_cardinality represents a non negative integer
-                            if  attribute["min_cardinality"] != None:
+                            # Check if min_cardinality represents a non negative integer
+                            if attribute["min_cardinality"] != None:
                                 try:
                                     aux = float(attribute["min_cardinality"])
                                     if not aux.is_integer() or aux < 0:
-                                        message = ("min_cardinality is "+ attribute["min_cardinality"] + 
-                                            " which is not a non negative integer, in restriction " + attribute["prefix"] + ":" 
-                                            + attribute["uri"])
+                                        message = ("min_cardinality is " + attribute["min_cardinality"] +
+                                                   " which is not a non negative integer, in restriction " +
+                                                   attribute["prefix"] + ":"
+                                                   + attribute["uri"])
                                         attribute["min_cardinality"] = None
                                         error = {
                                             "message": message,
                                             "shape_id": id,
                                             "value": attribute_value_cleaned
                                         }
-                                        self.errors["Cardinality-Restrictions"].append(error)
-                            
+                                        self.errors["Cardinality-Restrictions"].append(
+                                            error)
+
                                 except:
-                                    message = ("min_cardinality is not a number, in relation " 
-                                        + attribute["prefix"] + ":" 
-                                        + attribute["uri"])
+                                    message = ("min_cardinality is not a number, in attribute "
+                                               + attribute["prefix"] + ":"
+                                               + attribute["uri"])
                                     attribute["min_cardinality"] = None
                                     error = {
-                                            "message": message,
-                                            "shape_id": id,
-                                            "value": attribute_value_cleaned
-                                        }
-                                    self.errors["Cardinality-Restrictions"].append(error)
+                                        "message": message,
+                                        "shape_id": id,
+                                        "value": attribute_value_cleaned
+                                    }
+                                    self.errors["Cardinality-Restrictions"].append(
+                                        error)
 
-                            if  attribute["max_cardinality"] != None:
-                            #Check if max_cardinality represents a non negative integer
+                            if attribute["max_cardinality"] != None:
+                                # Check if max_cardinality represents a non negative integer
                                 try:
                                     aux = float(attribute["max_cardinality"])
                                     if not aux.is_integer() or aux < 0:
-                                        message = ("max_cardinality is "+ attribute["max_cardinality"] + 
-                                            " which is not a non negative integer, in restriction " + attribute["prefix"] + ":" 
-                                            + attribute["uri"])
+                                        message = ("max_cardinality is " + attribute["max_cardinality"] +
+                                                   " which is not a non negative integer, in restriction " +
+                                                   attribute["prefix"] + ":"
+                                                   + attribute["uri"])
                                         attribute["max_cardinality"] = None
                                         error = {
                                             "message": message,
                                             "shape_id": id,
                                             "value": attribute_value_cleaned
                                         }
-                                        self.errors["Cardinality-Restrictions"].append(error)
-                                    
+                                        self.errors["Cardinality-Restrictions"].append(
+                                            error)
+
                                 except:
-                                    message = ("max_cardinality is not a number, in restriction " 
-                                        + attribute["prefix"] + ":" 
-                                        + attribute["uri"])
+                                    message = ("max_cardinality is not a number, in restriction "
+                                               + attribute["prefix"] + ":"
+                                               + attribute["uri"])
                                     attribute["max_cardinality"] = None
                                     error = {
-                                            "message": message,
-                                            "shape_id": id,
-                                            "value": attribute_value_cleaned
-                                        }
-                                    self.errors["Cardinality-Restrictions"].append(error)
+                                        "message": message,
+                                        "shape_id": id,
+                                        "value": attribute_value_cleaned
+                                    }
+                                    self.errors["Cardinality-Restrictions"].append(
+                                        error)
 
                             if attribute["min_cardinality"] == attribute["max_cardinality"]:
                                 attribute["cardinality"] = attribute["min_cardinality"]
@@ -1071,20 +1097,22 @@ class Finder():
                             else:
                                 attribute["cardinality"] = None
 
-                            #max_cardinality must be greater than min_cardinality
-                            if(attribute["max_cardinality"] != None and attribute["min_cardinality"] != None 
-                                and float(attribute["max_cardinality"]) < float(attribute["min_cardinality"])):
-                                message = ("max_cardinality is lower than min_cardinality" + 
-                                        " in restriction " + attribute["prefix"] + ":" 
-                                        + attribute["uri"])
+                            # max_cardinality must be greater than min_cardinality
+                            if(attribute["max_cardinality"] != None and attribute["min_cardinality"] != None
+                                    and float(attribute["max_cardinality"]) < float(attribute["min_cardinality"])):
+                                message = ("max_cardinality is lower than min_cardinality" +
+                                           " in restriction " +
+                                           attribute["prefix"] + ":"
+                                           + attribute["uri"])
                                 attribute["max_cardinality"] = None
                                 attribute["min_cardinality"] = None
                                 error = {
-                                            "message": message,
-                                            "shape_id": id,
-                                            "value": attribute_value_cleaned
-                                        }
-                                self.errors["Cardinality-Restrictions"].append(error)
+                                    "message": message,
+                                    "shape_id": id,
+                                    "value": attribute_value_cleaned
+                                }
+                                self.errors["Cardinality-Restrictions"].append(
+                                    error)
 
                             attributes.append(attribute)
 
@@ -1121,7 +1149,7 @@ class Finder():
                         }
                         self.errors["Attributes"].append(error)
                         continue
-                    
+
                     # If datatype is mentioned
                     if len(value.split(":")) > 2:
                         error = {
@@ -1148,25 +1176,25 @@ class Finder():
                     value = clean_html_tags(value)
                     try:
 
-                        #In order to implement @base directive
-                            #If value contains ':' && value does not start with ':' => normal prefix
-                            #If value starts with ':' => empty prefix (which is the same as @base)
-                            #If value does not contain ':' => prefix is @base
-                                #If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                                #If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                                #If value does not contain ':' => len(value_split) == 1
+                        # In order to implement @base directive
+                        # If value contains ':' && value does not start with ':' => normal prefix
+                        # If value starts with ':' => empty prefix (which is the same as @base)
+                        # If value does not contain ':' => prefix is @base
+                        # If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
+                        # If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
+                        # If value does not contain ':' => len(value_split) == 1
 
                         value_split = value.split(":")
                         if(len(value_split) > 1):
-                            #normal prefix || empty prefix (both are in namespace)
+                            # normal prefix || empty prefix (both are in namespace)
                             concept["prefix"] = value_split[0].strip()
                             if(concept["prefix"] == ""):
                                 concept["prefix"] = "cambiar_a_prefijo_vacio"
                             concept["uri"] = value_split[1].strip()
                         else:
-                            #prefix is @base
-                            #store concept["prefix"] with an auxiliar name in order
-                            #write the concepts with base directive in to write_concepts
+                            # prefix is @base
+                            # store concept["prefix"] with an auxiliar name in order
+                            # write the concepts with base directive in to write_concepts
                             concept["prefix"] = "<cambiar_a_base"
                             concept["uri"] = value_split[0].strip() + ">"
 
@@ -1176,11 +1204,12 @@ class Finder():
 
                         concept["prefix"][0] # Check if error
                         concept["uri"][1] # Check if error"""
-                          
+
                         # Taking into account possible spaces in the uri of the concept
                         concept["uri"] = re.sub(" ", "", concept["uri"])
 
-                        concept["label"] = create_label(concept["uri"], "class")
+                        concept["label"] = create_label(
+                            concept["uri"], "class")
                         concept["xml_object"] = child
                     except:
                         error = {
@@ -1199,13 +1228,11 @@ class Finder():
                     anonymousClass["relations"] = []
                     self.anonimous_classes[id] = anonymousClass
 
-
             except:
-                #print("here")
+                # print("here")
                 continue
 
         return self.concepts, self.attribute_blocks, self.anonimous_classes
-
 
     def find_elements(self):
 

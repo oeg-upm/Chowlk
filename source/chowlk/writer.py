@@ -232,6 +232,8 @@ def write_data_properties(file, attribute_blocks, concepts):
     for id, attribute_block in attribute_blocks.items():
 
         for attribute in attribute_block["attributes"]:
+            print("\n attribute")
+            print(attribute)
 
             uri = attribute["uri"]
             prefix = attribute["prefix"]
@@ -258,6 +260,12 @@ def write_data_properties(file, attribute_blocks, concepts):
                     if attribute["hasValue"] == False:
                         file.write(" ;\n")
                         file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])
+                
+                """elif attribute["range"]:
+                    #Datatype which is declared in a rhombus
+                    if attribute["hasValue"] == False:
+                        file.write(" ;\n")
+                        file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])"""
 
             if "rdfs:subPropertyOf" in attribute:
                 file.write(" ;\n")
