@@ -30,7 +30,10 @@ class Finder():
             "Rhombuses": [],
             "Hexagons": [],
             "Individual": [],
-            "Cardinality-Restrictions": []
+            "Cardinality-Restrictions": [],
+            "intersectionOf": [],
+            "oneOf": [],
+            "complementOf": []
         }
 
     def find_relations(self):
@@ -107,6 +110,7 @@ class Finder():
                     self.errors["Arrows"].append(error)
 
                 if relation["target"] is None:
+                    print("entro")
                     error = {
                         "message": "Range side of the relation is not connected to any shape, please check this",
                         "shape_id": id,
@@ -476,9 +480,13 @@ class Finder():
                             if id == source_id:
                                 target_id = relation["target"]
                                 if target_id is None:
-                                    ellipse_corrupted = True
-                                    break
-                                ellipse["group"].append(target_id)
+                                    error = {
+                                        "message": "An arrow of an " + ellipse["type"] +" is not connected to any shape, please check this",
+                                        "shape_id": id
+                                    }
+                                    self.errors[ellipse["type"][4:]].append(error)
+                                else:
+                                    ellipse["group"].append(target_id)
 
                         # anonymousClass owl:complementOf anonymousClass
                         elif relation["type"] == "owl:complementOf":
@@ -493,6 +501,11 @@ class Finder():
                                 ellipse["group"].append(relation_id)
 
                     if len(ellipse["group"]) < 2:
+                        error = {
+                            "message": "An owl:intersectionOf is connected to less than two shapes. A owl.intersectionOf needs at least two class axioms",
+                            "shape_id": id
+                            }
+                        self.errors["intersectionOf"].append(error)
                         ellipse_corrupted = True
 
                     if ellipse_corrupted:
@@ -774,11 +787,23 @@ class Finder():
                             if id == source_id:
                                 target_id = relation["target"]
                                 if target_id is None:
-                                    ellipse_corrupted = True
-                                    break
-                                hexagon["group"].append(target_id)
+                                    error = {
+                                        "message": "An arrow of an " + hexagon["type"] +" is not connected to any shape, please check this",
+                                        "shape_id": id
+                                    }
+                                    self.errors[hexagon["type"][4:]].append(error)
+                                else:
+                                    hexagon["group"].append(target_id)
 
-                    if len(hexagon["group"]) < 2:
+                    if hexagon["type"] == "owl:AllDifferent" and len(hexagon["group"]) < 2:
+                        ellipse_corrupted = True
+
+                    elif hexagon["type"] == "owl:oneOf" and len(hexagon["group"]) < 1:
+                        error = {
+                            "message": "An owl:oneOf is connected to less than one shape. A owl:oneOf needs at least one individual",
+                            "shape_id": id
+                            }
+                        self.errors["oneOf"].append(error)
                         ellipse_corrupted = True
 
                     if ellipse_corrupted:

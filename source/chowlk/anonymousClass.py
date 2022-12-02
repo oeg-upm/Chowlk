@@ -22,10 +22,10 @@ def one_of(complement, individuals, errors):
             text = text + "\t\t\t\t" + individuals_involved + "\n"
         except:
             error = {
-                "message": "An element of owl:oneOf is not an individual",
+                "message": "An element of an owl:oneOf is not an individual",
                 "shape_id": id
                 }
-            errors["owl:oneOf"]= error
+            errors["oneOf"].append(error)
     text = text + "\t\t\t\t)"
     return text
 
@@ -135,10 +135,10 @@ def complement_of(complement, concepts, errors, hexagons, anonymous_concepts, in
 
     else:
             error = {
-                "message": "An element of an anonymous class is not an individual",
+                "message": "An element of an owl:complementOf is not a class descriptor",
                 "shape_id": id
             }
-            errors["anonymousClass"]= error
+            errors["complementOf"].append(error)
 
     text = text + "\t\t\t\t"
 
@@ -312,10 +312,10 @@ def intersection_of(intersection, concepts, errors, hexagons, anonymous_concepts
 
         else:
             error = {
-                "message": "An element of an anonymous class is not an individual",
+                "message": "An element of an owl:intersectionOf is not a class axiom",
                 "shape_id": id
             }
-            errors["anonymousClass"]= error
+            errors["intersectionOf"].append(error)
 
     text = text + "\t\t\t\t)"
     return text

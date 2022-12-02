@@ -24,6 +24,7 @@ def generate_ontologies():
 
 
 def test():
+    all_test_passed = True
     tests_path = os.path.dirname(os.path.abspath(__file__))
     desired_outputs_path = os.path.join(tests_path, "desired_outputs")
     outputs_path = os.path.join(tests_path, "outputs")
@@ -40,11 +41,18 @@ def test():
                 if compare_ontologies(output_filepath, desired_output_filepath):
                     output_log_filepath = os.path.join(outputs_path, filename[:-4] + "_log.txt")
                     desired_output_log_filepath = os.path.join(desired_outputs_path, filename[:-4] + "_log.txt")
-                    compare_logs(output_log_filepath, desired_output_log_filepath)
+                    if compare_logs(output_log_filepath, desired_output_log_filepath):
+                        print("Test passed\n")
+                    else:
+                        all_test_passed = False
+                        print("Test failed. Logs are not equal\n")
+                else:
+                    all_test_passed = False
         else:
             print("Output " + filename +
                   " file has not been generated correctly.\n")
-    return
+            all_test_passed = False
+    return all_test_passed
 
 
 def compare_ontologies(o1, o2):
@@ -82,18 +90,16 @@ def compare_ontologies(o1, o2):
 def compare_logs(l1, l2):
     file1 = open(l1, 'r')
     file2 = open(l2, 'r')
-    if file1.read() == file2.read():
-        print("Test passed\n")
-    else:
-        print("Test failed. Logs are not equal")
+    passed = file1.read() == file2.read()
     file1.close()
     file2.close()
-    return
+    return passed
 
 if __name__ == "__main__":
 
     generate_ontologies()
-    test()
+    if test():
+        print("\n All tests passed")
 """
 class TestFindingFunctions(unittest.TestCase):
 

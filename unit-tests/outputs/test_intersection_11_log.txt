@@ -1,0 +1,8 @@
+
+Error intersectionOf: An arrow of an owl:intersectionOf is not connected to any shape, please check this
+	shape_id: JFXoWNqBMhQH-Cn3u4Ck-1
+
+Error intersectionOf: An owl:intersectionOf is connected to less than two shapes. A owl.intersectionOf needs at least two class axioms
+	shape_id: JFXoWNqBMhQH-Cn3u4Ck-1
+
+Error Base: A base has not been declared. The first namespace has been taken as base

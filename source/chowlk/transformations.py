@@ -30,8 +30,8 @@ def transform_ontology(root):
     print("\n namespaces")
     print(namespaces)
     print("\n rhombuses")
-    print(rhombuses)"""
-    """print("\n anonymous classes")
+    print(rhombuses)
+    print("\n anonymous classes")
     print(anonimous_classes)"""
     values = finder.find_attribute_values()
     """print("\n values")

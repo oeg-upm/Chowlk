@@ -1,2 +1,0 @@
-
-{'Concepts': [], 'Arrows': [], 'Ellipses': [], 'Attributes': [], 'Namespaces': [], 'Metadata': [], 'Rhombuses': [], 'Hexagons': [], 'Individual': [], 'Cardinality-Restrictions': []}

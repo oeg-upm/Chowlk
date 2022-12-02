@@ -1,0 +1,5 @@
+
+Error oneOf: An owl:oneOf is connected to less than one shape. A owl:oneOf needs at least one individual
+	shape_id: nVaw8EAQq6nJtipb37nN-4
+
+Error Base: A base has not been declared. The first namespace has been taken as base

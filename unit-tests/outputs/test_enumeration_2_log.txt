@@ -1,0 +1,5 @@
+
+Error oneOf: An element of an owl:oneOf is not an individual
+	shape_id: nVaw8EAQq6nJtipb37nN-1
+
+Error Base: A base has not been declared. The first namespace has been taken as base

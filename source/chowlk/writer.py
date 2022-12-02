@@ -50,8 +50,7 @@ def get_ttl_template(namespaces, prefixes_fonded, errors):
 
     if(base_declared):
         errors["Base"] = {
-            "message": "A base has not been declared. The first namespace   \
-                    has been taken as base\n"
+            "message": "A base has not been declared. The first namespace has been taken as base"
         }
 
     #Add empty prefix with same uri as @base if the user has not declared the
@@ -146,7 +145,8 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                     elif relation["domain"] in individuals:
                         error = {
                             "message": "The domain of an object property is an individual",
-                            "shape_id": relation_id
+                            "shape_id": relation_id,
+                            "value": prefix + ":" + uri
                         }
                         errors["objectProperty_domain"]= error
                         domain_name = ":"
@@ -180,7 +180,8 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                     elif relation["range"] in individuals:
                         error = {
                             "message": "The range of an object property is an individual",
-                            "shape_id": relation_id
+                            "shape_id": relation_id,
+                            "value": prefix + ":" + uri
                         }
                         errors["objectProperty_range"]= error
                     
@@ -539,9 +540,15 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                             file.write("\t\t]")
 
             elif relation["type"] == "owl:complementOf":
-                file.write(" ;\n")
+                error = {
+                        "message": "A class is connected to a owl:complementOf directly. A owl:complementOf can be connected to a class through a class axiom",
+                        "shape_id": concept_id,
+                        "value": concept_prefix + ":" + concept_uri
+                        }
+                errors["complementOf"].append(error)
+                """file.write(" ;\n")
                 text = complement_of(relation, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
-                file.write(text)
+                file.write(text)"""
 
             elif relation["type"] == "owl:equivalentClass":
                 file.write(" ;\n")
@@ -607,20 +614,32 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
 
             #owl:oneOf (enumerated class)
             elif relation["type"] == "rdf:type" and relation["target"] in hexagons:
-                target_id = relation["target"]
+                error = {
+                        "message": "A class is connected to a owl:oneOf through a rdf:type. A owl:oneOf can be connected to a class through a class axiom",
+                        "shape_id": concept_id,
+                        "value": concept_prefix + ":" + concept_uri
+                        }
+                errors["oneOf"].append(error)
+                """target_id = relation["target"]
                 complement = hexagons[target_id]
                 file.write(" ;")
                 text =  one_of(complement, individuals, errors)
-                file.write(text)
+                file.write(text)"""
 
             # anonymous class
             elif relation["type"] == "rdf:type" and relation["target"] in anonymous_concepts:
                 target_id = relation["target"]
                 complement = anonymous_concepts[target_id]
                 if complement["type"] == "owl:intersectionOf":
-                    file.write(" ;")
+                    error = {
+                        "message": "A class is connected to a owl:intersectionOf through a rdf:type. A owl:intersectionOf can be connected to a class through a class axiom",
+                        "shape_id": concept_id,
+                        "value": concept_prefix + ":" + concept_uri
+                        }
+                    errors["intersectionOf"].append(error)
+                    """file.write(" ;")
                     text = intersection_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
-                    file.write(text)
+                    file.write(text)"""
                 elif complement["type"] == "owl:unionOf":
                     file.write(" ;")
                     text = union_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
