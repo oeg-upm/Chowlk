@@ -703,6 +703,9 @@ class Finder():
                         relation["allValuesFrom"] = False
                         relation["someValuesFrom"] = False
                         relation["hasValue"] = False
+                        relation["min_cardinality"] = False
+                        relation["max_cardinality"] = False
+                        relation["cardinality"] = False
                         relation["functional"] = False
                         relation["inverse_functional"] = False
                         relation["transitive"] = False

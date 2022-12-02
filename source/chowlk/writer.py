@@ -122,7 +122,7 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                 file.write("\t\t\towl:InverseFunctionalProperty")
 
             # restrictions have not domain or/and range
-            if not relation["allValuesFrom"] and not relation["someValuesFrom"] and not relation["hasValue"]:
+            if not relation["allValuesFrom"] and not relation["someValuesFrom"] and not relation["hasValue"] and not relation["min_cardinality"] and not relation["max_cardinality"] and not relation["cardinality"]:
                 if relation["domain"]:
                     concept_id = relation["domain"]
 
@@ -232,8 +232,6 @@ def write_data_properties(file, attribute_blocks, concepts):
     for id, attribute_block in attribute_blocks.items():
 
         for attribute in attribute_block["attributes"]:
-            print("\n attribute")
-            print(attribute)
 
             uri = attribute["uri"]
             prefix = attribute["prefix"]

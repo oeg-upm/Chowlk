@@ -36,50 +36,32 @@ def transform_ontology(root):
     values = finder.find_attribute_values()
     """print("\n values")
     print(values)"""
-    print("\n concepts")
-    print(concepts)
-    prefixes_identified = find_prefixes(
-        concepts, relations, attribute_blocks, individuals)
-    relations, attribute_blocks = enrich_properties(
-        rhombuses, relations, attribute_blocks, concepts)
+    prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
+    relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks, concepts)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
-    print("\n attribute_blocks")
-    print(attribute_blocks)
     associations = concept_attribute_association(concepts, attribute_blocks)
-    print("\n association")
-    print(associations)
-    associations, relations = concept_relation_association(
-        associations, relations)
-    individuals = individual_type_identification(
-        individuals, associations, relations, hexagons, errors)
-    individuals = individual_type_identification_rdf(
-        individuals, concepts, relations)
-    associations_individuals = individual_relation_association(
-        individuals, relations)
-    associations_individuals = individual_attribute_association(
-        associations_individuals, values, relations)
-    file, onto_prefix, onto_uri, new_namespaces, errors = get_ttl_template(
-        namespaces, prefixes_identified, errors)
+    associations, relations = concept_relation_association(associations, relations)
+    individuals = individual_type_identification(individuals, associations, relations, hexagons, errors)
+    individuals = individual_type_identification_rdf(individuals, concepts, relations)
+    associations_individuals = individual_relation_association(individuals, relations)
+    associations_individuals = individual_attribute_association(associations_individuals, values, relations)
+    file, onto_prefix, onto_uri, new_namespaces, errors = get_ttl_template(namespaces, prefixes_identified, errors)
     """print("\n relations")
     print(relations)
     print("\n associations")
     print(associations)"""
-    anonimous_classes = find_relations_anonymous_classes(
-        relations, anonimous_classes)
+    anonimous_classes = find_relations_anonymous_classes(relations, anonimous_classes)
     """print("\n anonymous classes")
     print(anonimous_classes)"""
     file = write_ontology_metadata(file, metadata, onto_uri)
-    file, errors = write_object_properties(
-        file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals, errors)
+    file, errors = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals, errors)
     file = write_data_properties(file, attribute_blocks, concepts)
     """print("\n hexagons")
     print(hexagons)"""
-    file = write_concepts(file, concepts, anonymous_concepts, associations,
-                          individuals, hexagons, errors, relations, anonimous_classes)
+    file = write_concepts(file, concepts, anonymous_concepts, associations,individuals, hexagons, errors, relations, anonimous_classes)
     file = write_instances(file, individuals)
     file = write_triplets(file, individuals, associations_individuals, values)
-    file = write_general_axioms(
-        file, concepts, anonymous_concepts, individuals, hexagons)
+    file = write_general_axioms(file, concepts, anonymous_concepts, individuals, hexagons)
 
     # print(file.read())
     # file.seek(os.SEEK_SET)

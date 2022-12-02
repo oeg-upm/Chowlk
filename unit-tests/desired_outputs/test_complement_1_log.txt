@@ -1,0 +1,2 @@
+
+{'Concepts': [], 'Arrows': [], 'Ellipses': [], 'Attributes': [], 'Namespaces': [], 'Metadata': [], 'Rhombuses': [], 'Hexagons': [], 'Individual': [], 'Cardinality-Restrictions': [], 'Base': {'message': 'A base has not been declared. The first namespace                       has been taken as base\n'}}
