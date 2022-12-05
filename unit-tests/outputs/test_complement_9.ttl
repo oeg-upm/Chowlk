@@ -6,11 +6,11 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix : <https://w3id.org/saref#> .
-@prefix ns: <https://w3id.org/saref#> .
-@base <https://w3id.org/saref#> .
+@prefix : <http://base.namespace.com#> .
+@prefix ns: <http://base.namespace.com#> .
+@base <http://base.namespace.com#> .
 
-<https://w3id.org/saref#> rdf:type owl:Ontology ;
+<http://base.namespace.com#> rdf:type owl:Ontology ;
 			dc:description "Ontology code created by Chowlk" .
 
 #################################################################
@@ -21,17 +21,16 @@
 #    Data Properties
 #################################################################
 
-### ns:datatypeProperty1
-ns:datatypeProperty1 rdf:type owl:DatatypeProperty ;
-		rdfs:label "datatype property1" .
-
 #################################################################
 #    Classes
 #################################################################
 
 ### ns:Class1
 ns:Class1 rdf:type owl:Class ;
-	rdfs:label "Class1" .
+	rdfs:label "Class1" ;
+ ;	owl:equivalentClass [ rdf:type owl:Class ;
+	owl:complementOf 
+						] .
 
 #################################################################
 #    Instances

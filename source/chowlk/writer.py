@@ -641,9 +641,15 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
                     text = intersection_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
                     file.write(text)"""
                 elif complement["type"] == "owl:unionOf":
-                    file.write(" ;")
+                    error = {
+                        "message": "A class is connected to a owl:unionOf through a rdf:type. A owl:unionOf can be connected to a class through a class axiom",
+                        "shape_id": concept_id,
+                        "value": concept_prefix + ":" + concept_uri
+                        }
+                    errors["unionOf"].append(error)
+                    """file.write(" ;")
                     text = union_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
-                    file.write(text)
+                    file.write(text)"""
 
         for blank_id, blank in anonymous_concepts.items():
             if len(blank["group"]) > 2:

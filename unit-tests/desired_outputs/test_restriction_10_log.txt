@@ -1,0 +1,10 @@
+
+Error Cardinality-Restrictions: min_cardinality is not a number, in relation ns:objectProperty1
+	shape_id: Ps-rgu2Tc-cQS3WUW2tD-17
+	value: ns:objectProperty1 (N1..N2)
+
+Error Cardinality-Restrictions: max_cardinality is not a number, in restriction ns:objectProperty1
+	shape_id: Ps-rgu2Tc-cQS3WUW2tD-17
+	value: ns:objectProperty1 (N1..N2)
+
+Error Base: A base has not been declared. The first namespace has been taken as base

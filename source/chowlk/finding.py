@@ -33,7 +33,8 @@ class Finder():
             "Cardinality-Restrictions": [],
             "intersectionOf": [],
             "oneOf": [],
-            "complementOf": []
+            "complementOf": [],
+            "unionOf": []
         }
 
     def find_relations(self):
@@ -309,10 +310,6 @@ class Finder():
                         self.errors["Cardinality-Restrictions"].append(error)
 
                 except:
-                    print("\n relation")
-                    print(relation)
-                    print(value)
-                    print(max_min_card)
                     message = ("min_cardinality is not a number, in relation "
                                + relation["prefix"] + ":"
                                + relation["uri"])
@@ -502,10 +499,10 @@ class Finder():
 
                     if len(ellipse["group"]) < 2:
                         error = {
-                            "message": "An owl:intersectionOf is connected to less than two shapes. A owl.intersectionOf needs at least two class axioms",
+                            "message": "An " + ellipse["type"] + " is connected to less than two shapes. An " + ellipse["type"] + " needs at least two class axioms",
                             "shape_id": id
                             }
-                        self.errors["intersectionOf"].append(error)
+                        self.errors[ellipse["type"][4:]].append(error)
                         ellipse_corrupted = True
 
                     if ellipse_corrupted:

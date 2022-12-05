@@ -78,10 +78,10 @@ def union_of(complement, concepts, errors, hexagons, anonymous_concepts, individ
 
         else:
             error = {
-                "message": "An element of an anonymous class is not an individual",
+                "message": "An element of an owl:oneOf is not a class descriptor",
                 "shape_id": id
             }
-            errors["anonymousClass"]= error
+            errors["unionOf"]= error
 
     text = text + "\t\t\t\t)"
     return text
