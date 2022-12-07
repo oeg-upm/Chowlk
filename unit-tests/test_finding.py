@@ -95,8 +95,16 @@ def compare_logs(l1, l2):
     file2.close()
     return passed
 
-if __name__ == "__main__":
+#Funtion to remove all the files in the repository output
+def empty_repository():
+    tests_path = os.path.dirname(os.path.abspath(__file__))
+    outputs_path = os.path.join(tests_path, "outputs")
+    for f in os.listdir(outputs_path):
+        os.remove(os.path.join(outputs_path, f))
+    return
 
+if __name__ == "__main__":
+    empty_repository()
     generate_ontologies()
     if test():
         print("\n All tests passed")

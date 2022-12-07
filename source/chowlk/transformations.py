@@ -36,8 +36,8 @@ def transform_ontology(root):
     values = finder.find_attribute_values()
     """print("\n values")
     print(values)"""
-    prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
     relations, attribute_blocks = enrich_properties(rhombuses, relations, attribute_blocks, concepts)
+    prefixes_identified = find_prefixes(concepts, relations, attribute_blocks, individuals)
     attribute_blocks = resolve_concept_reference(attribute_blocks, concepts)
     associations = concept_attribute_association(concepts, attribute_blocks)
     associations, relations = concept_relation_association(associations, relations)

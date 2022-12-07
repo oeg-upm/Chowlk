@@ -111,7 +111,7 @@ class Finder():
                     self.errors["Arrows"].append(error)
 
                 if relation["target"] is None:
-                    print("entro")
+                 
                     error = {
                         "message": "Range side of the relation is not connected to any shape, please check this",
                         "shape_id": id,
@@ -627,6 +627,22 @@ class Finder():
         return self.attributes
 
     def find_rhombuses(self):
+        #these are the types which can be defined indise a rhombus
+        valid_types = ["owl:ObjectProperty", "owl:DatatypeProperty", "owl:FunctionalProperty",
+                "owl:SymmetricProperty", "owl:TransitiveProperty", "owl:InverseFunctionalProperty"]
+        
+        #Array with the names of the relations defined in the diagram
+        relation_uris = []
+        for relation_id, relation in self.relations.items():
+            if "uri" in relation:
+                relation_uris.append(relation["prefix"] + ":" + relation["uri"])
+
+        #Array with the names of the attributes defined in the diagram
+        attribute_uris = []
+        for attribute_block_id, attribute_block in self.attribute_blocks.items():
+            attributes = attribute_block["attributes"]
+            for attribute in attributes:
+                attribute_uris.append(attribute["prefix"] + ":" + attribute["uri"])
 
         for child in self.root:
 
@@ -640,10 +656,32 @@ class Finder():
                 rhombus = {}
                 rhombus["xml_object"] = child
 
+                #In a rhombus can be defined more than one type
+                #A type is defined between << and >>
                 try:
-                    type = value_html_clean.split(
-                        ">>")[0].split("<<")[-1].strip()
-                    rhombus["type"] = type
+                    
+                    types = re.findall("[<][<]([^>]*)[>][>]", value_html_clean)
+
+                    for t in types:
+                        if t not in valid_types:
+                            error = {
+                                "message": "Type <<" + t + ">> can not be defined inside a rhombus",
+                                "shape_id": id,
+                                "value": value_html_clean
+                            }
+                            self.errors["Rhombuses"].append(error)
+                            types.remove(t)
+
+                    if "owl:ObjectProperty" in types and "owl:DatatypeProperty" in types:
+                        error = {
+                            "message": "A rhombus can not be defined as Object Property and Datatype Property at the same time",
+                            "shape_id": id,
+                            "value": value_html_clean
+                        }
+                        self.errors["Rhombuses"].append(error)
+                        continue
+
+                    rhombus["type"] = types.pop(0)
 
                     value = value_html_clean.split("|")[-1].strip()
                     value = value.split(">>")[-1].strip()
@@ -680,59 +718,60 @@ class Finder():
 
                     self.rhombuses[id] = rhombus
 
+                    #Aditionally, an object "rhombus" is created per type defined
+                    for t in types:
+                        self.rhombuses[id+t] = {}
+                        self.rhombuses[id+t]["xml_object"] = child
+                        self.rhombuses[id+t]["type"] = t
+                        self.rhombuses[id+t]["prefix"] = prefix
+                        self.rhombuses[id+t]["uri"] = uri
+                    types.append(rhombus["type"])
+
                 except:
                     error = {
+                        "message": "Unexpected error in a rhombus occurs. Please contact chowlk staff",
                         "shape_id": id,
                         "value": value_html_clean
                     }
                     self.errors["Rhombuses"].append(error)
                     continue
 
-                if type == "owl:ObjectProperty":
+                if "owl:ObjectProperty" in types:
 
-                    relation_uris = []
-
-                    for relation_id, relation in self.relations.items():
-                        if "uri" in relation:
-                            relation_uris.append(relation["uri"])
-
-                    if uri not in relation_uris:
-
+                    if prefix + ":" + uri not in relation_uris:
+                  
+                        #There is an object property defined in a rhombus which has not been
+                        #defined in a relation => add that object property to relations
                         uri = re.sub(" ", "", uri)
 
-                        relation = {}
-                        relation["source"] = None
-                        relation["target"] = None
-                        relation["xml_object"] = child
-                        relation["type"] = type
-                        relation["prefix"] = prefix
-                        relation["uri"] = uri
-                        relation["label"] = create_label(uri, "property")
-                        relation["domain"] = False
-                        relation["range"] = False
-                        relation["allValuesFrom"] = False
-                        relation["someValuesFrom"] = False
-                        relation["hasValue"] = False
-                        relation["min_cardinality"] = False
-                        relation["max_cardinality"] = False
-                        relation["cardinality"] = False
-                        relation["functional"] = False
-                        relation["inverse_functional"] = False
-                        relation["transitive"] = False
-                        relation["symmetric"] = False
+                        relation_aux = {}
+                        relation_aux["source"] = None
+                        relation_aux["target"] = None
+                        relation_aux["xml_object"] = child
+                        relation_aux["type"] = "owl:ObjectProperty"
+                        relation_aux["prefix"] = prefix
+                        relation_aux["uri"] = uri
+                        relation_aux["label"] = create_label(uri, "property")
+                        relation_aux["domain"] = False
+                        relation_aux["range"] = False
+                        relation_aux["allValuesFrom"] = False
+                        relation_aux["someValuesFrom"] = False
+                        relation_aux["hasValue"] = False
+                        relation_aux["min_cardinality"] = False
+                        relation_aux["max_cardinality"] = False
+                        relation_aux["cardinality"] = False
+                        relation_aux["functional"] = True if "owl:FunctionalProperty" in types else False
+                        relation_aux["inverse_functional"] = True if "owl:InverseFunctionalProperty" in types else False
+                        relation_aux["transitive"] = True if "owl:TransitiveProperty" in types else False
+                        relation_aux["symmetric"] = True if "owl:SymmetricProperty" in types else False
 
-                    self.relations[id] = relation
+                        relation_uris.append(prefix + ":" + uri)
 
-                elif type == "owl:DatatypeProperty":
+                        self.relations[id] = relation_aux
 
-                    attribute_uris = []
+                elif "owl:DatatypeProperty" in types:
 
-                    for attribute_block_id, attribute_block in self.attribute_blocks.items():
-                        attributes = attribute_block["attributes"]
-                        for attribute in attributes:
-                            attribute_uris.append(attribute["uri"])
-
-                    if uri not in attribute_uris:
+                    if prefix + ":" + uri not in attribute_uris:
                         attribute = {}
                         attribute_block = {}
                         attribute_block["xml_object"] = child
@@ -740,7 +779,7 @@ class Finder():
                         attribute["uri"] = uri
                         attribute["label"] = create_label(uri, "property")
                         attribute["datatype"] = None
-                        attribute["functional"] = False
+                        attribute["functional"] = True if "owl:FunctionalProperty" in types else False
                         attribute["domain"] = False
                         attribute["range"] = False
                         attribute["allValuesFrom"] = False
@@ -750,7 +789,9 @@ class Finder():
                         attribute["max_cardinality"] = None
                         attribute_block["attributes"] = [attribute]
 
-                    self.attribute_blocks[id] = attribute_block
+                        attribute_uris.append(prefix + ":" + uri)
+
+                        self.attribute_blocks[id] = attribute_block
 
         return self.rhombuses, self.errors
 

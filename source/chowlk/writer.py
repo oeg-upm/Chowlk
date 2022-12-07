@@ -219,6 +219,16 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
             file.write("\t\trdfs:label \"" + relation["label"] + "\"")
             file.write(" .\n\n")
 
+        elif relation["type"] == "owl:FunctionalProperty":
+            uri = relation["uri"]
+            prefix = relation["prefix"]
+
+            file.write("### " + prefix + ":" + uri + "\n")
+            file.write(prefix + ":" + uri + " rdf:type owl:FunctionalProperty")
+            file.write(" ;\n")
+            file.write("\t\trdfs:label \"" + relation["label"] + "\"")
+            file.write(" .\n\n")
+
     return file, errors
 
 

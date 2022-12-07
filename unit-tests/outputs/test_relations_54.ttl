@@ -6,6 +6,7 @@
 ns: a owl:Ontology ;
     dc:description "Ontology code created by Chowlk" .
 
-ns:objectProperty1 a owl:FunctionalProperty ;
-    rdfs:label "object property1" .
+ns:objectProperty a owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:label "object property" .
 

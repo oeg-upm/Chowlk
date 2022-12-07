@@ -1,4 +1,3 @@
-entro
 Please check your syntax on the diagram, here you have a hint of the possible error:
 at line 35 of <>:
 Bad syntax (objectList expected) at ^ in:

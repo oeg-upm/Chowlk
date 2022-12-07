@@ -6,25 +6,29 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix : <http://base.namespace.com#> .
-@prefix ns: <http://base.namespace.com#> .
-@base <http://base.namespace.com#> .
+@prefix : <https://w3id.org/saref#> .
+@prefix ns: <https://w3id.org/saref#> .
+@base <https://w3id.org/saref#> .
 
-<http://base.namespace.com#> rdf:type owl:Ontology ;
+<https://w3id.org/saref#> rdf:type owl:Ontology ;
 			dc:description "Ontology code created by Chowlk" .
 
 #################################################################
 #    Object Properties
 #################################################################
 
+### ns:objectProperty1
+ns:objectProperty1 rdf:type owl:ObjectProperty ;
+		rdfs:label "object property1" .
+
+### ns:objectProperty2
+ns:objectProperty2 rdf:type owl:ObjectProperty ;
+		owl:inverseOf ns:objectProperty1 ;
+		rdfs:label "object property2" .
+
 #################################################################
 #    Data Properties
 #################################################################
-
-### ns:datatypeProperty
-ns:datatypeProperty rdf:type owl:DatatypeProperty ;
-		rdfs:range ns:datatype ;
-		rdfs:label "datatype property" .
 
 #################################################################
 #    Classes

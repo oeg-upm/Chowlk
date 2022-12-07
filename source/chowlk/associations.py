@@ -1,4 +1,5 @@
 from source.chowlk.geometry import get_corners, get_corners_rect_child
+from source.chowlk.finding import create_label
 import copy
 
 
@@ -163,9 +164,9 @@ def individual_type_identification(individuals, associations, relations, hexagon
 
 def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
 
-    relations_byname = {relation["uri"]: id for id,
+    relations_byname = {relation["prefix"] + ":" + relation["uri"]: id for id,
                         relation in relations.items() if "uri" in relation}
-    attributes_byname = {attribute["uri"]: [id, idx] for id, attribute_block in attribute_blocks.items()
+    attributes_byname = {attribute["prefix"] + ":" + attribute["uri"]: [id, idx] for id, attribute_block in attribute_blocks.items()
                          for idx, attribute in enumerate(attribute_block["attributes"])}
     relations_copy = copy.deepcopy(relations)
     for relation_id, relation in relations.items():
@@ -190,7 +191,7 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
                 source_property = rhombuses[source_id]
                 target_property = rhombuses[target_id]
                 sprop_type = source_property["type"]
-                sprop_name = source_property["uri"]
+                sprop_name = source_property["prefix"] + ":" + source_property["uri"]
 
                 if sprop_type == "owl:ObjectProperty":
                     sprop_id = relations_byname[sprop_name]
@@ -207,7 +208,7 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
 
                 source_property = rhombuses[source_id]
                 sprop_type = source_property["type"]
-                sprop_name = source_property["uri"]
+                sprop_name = source_property["prefix"] + ":" + source_property["uri"]
 
                 if sprop_type == "owl:ObjectProperty":
                     sprop_id = relations_byname[sprop_name]
@@ -237,29 +238,169 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
 
         try:
             type = rhombus["type"]
-            prop_name = rhombus["uri"]
+            prop_name = rhombus["prefix"] + ":" + rhombus["uri"]
             if type == "owl:InverseFunctionalProperty":
-                prop_id = relations_byname[prop_name]
-                relations_copy[prop_id]["inverse_functional"] = True
+                if prop_name in relations_byname:
+                    #The object property (rhombus) has been defined in a relation
+                    #It is neccesary to update the information of that relation
+                    prop_id = relations_byname[prop_name]
+                    relations_copy[prop_id]["inverse_functional"] = True
+                    if relations_copy[prop_id]["type"] == "owl:FunctionalProperty":
+                        #This case is special because when we encountered a functionalProperty,
+                        #we store that property just as functional (neither object nor datatype property)
+                        #then it is neccesary to do a change
+                        relations_copy[prop_id]["functional"] = True
+                        relations_copy[prop_id]["type"] = "owl:ObjectProperty"
+                else:
+                    #The object property (rhombus) has not been defined in a relation
+                    #It is neccesary to create a new relation
+                    relations_copy[rhombus_id] = create_relation_from_rhombus(rhombus, "inverse_functional")
+                    relations_byname[prop_name] = rhombus_id
             elif type == "owl:TransitiveProperty":
-                prop_id = relations_byname[prop_name]
-                relations_copy[prop_id]["transitive"] = True
+                if prop_name in relations_byname:
+                    #The object property (rhombus) has been defined in a relation
+                    #It is neccesary to update the information of that relation
+                    prop_id = relations_byname[prop_name]
+                    relations_copy[prop_id]["transitive"] = True
+                    if relations_copy[prop_id]["type"] == "owl:FunctionalProperty":
+                        #This case is special because when we encountered a functionalProperty,
+                        #we store that property just as functional (neither object nor datatype property)
+                        #then it is neccesary to do a change
+                        relations_copy[prop_id]["functional"] = True
+                        relations_copy[prop_id]["type"] = "owl:ObjectProperty"
+                else:
+                    #The object property (rhombus) has not been defined in a relation
+                    #It is neccesary to create a new relation
+                    relations_copy[rhombus_id] = create_relation_from_rhombus(rhombus, "transitive")
+                    relations_byname[prop_name] = rhombus_id
             elif type == "owl:SymmetricProperty":
-                prop_id = relations_byname[prop_name]
-                relations_copy[prop_id]["symmetric"] = True
+                if prop_name in relations_byname:
+                    #The object property (rhombus) has been defined in a relation
+                    #It is neccesary to update the information of that relation
+                    prop_id = relations_byname[prop_name]
+                    relations_copy[prop_id]["symmetric"] = True
+                    if relations_copy[prop_id]["type"] == "owl:FunctionalProperty":
+                        #This case is special because when we encountered a functionalProperty,
+                        #we store that property just as functional (neither object nor datatype property)
+                        #then it is neccesary to do a change
+                        relations_copy[prop_id]["functional"] = True
+                        relations_copy[prop_id]["type"] = "owl:ObjectProperty"
+                else:
+                    #The object property (rhombus) has not been defined in a relation
+                    #It is neccesary to create a new relation
+                    relations_copy[rhombus_id] = create_relation_from_rhombus(rhombus, "symmetric")
+                    relations_byname[prop_name] = rhombus_id
             elif type == "owl:FunctionalProperty":
                 if prop_name in relations_byname:
+                    #The object property (rhombus) has been defined in a relation
+                    #It is neccesary to update the information of that relation
                     prop_id = relations_byname[prop_name]
                     relations_copy[prop_id]["functional"] = True
-                else:
+                elif prop_name in attributes_byname:
+                    #The datatype property (rhombus) has been defined in an attribute
+                    #It is neccesary to update the information of that attribute
                     prop_id = attributes_byname[prop_name][0]
                     prop_idx = attributes_byname[prop_name][1]
                     attribute_blocks[prop_id]["attributes"][prop_idx]["functional"] = True
+                else:
+                    #The property (rhombus) has not been defined neither in a relation not an attribute
+                    #In this case it is not clear if the user means to create an object property or a datatype
+                    # property, for this reason neither is created (just a property which is functional)
+                    relation_aux = {}
+                    relation_aux["source"] = None
+                    relation_aux["target"] = None
+                    relation_aux["xml_object"] = rhombus["xml_object"]
+                    relation_aux["type"] = "owl:FunctionalProperty"
+                    relation_aux["prefix"] = rhombus["prefix"]
+                    relation_aux["uri"] = rhombus["uri"]
+                    relation_aux["label"] = create_label(rhombus["uri"], "property")
+                    relation_aux["domain"] = False
+                    relation_aux["range"] = False
+                    relation_aux["allValuesFrom"] = False
+                    relation_aux["someValuesFrom"] = False
+                    relation_aux["hasValue"] = False
+                    relation_aux["min_cardinality"] = False
+                    relation_aux["max_cardinality"] = False
+                    relation_aux["cardinality"] = False
+                    relation_aux["functional"] = True
+                    relation_aux["inverse_functional"] = False
+                    relation_aux["transitive"] = False
+                    relation_aux["symmetric"] = False
+
+                    relations_copy[rhombus_id] = relation_aux
+                    relations_byname[prop_name] = rhombus_id
+
+            elif type == "owl:ObjectProperty":
+                if prop_name in relations_byname:
+                    #The object property (rhombus) has been defined in a relation
+                    #It is neccesary to update the information of that relation
+                    prop_id = relations_byname[prop_name]
+                    if relations_copy[prop_id]["type"] == "owl:FunctionalProperty":
+                        #This case is special because when we encountered a functionalProperty,
+                        #we store that property just as functional (neither object nor datatype property)
+                        #then it is neccesary to do a change
+                        relations_copy[prop_id]["functional"] = True
+                        relations_copy[prop_id]["type"] = "owl:ObjectProperty"
+                else:
+                    #The object property (rhombus) has not been defined in a relation
+                    #It is neccesary to create a new relation
+                    relation_aux = {}
+                    relation_aux["source"] = None
+                    relation_aux["target"] = None
+                    relation_aux["xml_object"] = rhombus["xml_object"]
+                    relation_aux["type"] = "owl:ObjectProperty"
+                    relation_aux["prefix"] = rhombus["prefix"]
+                    relation_aux["uri"] = rhombus["uri"]
+                    relation_aux["label"] = create_label(rhombus["uri"], "property")
+                    relation_aux["domain"] = False
+                    relation_aux["range"] = False
+                    relation_aux["allValuesFrom"] = False
+                    relation_aux["someValuesFrom"] = False
+                    relation_aux["hasValue"] = False
+                    relation_aux["min_cardinality"] = False
+                    relation_aux["max_cardinality"] = False
+                    relation_aux["cardinality"] = False
+                    relation_aux["functional"] = False
+                    relation_aux["inverse_functional"] = False
+                    relation_aux["transitive"] = False
+                    relation_aux["symmetric"] = False
+
+                    relations_copy[rhombus_id] = relation_aux
+                    relations_byname[prop_name] = rhombus_id
+
         except:
+            print("\n An exception occurs")
             continue
 
     return relations_copy, attribute_blocks
 
+#Function to create a relation from a rhombus
+#the first item is the source rhombus
+#the second item is the property of the rhombus which is going to be true
+# (such as inverse_functional, transitive, etc)
+def create_relation_from_rhombus(rhombus, property):
+    relation_aux = {}
+    relation_aux["source"] = None
+    relation_aux["target"] = None
+    relation_aux["xml_object"] = rhombus["xml_object"]
+    relation_aux["type"] = "owl:ObjectProperty"
+    relation_aux["prefix"] = rhombus["prefix"]
+    relation_aux["uri"] = rhombus["uri"]
+    relation_aux["label"] = create_label(rhombus["uri"], "property")
+    relation_aux["domain"] = False
+    relation_aux["range"] = False
+    relation_aux["allValuesFrom"] = False
+    relation_aux["someValuesFrom"] = False
+    relation_aux["hasValue"] = False
+    relation_aux["min_cardinality"] = False
+    relation_aux["max_cardinality"] = False
+    relation_aux["cardinality"] = False
+    relation_aux["functional"] = False
+    relation_aux["inverse_functional"] = False
+    relation_aux["transitive"] = False
+    relation_aux["symmetric"] = False
+    relation_aux[property] = True
+    return relation_aux
 
 """Functions for RDF Data"""
 
