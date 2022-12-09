@@ -17,5 +17,7 @@ ns:Class2 a owl:Class ;
     rdfs:label "Class2" .
 
 ns:objectProperty1 a owl:ObjectProperty ;
-    rdfs:label "object property1" .
+    rdfs:label "object property1" ;
+    rdfs:domain ns:Class1 ;
+    rdfs:range ns:Class2 .
 

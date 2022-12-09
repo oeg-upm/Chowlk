@@ -14,5 +14,6 @@ ns:Class1 a owl:Class ;
             owl:onProperty ns:datatypeProperty1 ] .
 
 ns:datatypeProperty1 a owl:DatatypeProperty ;
-    rdfs:label "datatype property1" .
+    rdfs:label "datatype property1" ;
+    rdfs:domain ns:Class1 .
 

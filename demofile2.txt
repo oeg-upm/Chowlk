@@ -6,25 +6,23 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix : <https://w3id.org/saref#> .
-@prefix ns: <https://w3id.org/saref#> .
-@base <https://w3id.org/saref#> .
+@prefix : <https://w3id.org/def/saref4bldg#> .
+@prefix s4bldg: <https://w3id.org/def/saref4bldg#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix saref: <https://w3id.org/saref#> .
+@prefix ns: <http://www.owl-ontologies.com/ns#> .
+@base <https://w3id.org/def/saref4bldg#> .
 
-<https://w3id.org/saref#> rdf:type owl:Ontology ;
+<https://w3id.org/def/saref4bldg#> rdf:type owl:Ontology ;
+			dc:creator "Raúl García-Castro" ;
+			dc:creator "María Poveda-Villalón" ;
+			owl:versionInfo "1.0" ;
+			dc:title "SAREF extension for building devices" ;
 			dc:description "Ontology code created by Chowlk" .
 
 #################################################################
 #    Object Properties
 #################################################################
-
-### ns:objectProperty1
-ns:objectProperty1 rdf:type owl:ObjectProperty ;
-		rdfs:label "object property1" .
-
-### ns:objectProperty2
-ns:objectProperty2 rdf:type owl:ObjectProperty ;
-		owl:inverseOf ns:objectProperty1 ;
-		rdfs:label "object property2" .
 
 #################################################################
 #    Data Properties
@@ -33,6 +31,18 @@ ns:objectProperty2 rdf:type owl:ObjectProperty ;
 #################################################################
 #    Classes
 #################################################################
+
+### ns:Class1
+ns:Class1 rdf:type owl:Class ;
+	rdfs:label "Class1" ;
+ ;	owl:equivalentClass [ rdf:type owl:Class ;
+	owl:complementOf 
+				ns:Class2
+						] .
+
+### ns:Class2
+ns:Class2 rdf:type owl:Class ;
+	rdfs:label "Class2" .
 
 #################################################################
 #    Instances

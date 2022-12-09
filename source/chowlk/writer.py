@@ -120,88 +120,89 @@ def write_object_properties(file, relations, concepts, anonymous_concepts, attri
                 file.write(" ,\n")
                 file.write("\t\t\towl:InverseFunctionalProperty")
 
-            # restrictions have not domain or/and range
-            if not relation["allValuesFrom"] and not relation["someValuesFrom"] and not relation["hasValue"] and not relation["min_cardinality"] and not relation["max_cardinality"] and not relation["cardinality"]:
-                if relation["domain"]:
-                    concept_id = relation["domain"]
+            if relation["domain"]:
+                concept_id = relation["domain"]
 
-                    if concept_id in concepts:
-                        concept = concepts[concept_id]
-                        domain_name = concept["prefix"] + ":" + concept["uri"]
+                if concept_id in concepts:
+                    concept = concepts[concept_id]
+                    domain_name = concept["prefix"] + ":" + concept["uri"]
 
-                    elif concept_id in attribute_blocks:
-                        concept_id = attribute_blocks[concept_id]["concept_associated"]
-                        concept = concepts[concept_id]
-                        domain_name = concept["prefix"] + ":" + concept["uri"]
+                elif concept_id in attribute_blocks:
+                    concept_id = attribute_blocks[concept_id]["concept_associated"]
+                    concept = concepts[concept_id]
+                    domain_name = concept["prefix"] + ":" + concept["uri"]
 
-                    # domain owl:oneOf
-                    elif relation["domain"] in hexagons:
-                        target_id = relation["domain"]
-                        complement = hexagons[target_id]
-                        domain_name = "[ rdf:type owl:Class ;"
-                        domain_name = domain_name +  one_of(complement, individuals, {}) 
-                        domain_name = domain_name + "\t\t]"  
+                # domain owl:oneOf
+                elif relation["domain"] in hexagons:
+                    target_id = relation["domain"]
+                    complement = hexagons[target_id]
+                    domain_name = "[ rdf:type owl:Class ;"
+                    domain_name = domain_name +  one_of(complement, individuals, {}) 
+                    domain_name = domain_name + "\t\t]"  
 
-                    elif relation["domain"] in individuals:
-                        error = {
-                            "message": "The domain of an object property is an individual",
-                            "shape_id": relation_id,
-                            "value": prefix + ":" + uri
-                        }
-                        errors["objectProperty_domain"]= error
-                        domain_name = ":"
-                    
-                    else:
-                        domain_name = ":"
+                elif relation["domain"] in individuals:
+                    error = {
+                        "message": "The domain of an object property is an individual",
+                        "shape_id": relation_id,
+                        "value": prefix + ":" + uri
+                    }
+                    errors["objectProperty_domain"]= error
+                    domain_name = ":"
+                
+                else:
+                    domain_name = ":"
 
-                    # Avoid blank nodes
-                    if domain_name != ":":
-                        file.write(" ;\n")
-                        file.write("\t\trdfs:domain " + domain_name)
+                # Avoid blank nodes
+                if domain_name != ":":
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:domain " + domain_name)
 
-                if relation["range"]:
-                    if "range" in relation and relation["range"] in concepts:
-                        concept_id = relation["range"]
-                        concept = concepts[concept_id]
-                        range_name = concept["prefix"] + ":" + concept["uri"]
-                        file.write(" ;\n")
-                        file.write("\t\trdfs:range " + range_name)
+            #has value restrictions do not have range
+            if relation["range"] and not relation["hasValue"]:
+                if "range" in relation and relation["range"] in concepts:
+                    concept_id = relation["range"]
+                    concept = concepts[concept_id]
+                    range_name = concept["prefix"] + ":" + concept["uri"]
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:range " + range_name)
+                
+                elif relation["range"] in individuals:
+                    error = {
+                        "message": "The range of an object property is an individual",
+                        "shape_id": relation_id,
+                        "value": prefix + ":" + uri
+                    }
+                    errors["objectProperty_range"]= error
 
-                    # range owl:oneOf
-                    elif  relation["range"] in hexagons:
-                        target_id = relation["range"]
-                        complement = hexagons[target_id]
-                        file.write(" ; \n")
-                        file.write("\t\trdfs:range [ rdf:type owl:Class ;")
-                        text =  one_of(complement, individuals, {})
-                        file.write(text)
-                        file.write("\t\t]")  
+                # range owl:oneOf
+                # For the moment is disabled
+                """elif  relation["range"] in hexagons:
+                    target_id = relation["range"]
+                    complement = hexagons[target_id]
+                    file.write(" ; \n")
+                    file.write("\t\trdfs:range [ rdf:type owl:Class ;")
+                    text =  one_of(complement, individuals, {})
+                    file.write(text)
+                    file.write("\t\t]")"""  
 
-                    elif relation["range"] in individuals:
-                        error = {
-                            "message": "The range of an object property is an individual",
-                            "shape_id": relation_id,
-                            "value": prefix + ":" + uri
-                        }
-                        errors["objectProperty_range"]= error
-                    
-                    else:
-                        blank_id = relation["target"]
-                        if blank_id in anonymous_concepts:
-                            group_node = anonymous_concepts[blank_id]
-                            try:
-                                concept_ids = group_node["group"]
-                                concept_names = [concepts[id]["prefix"] + ":" + concepts[id]["uri"] for id in concept_ids]
-                                file.write(" ;\n")
-                                file.write("\t\trdfs:range [ " + group_node["type"] + " ( \n")
-                                for name in concept_names:
-                                    file.write("\t\t\t\t\t\t" + name + "\n")
+                #For the moment is disabled
+                """else:
+                    blank_id = relation["target"]
+                    if blank_id in anonymous_concepts:
+                        group_node = anonymous_concepts[blank_id]
+                        try:
+                            concept_ids = group_node["group"]
+                            concept_names = [concepts[id]["prefix"] + ":" + concepts[id]["uri"] for id in concept_ids]
+                            file.write(" ;\n")
+                            file.write("\t\trdfs:range [ " + group_node["type"] + " ( \n")
+                            for name in concept_names:
+                                file.write("\t\t\t\t\t\t" + name + "\n")
 
-                                file.write("\t\t\t\t\t) ;\n")
-                                file.write("\t\t\t\t\trdf:type owl:Class\n")
-                                file.write("\t\t\t\t\t]")
-                            except:
-                                print("algo no es un concepto")
+                            file.write("\t\t\t\t\t) ;\n")
+                            file.write("\t\t\t\t\trdf:type owl:Class\n")
+                            file.write("\t\t\t\t\t]")
+                        except:
+                            print("algo no es un concepto")"""
 
             if "rdfs:subPropertyOf" in relation:
                 file.write(" ;\n")
@@ -255,26 +256,26 @@ def write_data_properties(file, attribute_blocks, concepts):
             if attribute["functional"]:
                 file.write(" ,\n")
                 file.write("\t\t\towl:FunctionalProperty")
-            if not attribute["allValuesFrom"] and not attribute["someValuesFrom"] and not attribute["hasValue"]:
-                if attribute["domain"]:
-                    concept_id = attribute["domain"]
-                    if concept_id in concepts:
-                        concept = concepts[concept_id]
-                        domain_name = concept["prefix"] + ":" + concept["uri"]
-                        file.write(" ;\n")
-                        file.write("\t\trdfs:domain " + domain_name)
+            
+            if attribute["domain"]:
+                concept_id = attribute["domain"]
+                if concept_id in concepts:
+                    concept = concepts[concept_id]
+                    domain_name = concept["prefix"] + ":" + concept["uri"]
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:domain " + domain_name)
 
-                if attribute["range"] and attribute["datatype"]:
+            if attribute["range"] and attribute["datatype"] and not attribute["hasValue"]:
 
-                    if attribute["hasValue"] == False:
-                        file.write(" ;\n")
-                        file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])
-                
-                """elif attribute["range"]:
-                    #Datatype which is declared in a rhombus
-                    if attribute["hasValue"] == False:
-                        file.write(" ;\n")
-                        file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])"""
+                if attribute["hasValue"] == False:
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])
+            
+            """elif attribute["range"]:
+                #Datatype which is declared in a rhombus
+                if attribute["hasValue"] == False:
+                    file.write(" ;\n")
+                    file.write("\t\trdfs:range " + attribute["prefix_datatype"] + ":" + attribute["datatype"])"""
 
             if "rdfs:subPropertyOf" in attribute:
                 file.write(" ;\n")

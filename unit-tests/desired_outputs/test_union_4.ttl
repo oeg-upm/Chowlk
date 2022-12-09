@@ -20,9 +20,10 @@ ns:Class2 a owl:Class ;
 ns:Class3 a owl:Class ;
     rdfs:label "Class3" .
 
+ns:objectProperty a owl:ObjectProperty ;
+    rdfs:label "object property" ;
+    rdfs:range ns:Class4 .
+
 ns:Class4 a owl:Class ;
     rdfs:label "Class4" .
-
-ns:objectProperty a owl:ObjectProperty ;
-    rdfs:label "object property" .
 

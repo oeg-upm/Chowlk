@@ -1,0 +1,19 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ns: <https://w3id.org/saref#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    dc:description "Ontology code created by Chowlk" .
+
+ns:datatypeProperty a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "datatype property",
+        "datatype property>" ;
+    rdfs:domain ns:Class1 ;
+    rdfs:range xsd:datatype .
+
+ns:Class1 a owl:Class ;
+    rdfs:label "Class1" .
+

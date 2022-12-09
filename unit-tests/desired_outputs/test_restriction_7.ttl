@@ -17,7 +17,8 @@ ns:Class1 a owl:Class ;
 ns:Individual1 a owl:NamedIndividual .
 
 ns:objectProperty1 a owl:ObjectProperty ;
-    rdfs:label "object property1" .
+    rdfs:label "object property1" ;
+    rdfs:domain ns:Class1 .
 
 ns:objectProperty2 a owl:ObjectProperty ;
     rdfs:label "object property2" .

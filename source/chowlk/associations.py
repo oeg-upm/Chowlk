@@ -162,7 +162,7 @@ def individual_type_identification(individuals, associations, relations, hexagon
     return individuals
 
 
-def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
+def enrich_properties(rhombuses, relations, attribute_blocks, concepts, errors):
 
     relations_byname = {relation["prefix"] + ":" + relation["uri"]: id for id,
                         relation in relations.items() if "uri" in relation}
@@ -330,6 +330,26 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
                     relations_copy[rhombus_id] = relation_aux
                     relations_byname[prop_name] = rhombus_id
 
+            elif type == "owl:DatatypeProperty":
+                if prop_name in relations_byname:
+                    #The object property (rhombus) has been defined in a relation
+                    #It is neccesary to update the information of that relation
+                    prop_id = relations_byname[prop_name]
+                    if relations_copy[prop_id]["type"] == "owl:FunctionalProperty":
+                        #This case is special because when we encountered a functionalProperty,
+                        #we store that property just as functional (neither object nor datatype property)
+                        #then it is neccesary to do a change
+                        relations_copy[prop_id]["functional"] = True
+                        relations_copy[prop_id]["type"] = "owl:DatatypeProperty"
+
+                    elif relations_copy[prop_id]["type"] == "owl:ObjectProperty":
+                        error = {
+                                "message": "A rhombus can not be defined as Object Property and Datatype Property at the same time",
+                                "shape_id": rhombus_id,
+                                "value": rhombus["prefix"] + ":" + rhombus["uri"]
+                        }
+                        errors["Rhombuses"].append(error)
+
             elif type == "owl:ObjectProperty":
                 if prop_name in relations_byname:
                     #The object property (rhombus) has been defined in a relation
@@ -341,6 +361,14 @@ def enrich_properties(rhombuses, relations, attribute_blocks, concepts):
                         #then it is neccesary to do a change
                         relations_copy[prop_id]["functional"] = True
                         relations_copy[prop_id]["type"] = "owl:ObjectProperty"
+
+                    elif relations_copy[prop_id]["type"] == "owl:DatatypeProperty":
+                        error = {
+                                "message": "A rhombus can not be defined as Object Property and Datatype Property at the same time",
+                                "shape_id": rhombus_id,
+                                "value": rhombus["prefix"] + ":" + rhombus["uri"]
+                        }
+                        errors["Rhombuses"].append(error)
                 else:
                     #The object property (rhombus) has not been defined in a relation
                     #It is neccesary to create a new relation

@@ -12,9 +12,10 @@ ns:Class1 a owl:Class ;
             owl:allValuesFrom ns:Class2 ;
             owl:onProperty ns:objectProperty1 ] .
 
+ns:objectProperty1 a owl:ObjectProperty ;
+    rdfs:label "object property1" ;
+    rdfs:range ns:Class2 .
+
 ns:Class2 a owl:Class ;
     rdfs:label "Class2" .
-
-ns:objectProperty1 a owl:ObjectProperty ;
-    rdfs:label "object property1" .
 

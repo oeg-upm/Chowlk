@@ -21,5 +21,6 @@ ns:Class3 a owl:Class ;
     rdfs:label "Class3" .
 
 ns:objectProperty a owl:ObjectProperty ;
-    rdfs:label "object property" .
+    rdfs:label "object property" ;
+    rdfs:domain ns:Class1 .
 

@@ -671,7 +671,7 @@ class Finder():
                             }
                             self.errors["Rhombuses"].append(error)
                             types.remove(t)
-
+                    
                     if "owl:ObjectProperty" in types and "owl:DatatypeProperty" in types:
                         error = {
                             "message": "A rhombus can not be defined as Object Property and Datatype Property at the same time",
