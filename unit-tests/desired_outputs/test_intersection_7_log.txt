@@ -1,2 +1,5 @@
 
+Error intersectionOf: An element of an owl:intersectionOf is not a class description
+	shape_id: pjjuLlaD1_zj22IizKuv-63
+
 Error Base: A base has not been declared. The first namespace has been taken as base

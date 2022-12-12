@@ -7,4 +7,4 @@ Error Arrows: Range side of the relation is not connected to any shape, please c
 	shape_id: pjjuLlaD1_zj22IizKuv-80
 	value: <<owl:complementOf>>
 
-Error complementOf: An element of an owl:complementOf is not a class descriptor
+Error complementOf: An element of an owl:complementOf is not a class description

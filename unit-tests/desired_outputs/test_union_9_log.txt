@@ -1,5 +1,5 @@
 
-Error unionOf: An element of an owl:oneOf is not a class descriptor
+Error unionOf: An element of an owl:oneOf is not a class description
 	shape_id: w3AmSQhbdK0R-uA5Dv2a-3
 
 Error Base: A base has not been declared. The first namespace has been taken as base

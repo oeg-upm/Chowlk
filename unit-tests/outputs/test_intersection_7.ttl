@@ -10,19 +10,17 @@ ns: a owl:Ontology ;
 ns:Class1 a owl:Class ;
     rdfs:label "Class1" ;
     owl:equivalentClass [ a owl:Class ;
-            owl:intersectionOf ( ns:Class2 ns:Class3 [ a owl:Restriction ;
-                        owl:allValuesFrom ns:Class4 ;
-                        owl:onProperty ns:objectProperty ] ) ] .
+            owl:intersectionOf ( ns:Class2 ns:Class3 ) ] .
+
+ns:objectProperty a owl:ObjectProperty ;
+    rdfs:label "object property" ;
+    rdfs:range ns:Class4 .
 
 ns:Class2 a owl:Class ;
     rdfs:label "Class2" .
 
 ns:Class3 a owl:Class ;
     rdfs:label "Class3" .
-
-ns:objectProperty a owl:ObjectProperty ;
-    rdfs:label "object property" ;
-    rdfs:range ns:Class4 .
 
 ns:Class4 a owl:Class ;
     rdfs:label "Class4" .

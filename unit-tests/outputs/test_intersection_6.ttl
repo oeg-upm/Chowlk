@@ -10,15 +10,14 @@ ns: a owl:Ontology ;
 ns:Class1 a owl:Class ;
     rdfs:label "Class1" ;
     owl:equivalentClass [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Class ;
-                        owl:complementOf ns:Class4 ] ns:Class2 ns:Class3 ) ] .
+            owl:intersectionOf ( ns:Class2 ns:Class3 ) ] .
+
+ns:Class4 a owl:Class ;
+    rdfs:label "Class4" .
 
 ns:Class2 a owl:Class ;
     rdfs:label "Class2" .
 
 ns:Class3 a owl:Class ;
     rdfs:label "Class3" .
-
-ns:Class4 a owl:Class ;
-    rdfs:label "Class4" .
 
