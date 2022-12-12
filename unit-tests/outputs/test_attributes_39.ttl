@@ -1,0 +1,7 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ns: <https://w3id.org/saref#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ns: a owl:Ontology ;
+    dc:description "Ontology code created by Chowlk" .
+

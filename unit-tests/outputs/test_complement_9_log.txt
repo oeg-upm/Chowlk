@@ -1,0 +1,10 @@
+Please check your syntax on the diagram, here you have a hint of the possible error:
+at line 35 of <>:
+Bad syntax (objectList expected) at ^ in:
+"...b'owl:equivalentClass [ rdf:type owl:Class ;\n\towl:complementOf'^b' \n\t\t\t\t\t\t] .\n\n###############################################'..."
+
+Error Arrows: Range side of the relation is not connected to any shape, please check this
+	shape_id: pjjuLlaD1_zj22IizKuv-80
+	value: <<owl:complementOf>>
+
+Error complementOf: An element of an owl:complementOf is not a class description

@@ -1,0 +1,11 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns: a owl:Ontology ;
+    dc:description "Ontology code created by Chowlk" .
+
+ns:datatypeProperty a owl:DatatypeProperty ;
+    rdfs:label "datatype property" .
+

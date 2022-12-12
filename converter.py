@@ -15,9 +15,22 @@ def main(diagram_path, output_path, type, format):
         file.write(ontology_turtle)
     elif format == "xml":
         file.write(ontology_xml)
-    
+
+    print_errors(errors)
     file.close()
 
+def print_errors(errors):
+    for error_type in errors:
+        error = errors[error_type]
+        if isinstance(error, list):
+            for content in error:
+                print("\nError " + error_type + ": " + content.pop("message"))
+                for type in content:
+                    print("\t" + type +": " + content[type])
+        else:
+            print("\nError " + error_type + ": " + error.pop("message"))
+            for type in error:
+                    print("\t" + type +": " + error[type])
 
     
 if __name__ == "__main__":

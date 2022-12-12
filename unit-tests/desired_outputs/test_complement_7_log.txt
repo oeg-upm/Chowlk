@@ -1,0 +1,6 @@
+
+Error complementOf: A class is connected to a owl:complementOf directly. A owl:complementOf can be connected to a class through a class axiom
+	shape_id: pjjuLlaD1_zj22IizKuv-70
+	value: ns:Class1
+
+Error Base: A base has not been declared. The first namespace has been taken as base

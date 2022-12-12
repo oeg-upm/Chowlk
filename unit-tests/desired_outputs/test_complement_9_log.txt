@@ -1,0 +1,6 @@
+entro
+Please check your syntax on the diagram, here you have a hint of the possible error:
+at line 35 of <>:
+Bad syntax (objectList expected) at ^ in:
+"...b'owl:equivalentClass [ rdf:type owl:Class ;\n\towl:complementOf'^b' \n\t\t\t\t\t\t] .\n\n###############################################'..."
+{'Concepts': [], 'Arrows': [{'message': 'Range side of the relation is not connected to any shape, please check this', 'shape_id': 'pjjuLlaD1_zj22IizKuv-80', 'value': '<<owl:complementOf>>'}], 'Ellipses': [], 'Attributes': [], 'Namespaces': [], 'Metadata': [], 'Rhombuses': [], 'Hexagons': [], 'Individual': [], 'Cardinality-Restrictions': [], 'intersectionOf': [], 'oneOf': [], 'complementOf': [{'message': 'An element of an owl:complementOf is not a class descriptor', 'shape_id': <built-in function id>}], 'Base': {'message': 'A base has not been declared. The first namespace has been taken as base'}, 'Syntax': {'message': 'Please check your syntax on the diagram, here you have a hint of                      the possible error:\nat line 35 of <>:\nBad syntax (objectList expected) at ^ in:\n"...b\'owl:equivalentClass [ rdf:type owl:Class ;\\n\\towl:complementOf\'^b\' \\n\\t\\t\\t\\t\\t\\t] .\\n\\n###############################################\'..."'}}
