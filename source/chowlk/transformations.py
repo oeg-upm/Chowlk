@@ -72,10 +72,10 @@ def transform_ontology(root):
     file.seek(0)
     file_read = file.read()
 
-    # Prueba
+    """# Prueba
     f = open("demofile2.txt", "w")
     f.write(file_read)
-    f.close()
+    f.close()"""
 
     # Change cambiar_a_base prefix by base directive
     file_read = file_read.replace("<cambiar_a_base:", "<" + onto_uri)
@@ -84,10 +84,10 @@ def transform_ontology(root):
     # Change cambiar_a_prefijo_vacio prefix by empty prefix(":")
     file_read = file_read.replace("cambiar_a_prefijo_vacio:", ":")
 
-    # Prueba
+    """# Prueba
     f = open("demofile3.txt", "w")
     f.write(file_read)
-    f.close()
+    f.close()"""
 
     try:
         g = rdflib.Graph()
@@ -103,8 +103,6 @@ def transform_ontology(root):
         xml_string = xml_output_file.read().decode("utf-8")
 
     except:
-        print("Please check your syntax on the diagram, here you have a hint of the possible error:")
-        print(sys.exc_info()[1])
 
         errors["Syntax"] = {
             "message": "Please check your syntax on the diagram, here you have a hint of  \

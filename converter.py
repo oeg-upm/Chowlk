@@ -24,7 +24,10 @@ def print_errors(errors):
         error = errors[error_type]
         if isinstance(error, list):
             for content in error:
-                print("\nError " + error_type + ": " + content.pop("message"))
+                if "message" in content:
+                    print("\nError " + error_type + ": " + content.pop("message"))
+                else:
+                    print("\nError " + error_type + ": ")
                 for type in content:
                     print("\t" + type +": " + content[type])
         else:

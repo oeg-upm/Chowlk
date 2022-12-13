@@ -63,8 +63,10 @@ def union_of(complement, concepts, errors, hexagons, anonymous_concepts, individ
                 text = text + "\t\t\t\t ]"
                 text = "\t\t\t\t" + text + "\n"
 
-        elif id in relations:
-            complement = relations[id]
+        elif id in anonimous_classes:
+            #the target is an anonymous class with owl:complementOf statement o a property restriction
+            relation_id = anonimous_classes[id]["relations"][0]
+            complement = relations[relation_id]
             if(complement["type"] == "owl:complementOf"):
                 # target is an anonymous class with owl:complementOf statement
                 text = text + "\n\t[ rdf:type owl:Class ;"
@@ -78,7 +80,7 @@ def union_of(complement, concepts, errors, hexagons, anonymous_concepts, individ
 
         else:
             error = {
-                "message": "An element of an owl:oneOf is not a class descriptor",
+                "message": "An element of an owl:oneOf is not a class description",
                 "shape_id": id
             }
             errors["unionOf"]= error
@@ -135,8 +137,8 @@ def complement_of(complement, concepts, errors, hexagons, anonymous_concepts, in
 
     else:
             error = {
-                "message": "An element of an owl:complementOf is not a class descriptor",
-                "shape_id": id
+                "message": "An element of an owl:complementOf is not a class description",
+                "shape_id": complement["source"]
             }
             errors["complementOf"].append(error)
 
@@ -297,9 +299,11 @@ def intersection_of(intersection, concepts, errors, hexagons, anonymous_concepts
                 text = text + intersection_of(complement, concepts, errors, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
                 text = text + "\t\t\t\t ]"
                 text = "\t\t\t\t" + text + "\n"
-            
-        elif id in relations:
-            complement = relations[id]
+        
+        elif id in anonimous_classes:
+            #the target is an anonymous class with owl:complementOf statement o a property restriction
+            relation_id = anonimous_classes[id]["relations"][0]
+            complement = relations[relation_id]
             if(complement["type"] == "owl:complementOf"):
                 # target is an anonymous class with owl:complementOf statement
                 text = text + "\n\t[ rdf:type owl:Class ;"
@@ -312,7 +316,7 @@ def intersection_of(intersection, concepts, errors, hexagons, anonymous_concepts
 
         else:
             error = {
-                "message": "An element of an owl:intersectionOf is not a class axiom",
+                "message": "An element of an owl:intersectionOf is not a class description",
                 "shape_id": id
             }
             errors["intersectionOf"].append(error)

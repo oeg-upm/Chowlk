@@ -1,0 +1,2 @@
+
+Error Base: A base has not been declared. The first namespace has been taken as base
