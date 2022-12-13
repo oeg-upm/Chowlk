@@ -1,0 +1,26 @@
+title: "Chowlk: from UML-Based Ontology Conceptualizations to OWL"
+license: Apache-2.0
+authors:
+  - family-names: Chávez-Feria
+    given-names: Serge
+    orcid: "http://orcid.org/0000-0002-7454-9202"
+cff-version: 1.2.0
+preferred-citation:
+  authors:
+    - family-names: Chávez-Feria
+      given-names: Serge
+    - family-names: García-Castro
+      given-names: Raúl
+    - family-names: Poveda-Villalón
+      given-names: Maria
+  title: "Chowlk: from UML-Based Ontology Conceptualizations to OWL"
+  type: article
+  collection-title: The Semantic Web
+  doi: 10.1007/978-3-031-06981-9_20
+  year: 2022
+  publisher: "Springer International Publishing"
+  pages: "338--352"
+  keywords:
+    - "Ontology engineering"
+    - "Ontology conceptualization "
+    - "OWL"
