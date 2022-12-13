@@ -103,8 +103,6 @@ def transform_ontology(root):
         xml_string = xml_output_file.read().decode("utf-8")
 
     except:
-        print("Please check your syntax on the diagram, here you have a hint of the possible error:")
-        print(sys.exc_info()[1])
 
         errors["Syntax"] = {
             "message": "Please check your syntax on the diagram, here you have a hint of  \
