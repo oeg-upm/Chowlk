@@ -14,3 +14,5 @@ tmp
 source/*egg-info
 dist
 test-data
+.python-version
+poetry.lock

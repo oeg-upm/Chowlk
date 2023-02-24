@@ -1,4 +1,4 @@
-beautifulsoup4==4.9.1
+beautifulsoup4==4.9.3
 build==0.5.0
 click==7.1.2
 dominate==2.5.1

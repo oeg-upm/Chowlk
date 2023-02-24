@@ -45,7 +45,7 @@ def transform_ontology(root):
     individuals = individual_type_identification_rdf(individuals, concepts, relations)
     associations_individuals = individual_relation_association(individuals, relations)
     associations_individuals = individual_attribute_association(associations_individuals, values, relations)
-    file, onto_prefix, onto_uri, new_namespaces, errors = get_ttl_template(namespaces, prefixes_identified, errors)
+    file, base, new_namespaces, errors = get_ttl_template(namespaces, prefixes_identified, errors)
     """print("\n relations")
     print(relations)
     print("\n associations")
@@ -53,7 +53,7 @@ def transform_ontology(root):
     anonimous_classes = find_relations_anonymous_classes(relations, anonimous_classes)
     """print("\n anonymous classes")
     print(anonimous_classes)"""
-    file = write_ontology_metadata(file, metadata, onto_uri)
+    file = write_ontology_metadata(file, metadata, base)
     file, errors = write_object_properties(file, relations, concepts, anonymous_concepts, attribute_blocks, hexagons, individuals, errors)
     file = write_data_properties(file, attribute_blocks, concepts)
     """print("\n hexagons")
@@ -78,7 +78,7 @@ def transform_ontology(root):
     f.close()"""
 
     # Change cambiar_a_base prefix by base directive
-    file_read = file_read.replace("<cambiar_a_base:", "<" + onto_uri)
+    # file_read = file_read.replace("<cambiar_a_base:", "<" + onto_uri)
     #file_read = re.sub("<cambiar_a_base:", "<" + onto_uri, file_read)
 
     # Change cambiar_a_prefijo_vacio prefix by empty prefix(":")
@@ -93,8 +93,8 @@ def transform_ontology(root):
         g = rdflib.Graph()
         g.parse(data=file_read, format="turtle")
 
-        g.serialize(destination=turtle_output_file, format="turtle")
-        g.serialize(destination=xml_output_file, format="xml")
+        g.serialize(destination=turtle_output_file, base=base, format="turtle")
+        g.serialize(destination=xml_output_file, base=base, format="xml")
 
         turtle_output_file.seek(0)
         xml_output_file.seek(0)

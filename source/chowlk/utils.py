@@ -99,7 +99,7 @@ def find_prefixes(concepts, relations, attribute_blocks, individuals):
             prefix = attribute["prefix"]
             if prefix not in prefixes:
                 prefixes.append(prefix)
-
+    prefixes = [item for item in prefixes if item != ":"]
     return prefixes
 
 def clean_uri(uri):

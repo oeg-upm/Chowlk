@@ -7,15 +7,6 @@ def get_ttl_template(namespaces, prefixes_fonded, errors):
 
     #file = open(filename, 'w', encoding="utf-8")
 
-    file.write("@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
-               "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
-               "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
-               "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n"
-               "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
-               "@prefix dc: <http://purl.org/dc/elements/1.1/> .\n"
-               "@prefix dcterms: <http://purl.org/dc/terms/> .\n"
-               "@prefix vann: <http://purl.org/vocab/vann/> .\n")
-
     not_found = []
     for prefix in prefixes_fonded:
         if prefix not in namespaces:
@@ -28,46 +19,29 @@ def get_ttl_template(namespaces, prefixes_fonded, errors):
         if(ns != "" and ns != "<cambiar_a_base" and ns != "cambiar_a_prefijo_vacio"):
             new_namespaces[ns] = default_uri.format(ns)
 
-    if len(namespaces) == 0:
-        onto_prefix = list(new_namespaces.keys())[0]
-        onto_uri = new_namespaces[onto_prefix]
-    else:
-        onto_prefix = list(namespaces.keys())[0]
-        onto_uri = namespaces[onto_prefix]
-
-    empty_prefix_declared = True
-    base_declared = True
-    prefixes = []
-    for prefix, uri in namespaces.items():
-        if(prefix == ""):
-            empty_prefix_declared = False
-        if(prefix == "base"):
-            base_declared = False
-            onto_uri = uri
-            onto_prefix = prefix
+    directives = []
+    for prefix, iri in namespaces.items():
+        if (prefix == "base"):
+            base = iri
+            directives.append("@base <" + iri + "> .\n")
         else:
-            prefixes.append("@prefix " + prefix + ": <" + uri + "> .\n")
+            directives.append("@prefix " + prefix + ": <" + iri + "> .\n")
 
-    if(base_declared):
-        errors["Base"] = {
-            "message": "A base has not been declared. The first namespace has been taken as base"
-        }
-
-    #Add empty prefix with same uri as @base if the user has not declared the
-    #empty prefix in namespace (the empty prefix has to be above the other prefixes
-    # because of rdflib)
-    if(empty_prefix_declared):
-        file.write("@prefix : <" + onto_uri + "> .\n")
-
-    for prefix in prefixes:
+    for prefix in directives:
         file.write(prefix)
 
-    for prefix, uri in new_namespaces.items():
-        file.write("@prefix " + prefix + ": <" + uri + "> .\n")
+    for prefix, iri in new_namespaces.items():
+        file.write("@prefix " + prefix + ": <" + iri + "> .\n")
 
-    file.write("@base <" + onto_uri + "> .\n\n")
-
-    return file, onto_prefix, onto_uri, new_namespaces, errors
+    file.write("@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
+               "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+               "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
+               "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n"
+               "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
+               "@prefix dc: <http://purl.org/dc/elements/1.1/> .\n"
+               "@prefix dcterms: <http://purl.org/dc/terms/> .\n"
+               "@prefix vann: <http://purl.org/vocab/vann/> .\n")
+    return file, base, new_namespaces, errors
 
 def write_ontology_metadata(file, metadata, onto_uri):
 
@@ -308,9 +282,13 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
         # relations of type owl:equivalentClass
         if concept_uri == "":
             continue
-        file.write("### " + concept_prefix + ":" + concept_uri + "\n")
-        file.write(concept_prefix + ":" + concept_uri + " rdf:type owl:Class ;\n")
-        file.write("\trdfs:label \"" + concept["label"] + "\"")
+        concept_colon = ":" if concept_prefix else ""
+        if concept_prefix == ":":
+            concept_prefix = ""
+        file.write("### " + concept_prefix + concept_colon + concept_uri + "\n")
+        file.write(concept_prefix + concept_colon + concept_uri + " rdf:type owl:Class ;\n")
+        if concept["label"]:
+            file.write("\trdfs:label \"" + concept["label"] + "\"")
 
         attribute_blocks = association["attribute_blocks"]
         relations = association["relations"]
@@ -822,8 +800,12 @@ def write_instances(file, individuals):
         prefix = individual["prefix"]
         uri = individual["uri"]
         types = individual["type"]
-        file.write("### " + prefix + ":" + uri + "\n")
-        file.write(prefix + ":" + uri + " rdf:type owl:NamedIndividual")
+        colon = ":" if prefix else ""
+        if prefix == ":":
+            prefix = ""
+
+        file.write("### " + prefix + colon + uri + "\n")
+        file.write(prefix + colon + uri + " rdf:type owl:NamedIndividual")
         if types is None:
             file.write(" .\n")
         else:

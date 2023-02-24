@@ -1,4 +1,5 @@
 import re
+import traceback
 from source.chowlk.geometry import get_corners_rect_child
 from source.chowlk.utils import clean_html_tags, clean_uri, create_label
 
@@ -35,6 +36,33 @@ class Finder():
             "complementOf": [],
             "unionOf": []
         }
+
+    @staticmethod
+    def parse_value(value):
+        uri, prefix, label = "", "", ""
+        value = value.strip()
+        # Is it a IRI?
+        if value.startswith("<") and value.endswith(">"):
+            # Is it a absolute IRI?
+            uri = value
+            # Hacky, should check if not valid IRI
+            if "//" not in value:
+                label = create_label(value[1:-1], "class")
+        # Is is a prefixed name?
+        elif ":" in value:
+            prefix, colon, name = value.partition(":")
+            uri = name
+            label = create_label(name, "class")
+            if not prefix:
+                prefix = colon
+        # Alternative for relative IRIs
+        else:
+            uri = "<" + value + ">"
+            label = create_label(value, "class")
+
+        # Taking into account possible spaces in the uri of the concept
+        uri = re.sub(" ", "", uri)
+        return prefix, uri, label
 
     def find_relations(self):
 
@@ -390,11 +418,10 @@ class Finder():
                     item for item in namespaces if item.strip() != ""]
                 for ns in namespaces:
                     try:
-                        ns = ns.strip()
-                        prefix = ns.split(":")[0].strip()
-                        ontology_uri = ns.split("http")[-1].strip()
-                        ontology_uri = "http" + ontology_uri
-                        self.namespaces[prefix] = ontology_uri
+                        prefix, iri = ns.split(":", 1)
+                        prefix = prefix.strip()
+                        iri = iri.strip()
+                        self.namespaces[prefix] = iri
                     except:
                         error = {
                             "message": "Problems in the text of the Namespace",
@@ -528,40 +555,12 @@ class Finder():
             # List of individuals
             if "fontStyle=4" in style or "<u>" in value:
                 individual = {}
-                individual["xml_object"] = child
                 value = clean_html_tags(value)
+
+                individual["xml_object"] = child
                 try:
-                    # In order to implement @base directive
-                    # If value contains ':' && value does not start with ':' => normal prefix
-                    # If value starts with ':' => empty prefix (which is the same as @base)
-                    # If value does not contain ':' => prefix is @base
-                    # If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                    # If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                    # If value does not contain ':' => len(value_split) == 1
-
-                    value_split = value.split(":")
-                    if(len(value_split) > 1):
-                        # normal prefix || empty prefix (both are in namespace)
-                        individual["prefix"] = value_split[0].strip()
-                        if(individual["prefix"] == ""):
-                            individual["prefix"] = "cambiar_a_prefijo_vacio"
-                        individual["uri"] = value_split[1].strip()
-                    else:
-                        # prefix is @base
-                        # store concept["prefix"] with an auxiliar name in order
-                        # write the concepts with base directive in to write_concepts
-                        individual["prefix"] = "<cambiar_a_base"
-                        individual["uri"] = value_split[0].strip() + ">"
-
-                    """#Asi estaba hecho
-                    individual["prefix"] = value.split(":")[0]
-                    individual["uri"] = value.split(":")[1]
-                    individual["prefix"][0] # Check if error
-                    individual["uri"][1] # Check if error"""
-
+                    individual["prefix"], individual["uri"], individual["label"] = self.parse_value(value)
                     individual["type"] = None
-
-                    individual["uri"] = re.sub(" ", "", individual["uri"])
 
                 except:
                     error = {
@@ -624,6 +623,8 @@ class Finder():
                 self.attributes[id] = attribute
 
         return self.attributes
+
+
 
     def find_rhombuses(self):
         #these are the types which can be defined indise a rhombus
@@ -1238,45 +1239,12 @@ class Finder():
                     if "\"" in value:
                         continue
 
-                    value = clean_html_tags(value)
                     try:
-
-                        # In order to implement @base directive
-                        # If value contains ':' && value does not start with ':' => normal prefix
-                        # If value starts with ':' => empty prefix (which is the same as @base)
-                        # If value does not contain ':' => prefix is @base
-                        # If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                        # If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                        # If value does not contain ':' => len(value_split) == 1
-
-                        value_split = value.split(":")
-                        if(len(value_split) > 1):
-                            # normal prefix || empty prefix (both are in namespace)
-                            concept["prefix"] = value_split[0].strip()
-                            if(concept["prefix"] == ""):
-                                concept["prefix"] = "cambiar_a_prefijo_vacio"
-                            concept["uri"] = value_split[1].strip()
-                        else:
-                            # prefix is @base
-                            # store concept["prefix"] with an auxiliar name in order
-                            # write the concepts with base directive in to write_concepts
-                            concept["prefix"] = "<cambiar_a_base"
-                            concept["uri"] = value_split[0].strip() + ">"
-
-                        """#Como estaba hecho antes
-                        concept["prefix"] = value.split(":")[0].strip()
-                        concept["uri"] = value.split(":")[1].strip()
-
-                        concept["prefix"][0] # Check if error
-                        concept["uri"][1] # Check if error"""
-
-                        # Taking into account possible spaces in the uri of the concept
-                        concept["uri"] = re.sub(" ", "", concept["uri"])
-
-                        concept["label"] = create_label(
-                            concept["uri"], "class")
+                        concept["prefix"], concept["uri"], concept["label"] = self.parse_value(value)
                         concept["xml_object"] = child
-                    except:
+                    except Exception as error:
+                        print(f"Error: {error}")
+                        traceback.print_exc()
                         error = {
                             "message": "Problems in text of the concept",
                             "shape_id": id,
