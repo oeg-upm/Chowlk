@@ -39,7 +39,7 @@ class Finder():
 
     @staticmethod
     def parse_value(value):
-        uri, prefix, label = "", "", ""
+        prefix, uri, label = "", "", ""
         value = value.strip()
         # Is it a IRI?
         if value.startswith("<") and value.endswith(">"):
@@ -50,11 +50,8 @@ class Finder():
                 label = create_label(value[1:-1], "class")
         # Is is a prefixed name?
         elif ":" in value:
-            prefix, colon, name = value.partition(":")
-            uri = name
-            label = create_label(name, "class")
-            if not prefix:
-                prefix = colon
+            prefix, _, uri = value.partition(":")
+            label = create_label(uri, "class")
         # Alternative for relative IRIs
         else:
             uri = "<" + value + ">"
@@ -238,27 +235,7 @@ class Finder():
                 uri = clean_uri(value)
                 uri = uri.split("|")[-1].strip().split(">>")[-1].strip()
 
-                # In order to implement @base directive
-                # If uri contains ':' && uri does not start with ':' => normal prefix
-                # If uri starts with ':' => empty prefix
-                # If uri does not contain ':' => prefix is @base
-                # If uri contains ':' && uri does not start with ':' => len(uri_split) > 1 and uri_split[0] != ""
-                # If uri starts with ':' => len(uri_split) > 1 and uri_split[0] == ""
-                # If uri does not contain ':' => len(uri_split) == 1
-                uri_split = uri.split(":")
-                if(len(uri_split) > 1):
-                    # normal prefix || empty prefix (both are in namespace)
-                    prefix = uri_split[0].strip()
-                    if(prefix == ""):
-                        prefix = "cambiar_a_prefijo_vacio"
-                    uri = uri_split[-1].strip()
-                else:
-                    # prefix is @base
-                    # store prefix with an auxiliar name in order
-                    # write the relations with base directive in to write_object_properties
-                    prefix = "<cambiar_a_base"
-                    uri = uri_split[0].strip() + ">"
-
+                prefix, uri, _ = self.parse_value(uri)
                 """#Como estaba hecho antes
                 print(uri)
                 uri = uri.split("|")[-1].strip().split(">>")[-1].strip()
@@ -277,7 +254,8 @@ class Finder():
                 relation["prefix"] = prefix
                 relation["uri"] = uri
                 relation["label"] = create_label(relation["uri"], "property")
-            except:
+            except Exception as e:
+                print("Error in arrow text: ", e)
                 error = {
                     "message": "Problems in the text of the arrow",
                     "shape_id": id,
@@ -686,26 +664,7 @@ class Finder():
                     value = value_html_clean.split("|")[-1].strip()
                     value = value.split(">>")[-1].strip()
 
-                    # In order to implement @base directive
-                    # If uri contains ':' && uri does not start with ':' => normal prefix
-                    # If uri starts with ':' => empty prefix
-                    # If uri does not contain ':' => prefix is @base
-                    # If uri contains ':' && uri does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                    # If uri starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                    # If uri does not contain ':' => len(value_split) == 1
-                    value_split = value.split(":")
-                    if(len(value_split) > 1):
-                        # normal prefix || empty prefix (both are in namespace)
-                        prefix = value_split[0].strip()
-                        if(prefix == ""):
-                            prefix = "cambiar_a_prefijo_vacio"
-                        uri = value_split[-1].strip()
-                    else:
-                        # prefix is @base
-                        # store prefix with an auxiliar name in order
-                        # write the relations with base directive in to write_object_properties
-                        prefix = "<cambiar_a_base"
-                        uri = value_split[0].strip() + ">"
+                    prefix, uri, _ = self.parse_value(value)
 
                     """#Como estaba hecho antes
                     prefix = value.split(":")[0].strip()
@@ -928,31 +887,7 @@ class Finder():
                                 if(attribute_value_split[-1] == ":"):
                                     attribute_value_split = attribute_value_split[:-1]
 
-                                # In order to implement @base directive
-                                    # If value contains ':' && value does not start with ':' => normal prefix
-                                    # If value starts with ':' => empty prefix (which is the same as @base)
-                                    # If value does not contain ':' => prefix is @base
-                                    # If value contains ':' && value does not start with ':' => len(value_split) > 1 and value_split[0] != ""
-                                    # If value starts with ':' => len(value_split) > 1 and value_split[0] == ""
-                                    # If value does not contain ':' => len(value_split) == 1
-
-                                attribute_value_split = attribute_value_split.split(
-                                    ":")
-                                if(len(attribute_value_split) > 1):
-                                    # normal prefix || empty prefix (both are in namespace)
-                                    attribute["prefix"] = attribute_value_split[0].strip(
-                                    )
-                                    if(attribute["prefix"] == ""):
-                                        attribute["prefix"] = "cambiar_a_prefijo_vacio"
-                                    attribute["uri"] = attribute_value_split[1].strip(
-                                    )
-                                else:
-                                    # prefix is @base
-                                    # store concept["prefix"] with an auxiliar name in order
-                                    # write the concepts with base directive in to write_concepts
-                                    attribute["prefix"] = "<cambiar_a_base"
-                                    attribute["uri"] = attribute_value_split[0].strip(
-                                    ) + ">"
+                                attribute["prefix"], attribute["uri"], _ = self.parse_value(attribute_value_split)
 
                                 """print(attribute_value_cleaned.split(":"))
                                 attribute["prefix"] = attribute_value_cleaned.split(":")[0].strip()

@@ -282,9 +282,7 @@ def write_concepts(file, concepts, anonymous_concepts, associations, individuals
         # relations of type owl:equivalentClass
         if concept_uri == "":
             continue
-        concept_colon = ":" if concept_prefix else ""
-        if concept_prefix == ":":
-            concept_prefix = ""
+        concept_colon = ":" if not concept_uri.startswith("<") else ""
         file.write("### " + concept_prefix + concept_colon + concept_uri + "\n")
         file.write(concept_prefix + concept_colon + concept_uri + " rdf:type owl:Class ;\n")
         if concept["label"]:
@@ -800,10 +798,7 @@ def write_instances(file, individuals):
         prefix = individual["prefix"]
         uri = individual["uri"]
         types = individual["type"]
-        colon = ":" if prefix else ""
-        if prefix == ":":
-            prefix = ""
-
+        colon = ":" if not uri.startswith("<") else ""
         file.write("### " + prefix + colon + uri + "\n")
         file.write(prefix + colon + uri + " rdf:type owl:NamedIndividual")
         if types is None:

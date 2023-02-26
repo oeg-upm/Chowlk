@@ -63,7 +63,7 @@ def transform_ontology(root):
     file = write_triplets(file, individuals, associations_individuals, values)
     file = write_general_axioms(file, concepts, anonymous_concepts, individuals, hexagons)
 
-    # print(file.read())
+    print(file.read())
     # file.seek(os.SEEK_SET)
 
     turtle_output_file = tempfile.NamedTemporaryFile()
@@ -80,6 +80,9 @@ def transform_ontology(root):
     # Change cambiar_a_base prefix by base directive
     # file_read = file_read.replace("<cambiar_a_base:", "<" + onto_uri)
     #file_read = re.sub("<cambiar_a_base:", "<" + onto_uri, file_read)
+    # HACK
+    file_read = re.sub(":<", "<", file_read)
+    file_read = re.sub(">:", ">", file_read)
 
     # Change cambiar_a_prefijo_vacio prefix by empty prefix(":")
     file_read = file_read.replace("cambiar_a_prefijo_vacio:", ":")
@@ -90,6 +93,7 @@ def transform_ontology(root):
     f.close()"""
 
     try:
+        print(file_read)
         g = rdflib.Graph()
         g.parse(data=file_read, format="turtle")
 
@@ -111,7 +115,7 @@ def transform_ontology(root):
 
         turtle_string = file_read
         xml_string = file_read
-
+    print(new_namespaces)
     return turtle_string, xml_string, new_namespaces, errors
 
 
