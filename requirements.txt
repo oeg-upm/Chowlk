@@ -2,7 +2,7 @@ beautifulsoup4==4.9.1
 build==0.5.0
 click==7.1.2
 dominate==2.5.1
-Flask==1.1.2
+Flask==2.3.2
 Flask-Uploads==0.2.1
 isodate==0.6.0
 itsdangerous==1.1.0
