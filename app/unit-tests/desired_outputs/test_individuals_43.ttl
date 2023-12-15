@@ -1,0 +1,52 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:Individual1 a ns:Class1,
+        owl:NamedIndividual ;
+    ns:objectProperty ns:Individual6 .
+
+ns:Individual2 a ns:Class1,
+        owl:NamedIndividual ;
+    ns:objectProperty ns:Individual10 .
+
+ns:Individual3 a ns:Class1,
+        owl:NamedIndividual ;
+    ns:objectProperty ns:Individual9 .
+
+ns:Individual4 a ns:Class1,
+        owl:NamedIndividual ;
+    ns:objectProperty ns:Individual8 .
+
+ns:Individual5 a ns:Class1,
+        owl:NamedIndividual ;
+    ns:objectProperty ns:Individual7 .
+
+ns:objectProperty a owl:ObjectProperty ;
+    rdfs:label "object property" .
+
+ns:Individual10 a ns:Class2,
+        owl:NamedIndividual .
+
+ns:Individual6 a ns:Class2,
+        owl:NamedIndividual .
+
+ns:Individual7 a ns:Class2,
+        owl:NamedIndividual .
+
+ns:Individual8 a ns:Class2,
+        owl:NamedIndividual .
+
+ns:Individual9 a ns:Class2,
+        owl:NamedIndividual .
+
+ns:Class1 a owl:Class ;
+    rdfs:label "Class1" .
+
+ns:Class2 a owl:Class ;
+    rdfs:label "Class2" .
+

@@ -1,0 +1,42 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:created a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:description a owl:AnnotationProperty .
+
+dc:license a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+owl:priorVersion a owl:AnnotationProperty .
+
+owl:versionIRI a owl:AnnotationProperty .
+
+owl:versionInfo a owl:AnnotationProperty .
+
+<https://w3id.org/example#> a owl:Ontology ;
+    dc:contributor <https://w3id.org/people#AContributorURI> ;
+    dc:created "2021-01-01"^^xsd:date ;
+    dc:creator <https://w3id.org/people#AuthorURI> ;
+    dc:description "Brief description of your ontology."@en ;
+    dc:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dc:title "The example ontology"@en ;
+    vann:preferredNamespacePrefix "choosenprefix" ;
+    vann:preferredNamespaceUri <https://w3id.org/example#> ;
+    owl:priorVersion <https://w3id.org/example/1.0.0> ;
+    owl:versionIRI <https://w3id.org/example/1.0.1> ;
+    owl:versionInfo "0.0.1" ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+

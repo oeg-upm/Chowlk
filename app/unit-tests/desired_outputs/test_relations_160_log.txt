@@ -1,0 +1,8 @@
+
+Error Rhombuses: A domain relation can not been defined between rhombuses
+	shape_id: Dk9qAfm_slEwo9FVFkCB-54
+	value: ns:objectProperty1
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

@@ -1,0 +1,14 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns2: <https://w3id.org/saref2#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns2: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+<https://w3id.org/saref2#Class1> a owl:Class ;
+    rdfs:label "Class1" .
+
+ns2:Class2 a owl:Class ;
+    rdfs:label "Class2" .
+

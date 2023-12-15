@@ -1,0 +1,13 @@
+<mxfile host="app.diagrams.net" modified="2023-10-20T10:37:09.134Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="o9KUObT8KfOrv_EpoKtS" version="22.0.5" type="device">
+  <diagram name="Página-1" id="rwvDdL0Agy8rekXWCmTO">
+    <mxGraphModel dx="1434" dy="782" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="surC-ZOHc-V88S-Vu-js-1" value="&lt;div&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;owl:Ontology&lt;/b&gt;: &amp;lt;https://w3id.org/example#&amp;gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;:title&lt;/b&gt;: &quot;The example ontology&quot;@en&lt;/div&gt;" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;labelBackgroundColor=#ffffff;strokeColor=#000000;fontSize=12;fontColor=#000000;size=0.1875;" parent="1" vertex="1">
+          <mxGeometry x="210" y="80" width="370" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

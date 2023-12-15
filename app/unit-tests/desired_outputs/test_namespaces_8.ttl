@@ -1,0 +1,22 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prefix: <http://www.owl-ontologies.com/prefix#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:Individual1 a owl:NamedIndividual ;
+    ns:objectProperty1 "datatype_value"^^prefix:datatype .
+
+ns:Individual2 a owl:NamedIndividual ;
+    ns:objectProperty2 "datatype_value"^^xsd:datatype .
+
+ns:objectProperty1 a owl:DatatypeProperty ;
+    rdfs:label "object property1" .
+
+ns:objectProperty2 a owl:DatatypeProperty ;
+    rdfs:label "object property2" .
+

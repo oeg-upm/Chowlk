@@ -1,0 +1,20 @@
+@prefix aux: <http://base.namespace.com#> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+aux: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+aux:objectProperty a owl:InverseFunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "object property" ;
+    rdfs:domain aux:Class1 ;
+    rdfs:range <http://base.namespace.com#Class2> .
+
+<http://base.namespace.com#Class2> a owl:Class ;
+    rdfs:label "Class2" .
+
+aux:Class1 a owl:Class ;
+    rdfs:label "Class1" .
+

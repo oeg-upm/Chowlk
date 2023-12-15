@@ -1,0 +1,18 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <https://w3id.org/b#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+dc:creator a owl:AnnotationProperty .
+
+ns: a owl:Ontology ;
+    dc:creator "Chowlk tester" ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+<https://w3id.org/b#Class2> a owl:Class ;
+    rdfs:label "Class2" .
+
+ns:Class1 a owl:Class ;
+    rdfs:label "Class1" .
+

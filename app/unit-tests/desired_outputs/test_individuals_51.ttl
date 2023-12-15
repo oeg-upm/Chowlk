@@ -1,0 +1,12 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+<http://base.namespace.com#Individual1> a owl:NamedIndividual ;
+    owl:differentFrom <http://base.namespace.com#Individual2> .
+
+<http://base.namespace.com#Individual2> a owl:NamedIndividual .
+

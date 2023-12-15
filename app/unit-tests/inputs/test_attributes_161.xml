@@ -1,0 +1,30 @@
+<mxfile host="app.diagrams.net" modified="2023-11-16T16:04:34.161Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="bWDzwVbVmV9YG5KmqqZF" version="22.1.2" type="device">
+  <diagram id="layQFqpLhYCm77lHLeqK" name="Página-1">
+    <mxGraphModel dx="1221" dy="709" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Dk9qAfm_slEwo9FVFkCB-33" value="&lt;div&gt;&lt;b&gt;ns&lt;/b&gt;: http://base.namespace.com#&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="250" y="270" width="290" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="egM1GVoulk8Uf9MhvgXs-10" value="&lt;div&gt;&amp;lt;&amp;lt;owl:DatatypeProperty&amp;gt;&amp;gt; ns:datatypeProperty1&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="414" y="420.0000000000001" width="180" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="egM1GVoulk8Uf9MhvgXs-11" value="&lt;div&gt;&amp;lt;&amp;lt;owl:DatatypeProperty&amp;gt;&amp;gt; ns:datatypeProperty2&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="190" y="560.0000000000001" width="180" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="egM1GVoulk8Uf9MhvgXs-12" value="" style="endArrow=open;html=1;fontColor=#000099;endFill=0;dashed=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endSize=8;arcSize=0;rounded=0;" parent="1" source="egM1GVoulk8Uf9MhvgXs-11" target="egM1GVoulk8Uf9MhvgXs-10" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="70" y="575.0000000000001" as="sourcePoint" />
+            <mxPoint x="70" y="505.0000000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="egM1GVoulk8Uf9MhvgXs-13" value="rdfs:testing" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;labelBackgroundColor=#ffffff;" parent="egM1GVoulk8Uf9MhvgXs-12" vertex="1" connectable="0">
+          <mxGeometry x="-0.3277" relative="1" as="geometry">
+            <mxPoint y="-7.14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

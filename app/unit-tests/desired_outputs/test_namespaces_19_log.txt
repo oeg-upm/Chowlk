@@ -1,0 +1,9 @@
+
+Error Namespaces: A namespace has to finish with / or #. A # has been added at the end of the namespace
+	value: b: https://w3id.org/b
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Base: The base uri must end with '#' or '/'. The '/' has been added to the end of the base uri
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

@@ -1,0 +1,13 @@
+<mxfile host="app.diagrams.net" modified="2023-10-20T10:34:41.839Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="DCjgRobmXdUcSALR8Pwq" version="22.0.5" type="device">
+  <diagram name="Página-1" id="rwvDdL0Agy8rekXWCmTO">
+    <mxGraphModel dx="819" dy="447" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0nNiZ-cPT_XcolyKBvJu-1" value="&lt;div&gt;&lt;b&gt;dc:creator:&lt;/b&gt;&amp;nbsp;Full Name&lt;/div&gt;&lt;div&gt;&lt;b&gt;owl:versionInfo:&lt;/b&gt; 0.0.1&lt;/div&gt;&lt;div&gt;&lt;b&gt;owl:Ontology&lt;/b&gt;: https://w3id.org/chowlk/&lt;/div&gt;&lt;div&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;dc:creator:&lt;/b&gt;&amp;nbsp;Full Name 2&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;owl:imports: &amp;lt;&lt;/b&gt;https://saref.etsi.org/saref4watr/&amp;gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;dc:title:&lt;/b&gt; Template Ontology&lt;/div&gt;" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;labelBackgroundColor=#ffffff;strokeColor=#000000;fontSize=12;fontColor=#000000;size=0.23333333333333334;" parent="1" vertex="1">
+          <mxGeometry x="250" y="170" width="320" height="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

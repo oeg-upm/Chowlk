@@ -1,0 +1,32 @@
+@prefix eao: <http://www.owl-ontologies.com/eao#> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:description a owl:DatatypeProperty ;
+    rdfs:label "description" ;
+    rdfs:domain eao:ExpectationEvaluation ;
+    rdfs:range xsd:string .
+
+ns:identifier a owl:DatatypeProperty ;
+    rdfs:label "identifier" .
+
+ns:label a owl:DatatypeProperty ;
+    rdfs:label "label" .
+
+ns:supportExpectation a owl:ObjectProperty ;
+    rdfs:label "support expectation" ;
+    rdfs:domain eao:ExpectationEvaluation ;
+    rdfs:range ns:Expectation .
+
+ns:Expectation a owl:Class ;
+    rdfs:label "Expectation" .
+
+eao:ExpectationEvaluation a owl:Class ;
+    rdfs:label "Expectation Evaluation" .
+

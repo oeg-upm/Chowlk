@@ -1,0 +1,20 @@
+
+Error Individual: An individual is below an element that is not a named class
+	shape_id: iGlHEbySF0fFS9c-5EI5-16
+	value: ns:Individual7
+
+Error Individual: An individual is below an element that is not a named class
+	shape_id: iGlHEbySF0fFS9c-5EI5-19
+	value: ns:Individual8
+
+Error Individual: An individual is below an element that is not a named class
+	shape_id: iGlHEbySF0fFS9c-5EI5-22
+	value: ns:Individual9
+
+Error Individual: An individual is below an element that is not a named class
+	shape_id: iGlHEbySF0fFS9c-5EI5-25
+	value: ns:Individual10
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

@@ -1,0 +1,11 @@
+@prefix : <http://empty#> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<http://base#> a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+<http://base#Individual1> a owl:NamedIndividual .
+
+:Individual2 a owl:NamedIndividual .
+

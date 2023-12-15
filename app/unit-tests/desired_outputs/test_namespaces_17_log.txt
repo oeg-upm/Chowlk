@@ -1,0 +1,4 @@
+
+Error Base: The base uri must end with '#' or '/'. The '/' has been added to the end of the base uri
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

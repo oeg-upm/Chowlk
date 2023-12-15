@@ -1,0 +1,8 @@
+
+Error Rhombuses: The rhombus URI has not a valid identifier
+	shape_id: p1EK2rq0bKUKMJANPd1A-1
+	value: <https://chowlk/DatatypeProperty1/>
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

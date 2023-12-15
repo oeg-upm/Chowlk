@@ -1,0 +1,8 @@
+
+Error Attributes: The attribute URI has not a valid identifier
+	shape_id: WjBZD1FzsYBrkJiDFUSP-5
+	value: <DatatypeProperty>: datatype
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

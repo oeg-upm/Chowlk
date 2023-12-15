@@ -1,0 +1,8 @@
+
+Error Arrows: Problems in the text of the arrow
+	shape_id: egM1GVoulk8Uf9MhvgXs-12
+	value: <<rdfs:testing>>
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

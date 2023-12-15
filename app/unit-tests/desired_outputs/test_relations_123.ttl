@@ -1,0 +1,28 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:createdBy a owl:ObjectProperty ;
+    rdfs:label "created by" ;
+    rdfs:domain ns:ExpectationEvaluation ;
+    rdfs:range ns:Agent .
+
+ns:description a owl:DatatypeProperty ;
+    rdfs:label "description" ;
+    rdfs:domain ns:ExpectationEvaluation ;
+    rdfs:range xsd:string .
+
+ns:givenName a owl:DatatypeProperty ;
+    rdfs:label "given name" .
+
+ns:Agent a owl:Class ;
+    rdfs:label "Agent" .
+
+ns:ExpectationEvaluation a owl:Class ;
+    rdfs:label "Expectation Evaluation" .
+

@@ -1,0 +1,8 @@
+
+Error Rhombuses: A owl:inverseOf relation can not been defined between datatype properties
+	shape_id: egM1GVoulk8Uf9MhvgXs-1
+	value: ns:datatypeProperty2
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

@@ -55,8 +55,10 @@ You have several options to use this tool.
 The following command line will return the ontology in Turtle format.
 
 ```bash
-curl -F 'data=@/path/to/diagram.xml' https://chowlk.linkeddata.es/api
+curl -F data=@path_to_diagram/diagram.xml https://chowlk.linkeddata.es/api
 ```
+
+where path_to_diagram can be a relative path (e.g. diagrams/diagram.xml) or an absolute path (e.g. /home/user/diagrams/diagram.xml).
 
 The service will return the following dictionary:
 
@@ -65,20 +67,15 @@ The service will return the following dictionary:
   "ttl_data": "@prefix ns: ...",
   "new_namespaces": {"ns1": "https://namespace1.com#", "ns2": "https://namespace2.com#"},
   "errors": {"Concepts": [{"message": "Problem in text", "shape_id": "13", "value": "ns:Building Element"}],
-             "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}],
-             "Arrows": [],
-             "Rhombuses": [],
-             "Ellipses": [],
-             "Namespaces": [],
-             "Metadata": [],
-             "Hexagons": [],
-             "Individual": []}
+             "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}]},
+  "xml_error_generated": true,
+  "xml_error_file": "<mxfile ..."
 }
 ```
 
 * **ttl_data:** Contains the ontology generated from the diagram in Turtle format. It is returned in string format.
-* **new_namespaces:** Contains the new namespaces created for the ontology, when prefixes are founded in the model but are not declared in the namespace block in the diagram. The returned object is a dictionary with the following format: {"prefix1": "namespace1", "prefix2": "namespace2"}
-* **errors:** Contains the errors founded in the ontology diagram, organized by types. The following keywords can be founded: "Concepts", "Arrows", "Rhombuses", "Ellipses", "Attributes", "Namespaces", "Metadata", "Hexagons", "Individual". The value for these keywords is an array that may contain objects that have the following structure:
+* **new_namespaces:** Contains the new namespaces created for the ontology. These are the prefixes found in the model but not declared in the namespace block of the diagram. The returned object is a dictionary with the following format: {"prefix1": "namespace1", "prefix2": "namespace2"}.
+* **errors:** Contains the errors found in the ontology diagram, organised by category. The keywords are the categories and the value for these keywords is an array that may contain objects that have the following structure:
 
 ```json
 {
@@ -87,6 +84,8 @@ The service will return the following dictionary:
   "value": "the actual text related with the shape"
 }
 ```
+* **xml_error_generated:** Specifies whether an xml file highlighting the errors has been generated.
+* **xml_error_file:** It contains an xml file in which the shapes involved in an error are marked in red. In addition, for each error a new shapes is generated containing a message explaining the error. This xml file can be uploaded to drawio.io.
 
 
 ### 3. Running it from source:
@@ -116,17 +115,16 @@ python converter.py path/to/diagram.xml output/path/ontology.xml --type ontology
 
 ### To run the app locally:
 ```bash
-python app.py
+python entrypoint.py
 ```
 
 ## Publications
 
 * Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2022). Chowlk: from UML-Based Ontology Conceptualizations to OWL. In: , et al. The Semantic Web. ESWC 2022. Lecture Notes in Computer Science, vol 13261. Springer, Cham. https://doi.org/10.1007/978-3-031-06981-9_20
 
+* Poveda-Villalón, M., Chávez-Feria, S., Carulli-Pérez, S., & García-Castro, R. (2023). Towards a UML-based notation for OWL ontologies. Proceedings of the 8th International Workshop on the Visualization and Interaction for Ontologies, Linked Data and Knowledge Graphs co-located with the 22nd International Semantic Web Conference (ISWC 2023). https://ceur-ws.org/Vol-3508/paper2.pdf
+
 * Chávez-Feria, S., García-Castro, R., Poveda-Villalón, M. (2021). <i>Converting UML-based ontology conceptualizations to OWL with Chowlk. In ESWC (Poster and Demo Track)</i>
 
-
-
 ## Contact
-* Serge Chávez-Feria (serge.chavez.feria@upm.es)
-* Maria Poveda-Villalón (mpoveda@fi.upm.es)
+* Maria Poveda-Villalón (chowlk@delicias.dia.fi.upm.es)

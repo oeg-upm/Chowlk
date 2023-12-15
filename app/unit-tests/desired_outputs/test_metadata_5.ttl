@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+dc:creator a owl:AnnotationProperty .
+
+dcterms:license a owl:AnnotationProperty .
+
+owl:versionInfo a owl:AnnotationProperty .
+
+<https://w3id.org/chowlk/> a owl:Ontology ;
+    dc:creator "Full Name" ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    owl:versionInfo "0.0.1" ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+

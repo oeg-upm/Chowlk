@@ -1,0 +1,8 @@
+
+Error Rhombuses: The rhombus URI has not a valid identifier
+	shape_id: Jl_rw6fcTcSJibbPFTp3-1
+	value: <DatatypeProperty1>
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

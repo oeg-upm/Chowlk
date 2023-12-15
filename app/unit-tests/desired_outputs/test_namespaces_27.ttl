@@ -1,0 +1,11 @@
+@prefix : <http://www.owl-ontologies.com/chowlk#> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+<http://www.owl-ontologies.com/chowlk#Class1> a owl:Class ;
+    rdfs:label "Class1" .
+

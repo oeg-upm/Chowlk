@@ -1,0 +1,32 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s4city: <http://www.owl-ontologies.com/s4city#> .
+
+ns: a owl:Ontology ;
+    dc:creator "Full Name" ;
+    dc:title "Template Ontology" ;
+    owl:imports <http://iot.linkeddata.es/def/adapters#>,
+        <http://iot.linkeddata.es/def/core#> ;
+    owl:versionInfo "0.0.1" ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+s4city:hasName a owl:ObjectProperty ;
+    rdfs:label "has name" ;
+    rdfs:domain ns:Class1 ;
+    rdfs:range owl:Thing .
+
+owl:versionInfo a owl:AnnotationProperty .
+
+ns:Class1 a owl:Class ;
+    rdfs:label "Class1" .
+
+owl:Thing a owl:Class ;
+    rdfs:label "Thing" .
+

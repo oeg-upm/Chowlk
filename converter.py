@@ -1,10 +1,12 @@
 import argparse
 
-from source.chowlk.transformations import transform_ontology
-from source.chowlk.utils import read_drawio_xml
+from app.source.chowlk.services.transformations import transform_ontology
+from app.source.chowlk.resources.utils import read_drawio_xml
+import time
 
 
 def main(diagram_path, output_path, type, format):
+    #inicio = time.time()
 
     root = read_drawio_xml(diagram_path)
     ontology_turtle, ontology_xml, namespaces, errors = transform_ontology(root)
@@ -15,6 +17,8 @@ def main(diagram_path, output_path, type, format):
         file.write(ontology_turtle)
     elif format == "xml":
         file.write(ontology_xml)
+    #fin = time.time()
+    #print(fin-inicio)
 
     print_errors(errors)
     file.close()

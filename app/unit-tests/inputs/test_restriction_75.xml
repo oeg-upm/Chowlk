@@ -1,0 +1,30 @@
+<mxfile host="app.diagrams.net" modified="2023-09-19T10:08:05.848Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="-K7XAV2dktbmYGeLprd-" version="21.7.5" type="device">
+  <diagram id="layQFqpLhYCm77lHLeqK" name="Página-1">
+    <mxGraphModel dx="819" dy="447" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MlQ7vf9WANcBgA2plqKL-1" value="&lt;div&gt;&lt;b&gt;ns&lt;/b&gt;: http://base.namespace.com#&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="160" y="160" width="290" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="pjjuLlaD1_zj22IizKuv-209" value="&amp;lt;https://chowlk/Class1&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;snapToPoint=1;points=[[0.1,0],[0.2,0],[0.3,0],[0.4,0],[0.5,0],[0.6,0],[0.7,0],[0.8,0],[0.9,0],[0,0.1],[0,0.3],[0,0.5],[0,0.7],[0,0.9],[0.1,1],[0.2,1],[0.3,1],[0.4,1],[0.5,1],[0.6,1],[0.7,1],[0.8,1],[0.9,1],[1,0.1],[1,0.3],[1,0.5],[1,0.7],[1,0.9]];fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="20" y="310" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pjjuLlaD1_zj22IizKuv-210" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endSize=8;entryX=0;entryY=0.5;entryDx=0;entryDy=0;arcSize=0;rounded=0;" parent="1" source="pjjuLlaD1_zj22IizKuv-209" target="pjjuLlaD1_zj22IizKuv-212" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="295" y="340" as="sourcePoint" />
+            <mxPoint x="417" y="325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pjjuLlaD1_zj22IizKuv-211" value="(all) &amp;lt;ObjectProperty1&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#ffffff;" parent="pjjuLlaD1_zj22IizKuv-210" vertex="1" connectable="0">
+          <mxGeometry x="-0.1269" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pjjuLlaD1_zj22IizKuv-212" value="&amp;lt;https://chowlk/Class2&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;snapToPoint=1;points=[[0.1,0],[0.2,0],[0.3,0],[0.4,0],[0.5,0],[0.6,0],[0.7,0],[0.8,0],[0.9,0],[0,0.1],[0,0.3],[0,0.5],[0,0.7],[0,0.9],[0.1,1],[0.2,1],[0.3,1],[0.4,1],[0.5,1],[0.6,1],[0.7,1],[0.8,1],[0.9,1],[1,0.1],[1,0.3],[1,0.5],[1,0.7],[1,0.9]];fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="437" y="310" width="143" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

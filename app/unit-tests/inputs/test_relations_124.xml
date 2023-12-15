@@ -1,0 +1,30 @@
+<mxfile host="app.diagrams.net" modified="2023-05-25T14:45:06.437Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="uSADDkw-HZWelh9qAxyj" version="21.3.3" type="device">
+  <diagram id="layQFqpLhYCm77lHLeqK" name="Página-1">
+    <mxGraphModel dx="4884" dy="2852" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MlQ7vf9WANcBgA2plqKL-1" value="&lt;div&gt;&lt;b&gt;ns&lt;/b&gt;: http://base.namespace.com#&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="210" y="210" width="290" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="lIcl7dodmkDTtb-iGKfd-1" value="&lt;div&gt;&amp;lt;&amp;lt;owl:ObjectProperty&amp;gt;&amp;gt; ns:objectProperty1&lt;br&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="265" y="420" width="180" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="lIcl7dodmkDTtb-iGKfd-2" value="&lt;div&gt;&amp;lt;&amp;lt;owl:ObjectProperty&amp;gt;&amp;gt; ns:objectProperty2&lt;br&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="265" y="554.75" width="180" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="lIcl7dodmkDTtb-iGKfd-3" value="" style="endArrow=open;html=1;fontColor=#000099;endFill=0;dashed=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endSize=8;startArrow=open;startFill=0;startSize=8;rounded=0;" edge="1" parent="1" source="lIcl7dodmkDTtb-iGKfd-2" target="lIcl7dodmkDTtb-iGKfd-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="125" y="555" as="sourcePoint" />
+            <mxPoint x="125" y="485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lIcl7dodmkDTtb-iGKfd-4" value="&amp;lt;&amp;lt;owl:propertyDisjointWith&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;labelBackgroundColor=#ffffff;" vertex="1" connectable="0" parent="lIcl7dodmkDTtb-iGKfd-3">
+          <mxGeometry x="-0.3277" relative="1" as="geometry">
+            <mxPoint y="-7.14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

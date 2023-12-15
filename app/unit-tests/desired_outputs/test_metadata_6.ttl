@@ -1,0 +1,18 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+owl:versionInfo a owl:AnnotationProperty .
+
+<https://w3id.org/chowlk/> a owl:Ontology ;
+    dc:creator "Full Name",
+        "Full Name 2" ;
+    dc:title "Template Ontology" ;
+    owl:imports <https://saref.etsi.org/saref4watr/> ;
+    owl:versionInfo "0.0.1" ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+

@@ -1,0 +1,10 @@
+@prefix : <http://www.owl-ontologies.com/chowlk#> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:title a owl:AnnotationProperty .
+
+<https://w3id.org/example#> a owl:Ontology ;
+    :title "The example ontology"@en ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+

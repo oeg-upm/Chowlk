@@ -1,0 +1,11 @@
+
+Error Concepts: The concept URI has not a valid identifier
+	shape_id: pjjuLlaD1_zj22IizKuv-69
+	value: <Class2>
+
+Error complementOf: An element of an owl:complementOf is not a class description
+	shape_id: hjt0plIYPiI0g8Tu_i81-5
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

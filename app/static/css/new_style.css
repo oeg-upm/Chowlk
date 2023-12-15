@@ -1,0 +1,186 @@
+*{
+    box-sizing: border-box;
+}
+
+
+#sidebar{
+    width: 400px;
+}
+
+#logo{
+    width: 150px;
+}
+
+.showcase{
+    background-image: linear-gradient(120deg, #155799, #159957);
+    min-height:400px;
+}
+
+#title{
+    font-size: 60px;
+}
+
+.secondary-text{
+    color: #c3c3c3;
+}
+
+.link{
+    text-decoration: none;
+    color: #c3c3c3;
+}
+
+.link:hover{
+    color: #e2e2e2;
+    text-decoration: underline;
+}
+
+.footer-logo{
+    width: 30%;
+}
+
+.video{
+    height: 100%;
+}
+
+.drop-area{
+    border-radius: 5px;
+    border-style: dashed;
+    height: 313px;
+    position: relative;
+    overflow: scroll;
+}
+
+.drag-text{
+    text-align: center;
+    position: absolute;
+    left: 45px;
+    right: 45px;
+    top: 110px;
+
+}
+
+.drag-button{
+    background-color:#155799;
+    color: white;
+    width: 49%;
+}
+
+#toc{
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+}
+
+.main-tag{
+    position: absolute;
+    color: lightcoral;
+    border: lightcoral solid;
+    border-radius: 5px;
+    padding: 0.25rem;
+    width: 100px;
+}
+
+.alt-tag{
+    position: absolute;
+    color: lightslategray;
+    border: lightslategray solid;
+    border-radius: 5px;
+    padding: 0.25rem;
+    width: 100px;
+}
+
+.row-height{
+    height: 100px;
+}
+
+#response{
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+
+.options{
+    border-bottom: rgb(151, 151, 151) solid 1px;
+}
+
+.btn-option{
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border: 1px solid transparent;
+    text-align: center;
+    justify-items: center;
+    border-radius: 5px;
+    
+}
+
+.btn-option:hover{
+    color: #155799;
+    cursor: pointer;
+    border: rgb(151, 151, 151) solid 0.5px;
+}
+
+.selected{
+    background-color: white;
+    border: rgb(151, 151, 151) solid 1px;
+}
+
+.tabulacion:first-letter {
+	margin-left: 15px;
+}
+.tabulacion2:first-letter {
+	margin-left: 30px;
+}
+.black-letter {
+	font-weight: bold;
+}
+.contenedor-imagenes {
+    display: flex;
+}
+.contenedor-imagenes img:first-child {
+    margin: right;
+}
+
+.image{
+    max-width: 100%;
+    width: 225px;
+    height: 225px;
+    margin: 20px;
+    padding: 20px;
+    display: inline-block;
+    margin: auto;
+}
+
+#imageOEG{
+    max-width: 100%;
+    width: 225px;
+    height: 225px;
+}
+
+.image-caption{
+    margin: 20px;
+    padding: 5px;
+}
+
+div.img{
+    display:table;
+}
+
+div.img span{
+    line-height:normal;
+    font-size:20px;
+    display:table-caption;
+    margin:0;
+    font-style:italic;
+    padding:5px;
+    text-align:center;
+}
+
+.job-title{
+    color:#155799;
+}
+
+.job-title-2{
+    text-align:center;
+    font-weight: bold;
+}

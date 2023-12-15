@@ -1,0 +1,10 @@
+
+Error Concepts: The concept URI has not a valid identifier
+	shape_id: RFOXq1BSVuuWxunoUeCQ-6
+	value: <https://prueba#>
+
+Error Relations: The range of an object property is not a class description
+	shape_id: RFOXq1BSVuuWxunoUeCQ-8
+	value: ns:objectProperty
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
