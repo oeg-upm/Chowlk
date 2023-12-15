@@ -1,5 +1,0 @@
-
-Error intersectionOf: An arrow of an owl:intersectionOf is not connected to any shape, please check this
-	shape_id: JFXoWNqBMhQH-Cn3u4Ck-1
-
-Error Base: A base has not been declared. The first namespace has been taken as base

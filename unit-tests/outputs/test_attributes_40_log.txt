@@ -1,6 +1,0 @@
-
-Error Rhombuses: Type <<owl:invention>> can not be defined inside a rhombus
-	shape_id: V9QDXijGcr4VTs9w6IcK-9
-	value: <<owl:DatatypeProperty>>|<<owl:invention>> | ns:datatypeProperty
-
-Error Base: A base has not been declared. The first namespace has been taken as base

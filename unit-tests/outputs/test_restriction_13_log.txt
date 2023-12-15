@@ -1,6 +1,0 @@
-
-Error Cardinality-Restrictions: max_cardinality is not a number, in restriction ns:datatypeProperty1
-	shape_id: Ps-rgu2Tc-cQS3WUW2tD-33
-	value: ns:datatypeProperty1
-
-Error Base: A base has not been declared. The first namespace has been taken as base

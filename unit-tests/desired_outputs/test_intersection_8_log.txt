@@ -1,6 +1,0 @@
-
-Error intersectionOf: A class is connected to a owl:intersectionOf through a rdf:type. A owl:intersectionOf can be connected to a class through a class axiom
-	shape_id: k_IdIqO4lfU_0r74XhhI-7
-	value: ns:Class1
-
-Error Base: A base has not been declared. The first namespace has been taken as base
