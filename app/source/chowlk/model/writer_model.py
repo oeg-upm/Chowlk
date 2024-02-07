@@ -635,7 +635,7 @@ class Writer_model():
                         self.file.write("\t\t  owl:allValuesFrom " + prefix_datatype + attribute["datatype"] + " ]")
 
                     # Is the user defining a some values from restriction?
-                    elif attribute["someValuesFrom"] and attribute["uri"] and attribute["datatype"]:
+                    if attribute["someValuesFrom"] and attribute["uri"] and attribute["datatype"]:
                         prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
                         self.file.write(" ;\n")
                         self.file.write(f'\t{attribute["predicate_restriction"]} \n')    
@@ -666,6 +666,36 @@ class Writer_model():
                         self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
                         self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
                         self.file.write("\t\t  owl:cardinality \"" + attribute["cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]\n")
+
+                    # Is the user defining a minimal qualified cardinality restriction?
+                    if attribute["min_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+                        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+                        self.file.write(" ;\n")
+                        self.file.write(f'\t{attribute["predicate_restriction"]} \n')
+                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
+                        self.file.write("\t\t  owl:minQualifiedCardinality \"" + attribute["min_q_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ;\n")
+                        self.file.write(f'\t\t owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n')
+                    
+                    # Is the user defining a maximal qualified cardinality restriction?
+                    if attribute["max_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+                        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+                        self.file.write(" ;\n")
+                        self.file.write(f'\t{attribute["predicate_restriction"]} \n')
+                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
+                        self.file.write("\t\t  owl:maxQualifiedCardinality \"" + attribute["max_q_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ;\n")
+                        self.file.write(f'\t\t owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n')
+                    
+                    # Is the user defining a qualified cardinality restriction?
+                    if attribute["q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+                        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+                        self.file.write(" ;\n")
+                        self.file.write(f'\t{attribute["predicate_restriction"]} \n')
+                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
+                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
+                        self.file.write("\t\t  owl:qualifiedCardinality \"" + attribute["q_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ;\n")
+                        self.file.write(f'\t\t owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n')
 
                     # Is the user defining a has value restriction?
                     if attribute["hasValue"] and attribute["uri"] and attribute["datatype"]:

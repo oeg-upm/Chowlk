@@ -741,6 +741,87 @@ class Diagram_model():
                 attribute["min_cardinality"] = None
                 self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
 
+            # Qualified cardinality restriction evaluation
+            try:
+                max_min_card = re.findall("\[(\S*[.][.]\S*)\]", attribute_value)
+                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+                if max_min_card is None:
+                    attribute["min_q_cardinality"] = None
+                    attribute["max_q_cardinality"] = None
+                else:
+                    max_min_card = max_min_card.split("..")
+                    attribute["min_q_cardinality"] = max_min_card[0]
+                    attribute["max_q_cardinality"] = max_min_card[1]
+            except:
+                self.generate_error("Problems in qualified cardinality definition", id, attribute_value_cleaned, "Attributes")
+                continue
+
+            # If min_q_cardinality == 0 this means it is not necessary to create
+            # a min_q_cardinality restrictions
+            if attribute["min_q_cardinality"] == '0':
+                attribute["min_q_cardinality"] = None
+
+            # If max_q_cardinality == N this means it is not necessary to create
+            # a max_q_cardinality restrictions
+            if attribute["max_q_cardinality"] == 'N':
+                attribute["max_q_cardinality"] = None
+
+            # Check if min_q_cardinality represents a non negative integer
+            if attribute["min_q_cardinality"] != None:
+                try:
+                    aux = float(attribute["min_q_cardinality"])
+                    if not aux.is_integer() or aux < 0:
+                        message = ("min_q_cardinality is " + attribute["min_q_cardinality"] +
+                                    " which is not a non negative integer, in restriction " +
+                                    attribute["prefix"] + ":"
+                                    + attribute["uri"])
+                        attribute["min_q_cardinality"] = None
+                        self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
+
+                except:
+                    message = ("min_q_cardinality is not a number, in attribute "
+                                + attribute["prefix"] + ":"
+                                + attribute["uri"])
+                    attribute["min_q_cardinality"] = None
+                    self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
+
+            if attribute["max_q_cardinality"] != None:
+                # Check if max_q_cardinality represents a non negative integer
+                try:
+                    aux = float(attribute["max_q_cardinality"])
+                    if not aux.is_integer() or aux < 0:
+                        message = ("max_q_cardinality is " + attribute["max_q_cardinality"] +
+                                    " which is not a non negative integer, in restriction " +
+                                    attribute["prefix"] + ":"
+                                    + attribute["uri"])
+                        attribute["max_q_cardinality"] = None
+                        self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
+
+                except:
+                    message = ("max_q_cardinality is not a number, in restriction "
+                                + attribute["prefix"] + ":"
+                                + attribute["uri"])
+                    attribute["max_q_cardinality"] = None
+                    self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
+
+            if attribute["min_q_cardinality"] == attribute["max_q_cardinality"]:
+                attribute["q_cardinality"] = attribute["min_q_cardinality"]
+                attribute["min_q_cardinality"] = None
+                attribute["max_q_cardinality"] = None
+            else:
+                attribute["q_cardinality"] = None
+
+            # max_q_cardinality must be greater than min_q_cardinality
+            if(attribute["max_q_cardinality"] != None and attribute["min_q_cardinality"] != None
+                    and float(attribute["max_q_cardinality"]) < float(attribute["min_q_cardinality"])):
+                message = ("max_q_cardinality is lower than min_q_cardinality" +
+                            " in restriction " +
+                            attribute["prefix"] + ":"
+                            + attribute["uri"])
+                attribute["max_q_cardinality"] = None
+                attribute["min_q_cardinality"] = None
+                self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
+
             attributes.append(attribute)
 
         datatype_property["attributes"] = attributes
@@ -1059,6 +1140,79 @@ class Diagram_model():
                         + relation["uri"])
             relation["max_cardinality"] = None
             relation["min_cardinality"] = None
+            self.generate_error(message, id, value, "Cardinality-Restrictions")
+        
+        # Qualified cardinality restriction evaluation
+        try:
+            # Find [N1..N2] in the arrow name
+            max_min_card = re.findall("\[(\S*[.][.]\S*)\]", value)
+            max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+
+            if max_min_card is None:
+                relation["min_q_cardinality"] = None
+                relation["max_q_cardinality"] = None
+            else:
+                max_min_card = max_min_card.split("..")
+                relation["min_q_cardinality"] = max_min_card[0]
+                relation["max_q_cardinality"] = max_min_card[1]
+
+        except:
+            self.generate_error("Problems in qualified cardinality definition", id, value, "Arrows")
+            return
+
+        # If min_q_cardinality == 0 this means it is not necessary to create
+        # a min_q_cardinality restrictions
+        if relation["min_q_cardinality"] == '0':
+            relation["min_q_cardinality"] = None
+
+        # If max_q_cardinality == N this means it is not necessary to create
+        # a max_q_cardinality restrictions
+        if relation["max_q_cardinality"] == 'N':
+            relation["max_q_cardinality"] = None
+        
+        # Check if min_q_cardinality represents a non negative integer
+        if relation["min_q_cardinality"] != None:
+            try:
+                aux = float(relation["min_q_cardinality"])
+                if not aux.is_integer() or aux < 0:
+                    message = f'min_q_cardinality is {relation["min_q_cardinality"]} which is not a non negative integer, in restriction {relation["prefix"]}:{relation["uri"]}'
+                    relation["min_q_cardinality"] = None
+                    self.generate_error(message, id, value, "Cardinality-Restrictions")
+
+            except:
+                message = f'min_q_cardinality is not a number, in restriction {relation["prefix"]}:{relation["uri"]}'
+                relation["min_q_cardinality"] = None
+                self.generate_error(message, id, value, "Cardinality-Restrictions")
+
+        if relation["max_q_cardinality"] != None:
+            # Check if max_q_cardinality represents a non negative integer
+            try:
+                aux = float(relation["max_q_cardinality"])
+                if not aux.is_integer() or aux < 0:
+                    message = f'max_q_cardinality is {relation["max_q_cardinality"]} which is not a non negative integer, in restriction {relation["prefix"]}:{relation["uri"]}'
+                    relation["max_q_cardinality"] = None
+                    self.generate_error(message, id, value, "Cardinality-Restrictions")
+
+            except:
+                message = f'max_q_cardinality is not a number, in restriction {relation["prefix"]}:{relation["uri"]}'
+                relation["max_q_cardinality"] = None
+                self.generate_error(message, id, value, "Cardinality-Restrictions")
+        
+        # Check if the user is defining an exact qualified cardinality
+        if relation["min_q_cardinality"] == relation["max_q_cardinality"]:
+            relation["q_cardinality"] = relation["min_q_cardinality"]
+            relation["max_q_cardinality"] = None
+            relation["min_q_cardinality"] = None
+        else:
+            relation["q_cardinality"] = None
+
+        # max_q_cardinality must be greater than min_cardinality
+        if(relation["max_q_cardinality"] != None and relation["min_q_cardinality"] != None and float(relation["max_q_cardinality"]) < float(relation["min_q_cardinality"])):
+            message = ("max_q_cardinality is lower than min_q_cardinality" +
+                        " in restriction " + relation["prefix"] + ":"
+                        + relation["uri"])
+            relation["max_q_cardinality"] = None
+            relation["min_q_cardinality"] = None
             self.generate_error(message, id, value, "Cardinality-Restrictions")
 
         prefix = relation["prefix"]
