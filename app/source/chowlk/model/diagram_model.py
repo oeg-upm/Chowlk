@@ -832,6 +832,7 @@ class Diagram_model():
         anonymous_class = {}
         anonymous_class["xml_object"] = child
         anonymous_class["relations"] = []
+        anonymous_class["attributes"] = []
         self.anonymous_classes[id] = anonymous_class
 
     # This function store each of the selected boxes into a dictionary called "concepts" whose

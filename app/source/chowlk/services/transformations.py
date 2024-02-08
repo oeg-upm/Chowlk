@@ -4,7 +4,7 @@ from app.source.chowlk.model.diagram_model import Diagram_model
 from app.source.chowlk.services.individual_associations import individual_type_identification, individual_relation_association, individual_attribute_association
 from app.source.chowlk.services.class_associations import concept_attribute_association, concept_relation_association
 from app.source.chowlk.services.property_associations import enrich_properties
-from app.source.chowlk.resources.anonymousClass import find_relations_anonymous_classes
+from app.source.chowlk.resources.anonymousClass import find_relations_anonymous_classes, find_attributes_anonymous_classes
 from app.source.chowlk.resources.find_prefixes import find_prefixes
 import rdflib
 
@@ -21,6 +21,7 @@ def transform_ontology(root):
     associations = concept_attribute_association(diagram_model)
     associations = concept_relation_association(associations, diagram_model)
     find_relations_anonymous_classes(diagram_model)
+    find_attributes_anonymous_classes(diagram_model)
     individual_type_identification(diagram_model)
     associations_individuals = individual_relation_association(diagram_model)
     associations_individuals = individual_attribute_association(associations_individuals, diagram_model)

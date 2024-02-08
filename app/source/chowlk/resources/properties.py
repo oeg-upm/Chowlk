@@ -122,31 +122,41 @@ def obtain_union_intersection_of_classes(anonymous_concepts, object, concepts, d
 def obtain_complement_restriction_of_classes(anonymous_classes, object, relations, relation_id, concepts, diagram_model, hexagons, anonymous_concepts, individuals):
     predicate = ":"
 
-    # Get the arrows whose source is the blank node
-    arrows = anonymous_classes[object]["relations"]
-    if len(arrows) > 0:
-        #Well, there is the possibility that the same object property is detected as
-        #the relation whose source is the complement. For that reason, it is neccesary to skip
-        #the object property
-        if arrows[0] != relation_id:
-            arrow = relations[arrows[0]]
-        elif len(arrows) > 1:
-            arrow = relations[arrows[1]]
-        else:
-            return ":"
-
-        if(arrow["type"] == "owl:ObjectProperty"):
-            predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
-            if predicate == "":
-                #empty domain
-                predicate = ":"
-
-        elif(arrow["type"] == "owl:complementOf"):
-            predicate = complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
-            if predicate == "\t\t\t\t":
-                #empty domain
-                predicate = ":"
+    # Is there at least one datatype property block below the blank node?
+    if anonymous_classes[object]['attributes']:
+        datatype_properties = diagram_model.get_datatype_properties()
+        # Get the identifier of the first datatype property block which is below the blank node
+        d_p_block_id = anonymous_classes[object]["attributes"][0]
+        # Get the first datatype property of the first datatype property block which is below the blank node
+        datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
+        predicate = datatype_property_restriction(datatype_property)
+    
+    else:
+        # Get the arrows whose source is the blank node
+        arrows = anonymous_classes[object]["relations"]
+        if len(arrows) > 0:
+            #Well, there is the possibility that the same object property is detected as
+            #the relation whose source is the complement. For that reason, it is neccesary to skip
+            #the object property
+            if arrows[0] != relation_id:
+                arrow = relations[arrows[0]]
+            elif len(arrows) > 1:
+                arrow = relations[arrows[1]]
             else:
-                predicate = "[ rdf:type owl:Class ;" + predicate + "\t\t]"
+                return ":"
+
+            if(arrow["type"] == "owl:ObjectProperty"):
+                predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                if predicate == "":
+                    #empty domain
+                    predicate = ":"
+
+            elif(arrow["type"] == "owl:complementOf"):
+                predicate = complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                if predicate == "\t\t\t\t":
+                    #empty domain
+                    predicate = ":"
+                else:
+                    predicate = "[ rdf:type owl:Class ;" + predicate + "\t\t]"
 
     return predicate

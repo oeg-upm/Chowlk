@@ -15,6 +15,21 @@ def find_relations_anonymous_classes(diagram_model):
         if relation["source"] in anonymous_classes:
             anonymous_classes[relation["source"]]["relations"].append(relation_id)
 
+# Function to find the boxes which are below an anonymous class (blank box).
+# These blank nodes are used to construct datatype properties restrictions.
+def find_attributes_anonymous_classes(diagram_model):
+    # Get neccesary attributes
+    datatype_properties = diagram_model.get_datatype_properties()
+    anonymous_classes = diagram_model.get_anonymous_classes()
+
+    # For each anonymous class (blank box) we want to check if there is a box below such anonymous class.
+    # Iterate all the datatype properties block.
+    for d_p_block_id, d_p_block in datatype_properties.items():
+
+        # Is the box below a blank box?
+        if 'concept_associated' in d_p_block and d_p_block['concept_associated'] in anonymous_classes:
+            anonymous_classes[d_p_block['concept_associated']]["attributes"].append(d_p_block_id)
+
 # Function to construct a class description which represents an enumerated class.
 # All the elements of a owl:oneOf must be individuals (i.e. all the elements which are connected to the hexagon
 # through an arrow must be individuals).
@@ -83,23 +98,37 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 
         # Is the element a blank box?
         elif id in anonymous_classes:
-            # Get the identifier of the first arrow whose source is the blank node
-            relation_id = anonymous_classes[id]["relations"][0]
-            # Get the first arrow whose source is the blank node
-            complement = relations[relation_id]
 
-            # Does the arrow represent a complement class description?
-            if(complement["type"] == "owl:complementOf"):
-                text = text + "\n\t[ rdf:type owl:Class ;"
-                text = text + complement_of(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
-                text = text + "\t\t\t\t ]"
-                text = "\t\t\t\t" + text + "\n"
+            if anonymous_classes[id]['attributes']:
+                datatype_properties = diagram_model.get_datatype_properties()
+                # Get the identifier of the first datatype property block which is below the blank node
+                d_p_block_id = anonymous_classes[id]["attributes"][0]
+                # Get the first datatype property of the first datatype property block which is below the blank node
+                datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
+                text = text + datatype_property_restriction(datatype_property)
 
-            # Does the arrow represent a restriction?
-            elif (complement["type"] == "owl:ObjectProperty"):
-                text = text + restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
-                text = "\t\t\t\t" + text + "\n"
-  
+            else:
+                try:
+                    # Get the identifier of the first arrow whose source is the blank node
+                    relation_id = anonymous_classes[id]["relations"][0]
+                    # Get the first arrow whose source is the blank node
+                    complement = relations[relation_id]
+
+                    # Does the arrow represent a complement class description?
+                    if(complement["type"] == "owl:complementOf"):
+                        text = text + "\n\t[ rdf:type owl:Class ;"
+                        text = text + complement_of(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = text + "\t\t\t\t ]"
+                        text = "\t\t\t\t" + text + "\n"
+
+                    # Does the arrow represent a restriction?
+                    elif (complement["type"] == "owl:ObjectProperty"):
+                        text = text + restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = "\t\t\t\t" + text + "\n"
+                
+                except:
+                    diagram_model.generate_error("An element is not connected", id, None, "unionOf")
+                
         elif not id in relations or not relations[id]["type"] == "owl:ObjectProperty":
             diagram_model.generate_error("An element of an owl:unionOf is not a class description", id, None, "unionOf")       
 
@@ -109,7 +138,7 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 # Function to construct a class description which represents a complement.
 # All the elements of a complement must be class descriptions (i.e. all the elements which 
 # are connected to the blank node through an arrow must be class descriptions).
-def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes):
+def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes):
     # Get the element connected to the arrow
     target_id = arrow["target"]
     text = "\n\towl:complementOf \n"
@@ -136,39 +165,51 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
         # Is the element an union of class descriptions?
         if(ellipse["type"] == "owl:unionOf"):
             text = text + "\n\t[ rdf:type owl:Class ;"
-            text = text + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
+            text = text + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
             text = text + "\t\t\t\t ]"
             text = "\t\t\t\t" + text + "\n"
 
         # Is the element an intersection of class descriptions?
         elif(ellipse["type"] == "owl:intersectionOf"):
             text = text + "\n\t[ rdf:type owl:Class ;"
-            text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
+            text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
             text = text + "\t\t\t\t ]"
             text = "\t\t\t\t" + text + "\n"
     
     # Is the element a blank box?
-    elif target_id in anonimous_classes:
+    elif target_id in anonymous_classes:
 
-        # Get the identifiers of the arrows connected to the blank box
-        relations_id = anonimous_classes[target_id]["relations"]
+        if anonymous_classes[target_id]['attributes']:
+                datatype_properties = diagram_model.get_datatype_properties()
+                # Get the identifier of the first datatype property block which is below the blank node
+                d_p_block_id = anonymous_classes[target_id]["attributes"][0]
+                # Get the first datatype property of the first datatype property block which is below the blank node
+                datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
+                text = text + datatype_property_restriction(datatype_property)
 
-        if len(relations_id) > 0:
-            # Get the first arrow connected to the blank box
-            arrow = relations[relations_id[0]]
+        else:
 
-            # Does the arrow represent a restriction?
-            if(arrow["type"] == "owl:ObjectProperty"):
-                text = text + restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
-                text = "\t\t\t\t" + text + "\n"
+            try:
+                # Get the identifiers of the arrows connected to the blank box
+                relations_id = anonymous_classes[target_id]["relations"]
+                # Get the first arrow connected to the blank box
+                arrow = relations[relations_id[0]]
 
-            # Does the arrow represent a complement class description?
-            elif(arrow["type"] == "owl:complementOf"):
-                # target is an anonymous class with owl:complementOf statement
-                text = text + "\n\t[ rdf:type owl:Class ;"
-                text = text + complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
-                text = text + "\t\t\t\t ]"
-                text = "\t\t\t\t" + text + "\n"
+                # Does the arrow represent a restriction?
+                if(arrow["type"] == "owl:ObjectProperty"):
+                    text = text + restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text = "\t\t\t\t" + text + "\n"
+
+                # Does the arrow represent a complement class description?
+                elif(arrow["type"] == "owl:complementOf"):
+                    # target is an anonymous class with owl:complementOf statement
+                    text = text + "\n\t[ rdf:type owl:Class ;"
+                    text = text + complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text = text + "\t\t\t\t ]"
+                    text = "\t\t\t\t" + text + "\n"
+                
+            except:
+                diagram_model.generate_error("An element is not connected", target_id, None, "complementOf")
 
     else:
             diagram_model.generate_error("An element of an owl:complementOf is not a class description", arrow["source"], None, "complementOf")
@@ -181,14 +222,14 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 # Function to construct a class description which represents a restriction.
 # All the elements of a restriction must be class descriptions (i.e. all the elements which 
 # are connected to the blank node through an arrow must be class descriptions).
-def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes):
+def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes):
     text = ""
     more_than_one_restriction = False
 
     # Is the arrow representing a constraint restriction?
     if (arrow["allValuesFrom"] or arrow["someValuesFrom"]) and "target" in arrow:
         
-        text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonimous_classes, arrow["target"])
+        text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
         if text2 != "":
 
@@ -272,7 +313,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     # Is the arrow representing a qualified restriction?
     if (arrow["max_q_cardinality"] or arrow["min_q_cardinality"] or arrow["q_cardinality"]) and "target" in arrow:
 
-        text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonimous_classes, arrow["target"])
+        text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
         if text2 != "":
 
@@ -314,11 +355,10 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     return text
 
 # Target is the identifier of the element connected to the arrow
-def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonimous_classes, target):
+def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target):
     # Is the element a named class?
     if target in concepts:
         text2 = named_class(concepts[target])
-        
 
     # Is the element an hexagon?
     elif target in hexagons:
@@ -337,7 +377,7 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
         # Is the element an union of class descriptions?
         if(ellipse["type"] == "owl:unionOf"):
             text2 = "\n\t[ rdf:type owl:Class ;"
-            text2 = text2 + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
+            text2 = text2 + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
             text2 = text2 + "\t\t\t\t ]"
             text2 = "\t\t\t\t" + text2 + "\n"
             
@@ -345,40 +385,165 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
         # Is the element an intersection of class descriptions?
         elif(ellipse["type"] == "owl:intersectionOf"):
             text2 = "\n\t[ rdf:type owl:Class ;"
-            text2 = text2 + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
+            text2 = text2 + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
             text2 = text2 + "\t\t\t\t ]"
             text2 = "\t\t\t\t" + text2 + "\n"
     
     # Is the element a blank node?
-    elif target in anonimous_classes:
+    elif target in anonymous_classes:
 
-        # Get the identifiers of the arrows whose source is the blank node
-        relations_id = anonimous_classes[target]["relations"]
-
-        if len(relations_id) > 0:
-            # Get the first arrow whose source is the blank node
-            arrow2 = relations[relations_id[0]]
-
-            # Does the arrow represent a restriction?
-            if(arrow2["type"] == "owl:ObjectProperty"):
-                text2 = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
-                text2 = "\t\t\t\t" + text2 + "\n"
-
-            # Does the arrow represent a complement class description?
-            elif(arrow2["type"] == "owl:complementOf"):
-                # target is an anonymous class with owl:complementOf statement
-                text2 = "\n\t[ rdf:type owl:Class ;"
-                text2 = text2 + complement_of(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonimous_classes)
-                text2 = text2 + "\t\t\t\t ]"
-                text2 = "\t\t\t\t" + text2 + "\n"
+        if anonymous_classes[target]['attributes']:
+            datatype_properties = diagram_model.get_datatype_properties()
+            # Get the identifier of the first datatype property block which is below the blank node
+            d_p_block_id = anonymous_classes[target]["attributes"][0]
+            # Get the first datatype property of the first datatype property block which is below the blank node
+            datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
+            text2 = datatype_property_restriction(datatype_property)
 
         else:
-            text2 = ""
+            try:
+                # Get the identifiers of the arrows whose source is the blank node
+                relations_id = anonymous_classes[target]["relations"]
+                # Get the first arrow whose source is the blank node
+                arrow2 = relations[relations_id[0]]
+
+                # Does the arrow represent a restriction?
+                if(arrow2["type"] == "owl:ObjectProperty"):
+                    text2 = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text2 = "\t\t\t\t" + text2 + "\n"
+
+                # Does the arrow represent a complement class description?
+                elif(arrow2["type"] == "owl:complementOf"):
+                    # target is an anonymous class with owl:complementOf statement
+                    text2 = "\n\t[ rdf:type owl:Class ;"
+                    text2 = text2 + complement_of(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text2 = text2 + "\t\t\t\t ]"
+                    text2 = "\t\t\t\t" + text2 + "\n"
+
+            except:
+                diagram_model.generate_error("An element is not connected", target, None, "Relations")
+                text2 = ""
 
     else:
         text2 = ""
 
     return text2    
+
+def datatype_property_restriction(attribute):
+    text = ""
+    more_than_one_restriction = False
+    prefix = base_directive_prefix(attribute["prefix"])
+
+    # Is the user defining an all values from restriction?
+    if attribute["allValuesFrom"] and attribute["uri"] and attribute["datatype"]:
+        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+        text = '\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:allValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+        more_than_one_restriction = True
+
+    # Is the user defining a some values from restriction?
+    if attribute["someValuesFrom"] and attribute["uri"] and attribute["datatype"]:
+
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+
+        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:someValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+
+    # Is the user defining a minimal cardinality restriction?
+    if attribute["min_cardinality"] is not None and attribute["uri"]:
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:minCardinality "{attribute["min_cardinality"]}"^^xsd:nonNegativeInteger ]\n'
+
+    # Is the user defining a maximum cardinality restriction?
+    if attribute["max_cardinality"] is not None and attribute["uri"]:
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:maxCardinality "{attribute["max_cardinality"]}"^^xsd:nonNegativeInteger ]\n'
+
+    # Is the user defining a cardinality restriction?
+    if attribute["cardinality"] is not None and attribute["uri"]:
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:cardinality "{attribute["cardinality"]}"^^xsd:nonNegativeInteger ]\n'
+        
+    # Is the user defining a minimal qualified cardinality restriction?
+    if attribute["min_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:minQualifiedCardinality "{attribute["min_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+    
+    # Is the user defining a maximal qualified cardinality restriction?
+    if attribute["max_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:maxQualifiedCardinality "{attribute["max_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+    
+    # Is the user defining a qualified cardinality restriction?
+    if attribute["q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+        if more_than_one_restriction:
+            text = f'{text},'
+        else:
+            more_than_one_restriction = True
+        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:qualifiedCardinality "{attribute["q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+
+    # Is the user defining a has value restriction?
+    if attribute["hasValue"] and attribute["uri"] and attribute["datatype"]:
+        
+        if more_than_one_restriction:
+            text = f'{text},'
+
+        # In this case the target is a data value
+
+        # Has the user specify a datatype?
+        if attribute["prefix_datatype"] == "xsd":
+            # The default datatype is xsd
+            aux = attribute["datatype"].split("^^")
+            object = aux[0] + "^^xsd:" + aux[1]
+
+        else:
+            # In this case the user has specifyed a datatype
+            object = attribute["prefix_datatype"] + ":" + attribute["datatype"]
+
+        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                f'\t\t  owl:hasValue {object} ]\n'
+        
+    return text
 
 # Function to construct a class description which represents an intersection of class descriptions.
 # All the elements of a owl:intersectionOf must be class descriptions (i.e. all the elements which 
@@ -427,27 +592,36 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
         # Is the element a blank node?
         elif id in anonymous_classes:
 
-            try:
-                # Get the identifier of the first arrow whose source is the blank node
-                relation_id = anonymous_classes[id]["relations"][0]
-                # Get the first arrow whose source is the blank node
-                arrow = relations[relation_id]
+            if anonymous_classes[id]['attributes']:
+                datatype_properties = diagram_model.get_datatype_properties()
+                # Get the identifier of the first datatype property block which is below the blank node
+                d_p_block_id = anonymous_classes[id]["attributes"][0]
+                # Get the first datatype property of the first datatype property block which is below the blank node
+                datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
+                text = text + datatype_property_restriction(datatype_property)
 
-                # Does the arrow represent an owl:complementOf?
-                if(arrow["type"] == "owl:complementOf"):
-                    text = text + "\n\t[ rdf:type owl:Class ;"
-                    text = text + complement_of(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
-                    text = text + "\t\t\t\t ]"
-                    text = "\t\t\t\t" + text + "\n"
+            else:
+                try:
+                    # Get the identifier of the first arrow whose source is the blank node
+                    relation_id = anonymous_classes[id]["relations"][0]
+                    # Get the first arrow whose source is the blank node
+                    arrow = relations[relation_id]
 
-                # Does the arrow represent a restriction?
-                elif (arrow["type"] == "owl:ObjectProperty"):
-                    text = text + restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
-                    text = "\t\t\t\t" + text + "\n"
+                    # Does the arrow represent an owl:complementOf?
+                    if(arrow["type"] == "owl:complementOf"):
+                        text = text + "\n\t[ rdf:type owl:Class ;"
+                        text = text + complement_of(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = text + "\t\t\t\t ]"
+                        text = "\t\t\t\t" + text + "\n"
+
+                    # Does the arrow represent a restriction?
+                    elif (arrow["type"] == "owl:ObjectProperty"):
+                        text = text + restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = "\t\t\t\t" + text + "\n"
+                
+                except:
+                    diagram_model.generate_error("An element is not connected", id, None, "intersectionOf")
             
-            except:
-                diagram_model.generate_error("An element is not connected", id, None, "intersectionOf")
-        
 
         elif not id in relations or not relations[id]["type"] == "owl:ObjectProperty":
             diagram_model.generate_error("An element of an owl:intersectionOf is not a class description", id, "No value", "intersectionOf")
