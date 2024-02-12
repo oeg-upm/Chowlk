@@ -146,7 +146,7 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
                 return ":"
 
             if(arrow["type"] == "owl:ObjectProperty"):
-                predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)[0]
                 if predicate == "":
                     #empty domain
                     predicate = ":"

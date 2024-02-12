@@ -123,7 +123,7 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 
                     # Does the arrow represent a restriction?
                     elif (complement["type"] == "owl:ObjectProperty"):
-                        text = text + restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = text + restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)[0]
                         text = "\t\t\t\t" + text + "\n"
                 
                 except:
@@ -197,7 +197,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 
                 # Does the arrow represent a restriction?
                 if(arrow["type"] == "owl:ObjectProperty"):
-                    text = text + restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text = text + restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)[0]
                     text = "\t\t\t\t" + text + "\n"
 
                 # Does the arrow represent a complement class description?
@@ -225,6 +225,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes):
     text = ""
     more_than_one_restriction = False
+    more_than_two_restriction = False
 
     # Is the arrow representing a constraint restriction?
     if (arrow["allValuesFrom"] or arrow["someValuesFrom"]) and "target" in arrow:
@@ -234,7 +235,6 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
         if text2 != "":
 
             restriction_prefix = base_directive_prefix(arrow["prefix"])
-
             if arrow["allValuesFrom"]:
                 more_than_one_restriction = True
 
@@ -244,6 +244,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
             if arrow["someValuesFrom"]:
 
                 if more_than_one_restriction:
+                    more_than_two_restriction = True
                     text = text + ",\n"
                 else:
                     more_than_one_restriction = True
@@ -260,6 +261,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
         if target_id in individuals:
 
             if more_than_one_restriction:
+                more_than_two_restriction = True
                 text = text + ",\n"
             else:
                 more_than_one_restriction = True
@@ -277,6 +279,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     # Is the arrow representing a minimum cardinality restriction?
     if arrow["min_cardinality"] is not None:
         if more_than_one_restriction:
+            more_than_two_restriction = True
             text = text + ",\n"
         else:
             more_than_one_restriction = True
@@ -289,6 +292,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     # Is the arrow representing a maximum cardinality restriction?
     if arrow["max_cardinality"] is not None:
         if more_than_one_restriction:
+            more_than_two_restriction = True
             text = text + ",\n"
         else:
             more_than_one_restriction = True
@@ -301,6 +305,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     # Is the arrow representing a cardinality restriction?
     if arrow["cardinality"] is not None:
         if more_than_one_restriction:
+            more_than_two_restriction = True
             text = text + ",\n"
         else:
             more_than_one_restriction = True
@@ -312,7 +317,6 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
 
     # Is the arrow representing a qualified restriction?
     if (arrow["max_q_cardinality"] or arrow["min_q_cardinality"] or arrow["q_cardinality"]) and "target" in arrow:
-
         text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
         if text2 != "":
@@ -322,6 +326,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
             if arrow["max_q_cardinality"]:
 
                 if more_than_one_restriction:
+                    more_than_two_restriction = True
                     text = text + ",\n"
                 else:
                     more_than_one_restriction = True
@@ -333,6 +338,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
             if arrow["min_q_cardinality"]:
 
                 if more_than_one_restriction:
+                    more_than_two_restriction = True
                     text = text + ",\n"
                 else:
                     more_than_one_restriction = True
@@ -344,6 +350,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
             if arrow["q_cardinality"]:
 
                 if more_than_one_restriction:
+                    more_than_two_restriction = True
                     text = text + ",\n"
                 else:
                     more_than_one_restriction = True
@@ -352,7 +359,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
                         f'\t\t  owl:qualifiedCardinality \"{arrow["q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
                         f'\t\t owl:onClass {text2} ]'
             
-    return text
+    return text, more_than_two_restriction
 
 # Target is the identifier of the element connected to the arrow
 def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target):
@@ -409,8 +416,12 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
 
                 # Does the arrow represent a restriction?
                 if(arrow2["type"] == "owl:ObjectProperty"):
-                    text2 = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
                     text2 = "\t\t\t\t" + text2 + "\n"
+
+                    if more_than_two_restrictions:
+                        diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")
+                        text2 = ""
 
                 # Does the arrow represent a complement class description?
                 elif(arrow2["type"] == "owl:complementOf"):
@@ -616,7 +627,7 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
 
                     # Does the arrow represent a restriction?
                     elif (arrow["type"] == "owl:ObjectProperty"):
-                        text = text + restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = text + restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)[0]
                         text = "\t\t\t\t" + text + "\n"
                 
                 except:

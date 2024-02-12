@@ -517,7 +517,7 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                    text = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
@@ -587,7 +587,7 @@ class Writer_model():
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(" ;")
                                 self.file.write(f'\t{relation["type"]} ')
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
                                 self.file.write(text)
 
                             # Is the object a complement class?
@@ -695,7 +695,7 @@ class Writer_model():
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
                                 self.file.write(text)
 
                             # Is the object a complement class?

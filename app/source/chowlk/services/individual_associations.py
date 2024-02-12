@@ -101,7 +101,7 @@ def individual_identification_arrow(diagram_model):
                     # Is the object a restriction?
                     if(complement["type"] == "owl:ObjectProperty"):
                         text = '\t'
-                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes)
+                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes)[0]
                         individual["type"].append(text)
 
                     # Is the object a complement class?

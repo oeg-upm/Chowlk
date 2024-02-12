@@ -15,10 +15,13 @@ ns:Class1 a owl:Class ;
                     owl:onProperty ns:datatypeProperty1 ] ;
             owl:onProperty ns:objectProperty ] .
 
-ns:datatypeProperty1 a owl:DatatypeProperty ;
-    rdfs:label "datatype property1" .
-
 ns:objectProperty a owl:ObjectProperty ;
     rdfs:label "object property" ;
-    rdfs:domain ns:Class1 .
+    rdfs:domain ns:Class1 ;
+    rdfs:range [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty ns:datatypeProperty1 ] .
+
+ns:datatypeProperty1 a owl:DatatypeProperty ;
+    rdfs:label "datatype property1" .
 
