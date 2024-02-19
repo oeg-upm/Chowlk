@@ -25,7 +25,6 @@ def transform_ontology(root):
     individual_type_identification(diagram_model)
     associations_individuals = individual_relation_association(diagram_model)
     associations_individuals = individual_attribute_association(associations_individuals, diagram_model)
-
     writer_model = Writer_model()
     file, new_namespaces, base_uri = writer_model.write_ontology(diagram_model, prefixes_identified, associations, associations_individuals)
 

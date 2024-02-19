@@ -105,7 +105,13 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
                 d_p_block_id = anonymous_classes[id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text = text + datatype_property_restriction(datatype_property)
+                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+
+                if more_than_two_restrictions:
+                    diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
+                
+                else:
+                    text = text + text2
 
             else:
                 try:
@@ -123,8 +129,13 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 
                     # Does the arrow represent a restriction?
                     elif (complement["type"] == "owl:ObjectProperty"):
-                        text = text + restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)[0]
-                        text = "\t\t\t\t" + text + "\n"
+                        text2, more_than_two_restrictions= restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        
+                        if more_than_two_restrictions:
+                            diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
+                        
+                        else:
+                            text = text + "\t\t\t\t" + text2 + "\n"
                 
                 except:
                     diagram_model.generate_error("An element is not connected", id, None, "unionOf")
@@ -141,7 +152,7 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes):
     # Get the element connected to the arrow
     target_id = arrow["target"]
-    text = "\n\towl:complementOf \n"
+    text = ""
 
     # Is the element a class?
     if target_id in concepts:
@@ -185,7 +196,13 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
                 d_p_block_id = anonymous_classes[target_id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text = text + datatype_property_restriction(datatype_property)
+                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+
+                if more_than_two_restrictions:
+                    diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
+                
+                else:
+                    text = text + text2
 
         else:
 
@@ -197,8 +214,13 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 
                 # Does the arrow represent a restriction?
                 if(arrow["type"] == "owl:ObjectProperty"):
-                    text = text + restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)[0]
-                    text = "\t\t\t\t" + text + "\n"
+                    text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    
+                    if more_than_two_restrictions:
+                        diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
+                    
+                    else:
+                        text = text + "\t\t\t\t" + text2 + "\n"
 
                 # Does the arrow represent a complement class description?
                 elif(arrow["type"] == "owl:complementOf"):
@@ -215,7 +237,8 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
             diagram_model.generate_error("An element of an owl:complementOf is not a class description", arrow["source"], None, "complementOf")
             text = ""
 
-    text = text + "\t\t\t\t"
+    if text != "":
+        text = f"\n\towl:complementOf \n{text}\t\t\t\t"
 
     return text
 
@@ -405,7 +428,11 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
             d_p_block_id = anonymous_classes[target]["attributes"][0]
             # Get the first datatype property of the first datatype property block which is below the blank node
             datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-            text2 = datatype_property_restriction(datatype_property)
+            text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+
+            if more_than_two_restrictions:
+                diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")
+                text2 = ""
 
         else:
             try:
@@ -443,6 +470,7 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
 def datatype_property_restriction(attribute):
     text = ""
     more_than_one_restriction = False
+    more_than_two_restriction = False
     prefix = base_directive_prefix(attribute["prefix"])
 
     # Is the user defining an all values from restriction?
@@ -458,6 +486,7 @@ def datatype_property_restriction(attribute):
 
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
 
@@ -470,6 +499,7 @@ def datatype_property_restriction(attribute):
     if attribute["min_cardinality"] is not None and attribute["uri"]:
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
         text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -480,6 +510,7 @@ def datatype_property_restriction(attribute):
     if attribute["max_cardinality"] is not None and attribute["uri"]:
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
         text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -490,6 +521,7 @@ def datatype_property_restriction(attribute):
     if attribute["cardinality"] is not None and attribute["uri"]:
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
         text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -500,6 +532,7 @@ def datatype_property_restriction(attribute):
     if attribute["min_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
         prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
@@ -512,6 +545,7 @@ def datatype_property_restriction(attribute):
     if attribute["max_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
         prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
@@ -524,6 +558,7 @@ def datatype_property_restriction(attribute):
     if attribute["q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
         else:
             more_than_one_restriction = True
         prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
@@ -537,6 +572,7 @@ def datatype_property_restriction(attribute):
         
         if more_than_one_restriction:
             text = f'{text},'
+            more_than_two_restriction = True
 
         # In this case the target is a data value
 
@@ -554,7 +590,7 @@ def datatype_property_restriction(attribute):
                 f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
                 f'\t\t  owl:hasValue {object} ]\n'
         
-    return text
+    return text, more_than_two_restriction
 
 # Function to construct a class description which represents an intersection of class descriptions.
 # All the elements of a owl:intersectionOf must be class descriptions (i.e. all the elements which 
@@ -609,7 +645,13 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
                 d_p_block_id = anonymous_classes[id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text = text + datatype_property_restriction(datatype_property)
+                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+
+                if more_than_two_restrictions:
+                    diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
+                
+                else:
+                    text = text + text2
 
             else:
                 try:
@@ -627,8 +669,13 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
 
                     # Does the arrow represent a restriction?
                     elif (arrow["type"] == "owl:ObjectProperty"):
-                        text = text + restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)[0]
-                        text = "\t\t\t\t" + text + "\n"
+                        text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+
+                        if more_than_two_restrictions:
+                            diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
+                        
+                        else:
+                            text = text + "\t\t\t\t" + text2 + "\n"
                 
                 except:
                     diagram_model.generate_error("An element is not connected", id, None, "intersectionOf")

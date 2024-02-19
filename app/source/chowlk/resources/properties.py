@@ -10,7 +10,7 @@ def properties_domain_range(relation_id, property_prefix, property_uri, object, 
 
     # Is the object a box which is under a class?
     if object in attribute_blocks:
-        predicate = obtained_named_class_through_datatype_property(attribute_blocks, concepts, object)
+        predicate = obtained_named_class_through_datatype_property(attribute_blocks, concepts, object, anonymous_classes)
 
     # Is the object a class?
     elif object in concepts:
@@ -26,7 +26,9 @@ def properties_domain_range(relation_id, property_prefix, property_uri, object, 
 
     # Is the object a restriction or a complement class description?
     elif object in anonymous_classes:
-        predicate = obtain_complement_restriction_of_classes(anonymous_classes, object, relations, relation_id, concepts, diagram_model, hexagons, anonymous_concepts, individuals)
+
+        if not (property == 'datatype property' and domain_range == 'domain'):
+            predicate = obtain_complement_restriction_of_classes(anonymous_classes, object, relations, relation_id, concepts, diagram_model, hexagons, anonymous_concepts, individuals)
 
     elif object in individuals:
 
@@ -38,18 +40,26 @@ def properties_domain_range(relation_id, property_prefix, property_uri, object, 
 
     return predicate
 
-# This function obtained the name of a named class that is associated to the datatype property to which the arrow
-# is connectde (i.e. the concept associated to the attribute).
-def obtained_named_class_through_datatype_property(attribute_blocks, concepts, object):
+# This function obtained :
+# 1) the name of a named class that is associated to the datatype property to which the arrow is connected (i.e. the concept associated to the attribute).
+# 2) the datatype restriction that is associated to the datatype property to which the arrow is connected (i.e. the concept associated to the attribute).
+def obtained_named_class_through_datatype_property(attribute_blocks, concepts, object, anonymous_classes):
     predicate = ':'
     # Get the identifier of the class associated to the datatype property
     concept_id = attribute_blocks[object]["concept_associated"]
 
-    # Is it really a class? 
+    # Is it really a named class? 
     if concept_id in concepts:
         concept = concepts[concept_id]
         prefix = base_directive_prefix(concept["prefix"])
         predicate = prefix + concept["uri"]
+
+    # Does the block represent a blank node?
+    elif concept_id in anonymous_classes:
+        # In this case "object" is the identifier of a datatype property block which is below the blank node
+        # Get the first datatype property of the datatype property block which is below the blank node
+        datatype_property = attribute_blocks[object]["attributes"][0]
+        predicate = datatype_property_restriction(datatype_property)[0]
     
     #else:
         # The box which is on top of the attribute has not been identified as a concept.
@@ -129,7 +139,7 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
         d_p_block_id = anonymous_classes[object]["attributes"][0]
         # Get the first datatype property of the first datatype property block which is below the blank node
         datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-        predicate = datatype_property_restriction(datatype_property)
+        predicate = datatype_property_restriction(datatype_property)[0]
     
     else:
         # Get the arrows whose source is the blank node
@@ -153,7 +163,7 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
 
             elif(arrow["type"] == "owl:complementOf"):
                 predicate = complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
-                if predicate == "\t\t\t\t":
+                if predicate == "":
                     #empty domain
                     predicate = ":"
                 else:

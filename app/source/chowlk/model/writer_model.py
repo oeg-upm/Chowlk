@@ -585,18 +585,21 @@ class Writer_model():
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                self.file.write(" ;")
-                                self.file.write(f'\t{relation["type"]} ')
                                 text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
-                                self.file.write(text)
+                                if text != "":
+                                    self.file.write(" ;")
+                                    self.file.write(f'\t{relation["type"]} ')
+                                    self.file.write(text)
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
-                                self.file.write(" ;")
-                                self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
                                 text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
-                                self.file.write(text)
-                                self.file.write("\t\t]")
+
+                                if text != "":
+                                    self.file.write(" ;")
+                                    self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
+                                    self.file.write(text)
+                                    self.file.write("\t\t]")
                 
                 # Check errors
                 # Is the user connecting an invalid arrow to a complement class?
@@ -624,7 +627,7 @@ class Writer_model():
                 # Iterate the datatype properties which are defined in each datatype property block 
                 for attribute in attribute_block["attributes"]:
 
-                    text = datatype_property_restriction(attribute)
+                    text = datatype_property_restriction(attribute)[0]
                     if text != '':
                         self.file.write(f' ;\n\t{attribute["predicate_restriction"]} \n{text}')
 
@@ -700,10 +703,12 @@ class Writer_model():
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
-                                self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
                                 text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
-                                self.file.write(text)
-                                self.file.write("\t\t]")
+
+                                if text != "":
+                                    self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
+                                    self.file.write(text)
+                                    self.file.write("\t\t]")
 
             self.file.write(" .\n\n")
     
