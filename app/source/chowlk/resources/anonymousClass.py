@@ -99,13 +99,18 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
         # Is the element a blank box?
         elif id in anonymous_classes:
 
-            if anonymous_classes[id]['attributes']:
+            # Does the blank node have associated a datatype property restriction and an object property restriction?
+            if anonymous_classes[id]['attributes'] and anonymous_classes[id]["relations"]:
+                diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
+
+            # Does the blank node have associated a datatype property restriction?
+            elif anonymous_classes[id]['attributes']:
                 datatype_properties = diagram_model.get_datatype_properties()
                 # Get the identifier of the first datatype property block which is below the blank node
                 d_p_block_id = anonymous_classes[id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
                 if more_than_two_restrictions:
                     diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
@@ -114,6 +119,7 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
                     text = text + text2
 
             else:
+                # In this case the blank node has associated an object property restriction
                 try:
                     # Get the identifier of the first arrow whose source is the blank node
                     relation_id = anonymous_classes[id]["relations"][0]
@@ -129,7 +135,7 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 
                     # Does the arrow represent a restriction?
                     elif (complement["type"] == "owl:ObjectProperty"):
-                        text2, more_than_two_restrictions= restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text2, more_than_two_restrictions= restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id)
                         
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
@@ -190,13 +196,18 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
     # Is the element a blank box?
     elif target_id in anonymous_classes:
 
-        if anonymous_classes[target_id]['attributes']:
+        # Does the blank node have associated a datatype property restriction and an object property restriction?
+        if anonymous_classes[target_id]['attributes'] and anonymous_classes[target_id]["relations"]:
+            diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
+
+        # Does the blank node have associated a datatype property restriction?
+        elif anonymous_classes[target_id]['attributes']:
                 datatype_properties = diagram_model.get_datatype_properties()
                 # Get the identifier of the first datatype property block which is below the blank node
                 d_p_block_id = anonymous_classes[target_id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
                 if more_than_two_restrictions:
                     diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
@@ -205,7 +216,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
                     text = text + text2
 
         else:
-
+            # In this case the blank node has associated a object property restriction
             try:
                 # Get the identifiers of the arrows connected to the blank box
                 relations_id = anonymous_classes[target_id]["relations"]
@@ -214,7 +225,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 
                 # Does the arrow represent a restriction?
                 if(arrow["type"] == "owl:ObjectProperty"):
-                    text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0])
                     
                     if more_than_two_restrictions:
                         diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
@@ -245,7 +256,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 # Function to construct a class description which represents a restriction.
 # All the elements of a restriction must be class descriptions (i.e. all the elements which 
 # are connected to the blank node through an arrow must be class descriptions).
-def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes):
+def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id):
     text = ""
     more_than_one_restriction = False
     more_than_two_restriction = False
@@ -255,25 +266,33 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
         
         text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
-        if text2 != "":
+        if text2 == "":
 
-            restriction_prefix = base_directive_prefix(arrow["prefix"])
             if arrow["allValuesFrom"]:
-                more_than_one_restriction = True
-
-                text = f'\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
-                        f'\t owl:allValuesFrom {text2} ]'
-
+                diagram_model.generate_error("An all values from restriction has not a target defined", arrow_id, None, "Relations")
+            
             if arrow["someValuesFrom"]:
+                diagram_model.generate_error("A some values from restriction has not a target defined", arrow_id, None, "Relations")
+            
+            text2 = 'owl:Thing'
 
-                if more_than_one_restriction:
-                    more_than_two_restriction = True
-                    text = text + ",\n"
-                else:
-                    more_than_one_restriction = True
-                
-                text = f'{text}\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
-                        f'\t owl:someValuesFrom {text2} ]'
+        restriction_prefix = base_directive_prefix(arrow["prefix"])
+        if arrow["allValuesFrom"]:
+            more_than_one_restriction = True
+
+            text = f'\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
+                    f'\t owl:allValuesFrom {text2} ]'
+
+        if arrow["someValuesFrom"]:
+
+            if more_than_one_restriction:
+                more_than_two_restriction = True
+                text = text + ",\n"
+            else:
+                more_than_one_restriction = True
+            
+            text = f'{text}\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
+                    f'\t owl:someValuesFrom {text2} ]'
     
     # Is the arrow representing a has value restriction?
     if arrow["hasValue"]:
@@ -297,7 +316,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
                 f'\t\t  owl:hasValue {target_prefix}{individuals[target_id]["uri"]}]'
 
         else:
-            print("error el rango de un has Value no es una instancia")
+            diagram_model.generate_error("A has value restriction has not a target defined", arrow_id, None, "Relations")
 
     # Is the arrow representing a minimum cardinality restriction?
     if arrow["min_cardinality"] is not None:
@@ -342,50 +361,63 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     if (arrow["max_q_cardinality"] or arrow["min_q_cardinality"] or arrow["q_cardinality"]) and "target" in arrow:
         text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
-        if text2 != "":
-
-            restriction_prefix = base_directive_prefix(arrow["prefix"])
+        if text2 == "":
 
             if arrow["max_q_cardinality"]:
-
-                if more_than_one_restriction:
-                    more_than_two_restriction = True
-                    text = text + ",\n"
-                else:
-                    more_than_one_restriction = True
-
-                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
-                        f'\t\t  owl:maxQualifiedCardinality \"{arrow["max_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
-                        f'\t\t owl:onClass {text2} ]'
+                diagram_model.generate_error("A max qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
             
             if arrow["min_q_cardinality"]:
-
-                if more_than_one_restriction:
-                    more_than_two_restriction = True
-                    text = text + ",\n"
-                else:
-                    more_than_one_restriction = True
-
-                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
-                        f'\t\t  owl:minQualifiedCardinality \"{arrow["min_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
-                        f'\t\t owl:onClass {text2} ]'
+                diagram_model.generate_error("A min qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
             
             if arrow["q_cardinality"]:
+                diagram_model.generate_error("A qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
 
-                if more_than_one_restriction:
-                    more_than_two_restriction = True
-                    text = text + ",\n"
-                else:
-                    more_than_one_restriction = True
+            text2 = 'owl:Thing'
 
-                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
-                        f'\t\t  owl:qualifiedCardinality \"{arrow["q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
-                        f'\t\t owl:onClass {text2} ]'
+        restriction_prefix = base_directive_prefix(arrow["prefix"])
+
+        if arrow["max_q_cardinality"]:
+
+            if more_than_one_restriction:
+                more_than_two_restriction = True
+                text = text + ",\n"
+            else:
+                more_than_one_restriction = True
+
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                    f'\t\t  owl:maxQualifiedCardinality \"{arrow["max_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t owl:onClass {text2} ]'
+        
+        if arrow["min_q_cardinality"]:
+
+            if more_than_one_restriction:
+                more_than_two_restriction = True
+                text = text + ",\n"
+            else:
+                more_than_one_restriction = True
+
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                    f'\t\t  owl:minQualifiedCardinality \"{arrow["min_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t owl:onClass {text2} ]'
+        
+        if arrow["q_cardinality"]:
+
+            if more_than_one_restriction:
+                more_than_two_restriction = True
+                text = text + ",\n"
+            else:
+                more_than_one_restriction = True
+
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                    f'\t\t  owl:qualifiedCardinality \"{arrow["q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t owl:onClass {text2} ]'
             
     return text, more_than_two_restriction
 
 # Target is the identifier of the element connected to the arrow
 def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target):
+    text2 = ""
+    
     # Is the element a named class?
     if target in concepts:
         text2 = named_class(concepts[target])
@@ -422,19 +454,25 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
     # Is the element a blank node?
     elif target in anonymous_classes:
 
-        if anonymous_classes[target]['attributes']:
+        # Does the blank node have associated a datatype property restriction and an object property restriction?
+        if anonymous_classes[target]['attributes'] and anonymous_classes[target]["relations"]:
+            diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")
+
+        # Does the blank node have associated a datatype property restriction?
+        elif anonymous_classes[target]['attributes']:
             datatype_properties = diagram_model.get_datatype_properties()
             # Get the identifier of the first datatype property block which is below the blank node
             d_p_block_id = anonymous_classes[target]["attributes"][0]
             # Get the first datatype property of the first datatype property block which is below the blank node
             datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-            text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+            text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
             if more_than_two_restrictions:
                 diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")
                 text2 = ""
 
-        else:
+        # Does the blank node have associated an object property restriction?
+        elif anonymous_classes[target]["relations"]:
             try:
                 # Get the identifiers of the arrows whose source is the blank node
                 relations_id = anonymous_classes[target]["relations"]
@@ -443,7 +481,7 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
 
                 # Does the arrow represent a restriction?
                 if(arrow2["type"] == "owl:ObjectProperty"):
-                    text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0])
                     text2 = "\t\t\t\t" + text2 + "\n"
 
                     if more_than_two_restrictions:
@@ -462,27 +500,34 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
                 diagram_model.generate_error("An element is not connected", target, None, "Relations")
                 text2 = ""
 
-    else:
-        text2 = ""
-
     return text2    
 
-def datatype_property_restriction(attribute):
+def datatype_property_restriction(attribute, diagram_model, block_id):
     text = ""
     more_than_one_restriction = False
     more_than_two_restriction = False
     prefix = base_directive_prefix(attribute["prefix"])
 
     # Is the user defining an all values from restriction?
-    if attribute["allValuesFrom"] and attribute["uri"] and attribute["datatype"]:
-        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-        text = '\t\t[ rdf:type owl:Restriction ;\n'\
-                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                f'\t\t  owl:allValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+    if attribute["allValuesFrom"]:
         more_than_one_restriction = True
 
+        # Has the user specified a datatype?
+        if attribute["uri"] and attribute["datatype"]:
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            text = '\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:allValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+        
+        else:
+            text = '\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:allValuesFrom owl:Thing ]\n'
+            diagram_model.generate_error("An all values from restriction has not a target defined", block_id, None, "Attributes")
+        
+
     # Is the user defining a some values from restriction?
-    if attribute["someValuesFrom"] and attribute["uri"] and attribute["datatype"]:
+    if attribute["someValuesFrom"]:
 
         if more_than_one_restriction:
             text = f'{text},'
@@ -490,10 +535,18 @@ def datatype_property_restriction(attribute):
         else:
             more_than_one_restriction = True
 
-        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
-                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                f'\t\t  owl:someValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+        # Has the user specified a datatype?
+        if attribute["uri"] and attribute["datatype"]:
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:someValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+        
+        else:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:someValuesFrom owl:Thing ]\n'
+            diagram_model.generate_error("A some values from restriction has not a target defined", block_id, None, "Attributes")
 
     # Is the user defining a minimal cardinality restriction?
     if attribute["min_cardinality"] is not None and attribute["uri"]:
@@ -529,66 +582,102 @@ def datatype_property_restriction(attribute):
                 f'\t\t  owl:cardinality "{attribute["cardinality"]}"^^xsd:nonNegativeInteger ]\n'
         
     # Is the user defining a minimal qualified cardinality restriction?
-    if attribute["min_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+    if attribute["min_q_cardinality"] is not None:
+
         if more_than_one_restriction:
             text = f'{text},'
             more_than_two_restriction = True
         else:
             more_than_one_restriction = True
-        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
-                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                f'\t\t  owl:minQualifiedCardinality "{attribute["min_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
-                f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+
+        # Has the user specified a datatype?
+        if attribute["uri"] and attribute["datatype"]:
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:minQualifiedCardinality "{attribute["min_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+        
+        else:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:minQualifiedCardinality "{attribute["min_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t  owl:onDataRange owl:Thing ]\n'
+            diagram_model.generate_error("A min qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
     
     # Is the user defining a maximal qualified cardinality restriction?
-    if attribute["max_q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+    if attribute["max_q_cardinality"] is not None:
         if more_than_one_restriction:
             text = f'{text},'
             more_than_two_restriction = True
         else:
             more_than_one_restriction = True
-        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
-                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                f'\t\t  owl:maxQualifiedCardinality "{attribute["max_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
-                f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+
+        # Has the user specified a datatype?
+        if attribute["uri"] and attribute["datatype"]:
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:maxQualifiedCardinality "{attribute["max_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+        
+        else:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:maxQualifiedCardinality "{attribute["max_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t  owl:onDataRange owl:Thing ]\n'
+            diagram_model.generate_error("A max qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
     
     # Is the user defining a qualified cardinality restriction?
-    if attribute["q_cardinality"] is not None and attribute["uri"] and attribute["datatype"]:
+    if attribute["q_cardinality"] is not None:
         if more_than_one_restriction:
             text = f'{text},'
             more_than_two_restriction = True
         else:
             more_than_one_restriction = True
-        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
-                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                f'\t\t  owl:qualifiedCardinality "{attribute["q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
-                f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+
+        # Has the user specified a datatype?
+        if attribute["uri"] and attribute["datatype"]:
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:qualifiedCardinality "{attribute["q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+        
+        else:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:qualifiedCardinality "{attribute["q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
+                    f'\t\t  owl:onDataRange owl:Thing ]\n'
+            diagram_model.generate_error("A qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
 
     # Is the user defining a has value restriction?
-    if attribute["hasValue"] and attribute["uri"] and attribute["datatype"]:
+    if attribute["hasValue"]:
+
+        if attribute["uri"] and attribute["datatype"]:
         
-        if more_than_one_restriction:
-            text = f'{text},'
-            more_than_two_restriction = True
+            if more_than_one_restriction:
+                text = f'{text},'
+                more_than_two_restriction = True
 
-        # In this case the target is a data value
+            # In this case the target is a data value
 
-        # Has the user specify a datatype?
-        if attribute["prefix_datatype"] == "xsd":
-            # The default datatype is xsd
-            aux = attribute["datatype"].split("^^")
-            object = aux[0] + "^^xsd:" + aux[1]
+            # Has the user specified a datatype?
+            if attribute["prefix_datatype"] == "xsd":
+                # The default datatype is xsd
+                aux = attribute["datatype"].split("^^")
+                object = aux[0] + "^^xsd:" + aux[1]
 
+            else:
+                # In this case the user has specifyed a datatype
+                object = attribute["prefix_datatype"] + ":" + attribute["datatype"]
+
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:hasValue {object} ]\n'
+        
         else:
-            # In this case the user has specifyed a datatype
-            object = attribute["prefix_datatype"] + ":" + attribute["datatype"]
-
-        text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
-                f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                f'\t\t  owl:hasValue {object} ]\n'
+            diagram_model.generate_error("A has value restriction has not a target defined", block_id, None, "Attributes")
         
     return text, more_than_two_restriction
 
@@ -639,13 +728,18 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
         # Is the element a blank node?
         elif id in anonymous_classes:
 
-            if anonymous_classes[id]['attributes']:
+            # Does the blank node have associated a datatype property restriction and an object property restriction?
+            if anonymous_classes[id]['attributes'] and anonymous_classes[id]["relations"]:
+                diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
+
+            # Does the blank node have associated a datatype property restriction?
+            elif anonymous_classes[id]['attributes']:
                 datatype_properties = diagram_model.get_datatype_properties()
                 # Get the identifier of the first datatype property block which is below the blank node
                 d_p_block_id = anonymous_classes[id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property)
+                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
                 if more_than_two_restrictions:
                     diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
@@ -654,6 +748,8 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
                     text = text + text2
 
             else:
+                # In this case tha blank node has associated an object property restriction
+
                 try:
                     # Get the identifier of the first arrow whose source is the blank node
                     relation_id = anonymous_classes[id]["relations"][0]
@@ -669,7 +765,7 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
 
                     # Does the arrow represent a restriction?
                     elif (arrow["type"] == "owl:ObjectProperty"):
-                        text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id)
 
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")

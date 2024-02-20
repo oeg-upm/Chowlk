@@ -1,0 +1,8 @@
+
+Error Arrows: The end of the arrow is not connected to any shape, please check this.
+	shape_id: HJKh9fVIsua8A9RgERsg-12
+	value: [1..1] ns:objectProperty
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

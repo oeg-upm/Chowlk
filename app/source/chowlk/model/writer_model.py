@@ -361,11 +361,14 @@ class Writer_model():
                 
                 # Does the datatype property have a defined domain?
                 if attribute["domain"]:
-                    domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
-                    # Avoid blank nodes
-                    if domain_name != ":":
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:domain " + domain_name)
+
+                    # We want to skip the domain definition of those datatype properties block that are below a blank node
+                    if not ('concept_associated' in attribute_block and attribute["domain"] == attribute_block['concept_associated'] and attribute["domain"] in anonymous_classes):
+                        domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
+                        # Avoid blank nodes
+                        if domain_name != ":":
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:domain " + domain_name)
 
                 # Does the datatype property have a defined range? (avoid has value restrictions)
                 if attribute["range"] and not attribute["hasValue"]:
@@ -517,7 +520,7 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
+                    text = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id)[0]
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
@@ -585,7 +588,7 @@ class Writer_model():
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
+                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement[0])[0]
                                 if text != "":
                                     self.file.write(" ;")
                                     self.file.write(f'\t{relation["type"]} ')
@@ -627,7 +630,7 @@ class Writer_model():
                 # Iterate the datatype properties which are defined in each datatype property block 
                 for attribute in attribute_block["attributes"]:
 
-                    text = datatype_property_restriction(attribute)[0]
+                    text = datatype_property_restriction(attribute, diagram_model, block_id)[0]
                     if text != '':
                         self.file.write(f' ;\n\t{attribute["predicate_restriction"]} \n{text}')
 
@@ -698,7 +701,7 @@ class Writer_model():
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)[0]
+                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement[0])[0]
                                 self.file.write(text)
 
                             # Is the object a complement class?

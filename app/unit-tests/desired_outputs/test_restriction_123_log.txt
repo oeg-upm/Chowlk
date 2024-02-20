@@ -1,0 +1,10 @@
+
+Error Attributes: A min qualified cardinality restriction has not a target defined
+	shape_id: Ju1RTPdh9tJ6ZwYG0b28-68
+
+Error Attributes: A max qualified cardinality restriction has not a target defined
+	shape_id: Ju1RTPdh9tJ6ZwYG0b28-68
+
+Error Base: A base has not been declared. The first namespace has been taken as base
+
+Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
