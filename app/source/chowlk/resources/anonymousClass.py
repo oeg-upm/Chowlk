@@ -264,9 +264,9 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     # Is the arrow representing a constraint restriction?
     if (arrow["allValuesFrom"] or arrow["someValuesFrom"]) and "target" in arrow:
         
-        text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
+        text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
-        if text2 == "":
+        if not target_defined:
 
             if arrow["allValuesFrom"]:
                 diagram_model.generate_error("An all values from restriction has not a target defined", arrow_id, None, "Relations")
@@ -276,23 +276,25 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
             
             text2 = 'owl:Thing'
 
-        restriction_prefix = base_directive_prefix(arrow["prefix"])
-        if arrow["allValuesFrom"]:
-            more_than_one_restriction = True
+        if text2 != "":
+            restriction_prefix = base_directive_prefix(arrow["prefix"])
 
-            text = f'\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
-                    f'\t owl:allValuesFrom {text2} ]'
-
-        if arrow["someValuesFrom"]:
-
-            if more_than_one_restriction:
-                more_than_two_restriction = True
-                text = text + ",\n"
-            else:
+            if arrow["allValuesFrom"]:
                 more_than_one_restriction = True
-            
-            text = f'{text}\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
-                    f'\t owl:someValuesFrom {text2} ]'
+
+                text = f'\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
+                        f'\t owl:allValuesFrom {text2} ]'
+
+            if arrow["someValuesFrom"]:
+
+                if more_than_one_restriction:
+                    more_than_two_restriction = True
+                    text = text + ",\n"
+                else:
+                    more_than_one_restriction = True
+                
+                text = f'{text}\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
+                        f'\t owl:someValuesFrom {text2} ]'
     
     # Is the arrow representing a has value restriction?
     if arrow["hasValue"]:
@@ -359,9 +361,9 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
 
     # Is the arrow representing a qualified restriction?
     if (arrow["max_q_cardinality"] or arrow["min_q_cardinality"] or arrow["q_cardinality"]) and "target" in arrow:
-        text2 = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
+        text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
 
-        if text2 == "":
+        if not target_defined:
 
             if arrow["max_q_cardinality"]:
                 diagram_model.generate_error("A max qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
@@ -374,49 +376,51 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
 
             text2 = 'owl:Thing'
 
-        restriction_prefix = base_directive_prefix(arrow["prefix"])
+        if text2 != "":
+            restriction_prefix = base_directive_prefix(arrow["prefix"])
 
-        if arrow["max_q_cardinality"]:
+            if arrow["max_q_cardinality"]:
 
-            if more_than_one_restriction:
-                more_than_two_restriction = True
-                text = text + ",\n"
-            else:
-                more_than_one_restriction = True
+                if more_than_one_restriction:
+                    more_than_two_restriction = True
+                    text = text + ",\n"
+                else:
+                    more_than_one_restriction = True
 
-            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
-                    f'\t\t  owl:maxQualifiedCardinality \"{arrow["max_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
-                    f'\t\t owl:onClass {text2} ]'
-        
-        if arrow["min_q_cardinality"]:
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                        f'\t\t  owl:maxQualifiedCardinality \"{arrow["max_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
+                        f'\t\t owl:onClass {text2} ]'
+            
+            if arrow["min_q_cardinality"]:
 
-            if more_than_one_restriction:
-                more_than_two_restriction = True
-                text = text + ",\n"
-            else:
-                more_than_one_restriction = True
+                if more_than_one_restriction:
+                    more_than_two_restriction = True
+                    text = text + ",\n"
+                else:
+                    more_than_one_restriction = True
 
-            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
-                    f'\t\t  owl:minQualifiedCardinality \"{arrow["min_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
-                    f'\t\t owl:onClass {text2} ]'
-        
-        if arrow["q_cardinality"]:
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                        f'\t\t  owl:minQualifiedCardinality \"{arrow["min_q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
+                        f'\t\t owl:onClass {text2} ]'
+            
+            if arrow["q_cardinality"]:
 
-            if more_than_one_restriction:
-                more_than_two_restriction = True
-                text = text + ",\n"
-            else:
-                more_than_one_restriction = True
+                if more_than_one_restriction:
+                    more_than_two_restriction = True
+                    text = text + ",\n"
+                else:
+                    more_than_one_restriction = True
 
-            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
-                    f'\t\t  owl:qualifiedCardinality \"{arrow["q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
-                    f'\t\t owl:onClass {text2} ]'
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                        f'\t\t  owl:qualifiedCardinality \"{arrow["q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
+                        f'\t\t owl:onClass {text2} ]'
             
     return text, more_than_two_restriction
 
 # Target is the identifier of the element connected to the arrow
 def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target):
     text2 = ""
+    target_defined = True
     
     # Is the element a named class?
     if target in concepts:
@@ -499,8 +503,11 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
             except:
                 diagram_model.generate_error("An element is not connected", target, None, "Relations")
                 text2 = ""
+        
+        else:
+            target_defined = False
 
-    return text2    
+    return text2, target_defined  
 
 def datatype_property_restriction(attribute, diagram_model, block_id):
     text = ""

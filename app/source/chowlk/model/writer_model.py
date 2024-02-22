@@ -520,13 +520,17 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id)[0]
+                    text, more_than_two_restrictions = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id)
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
                         self.file.write("\t" + relation["predicate_restriction"] + "\n")
                         self.file.write(text)
-                
+                    
+                        if more_than_two_restrictions:
+                            prefix = base_directive_prefix(relation["prefix"])
+                            diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", relation_id, f'{prefix}{relation["uri"]}', "Restrictions")
+                    
                 # Is the arrow an annotation property?
                 elif relation["type"] == "owl:AnnotationProperty":
                     text = write_annotation_triple(relation_id, relation, individuals, uri_references, values, diagram_model)
@@ -579,20 +583,25 @@ class Writer_model():
                     elif relation["target"] in anonymous_classes:
                         # In this case, the target of the arrow is a blank node which is the source of another arrow
                         # (we are just interested in those arrows)
-                        complement = anonymous_classes[relation["target"]]["relations"]
+                        complement_id = anonymous_classes[relation["target"]]["relations"]
                         
                         # Is the blank node the source of an arrow?
-                        if len(complement) > 0:
+                        if len(complement_id) > 0:
                             # Get the arrow
-                            complement = all_relations[complement[0]]
+                            complement = all_relations[complement_id[0]]
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement[0])[0]
+                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0])
                                 if text != "":
                                     self.file.write(" ;")
                                     self.file.write(f'\t{relation["type"]} ')
                                     self.file.write(text)
+                                
+                                    if more_than_two_restrictions:
+                                        prefix = base_directive_prefix(complement["prefix"])
+                                        diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", complement_id[0], f'{prefix}{complement["uri"]}', "Restrictions")
+                                
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
@@ -630,9 +639,14 @@ class Writer_model():
                 # Iterate the datatype properties which are defined in each datatype property block 
                 for attribute in attribute_block["attributes"]:
 
-                    text = datatype_property_restriction(attribute, diagram_model, block_id)[0]
+                    text, more_than_two_restrictions = datatype_property_restriction(attribute, diagram_model, block_id)
                     if text != '':
                         self.file.write(f' ;\n\t{attribute["predicate_restriction"]} \n{text}')
+                    
+                        if more_than_two_restrictions:
+                            prefix = base_directive_prefix(attribute["prefix"])
+                            diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", block_id, f'{prefix}{attribute["uri"]}', "Restrictions")
+                    
 
             # Iterate all the ellipses.
             # In this case we are searching for the ellipses which define an owl:disjointWith or owl:equivalentClass statement.
@@ -692,17 +706,22 @@ class Writer_model():
                     elif complement_id in anonymous_classes:
                         # In this case, the other element is a blank node which is the source of another arrow
                         # (we are just interested in those arrows)
-                        complement = anonymous_classes[complement_id]["relations"]
+                        complement_id = anonymous_classes[complement_id]["relations"]
 
                         # Is the blank node the source of an arrow?
-                        if len(complement) > 0:
-                            complement = all_relations[complement[0]]
+                        if len(complement_id) > 0:
+                            complement = all_relations[complement_id[0]]
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement[0])[0]
+                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0])
                                 self.file.write(text)
+
+                                if more_than_two_restrictions:
+                                    prefix = base_directive_prefix(complement["prefix"])
+                                    diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", complement_id[0], f'{prefix}{complement["uri"]}', "Restrictions")
+                            
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):

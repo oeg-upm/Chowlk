@@ -30,6 +30,7 @@ def transform_ontology(root):
 
     ontology_uri = diagram_model.get_ontology_uri()
     errors = diagram_model.get_errors()
+    warnings = diagram_model.get_warnings()
 
     turtle_output_file = tempfile.NamedTemporaryFile()
     xml_output_file = tempfile.NamedTemporaryFile()
@@ -67,6 +68,6 @@ def transform_ontology(root):
 
     turtle_string = turtle_string.replace('##', '#')
 
-    return turtle_string, xml_string, new_namespaces, errors
+    return turtle_string, xml_string, new_namespaces, errors, warnings
 
 

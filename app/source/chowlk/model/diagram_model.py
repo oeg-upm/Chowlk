@@ -73,6 +73,11 @@ class Diagram_model():
             "Base": [],
             "Annotation Properties": [],
         }
+
+        # This attribute stores the categories of possible warnings that a user can make
+        self.warnings = {
+            "Restrictions": [],
+        }
         self.ontology_uri = ''
     
     # Getters
@@ -129,6 +134,9 @@ class Diagram_model():
     
     def get_errors(self):
         return self.errors
+
+    def get_warnings(self):
+        return self.warnings
     
     # Setters
     def set_arrows(self, relations_copy):
@@ -961,6 +969,18 @@ class Diagram_model():
             error['value'] = value
 
         self.errors[type].append(error)
+    
+    # This function generate a warning and stores it in the corresponding category
+    def generate_warning(self, message, id, value, type):
+        warning = {}
+        warning['message'] = message
+        if id != None:
+            warning['shape_id'] = id
+            
+        if value != None:
+            warning['value'] = value
+
+        self.warnings[type].append(warning)
     
     # This function add more information to the "relation" dictionary.
     # Specifically the following information is added:

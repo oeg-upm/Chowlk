@@ -91,17 +91,17 @@ def individual_identification_arrow(diagram_model):
             elif target_id in anonymous_classes:
                 # In this case, the target of the arrow is a blank node which is the source of another arrow
                 # (we are just interested in those arrows)
-                complement = anonymous_classes[target_id]["relations"]
+                complement_id = anonymous_classes[target_id]["relations"]
                 
                 # Is the blank node the source of an arrow?
-                if len(complement) > 0:
+                if len(complement_id) > 0:
                     # Get the arrow
-                    complement = arrows[complement[0]]
+                    complement = arrows[complement_id[0]]
 
                     # Is the object a restriction?
                     if(complement["type"] == "owl:ObjectProperty"):
                         text = '\t'
-                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, complement[0])[0]
+                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, complement_id[0])[0]
                         individual["type"].append(text)
 
                     # Is the object a complement class?

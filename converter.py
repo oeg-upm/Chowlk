@@ -9,7 +9,7 @@ def main(diagram_path, output_path, type, format):
     #inicio = time.time()
 
     root = read_drawio_xml(diagram_path)
-    ontology_turtle, ontology_xml, namespaces, errors = transform_ontology(root)
+    ontology_turtle, ontology_xml, namespaces, errors, warnings = transform_ontology(root)
 
     file = open(output_path, mode="w")
 
@@ -21,6 +21,7 @@ def main(diagram_path, output_path, type, format):
     #print(fin-inicio)
 
     print_errors(errors)
+    print_warnings(warnings)
     file.close()
 
 def print_errors(errors):
@@ -38,6 +39,22 @@ def print_errors(errors):
             print("\nError " + error_type + ": " + error.pop("message"))
             for type in error:
                     print("\t" + type +": " + error[type])
+
+def print_warnings(warnings):
+    for warning_type in warnings:
+        warning = warnings[warning_type]
+        if isinstance(warning, list):
+            for content in warning:
+                if "message" in content:
+                    print("\nWarning " + warning_type + ": " + content.pop("message"))
+                else:
+                    print("\nWarning " + warning_type + ": ")
+                for type in content:
+                    print("\t" + type +": " + content[type])
+        else:
+            print("\nWarning " + warning_type + ": " + warning.pop("message"))
+            for type in warning:
+                    print("\t" + type +": " + warning[type])
 
     
 if __name__ == "__main__":
