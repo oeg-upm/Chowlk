@@ -10,7 +10,13 @@ const downloadButtonXmlErrorFile = document.getElementById('download-xml-errors'
 
 const responseText = document.getElementById('response');
 const errorReport = document.getElementById('error-report');
+const warningReport = document.getElementById('warning-report');
 
+//Warning accordions
+const restrictionsWItem = document.getElementById('restrictions-w-item');
+const restrictionsWBody = document.getElementById('restrictions-w-body');
+
+//Error accordions
 const conceptsItem = document.getElementById('concepts-item');
 const conceptsBody = document.getElementById('concepts-body');
 
@@ -200,17 +206,29 @@ function transformDiagram(file){
             xmlErrors.style.display = 'none';
             newNamespaces.style.display = 'none';
             errorReport.style.display = 'none';
+            warningReport.style.display = 'none';
             inputName.style.display = 'none';
             responseText.style.display = 'block';
             responseText.innerText = response['ttl_data'];
             loadTransformedDiagram = true;
 
             var errors_keys = Object.keys(response['errors']);
+            var warnings_keys = Object.keys(response['warnings']);
             var namespaces_keys = Object.keys(response['new_namespaces']);
 
             //xml file with highlight errors
             loadXmlErrorFile = response['xml_error_generated'];
         
+            if (warnings_keys.length > 0){
+                warningReport.style.display = 'block';
+
+                restrictionsWBody.innerHTML = '';
+
+                restrictionsWItem.style.display = 'none';
+
+                warnings_keys.forEach((key) => classifyWarning(key, response['warnings'][key]));
+            }
+
             if (errors_keys.length > 0){
                 //The diagram has error that is neccesary to show to the user
                 errorReport.style.display = 'block';
@@ -258,52 +276,7 @@ function transformDiagram(file){
                 ontologyUriItem.style.displey = 'none';
                 serverErrorItem.style.display = 'none';
                 
-                var key;
-
-                for(let i = 0; i < errors_keys.length; i++){
-                    key = errors_keys[i];
-                    errors = response['errors'][key];
-
-                    if (key === 'Concepts'){
-                        showError(conceptsItem, conceptsBody, errors);
-                    } else if (key === 'Arrows'){
-                        showError(arrowsItem, arrowsBody, errors);
-                    } else if (key === 'Ellipses'){
-                        showError(ellipsesItem, ellipsesBody, errors);
-                    } else if (key === 'Attributes'){
-                        showError(attributesItem, attributesBody, errors);
-                    } else if (key === 'Namespaces'){
-                        showError(namespacesItem, namespacesBody, errors);
-                    } else if (key === 'Metadata'){
-                        showError(metadataItem, metadataBody, errors);
-                    } else if (key === 'Rhombuses'){
-                        showError(rhombusesItem, rhombusesBody, errors);
-                    } else if (key === 'Individual'){
-                        showError(individualItem, individualBody, errors);
-                    } else if (key === 'Hexagons'){
-                        showError(hexagonsItem, hexagonsBody, errors);
-                    } else if (key === 'Cardinality-Restrictions'){
-                        showError(cardinalityRestrictionsItem, cardinalityRestrictionsBody, errors);
-                    } else if (key === 'intersectionOf'){
-                        showError(intersectionOfItem, intersectionOfBody, errors);
-                    } else if (key === 'oneOf'){
-                        showError(oneOfItem, oneOfBody, errors);
-                    } else if (key === 'complementOf'){
-                        showError(complementOfItem, complementOfBody, errors);
-                    } else if (key === 'unionOf'){
-                        showError(unionOfItem, unionOfBody, errors);
-                    } else if (key === 'Relations'){
-                        showError(relationItem, relationBody, errors);
-                    } else if (key === 'Syntax'){
-                        showSimpleError(syntaxItem, syntaxBody, errors);
-                    } else if (key === 'Base'){
-                        showError(baseItem, baseBody, errors);
-                    } else if (key == 'Ontology'){
-                        showSimpleError(ontologyUriItem, ontologyUriBody, errors);
-                    } else if (key === 'Server Error'){
-                        showSimpleError(serverErrorItem, serverErrorBody, errors);
-                    }
-                }
+                errors_keys.forEach((key) => classifyError(key, response['errors'][key]));
             }
 
             if (namespaces_keys.length > 0){
@@ -328,6 +301,75 @@ function transformDiagram(file){
     }
     fd.append('data', file);
     xhr.send(fd);
+}
+
+function classifyWarning(key, value){
+
+    if (key == 'Restrictions'){
+        showError(restrictionsWItem, restrictionsWBody, value);
+    }
+}
+
+function classifyError(key, value){
+    switch(key){
+        case 'Concepts':
+            showError(conceptsItem, conceptsBody, value);
+            break;
+        case 'Arrows':
+            showError(arrowsItem, arrowsBody, value);
+            break;
+        case 'Ellipses':
+            showError(ellipsesItem, ellipsesBody, value);
+            break;
+        case 'Attributes':
+            showError(attributesItem, attributesBody, value);
+            break;
+        case 'Namespaces':
+            showError(namespacesItem, namespacesBody, value);
+            break;
+        case 'Metadata':
+            showError(metadataItem, metadataBody, value);
+            break;
+        case 'Rhombuses':
+            showError(rhombusesItem, rhombusesBody, value);
+            break;
+        case 'Individual':
+            showError(individualItem, individualBody, value);
+            break;
+        case 'Hexagons':
+            showError(hexagonsItem, hexagonsBody, value);
+            break;
+        case 'Cardinality-Restrictions':
+            showError(cardinalityRestrictionsItem, cardinalityRestrictionsBody, value);
+            break;
+        case 'intersectionOf':
+            showError(intersectionOfItem, intersectionOfBody, value);
+            break;
+        case 'oneOf':
+            showError(oneOfItem, oneOfBody, value);
+            break;
+        case 'complementOf':
+            showError(complementOfItem, complementOfBody, value);
+            break;
+        case 'unionOf':
+            showError(unionOfItem, unionOfBody, value);
+            break;
+        case 'Relations':
+            showError(relationItem, relationBody, value);
+            break;
+        case 'Syntax':
+            showSimpleError(syntaxItem, syntaxBody, value);
+            break;
+        case 'Base':
+            showError(baseItem, baseBody, value);
+            break;
+        case 'Ontology':
+            showSimpleError(ontologyUriItem, ontologyUriBody, value);
+            break;
+        case 'Server Error':
+            showSimpleError(serverErrorItem, serverErrorBody, value);
+            break;
+    }
 }
 
 function showError(item, body, errors){

@@ -5,10 +5,10 @@ Error Relations: A max qualified cardinality restriction has not a target define
 Error Relations: A min qualified cardinality restriction has not a target defined
 	shape_id: HJKh9fVIsua8A9RgERsg-12
 
-Error Base: A base has not been declared. The first namespace has been taken as base
-
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
-
 Warning Restrictions: More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway
 	shape_id: HJKh9fVIsua8A9RgERsg-12
 	value: ns:objectProperty
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

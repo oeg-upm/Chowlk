@@ -7,4 +7,4 @@ Error Annotation Properties: A range is defined in an annotation property
 	shape_id: HZX9VfL-mZPX7PpOOrV0-7
 	value: ns:annotationProperty1
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

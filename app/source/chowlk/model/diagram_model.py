@@ -70,13 +70,15 @@ class Diagram_model():
             "unionOf": [],
             "Relations": [],
             "equivalentClass": [],
-            "Base": [],
             "Annotation Properties": [],
+            "Base": [],
         }
 
         # This attribute stores the categories of possible warnings that a user can make
         self.warnings = {
             "Restrictions": [],
+            "Base": [],
+            "Ontology": [],
         }
         self.ontology_uri = ''
     

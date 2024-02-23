@@ -3,6 +3,6 @@ Error Rhombuses: A rhombus can not be defined as Object Property and Datatype Pr
 	shape_id: V9QDXijGcr4VTs9w6IcK-9
 	value: <<owl:DatatypeProperty>>|<<owl:ObjectProperty>> | ns:datatypeProperty
 
-Error Base: A base has not been declared. The first namespace has been taken as base
+Warning Base: A base has not been declared. The first namespace has been taken as base
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

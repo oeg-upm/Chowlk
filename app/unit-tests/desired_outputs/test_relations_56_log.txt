@@ -7,6 +7,6 @@ Error Rhombuses: There is not a single valid type defined inside a rhombus
 	shape_id: 4rq9chuBLuWLN-xE1oy9-1
 	value: <<owl:invention>> | ns:objectProperty
 
-Error Base: A base has not been declared. The first namespace has been taken as base
+Warning Base: A base has not been declared. The first namespace has been taken as base
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

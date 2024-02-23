@@ -43,6 +43,7 @@
                     <p class="ps-4"><a href="#restriction-identifier">2.5.3. Restriction</a></p>
                     <p class="ps-5"><a href="#restriction-value-constraint-identifier">2.5.3.1. Value Constraints</a></p>
                     <p class="ps-5"><a href="#restriction-cardinality-constraint-identifier">2.5.3.2. Cardinality Constraints</a></p>
+                    <p class="ps-5"><a href="#restriction-qualified-cardinality-constraint-identifier">2.5.3.3. Qualified Cardinality Constraints</a></p>
                     <p class="ps-4"><a href="#intersection-identifier">2.5.4. Intersection</a></p>
                     <p class="ps-4"><a href="#union-identifier">2.5.5. Union</a></p>
                     <p class="ps-4"><a href="#complement-identifier">2.5.6. Complement</a></p>
@@ -1163,12 +1164,12 @@
 
                     <p class="pt-3">Cardinality restriction of a concept on an object property. The <code>ns:Class1</code> 
                         class is subclass of an anonymus concept which has an object property <code>ns:objectProperty</code>, and 
-                        should have at least N1 and at most N2 individuals from class <code>ns:Class2</code>. If the N2 
+                        should have at least N1 and at most N2 individuals for that property. If the N2 
                         element is equal to the letter N, it means <code>owl:maxCardinality</code> does not exist. If the N1 
                         element is equal to 0, it means <code>owl:minCardinality</code> does not exist. If the N1 is equal to N2, it means <code> owl:cardinality</code> does exist</p>
 
                     <p class="pt-3">Cardinality restriction of a concept on a datatype property. The <code>ns:Class</code> concept is subclass of an anonymus concept which has an 
-                        datatype property <code>ns:datatypeProperty</code>, and shall have at least N1 and at most N2 values. If the N2 element is equal 
+                        datatype property <code>ns:datatypeProperty</code>, and shall have at least N1 and at most N2 values for that property. If the N2 element is equal 
                         to the letter N, it means <code>owl:maxCardinality</code> does not exist. If the N1 element is equal to 0, 
                         it means <code>owl:minCardinality</code> does not exist. If the N1 is equal to N2, it means <code>owl:cardinality</code> does exist</p>
 
@@ -1305,6 +1306,164 @@
                                 <td><code>rdf:type owl:Restriction ;<br>
                                     owl:onProperty ns:datatypeProperty1 ;<br>
                                     owl:cardinality "N3"^^xsd:nonNegativeInteger</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <h5 id="restriction-qualified-cardinality-constraint-identifier" class="pt-3">2.5.3.3. Qualified Cardinality Constraints</h5>
+
+                    <p class="pt-3">Qualified cardinality restriction of a concept on an object property. The <code>ns:Class1</code> 
+                        class is subclass of an anonymus concept which has an object property <code>ns:objectProperty</code>, and 
+                        should have at least N1 and at most N2 individuals from class <code>ns:Class2</code>. If the N2 
+                        element is equal to the letter N, it means <code>owl:maxQualifiedCardinality</code> does not exist. If the N1 
+                        element is equal to 0, it means <code>owl:minQualifiedCardinality</code> does not exist. If the N1 is equal to N2, it means <code> owl:qualifiedCardinality</code> does exist</p>
+
+                    <p class="pt-3">Qualified cardinality restriction of a concept on a datatype property. The <code>ns:Class</code> concept is subclass of an anonymus concept which has an 
+                        datatype property <code>ns:datatypeProperty</code>, and shall have at least N1 and at most N2 values. If the N2 element is equal 
+                        to the letter N, it means <code>owl:maxQualifiedCardinality</code> does not exist. If the N1 element is equal to 0, 
+                        it means <code>owl:minQualifiedCardinality</code> does not exist. If the N1 is equal to N2, it means <code>owl:qualifiedCardinality</code> does exist</p>
+
+                    <p class="pt-3">The qualified cardinality constraint <code>owl:maxQualifiedCardinality</code> is a built-in OWL property that links a restriction class to a data value belonging to the 
+                        value space of the XML Schema datatype nonNegativeInteger. A restriction containing an <code>owl:maxQualifiedCardinality</code> constraint describes a class of all individuals 
+                        that have at most N values (individuals or data values) for the property concerned, where N is the value of the qualified cardinality constraint.</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/max_qualified_cardinality_1.svg" alt="max qualified cardinality"></td>
+                                <td><code>rdf:type owl:Restriction ;<br>
+                                    owl:onProperty ns:objectProperty ;<br>
+                                    owl:maxQualifiedCardinality "N2"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onClass ns:Class2 .</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/max_qualified_cardinality_2.svg" alt="max qualified cardinality"></td>
+                                <td><code>rdf:type owl:Restriction ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ;<br>
+                                    owl:maxQualifiedCardinality "N2"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onDataRange xsd:Datatype .</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">The cardinality constraint <code>owl:minQualifiedCardinality</code> is a built-in OWL property that links a restriction class to a data value belonging to 
+                        the value space of the XML Schema datatype nonNegativeInteger. A restriction containing an <code>owl:minQualifiedCardinality</code> constraint describes a class of all 
+                        individuals that have at least N values (individuals or data values) for the property concerned, where N is the value of the 
+                        qualified cardinality constraint.</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/min_qualified_cardinality_1.svg" alt="min qualified cardinality"></td>
+                                <td><code>rdf:type owl:Restriction ;<br>
+                                    owl:onProperty ns:objectProperty ;<br>
+                                    owl:minQualifiedCardinality "N1"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onClass ns:Class2 .</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/min_qualified_cardinality_2.svg" alt="min cardinality"></td>
+                                <td><code>rdf:type owl:Restriction ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ;<br>
+                                    owl:minQualifiedCardinality "N1"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onDataRange xsd:Datatype .</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">The cardinality constraint <code>owl:qualifiedCardinality</code> is a built-in OWL property that links a restriction class to a data value belonging to the 
+                        range of the XML Schema datatype nonNegativeInteger. A restriction containing an <code>owl:qualifiedCardinality</code> constraint describes a class of all individuals that 
+                        have exactly N values (individuals or data values) for the property concerned, where N is the value of the qualified cardinality constraint. </p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/qualified_cardinality_1.svg" alt="qualified cardinality"></td>
+                                <td><code>rdf:type owl:Restriction ;<br>
+                                    owl:onProperty ns:objectProperty ;<br>
+                                    owl:qualifiedCardinality "N3"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onClass ns:Class2 .</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/qualified_cardinality_2.svg" alt="qualified_cardinality"></td>
+                                <td><code>rdf:type owl:Restriction ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ;<br>
+                                    owl:qualifiedCardinality "N3"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onDataRange xsd:Datatype .</code></td>
                             </tr>
 
                         </tbody>

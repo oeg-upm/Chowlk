@@ -15,10 +15,7 @@ class Writer_model():
         errors = diagram_model.get_errors()
         if not ontology_uri:
             diagram_model.set_ontology_uri(base_uri)
-            error = {
-                "message": "An ontology uri has not been declared. The base uri has been taken as the ontology uri"
-            }
-            errors["Ontology"] = error
+            diagram_model.generate_warning("An ontology uri has not been declared. The base uri has been taken as the ontology uri", None, None, "Ontology")
 
         self.write_ontology_metadata(diagram_model)
         self.write_object_properties(diagram_model)
@@ -53,7 +50,7 @@ class Writer_model():
         # Check if the user has defined "@base"
         if(not base_uri):
             base_prefix, base_uri = select_base(namespaces, new_namespaces)
-            diagram_model.generate_error("A base has not been declared. The first namespace has been taken as base", None, None, "Base")
+            diagram_model.generate_warning("A base has not been declared. The first namespace has been taken as base", None, None, "Base")
         
         if check_valid_prefix(base_uri):
             base_uri += '/'
