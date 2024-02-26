@@ -3833,6 +3833,24 @@
                                     rdfs:range ns:Class2 .</code></td>
                             </tr>
 
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/restriction_restriction_dp.svg" alt="disjoint">
+                                </td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    owl:onProperty ns:objectProperty1 ;<br>
+                                    owl:allValuesFrom [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:dataypeProperty1 ] .<br>
+                                    <br>
+                                    ns:objectProperty1 a owl:ObjectProperty ;<br>
+                                    rdfs:domain ns:Class1 .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .</code></td>
+                            </tr>
+
                         </tbody>
 
                     </table>
@@ -3931,7 +3949,7 @@
                                     owl:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty ;<br>
                                     owl:allValuesFrom [ a owl:Class ;<br>
-                                    owl:complementOf ns:Class2 ] ) ] .<br>
+                                    owl:complementOf ns:Class2 ] ] .<br>
                                     <br>
                                     ns:Class2 a owl:Class .<br>
                                     <br>
@@ -4005,7 +4023,7 @@
                                     owl:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class3 ;<br>
-                                    owl:onProperty ns:objectProperty ] .<br>
+                                    owl:onProperty ns:objectProperty ] ) .<br>
                                     <br>
                                     ns:Class1 a owl:Class .<br>
                                     <br>
@@ -4015,6 +4033,24 @@
                                     <br>
                                     ns:objectProperty a owl:ObjectProperty ;<br>
                                     rdfs:range ns:Class3 .</code></td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/intersection_restriction_dp.svg" alt="disjoint">
+                                </td>
+                                <td><code>ns:Class3 a owl:Class ;<br>
+                                    owl:subClassOf [ a owl:Class ;<br>
+                                    owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] ) .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .</code></td>
                             </tr>
 
                         </tbody>
@@ -4189,7 +4225,7 @@
                                     owl:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class3 ;<br>
-                                    owl:onProperty ns:objectProperty ] .<br>
+                                    owl:onProperty ns:objectProperty ] ) .<br>
                                     <br>
                                     ns:Class1 a owl:Class .<br>
                                     <br>
@@ -4199,6 +4235,24 @@
                                     <br>
                                     ns:objectProperty a owl:ObjectProperty ;<br>
                                     rdfs:range ns:Class3 .</code></td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/union_restriction_dp.svg" alt="disjoint">
+                                </td>
+                                <td><code>ns:Class3 a owl:Class ;<br>
+                                    owl:subClassOf [ a owl:Class ;<br>
+                                    owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] ) .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .</code></td>
                             </tr>
 
                         </tbody>
@@ -4573,6 +4627,36 @@
                                     <br>
                                     ns:Class1 a owl:Class .</code></td>
                             </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="main-tag">Preferred</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/restriction_domain_object_property_3.svg" alt="restriction as domain of an object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:domain [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .</code></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="alt-tag">Alternative</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/restriction_domain_object_property_4.svg" alt="restriction as domain of an object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:domain [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .</code></td>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -4799,6 +4883,36 @@
                                     <br>
                                     ns:Class1 a owl:Class .</code></td>
                             </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="main-tag">Preferred</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/restriction_range_object_property_3.svg" alt="restriction as range of an object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:range [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .</code></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="alt-tag">Alternative</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/restriction_range_object_property_4.svg" alt="restriction as range of an object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:range [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .</code></td>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -4986,6 +5100,19 @@
                                     rdfs:range ns:Class1 .<br>
                                     <br>
                                     ns:Class1 a owl:Class .</code></td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/restriction_domain_datatype_property_2.svg" alt="restriction as domain of an datatype property">
+                                </td>
+                                <td><code>ns:datatypeProperty a owl:DatatypeProperty ;<br>
+                                    rdfs:domain [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom prefix:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range prefix:datatype .</code></td>
                             </tr>
 
                         </tbody>
