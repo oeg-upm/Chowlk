@@ -222,8 +222,12 @@ function transformDiagram(file){
             if (warnings_keys.length > 0){
                 warningReport.style.display = 'block';
 
+                baseBody.innerHTML = '';
+                ontologyUriBody.innerHTML = '';
                 restrictionsWBody.innerHTML = '';
-
+                
+                baseItem.style.display = 'none';
+                ontologyUriItem.style.displey = 'none';
                 restrictionsWItem.style.display = 'none';
 
                 warnings_keys.forEach((key) => classifyWarning(key, response['warnings'][key]));
@@ -252,8 +256,6 @@ function transformDiagram(file){
                 unionOfBody.innerHTML = '';
                 relationBody.innerHTML = '';
                 syntaxBody.innerHTML = '';
-                baseBody.innerHTML = '';
-                ontologyUriBody.innerHTML = '';
                 serverErrorBody.innerHTML = '';
 
                 conceptsItem.style.display = 'none';
@@ -272,8 +274,6 @@ function transformDiagram(file){
                 unionOfItem.style.display = 'none';
                 relationItem.style.display = 'none';
                 syntaxItem.style.display = 'none';
-                baseItem.style.display = 'none';
-                ontologyUriItem.style.displey = 'none';
                 serverErrorItem.style.display = 'none';
                 
                 errors_keys.forEach((key) => classifyError(key, response['errors'][key]));
@@ -307,6 +307,12 @@ function classifyWarning(key, value){
 
     if (key == 'Restrictions'){
         showError(restrictionsWItem, restrictionsWBody, value);
+    }
+    else if (key == 'Base'){
+        showError(baseItem, baseBody, value);
+    }
+    else if (key == 'Ontology'){
+        showError(ontologyUriItem, ontologyUriBody, value);
     }
 }
 
@@ -359,12 +365,6 @@ function classifyError(key, value){
             break;
         case 'Syntax':
             showSimpleError(syntaxItem, syntaxBody, value);
-            break;
-        case 'Base':
-            showError(baseItem, baseBody, value);
-            break;
-        case 'Ontology':
-            showSimpleError(ontologyUriItem, ontologyUriBody, value);
             break;
         case 'Server Error':
             showSimpleError(serverErrorItem, serverErrorBody, value);
