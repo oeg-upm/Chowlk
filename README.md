@@ -113,7 +113,9 @@ pip install -r requirements.txt
 ### To convert a diagram:
 
 positional arguments:
+
   diagram_path          the path where the diagram is located
+  
   output_path           the desired location for the generated ontology
 
 options:
