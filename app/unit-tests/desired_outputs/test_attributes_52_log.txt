@@ -6,6 +6,6 @@ Error Attributes: The range of a datatype property is not a datatype or an enume
 Error oneOf: An owl:oneOf is connected to less than one shape. A owl:oneOf needs at least one individual
 	shape_id: mO_aWLudfBUCDliUoQXy-10
 
-Error Base: A base has not been declared. The first namespace has been taken as base
+Warning Base: A base has not been declared. The first namespace has been taken as base
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

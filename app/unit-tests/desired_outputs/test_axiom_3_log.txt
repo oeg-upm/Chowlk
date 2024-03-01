@@ -2,4 +2,4 @@
 Error Hexagons: An element of an owl:AllDifferent axiom is not an individual
 	shape_id: 8wC4p2Fh7XucXnuYY3cu-3
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

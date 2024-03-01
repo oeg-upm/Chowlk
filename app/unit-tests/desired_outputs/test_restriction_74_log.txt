@@ -7,6 +7,6 @@ Error Relations: The range of an object property is not a class description
 	shape_id: pjjuLlaD1_zj22IizKuv-210
 	value: <https://chowlk/ObjectProperty1>
 
-Error Base: A base has not been declared. The first namespace has been taken as base
+Warning Base: A base has not been declared. The first namespace has been taken as base
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

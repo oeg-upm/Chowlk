@@ -1,0 +1,8 @@
+
+Error Attributes: The range of a datatype property is not a datatype or an enumerated datatype
+	shape_id: SF7bBkGJSN7ZNBzL04Su-8
+	value: ns:datatypeProperty
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

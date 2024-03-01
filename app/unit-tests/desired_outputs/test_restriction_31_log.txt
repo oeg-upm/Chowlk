@@ -1,4 +1,8 @@
 
-Error Base: A base has not been declared. The first namespace has been taken as base
+Warning Restrictions: More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway
+	shape_id: hB7H2eBXrc4l3iVArMC0-14
+	value: <#objectProperty>
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

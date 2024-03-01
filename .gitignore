@@ -7,10 +7,10 @@ venv
 .idea
 .vs
 .vscode
-__pycache__/
+*__pycache__/
 *.log
-logs
-tmp
 source/*egg-info
 dist
-test-data
+data
+comandos.txt
+app/unit-tests/outputs/*

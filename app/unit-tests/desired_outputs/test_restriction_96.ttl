@@ -1,0 +1,29 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:objectProperty a owl:ObjectProperty ;
+    rdfs:label "object property" ;
+    rdfs:domain ns:Class1 ;
+    rdfs:range [ a owl:Restriction ;
+            owl:allValuesFrom xsd:datatype ;
+            owl:onProperty ns:datatypeProperty1 ],
+        [ a owl:Restriction ;
+            owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty ns:datatypeProperty1 ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "20"^^xsd:nonNegativeInteger ;
+            owl:onProperty ns:datatypeProperty1 ] .
+
+ns:Class1 a owl:Class ;
+    rdfs:label "Class1" .
+
+ns:datatypeProperty1 a owl:DatatypeProperty ;
+    rdfs:label "datatype property1" ;
+    rdfs:range xsd:datatype .
+

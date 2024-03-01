@@ -133,6 +133,54 @@
         
     </section>
 
+    <!--Warning Report-->
+
+    <section id="warning-report" class="pt-3 px-5" style="display: none;">
+        <div class="container">
+            <h4>Warning Reporting</h4>
+
+            <!--Warnings-->
+            <div class="accordion-item" id="base-item" style="display: none;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#base">
+                        Base
+                    </button>
+                </h2>
+                <div id="base" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body" id="base-body">
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item" id="ontology-uri-item" style="display: none;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ontology-uri">
+                        Ontology uri
+                    </button>
+                </h2>
+                <div id="base" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body" id="ontology-uri-body">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" id="accordionWarningExample">
+                <div class="accordion-item" id="restrictions-w-item" style="display: none;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#restrictions-w">
+                            Restrictions
+                        </button>
+                    </h2>
+                    <div id="restrictions-w" class="accordion-collapse collapse show" data-bs-parent="#accordionWarningExample">
+                        <div class="accordion-body" id="restrictions-w-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!--Error Report-->
 
     <section id="error-report" class="pt-3 px-5" style="display: none;">
@@ -157,7 +205,7 @@
             <!--Errors-->
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item" id="concepts-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading01">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#concepts">
                             Concepts
                         </button>
@@ -169,7 +217,7 @@
                 </div>
 
                 <div class="accordion-item" id="attributes-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading02">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#attributes">
                             Attributes
                         </button>
@@ -181,7 +229,7 @@
                 </div>
 
                 <div class="accordion-item" id="arrows-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading03">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#arrows">
                             Arrows
                         </button>
@@ -193,7 +241,7 @@
                 </div>
 
                 <div class="accordion-item" id="ellipses-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading04">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ellipses">
                             Ellipses
                         </button>
@@ -205,7 +253,7 @@
                 </div>
 
                 <div class="accordion-item" id="namespaces-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading05">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#namespaces">
                             Namespaces
                         </button>
@@ -217,7 +265,7 @@
                 </div>
 
                 <div class="accordion-item" id="metadata-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading06">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#metadata">
                             Metadata
                         </button>
@@ -229,7 +277,7 @@
                 </div>
 
                 <div class="accordion-item" id="rhombuses-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading07">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#rhombuses">
                             Rhombuses
                         </button>
@@ -241,7 +289,7 @@
                 </div>
 
                 <div class="accordion-item" id="individual-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#individual">
                             Individuals
                         </button>
@@ -253,7 +301,7 @@
                 </div>
 
                 <div class="accordion-item" id="hexagons-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#hexagons">
                             Hexagons
                         </button>
@@ -265,7 +313,7 @@
                 </div>
 
                 <div class="accordion-item" id="cardinalityRestrictions-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#cardinalityRestrictions">
                             Cardinality Restrictions
                         </button>
@@ -277,7 +325,7 @@
                 </div>
 
                 <div class="accordion-item" id="intersectionOf-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#intersectionOf">
                             Intersections
                         </button>
@@ -289,7 +337,7 @@
                 </div>
 
                 <div class="accordion-item" id="oneOf-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#oneOf">
                             Enumerations
                         </button>
@@ -301,7 +349,7 @@
                 </div>
 
                 <div class="accordion-item" id="complementOf-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#complementOf">
                             Complements
                         </button>
@@ -313,7 +361,7 @@
                 </div>
 
                 <div class="accordion-item" id="unionOf-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#unionOf">
                             Unions
                         </button>
@@ -325,7 +373,7 @@
                 </div>
 
                 <div class="accordion-item" id="relation-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#relation">
                             Relations
                         </button>
@@ -337,7 +385,7 @@
                 </div>
 
                 <div class="accordion-item" id="syntax-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#syntax">
                             Syntax
                         </button>
@@ -348,32 +396,8 @@
                     </div>
                 </div>
 
-                <div class="accordion-item" id="base-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#base">
-                            Base
-                        </button>
-                    </h2>
-                    <div id="base" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                        <div class="accordion-body" id="base-body">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item" id="ontology-uri-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ontology-uri">
-                            Ontology uri
-                        </button>
-                    </h2>
-                    <div id="base" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                        <div class="accordion-body" id="ontology-uri-body">
-                        </div>
-                    </div>
-                </div>
-
                 <div class="accordion-item" id="server-error-item" style="display: none;">
-                    <h2 class="accordion-header" id="heading08">
+                    <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#server-error">
                             Server Error
                         </button>
@@ -385,8 +409,6 @@
                 </div>
 
             </div>
-            
-
         </div>
     </section>
 

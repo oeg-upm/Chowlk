@@ -7,6 +7,6 @@ Error Attributes: The range of a datatype property is not a datatype or an enume
 	shape_id: AXts0nK0075OEEE55lPx-3
 	value: ns:datatypeProperty
 
-Error Base: A base has not been declared. The first namespace has been taken as base
+Warning Base: A base has not been declared. The first namespace has been taken as base
 
-Error Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

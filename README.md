@@ -69,7 +69,8 @@ The service will return the following dictionary:
   "errors": {"Concepts": [{"message": "Problem in text", "shape_id": "13", "value": "ns:Building Element"}],
              "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}]},
   "xml_error_generated": true,
-  "xml_error_file": "<mxfile ..."
+  "xml_error_file": "<mxfile ...",
+  "warnings": {"Base": [{"message": "A base has not been declared. The first namespace has been taken as base"}]}
 }
 ```
 
@@ -86,7 +87,15 @@ The service will return the following dictionary:
 ```
 * **xml_error_generated:** Specifies whether an xml file highlighting the errors has been generated.
 * **xml_error_file:** It contains an xml file in which the shapes involved in an error are marked in red. In addition, for each error a new shapes is generated containing a message explaining the error. This xml file can be uploaded to drawio.io.
+* **warnings:** Contains the warnings found in the ontology diagram, organised by category. The keywords are the categories and the value for these keywords is an array that may contain objects that have the following structure:
 
+```json
+{
+  "message": "Some message related to the problem",
+  "shape_id": "An integer id that identify the problematic shape in the diagram",
+  "value": "the actual text related with the shape"
+}
+```
 
 ### 3. Running it from source:
 
@@ -103,14 +112,40 @@ pip install -r requirements.txt
 
 ### To convert a diagram:
 
+positional arguments:
+
+    diagram_path          the path where the diagram is located
+  
+    output_path           the desired location for the generated ontology
+
+options:
+
+    -h, --help            show this help message and exit
+  
+    --xml_error_path XML_ERROR_PATH            the desired location for the xml file with the marked errors found in the diagram
+  
+    --type TYPE           ontology or rdf data
+  
+    --format FORMAT       file format: ttl or xml
+
 * If the desired format is ttl:
 ```bash
 python converter.py path/to/diagram.xml output/path/ontology.ttl --type ontology --format ttl
 ```
 
+* If the desired format is ttl and the path to the xml error is indicated:
+```bash
+python converter.py path/to/diagram.xml output/path/ontology.ttl --xml_error_path output/path/error_xml.xml --type ontology --format ttl
+```
+
 * If the desired format is rdf/xml:
 ```bash
 python converter.py path/to/diagram.xml output/path/ontology.xml --type ontology --format xml
+```
+
+* If the desired format is rdf/xml and the path to the xml error is indicated:
+```bash
+python converter.py path/to/diagram.xml output/path/ontology.xml --xml_error_path output/path/error_xml.xml --type ontology --format xml
 ```
 
 ### To run the app locally:

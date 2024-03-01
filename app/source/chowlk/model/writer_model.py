@@ -15,10 +15,7 @@ class Writer_model():
         errors = diagram_model.get_errors()
         if not ontology_uri:
             diagram_model.set_ontology_uri(base_uri)
-            error = {
-                "message": "An ontology uri has not been declared. The base uri has been taken as the ontology uri"
-            }
-            errors["Ontology"] = error
+            diagram_model.generate_warning("An ontology uri has not been declared. The base uri has been taken as the ontology uri", None, None, "Ontology")
 
         self.write_ontology_metadata(diagram_model)
         self.write_object_properties(diagram_model)
@@ -53,7 +50,7 @@ class Writer_model():
         # Check if the user has defined "@base"
         if(not base_uri):
             base_prefix, base_uri = select_base(namespaces, new_namespaces)
-            diagram_model.generate_error("A base has not been declared. The first namespace has been taken as base", None, None, "Base")
+            diagram_model.generate_warning("A base has not been declared. The first namespace has been taken as base", None, None, "Base")
         
         if check_valid_prefix(base_uri):
             base_uri += '/'
@@ -151,7 +148,7 @@ class Writer_model():
         attribute_blocks = diagram_model.get_datatype_properties()
         hexagons = diagram_model.get_hexagons()
         individuals = diagram_model.get_individuals()
-        anonimous_classes = diagram_model.get_anonymous_classes()
+        anonymous_classes = diagram_model.get_anonymous_classes()
         uri_references = diagram_model.get_uri_references()
         values = diagram_model.get_property_values()
 
@@ -213,7 +210,7 @@ class Writer_model():
                 # Does the object property have a defined domain?
                 if "domain" in relation and relation["domain"]:
                     range = relation["range"] if 'range' in relation else ''
-                    domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["domain"], range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonimous_classes, relations, attribute_blocks)
+                    domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["domain"], range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
 
                     # Avoid blank nodes
                     if domain_name != ":":
@@ -223,7 +220,7 @@ class Writer_model():
                 # Does the object property have a defined range? (avoid has value restrictions)
                 if "range" in relation and relation["range"] and not relation["hasValue"]:
                     domain = relation["domain"] if 'domain' in relation else ''
-                    range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["range"], domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonimous_classes, relations, attribute_blocks)
+                    range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["range"], domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
 
                     # Avoid blank nodes
                     if range_name != ":":
@@ -317,7 +314,7 @@ class Writer_model():
         values = diagram_model.get_property_values()
         individuals = diagram_model.get_individuals()
         anonymous_concepts = diagram_model.get_ellipses()
-        anonimous_classes = diagram_model.get_anonymous_classes()
+        anonymous_classes = diagram_model.get_anonymous_classes()
         relations = diagram_model.get_arrows()
         uri_references = diagram_model.get_uri_references()
         
@@ -361,11 +358,14 @@ class Writer_model():
                 
                 # Does the datatype property have a defined domain?
                 if attribute["domain"]:
-                    domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonimous_classes, relations, attribute_blocks)
-                    # Avoid blank nodes
-                    if domain_name != ":":
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:domain " + domain_name)
+
+                    # We want to skip the domain definition of those datatype properties block that are below a blank node
+                    if not ('concept_associated' in attribute_block and attribute["domain"] == attribute_block['concept_associated'] and attribute["domain"] in anonymous_classes):
+                        domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
+                        # Avoid blank nodes
+                        if domain_name != ":":
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:domain " + domain_name)
 
                 # Does the datatype property have a defined range? (avoid has value restrictions)
                 if attribute["range"] and not attribute["hasValue"]:
@@ -473,7 +473,7 @@ class Writer_model():
         anonymous_concepts = diagram_model.get_ellipses()
         individuals = diagram_model.get_individuals()
         hexagons = diagram_model.get_hexagons()
-        anonimous_classes = diagram_model.get_anonymous_classes()
+        anonymous_classes = diagram_model.get_anonymous_classes()
         uri_references = diagram_model.get_uri_references()
         values = diagram_model.get_property_values()
         all_relations = diagram_model.get_arrows()
@@ -517,13 +517,17 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                    text, more_than_two_restrictions = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id)
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
                         self.file.write("\t" + relation["predicate_restriction"] + "\n")
                         self.file.write(text)
-                
+                    
+                        if more_than_two_restrictions:
+                            prefix = base_directive_prefix(relation["prefix"])
+                            diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", relation_id, f'{prefix}{relation["uri"]}', "Restrictions")
+                    
                 # Is the arrow an annotation property?
                 elif relation["type"] == "owl:AnnotationProperty":
                     text = write_annotation_triple(relation_id, relation, individuals, uri_references, values, diagram_model)
@@ -560,7 +564,7 @@ class Writer_model():
                         if complement["type"] == "owl:intersectionOf":
                             self.file.write(" ;")
                             self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
-                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
                             self.file.write(text)
                             self.file.write("\t\t]")
 
@@ -568,35 +572,43 @@ class Writer_model():
                         elif complement["type"] == "owl:unionOf":
                             self.file.write(" ;")
                             self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
-                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
                             self.file.write(text)
                             self.file.write("\t\t]")
 
                     # Is the object a restriction or a complement class? (i.e. restriction or owl:complementOf)
-                    elif relation["target"] in anonimous_classes:
+                    elif relation["target"] in anonymous_classes:
                         # In this case, the target of the arrow is a blank node which is the source of another arrow
                         # (we are just interested in those arrows)
-                        complement = anonimous_classes[relation["target"]]["relations"]
+                        complement_id = anonymous_classes[relation["target"]]["relations"]
                         
                         # Is the blank node the source of an arrow?
-                        if len(complement) > 0:
+                        if len(complement_id) > 0:
                             # Get the arrow
-                            complement = all_relations[complement[0]]
+                            complement = all_relations[complement_id[0]]
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                self.file.write(" ;")
-                                self.file.write(f'\t{relation["type"]} ')
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
-                                self.file.write(text)
+                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0])
+                                if text != "":
+                                    self.file.write(" ;")
+                                    self.file.write(f'\t{relation["type"]} ')
+                                    self.file.write(text)
+                                
+                                    if more_than_two_restrictions:
+                                        prefix = base_directive_prefix(complement["prefix"])
+                                        diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", complement_id[0], f'{prefix}{complement["uri"]}', "Restrictions")
+                                
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
-                                self.file.write(" ;")
-                                self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
-                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
-                                self.file.write(text)
-                                self.file.write("\t\t]")
+                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+
+                                if text != "":
+                                    self.file.write(" ;")
+                                    self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
+                                    self.file.write(text)
+                                    self.file.write("\t\t]")
                 
                 # Check errors
                 # Is the user connecting an invalid arrow to a complement class?
@@ -623,69 +635,15 @@ class Writer_model():
 
                 # Iterate the datatype properties which are defined in each datatype property block 
                 for attribute in attribute_block["attributes"]:
-                    prefix = base_directive_prefix(attribute["prefix"])
 
-                    # Is the user defining an all values from restriction?
-                    if attribute["allValuesFrom"] and attribute["uri"] and attribute["datatype"]:
-                        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-                        self.file.write(" ;\n")
-                        self.file.write(f'\t{attribute["predicate_restriction"]} \n') 
-                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
-                        self.file.write("\t\t  owl:allValuesFrom " + prefix_datatype + attribute["datatype"] + " ]")
-
-                    # Is the user defining a some values from restriction?
-                    elif attribute["someValuesFrom"] and attribute["uri"] and attribute["datatype"]:
-                        prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
-                        self.file.write(" ;\n")
-                        self.file.write(f'\t{attribute["predicate_restriction"]} \n')    
-                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
-                        self.file.write("\t\t  owl:someValuesFrom " + prefix_datatype + attribute["datatype"] + " ]")
-
-                    # Is the user defining a minimal cardinality restriction?
-                    if attribute["min_cardinality"] is not None and attribute["uri"]:
-                        self.file.write(" ;\n")
-                        self.file.write(f'\t{attribute["predicate_restriction"]} \n')
-                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
-                        self.file.write("\t\t  owl:minCardinality \"" + attribute["min_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]\n")
-
-                    # Is the user defining a maximum cardinality restriction?
-                    if attribute["max_cardinality"] is not None and attribute["uri"]:
-                        self.file.write(" ;\n")
-                        self.file.write(f'\t{attribute["predicate_restriction"]} \n') 
-                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
-                        self.file.write("\t\t  owl:maxCardinality \"" + attribute["max_cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]\n")
-
-                    # Is the user defining a cardinality restriction?
-                    if attribute["cardinality"] is not None and attribute["uri"]:
-                        self.file.write(" ;\n")
-                        self.file.write(f'\t{attribute["predicate_restriction"]} \n')  
-                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
-                        self.file.write("\t\t  owl:cardinality \"" + attribute["cardinality"] + "\"^^xsd:" + "nonNegativeInteger ]\n")
-
-                    # Is the user defining a has value restriction?
-                    if attribute["hasValue"] and attribute["uri"] and attribute["datatype"]:
-                        self.file.write(" ;\n")
-                        self.file.write("\t" + attribute["predicate_restriction"] + " \n")
-                        self.file.write("\t\t[ rdf:type owl:Restriction ;\n")
-                        self.file.write("\t\t  owl:onProperty " + prefix + attribute["uri"] + " ;\n")
-
-                        # In this case the target is a data value
-                        # Has the user specify a datatype?
-                        if attribute["prefix_datatype"] == "xsd":
-                            # The default datatype is xsd
-                            aux = attribute["datatype"].split("^^")
-                            object = aux[0] + "^^xsd:" + aux[1]
-
-                        else:
-                            # In this case the user has specifyed a datatype
-                            object = attribute["prefix_datatype"] + ":" + attribute["datatype"]
-
-                        self.file.write("\t\t  owl:hasValue " + object + " ]")
+                    text, more_than_two_restrictions = datatype_property_restriction(attribute, diagram_model, block_id)
+                    if text != '':
+                        self.file.write(f' ;\n\t{attribute["predicate_restriction"]} \n{text}')
+                    
+                        if more_than_two_restrictions:
+                            prefix = base_directive_prefix(attribute["prefix"])
+                            diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", block_id, f'{prefix}{attribute["uri"]}', "Restrictions")
+                    
 
             # Iterate all the ellipses.
             # In this case we are searching for the ellipses which define an owl:disjointWith or owl:equivalentClass statement.
@@ -729,40 +687,47 @@ class Writer_model():
                         # Is the other element an intersection of classes?
                         if complement["type"] == "owl:intersectionOf":
                             self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
-                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
                             self.file.write(text)
                             self.file.write("\t\t]")
 
                         # Is the other element an union of classes?
                         elif complement["type"] == "owl:unionOf":
                             self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
-                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
                             self.file.write(text)
                             self.file.write("\t\t]")
 
                     #owl:disjointWith restriction or owl:complementOf
                     # Is the other element a restriction of a complement class? (i.e. restriction or owl:complementOf)
-                    elif complement_id in anonimous_classes:
+                    elif complement_id in anonymous_classes:
                         # In this case, the other element is a blank node which is the source of another arrow
                         # (we are just interested in those arrows)
-                        complement = anonimous_classes[complement_id]["relations"]
+                        complement_id = anonymous_classes[complement_id]["relations"]
 
                         # Is the blank node the source of an arrow?
-                        if len(complement) > 0:
-                            complement = all_relations[complement[0]]
+                        if len(complement_id) > 0:
+                            complement = all_relations[complement_id[0]]
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
+                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0])
                                 self.file.write(text)
+
+                                if more_than_two_restrictions:
+                                    prefix = base_directive_prefix(complement["prefix"])
+                                    diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", complement_id[0], f'{prefix}{complement["uri"]}', "Restrictions")
+                            
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
-                                self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
-                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonimous_classes)
-                                self.file.write(text)
-                                self.file.write("\t\t]")
+                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+
+                                if text != "":
+                                    self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
+                                    self.file.write(text)
+                                    self.file.write("\t\t]")
 
             self.file.write(" .\n\n")
     

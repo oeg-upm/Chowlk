@@ -91,17 +91,17 @@ def individual_identification_arrow(diagram_model):
             elif target_id in anonymous_classes:
                 # In this case, the target of the arrow is a blank node which is the source of another arrow
                 # (we are just interested in those arrows)
-                complement = anonymous_classes[target_id]["relations"]
+                complement_id = anonymous_classes[target_id]["relations"]
                 
                 # Is the blank node the source of an arrow?
-                if len(complement) > 0:
+                if len(complement_id) > 0:
                     # Get the arrow
-                    complement = arrows[complement[0]]
+                    complement = arrows[complement_id[0]]
 
                     # Is the object a restriction?
                     if(complement["type"] == "owl:ObjectProperty"):
                         text = '\t'
-                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes)
+                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, complement_id[0])[0]
                         individual["type"].append(text)
 
                     # Is the object a complement class?
@@ -354,7 +354,7 @@ def datatype_relation_association(diagram_model):
     # Iterate all the arrows
     for arrow_id, arrow in arrows.items():
 
-        # Is the arrow connected to a datatype property?
+        # Is the arrow connected to a datatype property (target)?
         if 'target' in arrow and arrow['target'] in datatype_properties:
             # Get the datatype property
             datatypeProperty = datatype_properties[arrow['target']]
@@ -363,3 +363,13 @@ def datatype_relation_association(diagram_model):
             if 'concept_associated' in datatypeProperty:
                 # Change the datatype property by its associated concept
                 arrow['target'] = datatypeProperty['concept_associated']
+        
+        # Is the arrow connected to a datatype property (target)?
+        if 'source' in arrow and arrow['source'] in datatype_properties:
+            # Get the datatype property
+            datatypeProperty = datatype_properties[arrow['source']]
+
+            # Is the datatype property connected to a class?
+            if 'concept_associated' in datatypeProperty:
+                # Change the datatype property by its associated concept
+                arrow['source'] = datatypeProperty['concept_associated']
