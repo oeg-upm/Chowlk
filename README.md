@@ -69,7 +69,8 @@ The service will return the following dictionary:
   "errors": {"Concepts": [{"message": "Problem in text", "shape_id": "13", "value": "ns:Building Element"}],
              "Attributes": [{"message": "Problem in cardinality", "shape_id": 45, "value": "ns:ifcIdentifier"}]},
   "xml_error_generated": true,
-  "xml_error_file": "<mxfile ..."
+  "xml_error_file": "<mxfile ...",
+  "warnings": {"Base": [{"message": "A base has not been declared. The first namespace has been taken as base"}]}
 }
 ```
 
@@ -86,7 +87,15 @@ The service will return the following dictionary:
 ```
 * **xml_error_generated:** Specifies whether an xml file highlighting the errors has been generated.
 * **xml_error_file:** It contains an xml file in which the shapes involved in an error are marked in red. In addition, for each error a new shapes is generated containing a message explaining the error. This xml file can be uploaded to drawio.io.
+* **warnings:** Contains the warnings found in the ontology diagram, organised by category. The keywords are the categories and the value for these keywords is an array that may contain objects that have the following structure:
 
+```json
+{
+  "message": "Some message related to the problem",
+  "shape_id": "An integer id that identify the problematic shape in the diagram",
+  "value": "the actual text related with the shape"
+}
+```
 
 ### 3. Running it from source:
 
