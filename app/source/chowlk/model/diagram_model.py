@@ -633,32 +633,43 @@ class Diagram_model():
             # Find the datatype
             try:
                 if range_declared:
-                    datatype_value_split = attribute_value_cleaned.split(" ")[1].strip()
 
-                    #Check if the sentence is <datatype>
-                    if datatype_value_split[0] == '<' and datatype_value_split[-1] == '>':
-                        if '#' not in datatype_value_split and '/' not in datatype_value_split or (datatype_value_split[-2] == '/' or datatype_value_split[-2] == '#'):
-                            self.generate_error("The datatype URI has not a valid identifier", id, value, "Attributes")
-                            continue
+                    datatype_value_split = attribute_value_cleaned.split(" ", 1)[1].strip()
+                    # Get the text between '{' and '}'
+                    enumeration = re.findall("\{(.*?)\}", datatype_value_split)
 
+                    # Is the user defining an enumerated datatype?
+                    if len(enumeration) > 0:
                         attribute["prefix_datatype"] = ''
-                        attribute["datatype"] = datatype_value_split.strip()
-
-                    # Check if the sentence is :datatype
-                    elif datatype_value_split[0] == ':':
-                        attribute["prefix_datatype"] = ':'
-                        attribute["datatype"] = datatype_value_split[1:].strip()
-
-                    #Check if the sentence is prefix:datatype
-                    elif ':' in datatype_value_split:
-                        final_datatype = datatype_value_split.split(":")
-                        attribute["prefix_datatype"] = final_datatype[0].strip()
-                        attribute["datatype"] = final_datatype[1].strip()
+                        attribute["datatype"] = self.get_datatype_enumeration(enumeration[0], id)
                     
-                    #The sentence is datatype
                     else:
-                        attribute["prefix_datatype"] = "xsd"
-                        attribute["datatype"] = datatype_value_split.strip()
+                        # The user is defining a datatype
+
+                        #Check if the sentence is <datatype>
+                        if datatype_value_split[0] == '<' and datatype_value_split[-1] == '>':
+                            if '#' not in datatype_value_split and '/' not in datatype_value_split or (datatype_value_split[-2] == '/' or datatype_value_split[-2] == '#'):
+                                self.generate_error("The datatype URI has not a valid identifier", id, value, "Attributes")
+                                continue
+
+                            attribute["prefix_datatype"] = ''
+                            attribute["datatype"] = datatype_value_split.strip()
+
+                        # Check if the sentence is :datatype
+                        elif datatype_value_split[0] == ':':
+                            attribute["prefix_datatype"] = ':'
+                            attribute["datatype"] = datatype_value_split[1:].strip()
+
+                        #Check if the sentence is prefix:datatype
+                        elif ':' in datatype_value_split:
+                            final_datatype = datatype_value_split.split(":")
+                            attribute["prefix_datatype"] = final_datatype[0].strip()
+                            attribute["datatype"] = final_datatype[1].strip()
+                        
+                        #The sentence is datatype
+                        else:
+                            attribute["prefix_datatype"] = "xsd"
+                            attribute["datatype"] = datatype_value_split.strip()
                 
                 else:
                     attribute["datatype"] = None
@@ -1325,6 +1336,103 @@ class Diagram_model():
         self.store_relation_name(id, relation["prefix"], relation["uri"])
 
         self.arrows[id] = relation
+    
+    def get_datatype_enumeration(self, enumeration, d_p_block_id):
+        datatype = '[ rdf:type rdfs:Datatype ; owl:oneOf'
+        data_values = enumeration.split(',')
+
+        if len(data_values) > 0:
+            text1 = ""
+            text2 = ""
+
+            for data_value in data_values:
+                prepare_value = self.prepare_data_value(data_value.strip(), d_p_block_id)
+
+                if prepare_value is not None:
+                    text1 += f' [ rdf:type rdf:List ; rdf:first {prepare_value}; rdf:rest'
+                    text2 += ' ]'
+            
+            if text1:
+                datatype += f'{text1}  rdf:nil {text2} ]'
+            
+            else:
+                datatype = None
+        
+        else:
+            prepare_value = self.prepare_data_value(enumeration.strip(), d_p_block_id)
+
+            if prepare_value is not None:
+                datatype += f' [ rdf:type rdf:List ; rdf:first {prepare_value}; rdf:rest rdf:nil ]'
+            
+            else:
+                datatype = None
+
+        return datatype
+
+    def prepare_data_value(self, data_value, d_p_block_id):
+        # Divide a data value into its value and type
+        try:
+
+            # Finding the value
+            if "&quot;" in data_value:
+                value_split = data_value.split("&quot;")
+
+                if len(value_split) > 2:
+                    self.generate_error("Problems in the text of a data value defined in an enumeration datatype. Data values must be separated by ','", d_p_block_id, data_value, "Attributes")
+                    return None
+
+                value = value_split[1]
+
+            elif "\"" in data_value:
+                value_split = re.findall('"(.*?)"', data_value)
+
+                if len(value_split) > 1:
+                    self.generate_error("Problems in the text of a data value defined in an enumeration datatype. Data values must be separated by ','", d_p_block_id, data_value, "Attributes")
+                    return None
+
+                value = value_split[0]
+            
+            else:
+                self.generate_error("Problems in the text of a data value defined in an enumeration datatype. Data values must be defined between '\"'", d_p_block_id, data_value, "Attributes")
+                return None
+
+            type = None
+            lang = None
+
+            # Finding the type
+            if "^^" in data_value:
+                type = data_value.split("^^")[-1]
+
+            elif "@" in data_value:
+                lang = data_value.split("@")[-1]
+            
+            elif data_value[-1] != '"' and not data_value.endswith('&quot;'):
+                self.generate_error("Problems in the text of a data value defined in an enumeration datatype. The datatype of a data value must be defined after '^^'", d_p_block_id, data_value, "Attributes")
+        
+        except:
+            self.generate_error("Problems in the text of a data value defined in an enumeration datatype", d_p_block_id, data_value, "Attributes")
+            return None
+
+        # Is a datatype specified in the data value?
+        if type is not None:
+            # Is the datatype specified through a prefix:uri?
+            if ":" in type:
+                object = "\"" + value + "\"" + "^^" + type
+            
+            else:
+                # The default prefix is xsd
+                object = "\"" + value + "\"" + "^^xsd:" + type
+        
+        # Is a language specified in the data value?
+        elif lang is not None:
+            # The data value is a literal
+            object = "\"" + value + "\"" + "@" + lang
+        
+        else:
+            # The data value is a literal
+            object = "\"" + value + "\""
+
+        return object
     
 # This function check if there are two main types defined inside a rhombus.
 # For main types it is understood: ObjectProperty, DatatypeProperty or AnnotationProperty

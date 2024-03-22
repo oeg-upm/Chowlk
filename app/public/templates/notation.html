@@ -82,6 +82,7 @@
                     <p class="ps-4"><a href="#object-property-annotations">2.12.2. Object Property Annotations</a></p>
                     <p class="ps-4"><a href="#datatype-property-annotations">2.12.3. Datatype Property Annotations</a></p>
                     <p class="ps-4"><a href="#individual-annotations">2.12.4. Individual Annotations</a></p>
+                    <p class="ps-4"><a href="#deprecated-annotations">2.12.5. Deprecated class and property</a></p>
                     <p><a href="#concatenation-class-restrictions">3. Combining Class Descriptions</a></p>
                     <p class="ps-2"><a href="#restriction-of-classes">3.1. Restriction of Classes</a></p>
                     <p class="ps-2"><a href="#intersection-of-classes">3.2. Intersection of Classes</a></p>
@@ -2920,8 +2921,10 @@
                             
                             <tbody>
                                 <tr>
-                                    <td class="text-center" scope="row"><img src="static/images/enumerated_datatype_2.svg" alt="Enumerated datatype"></td>
-                                    <td><code>ns:datatypeProperty2 a owl:DatatypeProperty ;<br>
+                                    <td class="text-center" scope="row">
+                                        <img src="static/images/enumerated_datatype_2.svg" alt="Enumerated datatype"></td>
+                                    <td rowspan="2"><code>ns:datatypeProperty2 a owl:DatatypeProperty ;<br>
+                                        rdfs:range [ a rdfs:Datatype ;<br>
                                         owl:oneOf [ a rdf:List ;<br>
                                         rdf:first "value1"^^xsd:datatype ;<br>
                                         rdf:rest [ a rdf:List ;<br>
@@ -2929,6 +2932,12 @@
                                         rdf:rest [ a rdf:List ;<br>
                                         rdf:first "value3"^^xsd:datatype ;<br>
                                         rdf:rest () ] ] ] ] .</code></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center row-height" scope="row">
+                                        <img src="static/images/enumerated_datatype_3.svg" alt="">
+                                    </td>
                                 </tr>
                             </tbody>
     
@@ -2947,7 +2956,8 @@
                             <tbody>
                                 <tr>
                                     <td class="text-center" scope="row"><img src="static/images/enumerated_datatype.svg" alt="Enumerated datatype"></td>
-                                    <td><code>ns:datatypeProperty2 a owl:DatatypeProperty ;<br>
+                                    <td rowspan="2"><code>ns:datatypeProperty2 a owl:DatatypeProperty ;<br>
+                                        rdfs:range [ a rdfs:Datatype ;<br>
                                         owl:oneOf [ a rdf:List ;<br>
                                         rdf:first "value1"^^prefix:datatype ;<br>
                                         rdf:rest [ a rdf:List ;<br>
@@ -2955,6 +2965,12 @@
                                         rdf:rest [ a rdf:List ;<br>
                                         rdf:first "value3"^^prefix:datatype ;<br>
                                         rdf:rest () ] ] ] ] .</code></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center row-height" scope="row">
+                                        <img src="static/images/enumerated_datatype_4.svg" alt="">
+                                    </td>
                                 </tr>
                             </tbody>
     
@@ -3746,6 +3762,93 @@
 
                     </table>
 
+                    <h5 id="deprecated-annotations" class="pt-3">2.12.5. Deprecated class and property</h5>
+
+                    <p class="pt-3">Here, a specific identifier is said to be of type <code>owl:DeprecatedClass</code> or <code>owl:DeprecatedProperty</code>, 
+                        where <code>owl:DeprecatedClass</code> is a subclass of <code>rdfs:Class</code> and <code>owl:DeprecatedProperty</code> is a subclass of <code>rdf:Property</code>. 
+                        By deprecating a term, it means that the term should not be used in new documents that commit to the ontology. 
+                        This allows an ontology to maintain backward-compatibility while phasing out an old vocabulary.</p>
+
+                    <p class="pt-3">Deprecating a named class using <code>owl:DeprecatedClass</code>.</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/deprecated-class.svg" alt="deprecated class">
+                                </td>
+                                <td><code>ns:Class a owl:Class, owl:DeprecatedClass.</code></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">Deprecating an object property using <code>owl:DeprecatedProperty</code>. 
+                        Note that in order to deprecate an object property it is only mandatory to crossed out the property name
+                        (but if you cross out more letters than the name, it works the same way).</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/deprecated-object-property-1.svg" alt="">
+                                </td>
+                                <td rowspan="2"><code>ns:objectProperty a owl:ObjectProperty, owl:DeprcatedProperty .</code></td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/deprecated-object-property-2.svg" alt="">
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">Deprecating a datatype property using <code>owl:DeprecatedProperty</code>. 
+                        Note that in order to deprecate a datatype property it is only mandatory to crossed out the property name
+                        (but if you cross out more letters than the name, it works the same way).</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/deprecated-datatype-property-1.svg" alt="">
+                                </td>
+                                <td rowspan="2"><code>ns:datatypeProperty a owl:DatatypeProperty, owl:DeprcatedProperty .</code></td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/deprecated-datatype-property-2.svg" alt="">
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
                     <h5 id="concatenation-class-restrictions" class="pt-3">3. Combining Class Descriptions</h5>
 
                     <p class="pt-3">An anonymous Class acts semantically as a Class. Therefore, inside a Class Description
@@ -3794,6 +3897,32 @@
                                     ns:objectProperty a owl:ObjectProperty ;<br>
                                     rdfs:domain ns:Class1 .</code></td>
                             </tr>
+
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/restriction_enumeration_2.svg" alt="disjoint">
+                                </td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    owl:onProperty ns:datatypeProperty ;<br>
+                                    owl:allValuesFrom [ a rdfs:Datatype ;<br>
+                                    owl:oneOf [ a rdf:List ;<br>
+                                    rdf:first "value1"^^prefix:datatype ;<br>
+                                    rdf:rest [ a rdf:List ;<br>
+                                    rdf:first "value2"^^prefix:datatype ;<br>
+                                    rdf:rest [ a rdf:List ;<br>
+                                    rdf:first "value3"^^prefix:datatype ;<br>
+                                    rdf:rest () ] ] ] ] .<br>
+                                    <br>
+                                    ns:datatypeProperty a owl:DatatypeProperty ;<br>
+                                    rdfs:range [ a rdfs:Datatype ;<br>
+                                    owl:oneOf [ a rdf:List ;<br>
+                                    rdf:first "value1"^^prefix:datatype ;<br>
+                                    rdf:rest [ a rdf:List ;<br>
+                                    rdf:first "value2"^^prefix:datatype ;<br>
+                                    rdf:rest [ a rdf:List ;<br>
+                                    rdf:first "value3"^^prefix:datatype ;<br>
+                                    rdf:rest () ] ] ] ] .</code>
 
                         </tbody>
 
