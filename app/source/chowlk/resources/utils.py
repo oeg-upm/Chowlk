@@ -58,7 +58,7 @@ def get_suffix(suffix):
 # Function to remove the tags used in the xml file
 def clean_html_tags(text):
 
-    html_tags = ["<u>", "</u>", "<b>", "</b>", "(<span .[^>]+\>)", "(<font .[^>]+\>)", "</font>", "<span>", "</span>"]
+    html_tags = ["<u>", "</u>", "<b>", "</b>", "(<span .[^>]+\>)", "(<font .[^>]+\>)", "</font>", "<span>", "</span>", '<strike>', '</strike>']
 
     for tag in html_tags:
         text = re.sub(tag, "", text)

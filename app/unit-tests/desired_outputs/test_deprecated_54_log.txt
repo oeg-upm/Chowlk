@@ -1,0 +1,6 @@
+
+Error Rhombuses: Problems in the text of the rhombus. To deprecate an rhombus, it is necessary to cross out the full name
+	shape_id: NOxFI6-XGu9Stj5cXSyY-18
+	value: ns:datatypeProperty1
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

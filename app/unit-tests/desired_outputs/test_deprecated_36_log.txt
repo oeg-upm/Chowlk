@@ -1,0 +1,6 @@
+
+Error Concepts: Problems in the text of the concept. To deprecate a class, it is necessary to cross out the full name
+	shape_id: NOxFI6-XGu9Stj5cXSyY-4
+	value: ns:Class1
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

@@ -1,0 +1,3 @@
+
+Error Attributes: Problems in the text of the attribute. To deprecate a datatype property, it is necessary to cross out the full name
+	shape_id: GtYCgeF0o5ncuHVegKOD-11

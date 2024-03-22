@@ -87,9 +87,6 @@ def add_value_to_empty_arrows(diagram_model):
         # Is there an xml element associated to the arrow?
         if arrow_id in arrows_parent:
             value = arrows_parent[arrow_id]
-            # Check if the name of the arrow is crossed out
-            deprecated = True if '<strike' in value else False
-            value = clean_html_tags(value)
 
         # Does the xml element associated to the arrow have a name?
         if value is None or len(value) == 0:
@@ -121,7 +118,7 @@ def add_value_to_empty_arrows(diagram_model):
             arrows[arrow_id] = arrow
 
         else:
-            diagram_model.add_value_to_arrow(arrow, value, style, arrow_id, deprecated)
+            diagram_model.add_value_to_arrow(arrow, value, style, arrow_id)
 
 # This function check if the uri references of a default annotation property 
 # has been wrongly classified as a class.
