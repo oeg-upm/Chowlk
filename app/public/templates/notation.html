@@ -2175,6 +2175,34 @@
 
                     </table>
 
+                    <p>Graphical representations to indicate that <code>ns:Class3</code>, <code>ns:Class2</code> and <code>ns:Class1</code> are disjoint concepts</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/disjoint_3.svg" alt="disjoint">
+                                </td>
+                                <td rowspan="1"><code>[rdf:type owl:AllDisjointClasses ;<br>
+                                    owl:members (ns:Class1 ns:Class2 ns:Class3)] .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .<br>
+                                    <br>
+                                    ns:Class3 a owl:Class .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
                     <p class="pt-3">Graphical representations to indicate that <code>ns:Class</code> 
                         concept is disjoint with an anonymous class which represents an 
                         <span class="black-letter">enumeration</span>.</p>

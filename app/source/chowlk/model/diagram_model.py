@@ -374,9 +374,14 @@ class Diagram_model():
             # Is the hexagon representing an owl:oneOf statement?
             elif "owl:oneOf" in value:
                 hexagon["type"] = "owl:oneOf"
+            
+            # Is the hexagon representing an owl:AllDisjointProperties statement?
+            elif "owl:AllDisjointProperties" in value:
+                hexagon["type"] = "owl:AllDisjointProperties"
 
             else:
                 self.generate_error("An hexagon is blank", id, None, "Hexagons")
+                hexagon['type'] = ''
 
             # Find the associated concepts to this union / intersection restriction
             hexagon["group"] = []
