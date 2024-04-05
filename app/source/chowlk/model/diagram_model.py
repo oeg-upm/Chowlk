@@ -5,7 +5,8 @@ from app.source.chowlk.resources.utils import clean_html_tags, clean_uri, create
 # these are the types which can be defined inside a rhombus
 rhombus_valid_types = ["owl:ObjectProperty", "owl:DatatypeProperty", "owl:FunctionalProperty",
                 "owl:SymmetricProperty", "owl:TransitiveProperty", "owl:InverseFunctionalProperty",
-                'owl:AnnotationProperty']
+                'owl:AnnotationProperty', 'owl:ReflexiveProperty', 'owl:AsymmetricProperty', 
+                'owl:IrreflexiveProperty']
 
 # these are special types that can be defined in an arrow
 edge_types = ["rdfs:subClassOf", "rdf:type", "owl:equivalentClass", "owl:disjointWith", "owl:complementOf",
@@ -477,7 +478,7 @@ class Diagram_model():
                     # Iterate the valid types
                     for valid_type in valid_types:
 
-                        # Is at least one valid type not 'owl:FunctionalProperty'?
+                        # Is at least one valid type is not 'owl:FunctionalProperty'?
                         if valid_type != 'owl:FunctionalProperty':
                             rhombus["type"] = 'owl:ObjectProperty'
                             object_property = False
@@ -1141,6 +1142,9 @@ class Diagram_model():
         relation["inverse_functional"] = True if "(IF)" in value else False
         relation["transitive"] = True if "(T)" in value else False
         relation["symmetric"] = True if "(S)" in value else False
+        relation["reflexive"] = True if "(R)" in value else False
+        relation["asymmetric"] = True if "(A)" in value else False
+        relation["irreflexive"] = True if "(IR)" in value else False
         
         # Obtain the prefix and suffix defined in the arrrow name
         try:

@@ -194,6 +194,21 @@ class Writer_model():
                 if relation["inverse_functional"]:
                     self.file.write(" ,\n")
                     self.file.write("\t\t\towl:InverseFunctionalProperty")
+                
+                # Is the object property defined as reflexive?
+                if relation["reflexive"]:
+                    self.file.write(" ,\n")
+                    self.file.write("\t\t\towl:ReflexiveProperty")
+
+                # Is the object property defined as asymmetric?
+                if relation["asymmetric"]:
+                    self.file.write(" ,\n")
+                    self.file.write("\t\t\towl:AsymmetricProperty")
+
+                # Is the object property defined as irreflexive?
+                if relation["irreflexive"]:
+                    self.file.write(" ,\n")
+                    self.file.write("\t\t\towl:IrreflexiveProperty")
 
                 # Are annotation defined for this object property?
                 if 'annotation' in relation:
@@ -889,48 +904,54 @@ class Writer_model():
 
             # Does the hexagon have a name called "owl:AllDisjointProperties"?  
             elif hexagon["type"] == "owl:AllDisjointProperties":
-                self.file.write("[ rdf:type owl:AllDisjointProperties ;\n")
-                self.file.write("  owl:members ( \n")
 
-                # List to store the names of the rhombhuses involved in the axiom
-                name = []
-                # Variable to store the number of rhombhuses that have been identified as datatype properties
-                count_dp = 0
-                # Variable to store the number of rhombhuses that have been identified as object properties
-                count_op = 0
-                # Iterate the elements connected to the owl:AllDisjointProperties hexagon
-                for id in hexagon["group"]:
+                if len(hexagon["group"]) > 2:
+                    self.file.write("[ rdf:type owl:AllDisjointProperties ;\n")
+                    self.file.write("  owl:members ( \n")
 
-                    # Is the element an individual?
-                    if id in rhombuses:
+                    # List to store the names of the rhombhuses involved in the axiom
+                    name = []
+                    # Variable to store the number of rhombhuses that have been identified as datatype properties
+                    count_dp = 0
+                    # Variable to store the number of rhombhuses that have been identified as object properties
+                    count_op = 0
 
-                        # Has the rhombus been identified as a datatype property?
-                        if id in attribute_blocks:
-                            count_dp += 1
-                        
-                        # Has the rhombus been identified as an object property?
-                        elif id in relations:
-                            count_op += 1
-                        
+                    # Iterate the elements connected to the owl:AllDisjointProperties hexagon
+                    for id in hexagon["group"]:
+
+                        # Is the element an individual?
+                        if id in rhombuses:
+
+                            # Has the rhombus been identified as a datatype property?
+                            if id in attribute_blocks:
+                                count_dp += 1
+                            
+                            # Has the rhombus been identified as an object property?
+                            elif id in relations and relations[id]['type'] == 'owl:ObjectProperty':
+                                count_op += 1
+                            
+                            else:
+                                diagram_model.generate_error("An element of an owl:AllDisjointProperties axiom is not an object or datatype property", id, f'{base_directive_prefix(rhombuses[id]["prefix"])}{rhombuses[id]["uri"]}', "Hexagons")
+                                continue
+
+                            # Get the names of the individuals which are disjointness
+                            name.append(f'\t\t{base_directive_prefix(rhombuses[id]["prefix"])}{rhombuses[id]["uri"]}\n')
+
                         else:
-                            diagram_model.generate_error("An element of an owl:AllDisjointProperties axiom is not an object or datatype property", id, None, "Hexagons")
-                            continue
+                            diagram_model.generate_error("An element of an owl:AllDisjointProperties axiom is not a rhombus", id, None, "Hexagons")
 
-                        # Get the names of the individuals which are disjointness
-                        name.append(f'\t\t{base_directive_prefix(rhombuses[id]["prefix"])}{rhombuses[id]["uri"]}\n')
+                    # Are there object and datatype properties at the same time?
+                    if count_dp != 0 and count_op != 0:
+                        diagram_model.generate_error("There are datatype and object properties involved in an owl:AllDisjointProperties axiom at the same time", id, None, "Hexagons")
 
                     else:
-                        diagram_model.generate_error("An element of an owl:AllDisjointProperties axiom is not a rhombus", id, None, "Hexagons")
+                        self.file.writelines(name)
 
-                # Are there object and datatype properties at the same time?
-                if count_dp != 0 and count_op != 0:
-                    diagram_model.generate_error("There are datatype and object properties involved in an owl:AllDisjointProperties axiom at the same time", id, None, "Hexagons")
-
+                    self.file.write("\t\t)")
+                    self.file.write("] .")
+                
                 else:
-                    self.file.writelines(name)
-
-                self.file.write("\t\t)")
-                self.file.write("] .")
+                    diagram_model.generate_error("At least three properties must be involved in an owl:AllDisjointProperties axiom. If only two properties are involved, owl:propertyDisjointWith should be used", hex_id, None, "Hexagons")
             
 # For each prefix that it is used but is not declared in the namespaces,
 # create that prefix with a default uri
