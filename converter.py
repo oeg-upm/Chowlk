@@ -52,6 +52,7 @@ def main(diagram_path, output_path, xml_error_path, format):
     
 
 def print_errors(errors):
+    
     for error_type in errors:
         error = errors[error_type]
         if isinstance(error, list):

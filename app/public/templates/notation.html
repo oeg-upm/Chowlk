@@ -57,6 +57,9 @@
                     <p class="ps-4"><a href="#object-properties-inverse-functional-properties">2.7.3. Inverse Functional Properties</a></p>
                     <p class="ps-4"><a href="#object-properties-symmetric-properties">2.7.4. Symmetric Properties</a></p>
                     <p class="ps-4"><a href="#object-properties-transitive-properties">2.7.5. Transitive Properties</a></p>
+                    <p class="ps-4"><a href="#object-properties-reflexive-properties">2.7.6. Reflexive Properties</a></p>
+                    <p class="ps-4"><a href="#object-properties-asymmetric-properties">2.7.7. Asymmetric Properties</a></p>
+                    <p class="ps-4"><a href="#object-properties-irreflexive-properties">2.7.8. Irreflexive Properties</a></p>
                     <p class="ps-2"><a href="#datatype-properties">2.8. Datatype Properties</a></p>
                     <p class="ps-4"><a href="#datatype-properties-domain-and-range">2.8.1. Domain and Range</a></p>
                     <p class="ps-4"><a href="#datatype-properties-enumerated-datatype">2.8.2. Enumerated datatypes</a></p>
@@ -66,10 +69,12 @@
                     <p class="ps-4"><a href="#equivalent-property-object-property">2.9.2. Equivalent Property</a></p>
                     <p class="ps-4"><a href="#inverse-property-object-property">2.9.3. Inverse Property</a></p>
                     <p class="ps-4"><a href="#disjoint-property-object-property">2.9.4. Disjoint Property</a></p>
+                    <p class="ps-4"><a href="#all-disjoint-property-object-properties">2.9.5. All Disjoint Properties</a></p>
                     <p class="ps-2"><a href="#relations-between-properties-datatype-properties">2.10. Relations between Datatype Properties</a></p>
                     <p class="ps-4"><a href="#sub-property-datatype-property">2.10.1. Sub-Property</a></p>
                     <p class="ps-4"><a href="#equivalent-property-datatype-property">2.10.2. Equivalent Property</a></p>
                     <p class="ps-4"><a href="#disjoint-property-datatype-property">2.10.3. Disjoint Property</a></p>
+                    <p class="ps-4"><a href="#all-disjoint-property-datatype-properties">2.10.4. All Disjoint Properties</a></p>
                     <p class="ps-2"><a href="#individuals">2.11. Individuals</a></p>
                     <p class="ps-4"><a href="#class-membership">2.11.1. Class Membership</a></p>
                     <p class="ps-4"><a href="#property-values">2.11.2. Property Values</a></p>
@@ -188,14 +193,14 @@
                     </div>
                     <div class="py-1">
                         <p class="fw-bold mb-1">Last update:</p>
-                        <p class="px-3 secondary-text">2022-12-12</p>
+                        <p class="px-3 secondary-text">30-04-2024</p>
                     </div>
                     <div class="py-1">
                         <p class="fw-bold mb-1">Chowlk Diagrams.net Library (lightweight version):</p>
                         <p class="px-3 secondary-text"><a class="link" href="static/resources/chowlk-library-lightweight.xml" download="chowlk-library-lightweight">Download</a></p>
                     </div>
                     <div class="py-1">
-                        <p class="fw-bold mb-1">Chowlk Diagrams.net Librayr (complete version):</p>
+                        <p class="fw-bold mb-1">Chowlk Diagrams.net Library (complete version):</p>
                         <p class="pb-4 px-3 secondary-text"><a class="link" href="static/resources/chowlk-library-complete.xml" download="chowlk-library-complete">Download</a></p>
                     </div>
         
@@ -2175,6 +2180,34 @@
 
                     </table>
 
+                    <p>Graphical representations to indicate that <code>ns:Class3</code>, <code>ns:Class2</code> and <code>ns:Class1</code> are disjoint concepts</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <img src="static/images/disjoint_3.svg" alt="disjoint">
+                                </td>
+                                <td rowspan="1"><code>[rdf:type owl:AllDisjointClasses ;<br>
+                                    owl:members (ns:Class1 ns:Class2 ns:Class3)] .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .<br>
+                                    <br>
+                                    ns:Class3 a owl:Class .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
                     <p class="pt-3">Graphical representations to indicate that <code>ns:Class</code> 
                         concept is disjoint with an anonymous class which represents an 
                         <span class="black-letter">enumeration</span>.</p>
@@ -2735,6 +2768,114 @@
                         </tbody>
                     </table>
 
+                    <h5 id="object-properties-reflexive-properties" class="pt-3">2.7.6. Reflexive Properties</h5>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <p class="main-tag">Preferred</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/reflexive_op_1.svg" alt="reflexive object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty rdf:type owl:ObjectProperty ,<br>
+                                    owl:ReflexiveProperty .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .</code></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="alt-tag">Alternative</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/reflexive_op_2.svg" alt="reflexive object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty rdf:type owl:ObjectProperty ,<br>
+                                    owl:ReflexiveProperty .</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h5 id="object-properties-asymmetric-properties" class="pt-3">2.7.7. Asymmetric Properties</h5>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <p class="main-tag">Preferred</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/asymmetric_op_1.svg" alt="asymmetric object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty rdf:type owl:ObjectProperty ,<br>
+                                    owl:AsymmetricProperty .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .</code></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="alt-tag">Alternative</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/asymmetric_op_2.svg" alt="asymmetric object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty rdf:type owl:ObjectProperty ,<br>
+                                    owl:AsymmetricProperty .</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h5 id="object-properties-irreflexive-properties" class="pt-3">2.7.8. Irreflexive Properties</h5>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center row-height" scope="row">
+                                    <p class="main-tag">Preferred</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/irreflexive_op_1.svg" alt="irreflexive object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty rdf:type owl:ObjectProperty ,<br>
+                                    owl:IrreflexiveProperty .<br>
+                                    <br>
+                                    ns:Class1 a owl:Class .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .</code></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <p class="alt-tag">Alternative</p>
+                                    <p> <br> </p>
+                                    <img src="static/images/irreflexive_op_2.svg" alt="irreflexive object property">
+                                </td>
+                                <td rowspan="1"><code>ns:objectProperty rdf:type owl:ObjectProperty ,<br>
+                                    owl:IrreflexiveProperty .</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <h5 id="datatype-properties" class="pt-3">2.8. Datatype Properties</h5>
 
                     <h5 id="datatype-properties-domain-and-range" class="pt-3">2.8.1. Domain and Range</h5>
@@ -2995,7 +3136,7 @@
                                     <p class="main-tag">Preferred</p>
                                     <img src="static/images/functional_dp_1.svg" alt="">
                                 </td>
-                                <td rowspan="2"><code>ns:datatypeProperty rdf:type owl:DatatypeProperty ,<br>
+                                <td rowspan="1"><code>ns:datatypeProperty rdf:type owl:DatatypeProperty ,<br>
                                     owl:FunctionalProperty .<br>
                                     <br>
                                     ns:Class a owl:Class .</code></td>
@@ -3006,6 +3147,8 @@
                                     <p> <br> </p>
                                     <img src="static/images/functional_dp_2.svg" alt="">
                                 </td>
+                                <td rowspan="1"><code>ns:datatypeProperty rdf:type owl:DatatypeProperty ,<br>
+                                    owl:FunctionalProperty .</code></td>
                             </tr>
                             
                         </tbody>
@@ -3143,14 +3286,40 @@
                         <tbody>
                             <tr>
                                 <td class="text-center" scope="row">
-                                    <p class="main-tag">Preferred</p>
-                                    <p> <br> </p>
                                     <img src="static/images/object_property_disjoint_1.svg" alt="">
                                 </td>
                                 <td rowspan="1"><code>ns:objectProperty2 a owl:ObjectProperty ;<br>
                                     owl:propertyDisjointWith ns:objectProperty1 .<br>
                                     <br>
                                     ns:objectProperty1 a owl:ObjectProperty .</code></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+
+                    <h5 id="all-disjoint-property-object-properties" class="pt-3">2.9.5. All Disjoint Properties</h5>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row">
+                                    <img src="static/images/object_property_all_disjoint_1.svg" alt="">
+                                </td>
+                                <td><code>[rdf:type owl:AllDisjointProperties ;<br>
+                                    owl:members (ns:objectProperty1 ns:objectProperty2 ns:objectProperty3)] .<br>
+                                    <br>
+                                    ns:objectProperty1 a owl:ObjectProperty .<br>
+                                    <br>
+                                    ns:objectProperty2 a owl:ObjectProperty .<br>
+                                    <br>
+                                    ns:objectProperty3 a owl:ObjectProperty .</code></td>
                             </tr>
                             
                         </tbody>
@@ -3220,6 +3389,32 @@
                                     owl:propertyDisjointWith ns:datatypeProperty1 .<br>
                                     <br>
                                     ns:datatypeProperty1 a owl:DatatypeProperty .</code></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+
+                    <h5 id="all-disjoint-property-datatype-properties" class="pt-3">2.10.4. All Disjoint Properties</h5>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Notation Example</th>
+                                <th scope="col" style="width: 45%;">OWL Code</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/datatype_property_all_disjoint_1.svg" alt=""></td>
+                                <td><code>[rdf:type owl:AllDisjointProperties ;<br>
+                                    owl:members (ns:datatypeProperty1 ns:datatypeProperty2 ns:datatypeProperty3)] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty .<br>
+                                    <br>
+                                    ns:datatypeProperty2 a owl:DatatypeProperty .<br>
+                                    <br>
+                                    ns:datatypeProperty3 a owl:DatatypeProperty .</code></td>
                             </tr>
                             
                         </tbody>
@@ -5770,7 +5965,7 @@
                         <div class="col">
                             <p>María Poveda-Villalón <br>
                             Contact email: chowlk@delicias.dia.fi.upm.es <br>
-                            Latest revision: December, 2023 <br>
+                            Latest revision: April, 2024 <br>
                             Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a></p>
                         </div>
                         <div class="col-3 ms-auto">

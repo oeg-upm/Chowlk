@@ -366,6 +366,9 @@ def create_object_property_from_rhombus(rhombus):
     arrow["transitive"] = True if "owl:TransitiveProperty" in types else False
     arrow["symmetric"] = True if "owl:SymmetricProperty" in types else False
     arrow['deprecated'] = rhombus['deprecated']
+    arrow["reflexive"] = True if "owl:ReflexiveProperty" in types else False
+    arrow["asymmetric"] = True if "owl:AsymmetricProperty" in types else False
+    arrow["irreflexive"] = True if "owl:IrreflexiveProperty" in types else False
     
     return arrow
 
@@ -417,6 +420,9 @@ def create_annotation_property_from_rhombus(rhombus):
     arrow["inverse_functional"] = False
     arrow["transitive"] = False
     arrow["symmetric"] = False
+    arrow["reflexive"] = False
+    arrow["asymmetric"] = False
+    arrow["irreflexive"] = False
     
     return arrow
 
@@ -445,6 +451,9 @@ def create_functional_property_from_rhombus(rhombus):
     arrow["transitive"] = True if "owl:TransitiveProperty" in types else False
     arrow["symmetric"] = True if "owl:SymmetricProperty" in types else False
     arrow['deprecated'] = rhombus['deprecated']
+    arrow["reflexive"] = True if "owl:ReflexiveProperty" in types else False
+    arrow["asymmetric"] = True if "owl:AsymmetricProperty" in types else False
+    arrow["irreflexive"] = True if "owl:IrreflexiveProperty" in types else False
 
     return arrow
 
