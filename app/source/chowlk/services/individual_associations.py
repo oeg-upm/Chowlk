@@ -243,17 +243,26 @@ def individual_relation_association(diagram_model):
     individuals = diagram_model.get_individuals()
     arrows = diagram_model.get_arrows()
 
+    # Variable to store per named individual the arrows whose source is that individual
     associations = {}
 
+    # Fill the variable associations with empty values
     for id, individual in individuals.items():
         associations[id] = {"individual": individual,
                             "relations": {}, "attributes": {}}
+        
+    # Iterate all the arrows
     for relation_id, relation in arrows.items():
 
+        # Has been the arrow identified as an object property?
         if relation["type"] == "owl:ObjectProperty":
 
+            # Get the source of the arrow
             source_id = relation["source"]
+            # Get the target of the arrow
             target_id = relation["target"]
+
+            # Is the source and the target of the arrow a named individual?
             if target_id in individuals and source_id in associations:
                 association = associations[source_id]
                 association["relations"][relation_id] = relation

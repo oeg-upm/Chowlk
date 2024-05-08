@@ -1,19 +1,24 @@
 from app.source.chowlk.resources.utils import base_directive_prefix
 
-# Function to find the arrows whose source is an anonymous class (blank box).
+# Function to find the arrows whose source is an anonymous class or an anonymous individual (blank box).
 # These blank nodes are used to construct restriction or complement triples.
 def find_relations_anonymous_classes(diagram_model):
     # Get neccesary attributes
     arrows = diagram_model.get_arrows()
     anonymous_classes = diagram_model.get_anonymous_classes()
+    anonymous_individuals = diagram_model.get_anonymous_individuals()
 
     # For each anonymous class (blank box) we want to check if there is a relation whose source is such anonymous class.
     # Iterate all the arrows.
     for relation_id, relation in arrows.items():
 
-        # Is the arrow the source of a blank box?
+        # Is the arrow the source of an anonymous class?
         if relation["source"] in anonymous_classes:
             anonymous_classes[relation["source"]]["relations"].append(relation_id)
+        
+        # Is the arrow the source of an anonymous individual?
+        elif relation["source"] in anonymous_individuals:
+            anonymous_individuals[relation["source"]]["relations"].append(relation_id)
 
 # Function to find the boxes which are below an anonymous class (blank box).
 # These blank nodes are used to construct datatype properties restrictions.
@@ -29,6 +34,7 @@ def find_attributes_anonymous_classes(diagram_model):
         # Is the box below a blank box?
         if 'concept_associated' in d_p_block and d_p_block['concept_associated'] in anonymous_classes:
             anonymous_classes[d_p_block['concept_associated']]["attributes"].append(d_p_block_id)
+
 
 # Function to construct a class description which represents an enumerated class.
 # All the elements of a owl:oneOf must be individuals (i.e. all the elements which are connected to the hexagon

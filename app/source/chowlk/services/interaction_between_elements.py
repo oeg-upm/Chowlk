@@ -8,8 +8,8 @@ from app.source.chowlk.services.class_associations import resolve_concept_refere
 # diagram_model trough the interaction between other xml elements.
 # (e.g. if the source of an arrow is an ellipse it is neccsary to store that information in the ellipse)
 def interaction_between_elements(diagram_model):
-    classify_boxes_into_classes_and_datatype_properties(diagram_model)
     add_value_to_empty_arrows(diagram_model)
+    classify_boxes_into_classes_and_datatype_properties(diagram_model)
     resolve_concept_reference(diagram_model)
     datatype_relation_association(diagram_model)
     check_default_annotations(diagram_model)
@@ -25,6 +25,8 @@ def interaction_between_elements(diagram_model):
 def classify_boxes_into_classes_and_datatype_properties(diagram_model):
     # Get the attributes of the diagram model
     boxes = diagram_model.get_boxes()
+    individuals = diagram_model.get_individuals()
+    arrows = diagram_model.get_arrows()
 
     # For each box (box_1) check if there is another box (box_2) above it
     # (i.e. upper left corner of box_1 matches with the bottom left corner of box_2).
@@ -64,8 +66,31 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
                 diagram_model.add_class(value, box_id_1, box_1['child'])
             
             else:
-                # It is an unnamed class
-                diagram_model.add_anonymous_class(box_1['child'], box_id_1)
+                # In this case the box can be an anonymous class or an anonymous individual
+                # The box represents an anonymous individual if there is an arrow whose target is this box,
+                # whose source is a named individual and the arrow is representing an object property
+
+                # Variable to check if an arrow that satisfied the conditions has been found
+                anonymous_class = True
+
+                # Iterate all the arrows
+                for arrow_id, arrow in arrows.items():
+
+                    # Is the target of the arrow this blank box?
+                    if 'target' in arrow and arrow['target'] == box_id_1:
+
+                        # Has been the arrow been identified as an object property?
+                        if 'type' in arrow and arrow['type'] == 'owl:ObjectProperty':
+
+                            # Is the source of the arrow a named individual?
+                            if 'source' in arrow and arrow['source'] in individuals:
+                                diagram_model.add_anonymous_individual(box_1['child'], box_id_1)
+                                anonymous_class = False
+                                break
+                
+                if anonymous_class:
+                    # It is an unnamed class
+                    diagram_model.add_anonymous_class(box_1['child'], box_id_1)
 
 # This functionc check if the nameless arrow have an associated xml element containing its name or
 # if they are special arrows (i.e. type, subclassOf or ellipse connections).
