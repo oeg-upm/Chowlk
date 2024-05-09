@@ -242,6 +242,7 @@ def individual_relation_association(diagram_model):
 
     individuals = diagram_model.get_individuals()
     arrows = diagram_model.get_arrows()
+    anonymous_individuals = diagram_model.get_anonymous_individuals()
 
     # Variable to store per named individual the arrows whose source is that individual
     associations = {}
@@ -262,8 +263,8 @@ def individual_relation_association(diagram_model):
             # Get the target of the arrow
             target_id = relation["target"]
 
-            # Is the source and the target of the arrow a named individual?
-            if target_id in individuals and source_id in associations:
+            # Is the source of the arrow a named individual and the target a named/anonymous individual?
+            if source_id in associations and (target_id in individuals or target_id in anonymous_individuals):
                 association = associations[source_id]
                 association["relations"][relation_id] = relation
 
@@ -327,6 +328,7 @@ def individual_attribute_association(associations, diagram_model):
     property_values = diagram_model.get_property_values()
     arrows = diagram_model.get_arrows()
     datatype_properties = diagram_model.get_datatype_properties()
+    anonymous_individuals = diagram_model.get_anonymous_individuals()
 
     # Iterate all the arrows
     for relation_id, relation in arrows.items():
@@ -339,7 +341,7 @@ def individual_attribute_association(associations, diagram_model):
             # The arrow is not misclassified (it does not have to be identified as a datatype property)
             continue
 
-        # Is the source of the arrow an individual and the target a data value?
+        # Is the source of the arrow a named individual and the target a data value?
         if target_id in property_values and source_id in associations:
             # Change the type of the arrow (it has been misclasified as an object property)
             relation["type"] = "owl:DatatypeProperty"
@@ -347,6 +349,13 @@ def individual_attribute_association(associations, diagram_model):
             # Store that the individual is the subject of a triple (individual datatypeProperty dataValue)
             association["attributes"][relation_id] = relation
 
+            # Create datatype property declaration
+            add_datatype_property(relation_id, relation, datatype_properties)
+
+        # Is the source of the arrow an anonymous individual and the target a data value?
+        elif target_id in property_values and source_id in anonymous_individuals:
+            # Change the type of the arrow (it has been misclasified as an object property)
+            relation["type"] = "owl:DatatypeProperty"
             # Create datatype property declaration
             add_datatype_property(relation_id, relation, datatype_properties)
                 

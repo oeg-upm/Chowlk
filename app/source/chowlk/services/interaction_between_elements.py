@@ -86,11 +86,18 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
                             if 'source' in arrow and arrow['source'] in individuals:
                                 diagram_model.add_anonymous_individual(box_1['child'], box_id_1)
                                 anonymous_class = False
+                                check_anonymous_individuals(arrows)
                                 break
                 
                 if anonymous_class:
                     # It is an unnamed class
                     diagram_model.add_anonymous_class(box_1['child'], box_id_1)
+
+# Function to check if a blank box (which has been identified as an anonymous individual) is the source of an arrow
+# whose target is another blank box. In this case, the second blank box has to be classified as another anonymous individual
+def check_anonymous_individuals(arrows):
+    # Iterar arrows y ver si hay una arrow cuyo source sea el individuo anonimo y cuyo target sea una box con nombre vacio (no me gusta esta idea)
+    return
 
 # This functionc check if the nameless arrow have an associated xml element containing its name or
 # if they are special arrows (i.e. type, subclassOf or ellipse connections).
