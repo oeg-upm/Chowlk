@@ -1,4 +1,5 @@
 from app.source.chowlk.resources.utils import base_directive_prefix
+from app.source.chowlk.resources.anonymousIndividual import get_anonymous_individual
 
 # Function to find the arrows whose source is an anonymous class or an anonymous individual (blank box).
 # These blank nodes are used to construct restriction or complement triples.
@@ -40,6 +41,8 @@ def find_attributes_anonymous_classes(diagram_model):
 # All the elements of a owl:oneOf must be individuals (i.e. all the elements which are connected to the hexagon
 # through an arrow must be individuals).
 def one_of(hexagon, individuals, diagram_model):
+    anonymous_individuals = diagram_model.get_anonymous_individuals()
+
     # Get the identifier of the elements which are connected to the owl:oneOf hexagon.
     ids = hexagon["group"]
     text = "\n\towl:oneOf (\n"
@@ -47,10 +50,15 @@ def one_of(hexagon, individuals, diagram_model):
     # Iterate the identifier of the elements which are connected to the hexagon
     for id in ids:
 
-        # Is the element an individual?
+        # Is the element a named individual?
         if id in individuals:
             individual_prefix = base_directive_prefix(individuals[id]["prefix"])
             text += f'\t\t\t\t{individual_prefix}{individuals[id]["uri"]}\n'
+        
+        # Is the element an anonymous individual?
+        elif id in anonymous_individuals:
+            object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, diagram_model.get_arrows(), individuals, diagram_model.get_property_values(), diagram_model)
+            text += f'{object}\n'
         
         else:
             diagram_model.generate_error("An element of an owl:oneOf is not an individual", id, None, "oneOf")
@@ -236,7 +244,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
                     if more_than_two_restrictions:
                         diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
                     
-                    else:
+                    elif text2 != '':
                         text = text + "\t\t\t\t" + text2 + "\n"
 
                 # Does the arrow represent a complement class description?

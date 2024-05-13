@@ -2,7 +2,7 @@ import tempfile
 from app.source.chowlk.resources.anonymousClass import *
 from app.source.chowlk.resources.properties import *
 from app.source.chowlk.resources.utils import base_directive_prefix
-from app.source.chowlk.resources.anonymousIndividual import anonymous_individual, parse_data_value
+from app.source.chowlk.resources.anonymousIndividual import get_anonymous_individual, parse_data_value
 
 class Writer_model():
 
@@ -816,7 +816,7 @@ class Writer_model():
                     
                     # Is the target an anonymous individual?
                     elif target_id in anonymous_individuals:
-                        object = anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values)
+                        object = get_anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values, diagram_model)
                         self.file.write(subject + " " + predicate + " " + object + " .\n")
 
             # Iterate the datatype properties whose source is the individual
@@ -841,6 +841,9 @@ class Writer_model():
         individuals = diagram_model.get_individuals()
         hexagons = diagram_model.get_hexagons()
         rhombuses = diagram_model.get_rhombuses()
+        anonymous_individuals = diagram_model.get_anonymous_individuals()
+        arrows = diagram_model.get_arrows()
+        values = diagram_model.get_property_values()
 
         attribute_blocks = diagram_model.get_datatype_properties()
         relations = diagram_model.get_arrows()
@@ -883,11 +886,16 @@ class Writer_model():
                 # Iterate the elements connected to the owl:AllDifferent hexagon
                 for id in hexagon["group"]:
 
-                    # Is the element an individual?
+                    # Is the element a named individual?
                     if id in individuals:
                         # Get the names of the individuals which are disjointness
                         name = f'{base_directive_prefix(individuals[id]["prefix"])}{individuals[id]["uri"]}'
                         self.file.write("\t\t" + name + "\n")
+                    
+                    # Is the element an anonymous individual?
+                    elif id in anonymous_individuals:
+                        object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, arrows, individuals, values, diagram_model)
+                        self.file.write("\t\t" + object + "\n")
 
                     else:
                         diagram_model.generate_error("An element of an owl:AllDifferent axiom is not an individual", id, None, "Hexagons")

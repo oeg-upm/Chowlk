@@ -28,6 +28,10 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
     individuals = diagram_model.get_individuals()
     arrows = diagram_model.get_arrows()
 
+    # Variable to store blank boxes that has not been identified as anonymous classes.
+    # This blank boxes need additional checks in order to  be classify as anonymous classes or individuals
+    unclassified_blank_boxes = {}
+
     # For each box (box_1) check if there is another box (box_2) above it
     # (i.e. upper left corner of box_1 matches with the bottom left corner of box_2).
     for box_id_1, box_1 in boxes.items():
@@ -71,7 +75,7 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
                 # whose source is a named individual and the arrow is representing an object property
 
                 # Variable to check if an arrow that satisfied the conditions has been found
-                anonymous_class = True
+                anonymous_individual = True
 
                 # Iterate all the arrows
                 for arrow_id, arrow in arrows.items():
@@ -85,19 +89,84 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
                             # Is the source of the arrow a named individual?
                             if 'source' in arrow and arrow['source'] in individuals:
                                 diagram_model.add_anonymous_individual(box_1['child'], box_id_1)
-                                anonymous_class = False
-                                check_anonymous_individuals(arrows)
+                                anonymous_individual = False
                                 break
                 
-                if anonymous_class:
-                    # It is an unnamed class
-                    diagram_model.add_anonymous_class(box_1['child'], box_id_1)
+                if anonymous_individual:
+                    # Other conditions need to be checked in order to classify the blank boxes as
+                    # anonymous individuals or anonymous classes
+                    unclassified_blank_boxes[box_id_1] = box_1['child']
+
+    # Dictionary that contains the blank boxes which satisfy the conditions of an anonymous individual
+    anonymous_individuals = {}
+
+    # Iterate all the anonymous individuals that have been detected above
+    for id in diagram_model.get_anonymous_individuals().keys():
+        # Check the target of the arrows whose source is the anonymous individual
+        check_anonymous_individuals(unclassified_blank_boxes, id, arrows, anonymous_individuals)
+
+    aux(unclassified_blank_boxes, arrows, anonymous_individuals, diagram_model.get_hexagons())
+
+    # Add as anonymous individuals the blank boxes that satisfy the conditions
+    for a_id, a in anonymous_individuals.items():
+        diagram_model.add_anonymous_individual(a, a_id)
+    
+    # Add as anonymous classes the blank boxes that do not satisfy the conditions
+    for u_id, u in unclassified_blank_boxes.items():
+        diagram_model.add_anonymous_class(u, u_id)
+
 
 # Function to check if a blank box (which has been identified as an anonymous individual) is the source of an arrow
 # whose target is another blank box. In this case, the second blank box has to be classified as another anonymous individual
-def check_anonymous_individuals(arrows):
-    # Iterar arrows y ver si hay una arrow cuyo source sea el individuo anonimo y cuyo target sea una box con nombre vacio (no me gusta esta idea)
-    return
+def check_anonymous_individuals(unclassified_blank_boxes, id, arrows, anonymous_individuals):
+
+    # Iterate all the arrows
+    for arrow_id, arrow in arrows.items():
+        # Get the source element
+        source = arrow['source'] if 'source' in arrow else None
+
+        # Is the source element the anonymous individual?
+        if id == source:
+            # Get the target element
+            target = arrow['target'] if 'target' in arrow else None
+
+            # Is the target element an unclassified blank box?
+            if target in unclassified_blank_boxes:
+                # Add an anonymous individual
+                anonymous_individuals[target] = unclassified_blank_boxes[target]
+                # Remove the unclassified blank box
+                del unclassified_blank_boxes[target]
+                # Check the target of the arrows whose source is the anonymous individual
+                check_anonymous_individuals(unclassified_blank_boxes, target, arrows, anonymous_individuals)
+                break
+        
+        
+
+def aux(unclassified_blank_boxes, arrows, anonymous_individuals, hexagons):
+    # Iterate all the arrows
+    for arrow_id, arrow in arrows.items():
+        # Get the source element
+        source = arrow['source'] if 'source' in arrow else None
+
+        # Is the source element an hexagon?
+        if source in hexagons:
+            hexagon = hexagons[source]
+            hexagon_type = hexagon['type'] if 'type' in hexagon else None
+
+            # Does the hexagon represent an an owl:oneOf or owl:AllDifferentFrom?
+            if hexagon_type == 'owl:oneOf' or hexagon_type == 'owl:AllDifferent':
+                # Get the target element
+                target = arrow['target'] if 'target' in arrow else None
+
+                # Is the target element an unclassified blank box?
+                if target in unclassified_blank_boxes:
+                    # In this case the elements involved has to be individuals
+                    # Add an anonymous individual
+                    anonymous_individuals[target] = unclassified_blank_boxes[target]
+                    # Remove the unclassified blank box
+                    del unclassified_blank_boxes[target]
+                    # Check the target of the arrows whose source is the anonymous individual
+                    check_anonymous_individuals(unclassified_blank_boxes, target, arrows, anonymous_individuals)
 
 # This functionc check if the nameless arrow have an associated xml element containing its name or
 # if they are special arrows (i.e. type, subclassOf or ellipse connections).
