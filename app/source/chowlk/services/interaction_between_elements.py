@@ -82,9 +82,10 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
 
                     # Is the target of the arrow this blank box?
                     if 'target' in arrow and arrow['target'] == box_id_1:
+                        arrow_type = arrow['type'] if 'type' in arrow else None
 
-                        # Has been the arrow been identified as an object property?
-                        if 'type' in arrow and arrow['type'] == 'owl:ObjectProperty':
+                        # Has been the arrow been identified as an object property, owl:sameAs or owl:differentFrom?
+                        if  arrow_type  == 'owl:ObjectProperty' or arrow_type == 'owl:sameAs' or arrow_type == 'owl:differentFrom':
 
                             # Is the source of the arrow a named individual?
                             if 'source' in arrow and arrow['source'] in individuals:

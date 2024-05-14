@@ -257,7 +257,6 @@ def individual_relation_association(diagram_model):
 
         # Has been the arrow identified as an object property?
         if relation["type"] == "owl:ObjectProperty":
-
             # Get the source of the arrow
             source_id = relation["source"]
             # Get the target of the arrow
@@ -268,29 +267,42 @@ def individual_relation_association(diagram_model):
                 association = associations[source_id]
                 association["relations"][relation_id] = relation
 
+        # Has been the arrow identified as an owl:sameAs?
         elif relation["type"] == "owl:sameAs":
-
+            # Get the source of the arrow
             source_id = relation["source"]
+            # Get the target of the arrow
             target_id = relation["target"]
-            if target_id in individuals and source_id in associations:
+
+            # Is the source of the arrow a named individual and the target a named/anonymous individual?
+            if source_id in associations and (target_id in individuals or target_id in anonymous_individuals):
                 association = associations[source_id]
                 association["relations"][relation_id] = relation
                 association["relations"][relation_id]["prefix"] = "owl"
                 association["relations"][relation_id]["uri"] = "sameAs"
 
+        # Has been the arrow identified as an owl:differentFrom?
         elif relation["type"] == "owl:differentFrom":
-
+            # Get the source of the arrow
             source_id = relation["source"]
+            # Get the target of the arrow
             target_id = relation["target"]
-            if target_id in individuals and source_id in associations:
+
+            # Is the source of the arrow a named individual and the target a named/anonymous individual?
+            if source_id in associations and (target_id in individuals or target_id in anonymous_individuals):
                 association = associations[source_id]
                 association["relations"][relation_id] = relation
                 association["relations"][relation_id]["prefix"] = "owl"
                 association["relations"][relation_id]["uri"] = "differentFrom"
 
+        # Has been the arrow identified as an annotation property?
         elif relation["type"] == 'owl:AnnotationProperty':
+            # Get the source of the arrow
             source_id = relation["source"]
+            # Get the target of the arrow
             target_id = relation["target"]
+
+            # Is the source of the arrow a named individual?
             if source_id in associations:
                 association = associations[source_id]
                 association["relations"][relation_id] = relation

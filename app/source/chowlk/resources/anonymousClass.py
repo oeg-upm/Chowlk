@@ -500,7 +500,9 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
                 # Does the arrow represent a restriction?
                 if(arrow2["type"] == "owl:ObjectProperty"):
                     text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0])
-                    text2 = "\t\t\t\t" + text2 + "\n"
+
+                    if text2 != '':
+                        text2 = "\t\t\t\t" + text2 + "\n"
 
                     if more_than_two_restrictions:
                         diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")

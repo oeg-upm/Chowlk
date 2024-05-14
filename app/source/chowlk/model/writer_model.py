@@ -2,7 +2,7 @@ import tempfile
 from app.source.chowlk.resources.anonymousClass import *
 from app.source.chowlk.resources.properties import *
 from app.source.chowlk.resources.utils import base_directive_prefix
-from app.source.chowlk.resources.anonymousIndividual import get_anonymous_individual, parse_data_value
+from app.source.chowlk.resources.anonymousIndividual import get_anonymous_individual, parse_data_value, write_annotation_triple
 
 class Writer_model():
 
@@ -1020,75 +1020,4 @@ def check_valid_prefix(prefix):
 # Check if an element of a triple is an uri
 def check_is_uri(uri):
     return uri[0] == '<' and uri[-1] == '>'
-
-# Write triples whose predicate is an annotation property
-def write_annotation_triple(relation_id, relation, individuals, uri_references, values, diagram_model):
-    target = relation['target']
-    object_error = False
-
-    # Is the object an individual?
-    if target in individuals:
-        individual = individuals[target]
-        target_prefix = base_directive_prefix(individual['prefix'])     
-        target_suffix = individual['uri']
-    
-    # Is the object an URI reference?
-    elif target in uri_references:
-        target_prefix = ''
-        target_suffix = uri_references[target]
-    
-    # Is the object a data value?
-    elif target in values:
-        target_suffix, type = check_values_type(values[target])
-
-        # Is not the object a literal?
-        if type != 'xsd:string':
-            # The object of an annotation property triple is not an individual, a literal or an URI reference
-            object_error = True
-
-        target_prefix = ''
-    
-    else:
-        # The object of an annotation property triple is not an individual, a literal or an URI reference
-        object_error = True
-
-    annotation_prefix = base_directive_prefix(relation['prefix'])
-
-    if object_error:
-        diagram_model.generate_error("The target of an annotation property is not an individual, a literal or an URI reference", relation_id, f'{annotation_prefix}{relation["uri"]}', "Annotation Properties") 
-        return ''
-
-    return f'\t{annotation_prefix}{relation["uri"]} {target_prefix}{target_suffix}'
-
-# This function obtain the datatype and the value of a data value.
-# A data value is charactherized by contain "" in its name.
-# There are three ways of declaring a data value:
-#   1) Specifying a datatype (e.g. "value"^^datatype)
-#   2) Specifying a language (e.g. "value"@language)
-#   3) Literal (e.g. "literal")
-def check_values_type(value):
-
-    # Has the user specify a datatype?
-    if value['type'] is not None:
-        datatype = value['type']
-
-        # Has the user not specify the prefix of the datatype?
-        if ":" not in value['type']:
-            # The default prefix is xsd
-            datatype = f'xsd:{datatype}'
-
-        data_value = "\"" + value["value"] + "\"" + "^^" + datatype
-
-    # Has the user specify a language?
-    elif value['lang'] is not None:
-        # The datatype is a literal
-        datatype = 'xsd:string'
-        data_value = "\"" + value["value"] + "\"" + "@" + value["lang"]
-
-    else:
-        # The datatype is a literal
-        datatype = 'xsd:string'
-        data_value = "\"" + value["value"] + "\""""
-
-    return data_value, datatype
 
