@@ -5,7 +5,7 @@ from app.source.chowlk.resources.utils import base_directive_prefix
 # - subject is a property (datatype or object property)
 # - predicate is either rdfs:domain or rdfs:range
 # - object is a class description
-def properties_domain_range(relation_id, property_prefix, property_uri, object, range_domain, property, domain_range, concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks):
+def properties_domain_range(relation_id, property_prefix, property_uri, object, range_domain, property, domain_range, concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals):
     predicate = ":"
 
     # Is the object a box which is under a class?
@@ -27,12 +27,13 @@ def properties_domain_range(relation_id, property_prefix, property_uri, object, 
     # Is the object a restriction or a complement class description?
     elif object in anonymous_classes:
         predicate = obtain_complement_restriction_of_classes(anonymous_classes, object, relations, relation_id, concepts, diagram_model, hexagons, anonymous_concepts, individuals)
-        """if not (property == 'datatype property' and domain_range == 'domain'):
-            predicate = obtain_complement_restriction_of_classes(anonymous_classes, object, relations, relation_id, concepts, diagram_model, hexagons, anonymous_concepts, individuals)
-"""
-    elif object in individuals:
 
-        if property == 'object property' and range_domain not in individuals:
+    # Is the object a named or an anonymous individual?
+    elif object in individuals or object in anonymous_individuals:
+        
+        # Does the arrow connect two element which represents individuals?
+        if property == 'object property' and range_domain not in individuals and range_domain not in anonymous_individuals:
+            # In this case there is an object property which connects a named or anonymous individual to an element which does not represent an individual
             diagram_model.generate_error("The " + domain_range + " of an " + property + " is an individual", relation_id, f'{property_prefix}{property_uri}', "Relations")
         
     else:

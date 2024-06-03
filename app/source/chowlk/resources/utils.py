@@ -156,3 +156,35 @@ def parse_prefix_uri(value):
     uri = re.sub(" ", "", uri)
 
     return prefix, uri
+
+# This function obtain the datatype and the value of a data value.
+# A data value is charactherized by contain "" in its name.
+# There are three ways of declaring a data value:
+#   1) Specifying a datatype (e.g. "value"^^datatype)
+#   2) Specifying a language (e.g. "value"@language)
+#   3) Literal (e.g. "literal")
+def check_values_type(value):
+
+    # Has the user specify a datatype?
+    if value['type'] is not None:
+        datatype = value['type']
+
+        # Has the user not specify the prefix of the datatype?
+        if ":" not in value['type']:
+            # The default prefix is xsd
+            datatype = f'xsd:{datatype}'
+
+        data_value = "\"" + value["value"] + "\"" + "^^" + datatype
+
+    # Has the user specify a language?
+    elif value['lang'] is not None:
+        # The datatype is a literal
+        datatype = 'xsd:string'
+        data_value = "\"" + value["value"] + "\"" + "@" + value["lang"]
+
+    else:
+        # The datatype is a literal
+        datatype = 'xsd:string'
+        data_value = "\"" + value["value"] + "\""""
+
+    return data_value, datatype

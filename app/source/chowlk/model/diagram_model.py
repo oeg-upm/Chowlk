@@ -48,6 +48,8 @@ class Diagram_model():
         self.datatype_properties = {}
         # This attribute store the anonymous classes defined in the diagram (boxes without name or blank boxes)
         self.anonymous_classes = {}
+        # This attribute store the anonymous individuals defined in the diagram (boxes without name or blank boxes which are the target of an arrow whose source is a named individual)
+        self.anonymous_individuals = {}
         # This attribute store for each arrow with the same name the identifier of the xml object it comes from
         self.arrows_name = {}
         # Thris attribute store the uri_references that are the object of an annotation property triple
@@ -128,6 +130,9 @@ class Diagram_model():
     
     def get_anonymous_classes(self):
         return self.anonymous_classes
+    
+    def get_anonymous_individuals(self):
+        return self.anonymous_individuals
     
     def get_namespaces(self):
         return self.namespaces
@@ -893,12 +898,20 @@ class Diagram_model():
         datatype_property["concept_associated"] = child2.attrib["id"]
         self.datatype_properties[id] = datatype_property
 
+    # Function to add an anonymous class
     def add_anonymous_class(self, child, id):
         anonymous_class = {}
         anonymous_class["xml_object"] = child
         anonymous_class["relations"] = []
         anonymous_class["attributes"] = []
         self.anonymous_classes[id] = anonymous_class
+    
+    # Function to add an anonymous individual
+    def add_anonymous_individual(self, child, id):
+        anonymous_individual = {}
+        anonymous_individual["xml_object"] = child
+        anonymous_individual["relations"] = []
+        self.anonymous_individuals[id] = anonymous_individual
 
     # This function store each of the selected boxes into a dictionary called "concepts" whose
     # key is the xml object identifier and the value is a dictionary called "concept".

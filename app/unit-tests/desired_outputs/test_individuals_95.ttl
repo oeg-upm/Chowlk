@@ -1,0 +1,19 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:Individual1 a owl:NamedIndividual ;
+    ns:objectProperty [ ns:annotationProperty1 [ ns:annotationProperty1 ns:Individual2 ] ] .
+
+ns:annotationProperty1 a owl:AnnotationProperty ;
+    rdfs:label "annotation property1" .
+
+ns:objectProperty a owl:ObjectProperty ;
+    rdfs:label "object property" .
+
+ns:Individual2 a owl:NamedIndividual .
+

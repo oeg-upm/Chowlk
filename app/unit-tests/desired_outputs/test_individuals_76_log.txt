@@ -1,0 +1,8 @@
+
+Error Individual: An arrow whose source source is an anonymous individual is not an object property or datatype property
+	shape_id: Iqlvk4adjHeVzL9ffTIG-19
+	value: owl:complementOf
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

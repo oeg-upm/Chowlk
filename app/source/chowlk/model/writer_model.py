@@ -2,6 +2,7 @@ import tempfile
 from app.source.chowlk.resources.anonymousClass import *
 from app.source.chowlk.resources.properties import *
 from app.source.chowlk.resources.utils import base_directive_prefix
+from app.source.chowlk.resources.anonymousIndividual import get_anonymous_individual, parse_data_value, write_annotation_triple
 
 class Writer_model():
 
@@ -12,7 +13,7 @@ class Writer_model():
         base_uri, new_namespaces = self.write_prefixes(diagram_model, prefixes_identified)
 
         ontology_uri = diagram_model.get_ontology_uri()
-        errors = diagram_model.get_errors()
+
         if not ontology_uri:
             diagram_model.set_ontology_uri(base_uri)
             diagram_model.generate_warning("An ontology uri has not been declared. The base uri has been taken as the ontology uri", None, None, "Ontology")
@@ -151,6 +152,7 @@ class Writer_model():
         anonymous_classes = diagram_model.get_anonymous_classes()
         uri_references = diagram_model.get_uri_references()
         values = diagram_model.get_property_values()
+        anonymous_individuals = diagram_model.get_anonymous_individuals()
 
         self.file.write("#################################################################\n"
                 "#    Object Properties\n"
@@ -225,7 +227,7 @@ class Writer_model():
                 # Does the object property have a defined domain?
                 if "domain" in relation and relation["domain"]:
                     range = relation["range"] if 'range' in relation else ''
-                    domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["domain"], range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
+                    domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["domain"], range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
 
                     # Avoid blank nodes
                     if domain_name != ":":
@@ -235,7 +237,7 @@ class Writer_model():
                 # Does the object property have a defined range? (avoid has value restrictions)
                 if "range" in relation and relation["range"] and not relation["hasValue"]:
                     domain = relation["domain"] if 'domain' in relation else ''
-                    range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["range"], domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
+                    range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["range"], domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
 
                     # Avoid blank nodes
                     if range_name != ":":
@@ -332,6 +334,7 @@ class Writer_model():
         anonymous_classes = diagram_model.get_anonymous_classes()
         relations = diagram_model.get_arrows()
         uri_references = diagram_model.get_uri_references()
+        anonymous_individuals = diagram_model.get_anonymous_individuals()
         
         self.file.write("#################################################################\n"
                 "#    Data Properties\n"
@@ -376,7 +379,7 @@ class Writer_model():
 
                     # We want to skip the domain definition of those datatype properties block that are below a blank node
                     if not ('concept_associated' in attribute_block and attribute["domain"] == attribute_block['concept_associated'] and attribute["domain"] in anonymous_classes):
-                        domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks)
+                        domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
                         # Avoid blank nodes
                         if domain_name != ":":
                             self.file.write(" ;\n")
@@ -778,6 +781,8 @@ class Writer_model():
         individuals = diagram_model.get_individuals()
         uri_references = diagram_model.get_uri_references()
         values = diagram_model.get_property_values()
+        anonymous_individuals = diagram_model.get_anonymous_individuals()
+        arrows = diagram_model.get_arrows()
 
         # Iterate the individuals which have been detected to be linked to another element (e.g. through an arrow)
         for id, association in associations_individuals.items():
@@ -804,9 +809,14 @@ class Writer_model():
                     predicate = f'{base_directive_prefix(relation["prefix"])}{relation["uri"]}'
                     target_id = relation["target"]
                     
-                    # Is the target an individual?
+                    # Is the target a named individual?
                     if target_id in individuals:
                         object = f'{base_directive_prefix(individuals[target_id]["prefix"])}{individuals[target_id]["uri"]}'
+                        self.file.write(subject + " " + predicate + " " + object + " .\n")
+                    
+                    # Is the target an anonymous individual?
+                    elif target_id in anonymous_individuals:
+                        object = get_anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values, diagram_model)
                         self.file.write(subject + " " + predicate + " " + object + " .\n")
 
             # Iterate the datatype properties whose source is the individual
@@ -815,24 +825,7 @@ class Writer_model():
                 predicate = f'{base_directive_prefix(attribute["prefix"])}{attribute["uri"]}'
                 target_id = attribute["target"]
 
-                # Has the user specify a datatype?
-                if values[target_id]["type"] is not None:
-
-                    # Has the user specify a custom dataype?
-                    if ":" in values[target_id]["type"]:
-                        object = "\"" + values[target_id]["value"] + "\"" + "^^" + values[target_id]["type"]
-                    
-                    else:
-                        # For default the datatype is xsd
-                        object = "\"" + values[target_id]["value"] + "\"" + "^^xsd:" + values[target_id]["type"]
-
-                # Has the user specify a language? (i.e. the data value is a literal)
-                elif values[target_id]["lang"] is not None:
-                    object = "\"" + values[target_id]["value"] + "\"" + "@" + values[target_id]["lang"]
-                
-                else:
-                    # The data value is a literal
-                    object = "\"" + values[target_id]["value"] + "\""
+                object = parse_data_value(values[target_id])
                 
                 self.file.write(subject + " " + predicate + " " + object + " .\n")
     
@@ -848,6 +841,9 @@ class Writer_model():
         individuals = diagram_model.get_individuals()
         hexagons = diagram_model.get_hexagons()
         rhombuses = diagram_model.get_rhombuses()
+        anonymous_individuals = diagram_model.get_anonymous_individuals()
+        arrows = diagram_model.get_arrows()
+        values = diagram_model.get_property_values()
 
         attribute_blocks = diagram_model.get_datatype_properties()
         relations = diagram_model.get_arrows()
@@ -890,11 +886,16 @@ class Writer_model():
                 # Iterate the elements connected to the owl:AllDifferent hexagon
                 for id in hexagon["group"]:
 
-                    # Is the element an individual?
+                    # Is the element a named individual?
                     if id in individuals:
                         # Get the names of the individuals which are disjointness
                         name = f'{base_directive_prefix(individuals[id]["prefix"])}{individuals[id]["uri"]}'
                         self.file.write("\t\t" + name + "\n")
+                    
+                    # Is the element an anonymous individual?
+                    elif id in anonymous_individuals:
+                        object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, arrows, individuals, values, diagram_model)
+                        self.file.write("\t\t" + object + "\n")
 
                     else:
                         diagram_model.generate_error("An element of an owl:AllDifferent axiom is not an individual", id, None, "Hexagons")
@@ -1019,75 +1020,4 @@ def check_valid_prefix(prefix):
 # Check if an element of a triple is an uri
 def check_is_uri(uri):
     return uri[0] == '<' and uri[-1] == '>'
-
-# Write triples whose predicate is an annotation property
-def write_annotation_triple(relation_id, relation, individuals, uri_references, values, diagram_model):
-    target = relation['target']
-    object_error = False
-
-    # Is the object an individual?
-    if target in individuals:
-        individual = individuals[target]
-        target_prefix = base_directive_prefix(individual['prefix'])     
-        target_suffix = individual['uri']
-    
-    # Is the object an URI reference?
-    elif target in uri_references:
-        target_prefix = ''
-        target_suffix = uri_references[target]
-    
-    # Is the object a data value?
-    elif target in values:
-        target_suffix, type = check_values_type(values[target])
-
-        # Is not the object a literal?
-        if type != 'xsd:string':
-            # The object of an annotation property triple is not an individual, a literal or an URI reference
-            object_error = True
-
-        target_prefix = ''
-    
-    else:
-        # The object of an annotation property triple is not an individual, a literal or an URI reference
-        object_error = True
-
-    annotation_prefix = base_directive_prefix(relation['prefix'])
-
-    if object_error:
-        diagram_model.generate_error("The target of an annotation property is not an individual, a literal or an URI reference", relation_id, f'{annotation_prefix}{relation["uri"]}', "Annotation Properties") 
-        return ''
-
-    return f'\t{annotation_prefix}{relation["uri"]} {target_prefix}{target_suffix}'
-
-# This function obtain the datatype and the value of a data value.
-# A data value is charactherized by contain "" in its name.
-# There are three ways of declaring a data value:
-#   1) Specifying a datatype (e.g. "value"^^datatype)
-#   2) Specifying a language (e.g. "value"@language)
-#   3) Literal (e.g. "literal")
-def check_values_type(value):
-
-    # Has the user specify a datatype?
-    if value['type'] is not None:
-        datatype = value['type']
-
-        # Has the user not specify the prefix of the datatype?
-        if ":" not in value['type']:
-            # The default prefix is xsd
-            datatype = f'xsd:{datatype}'
-
-        data_value = "\"" + value["value"] + "\"" + "^^" + datatype
-
-    # Has the user specify a language?
-    elif value['lang'] is not None:
-        # The datatype is a literal
-        datatype = 'xsd:string'
-        data_value = "\"" + value["value"] + "\"" + "@" + value["lang"]
-
-    else:
-        # The datatype is a literal
-        datatype = 'xsd:string'
-        data_value = "\"" + value["value"] + "\""""
-
-    return data_value, datatype
 
