@@ -1,0 +1,19 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:BASF_EC_KKDIK a ns:Questionnaire,
+        owl:NamedIndividual ;
+    ns:releaseVersion "2024-05-10T12:00:00+00:00"^^xsd:dateTime .
+
+ns:releaseVersion a owl:DatatypeProperty ;
+    rdfs:label "release version" .
+
+ns:Questionnaire a owl:Class ;
+    rdfs:label "Questionnaire" .
+

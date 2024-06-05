@@ -1,0 +1,33 @@
+.circular--portrait {
+  float: right;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.circular--portrait img {
+  width: 100%;
+  height: auto;
+  margin-top: -20px;
+}
+
+.circular--square {
+  float: right;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.circular--square img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.justify {
+  font-size: 16px;
+  margin-right: 250px;
+  text-align: justify;
+}

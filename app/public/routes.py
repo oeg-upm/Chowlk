@@ -14,8 +14,24 @@ from app.source.chowlk.resources.generate_xml_errors import generate_xml_error
 
 # Load main web page
 @public_bp.route("/")
+@public_bp.route("/index")
 def index():
     return render_template("index.html")
+
+# Load notation web page
+@public_bp.route("/notation")
+def notation():
+    return render_template("notation.html")
+
+# Load example web page
+@public_bp.route("/examples")
+def examples():
+    return render_template("examples.html")
+
+# Load notation web page
+@public_bp.route("/about")
+def about():
+    return render_template("about.html")
 
 # Load secondary web pages
 @public_bp.route("/<path:path>")
