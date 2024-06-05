@@ -938,7 +938,9 @@ class Diagram_model():
 
         # If datatype is mentioned
         if len(value.split(":")) > 2:
-            self.generate_error("Attributes not attached to any concept", id, value, "Attributes")
+
+            if not ("&quot;" in value or "\"" in value):
+                self.generate_error("Attributes not attached to any concept", id, value, "Attributes")
             return
 
         # If cardinality is indicated
