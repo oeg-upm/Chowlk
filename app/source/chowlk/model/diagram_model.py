@@ -248,31 +248,58 @@ class Diagram_model():
             # 2) the value is separated by ' :'
             try:
                 # Split the annotation into predicate object
-                # Is the blank character a No-Break space (unicode U+00a0)?
-                if ": " in ann:
-                    ann_predicate, ann_object = ann.split(": ", 1)
+                # Is the annotation defined through an URI?
+                if ann[0] == '<':
+                    ann_uri = True
+                    # Is the blank character a No-Break space (unicode U+00a0)?
+                    if ": " in ann:
+                        ann_predicate, ann_object = ann.split(">: ", 1)
+                    else:
+                        ann_predicate, ann_object = ann.split(">: ", 1)
+                    
+                    ann_predicate = ann_predicate + ">"
+                
                 else:
-                    ann_predicate, ann_object = ann.split(": ", 1)
+                    ann_uri = False
+                    # Is the blank character a No-Break space (unicode U+00a0)?
+                    if ": " in ann:
+                        ann_predicate, ann_object = ann.split(": ", 1)
+                    else:
+                        ann_predicate, ann_object = ann.split(": ", 1)
+                
+                if ann_uri:
+                    # Is the user defining the ontology uri?
+                    if ann_predicate == '<http://www.w3.org/2002/07/owl#Ontology>':
+                        self.ontology_uri = ann_object
 
-                # Split the predicate into prefix suffix
-                ann_prefix, ann_suffix = ann_predicate.split(':', 1)
+                    # The user is defining ontology metadata
+                    # Is the annotation property already defined?
+                    elif ann_predicate in self.ontology_metadata:
+                        self.ontology_metadata[ann_predicate].append(ann_object)
 
-                # Removes any leading, and trailing whitespaces
-                ann_prefix = ann_prefix.strip()
-                ann_suffix = ann_suffix.strip()
-                ann_object = ann_object.strip()
-
-                # Is the user defining the ontology uri?
-                if ann_prefix == 'owl' and ann_suffix == 'Ontology':
-                    self.ontology_uri = ann_object
-
-                # The user is defining ontology metadata
-                # Is the annotation property already defined?
-                elif ann_prefix + ":" + ann_suffix in self.ontology_metadata:
-                    self.ontology_metadata[ann_prefix + ":" + ann_suffix].append(ann_object)
-
+                    else:
+                        self.ontology_metadata[ann_predicate] = [ann_object]
+                
                 else:
-                    self.ontology_metadata[ann_prefix + ":" + ann_suffix] = [ann_object]
+                    # Split the predicate into prefix suffix
+                    ann_prefix, ann_suffix = ann_predicate.split(':', 1)
+
+                    # Removes any leading, and trailing whitespaces
+                    ann_prefix = ann_prefix.strip()
+                    ann_suffix = ann_suffix.strip()
+                    ann_object = ann_object.strip()
+
+                    # Is the user defining the ontology uri?
+                    if ann_prefix == 'owl' and ann_suffix == 'Ontology':
+                        self.ontology_uri = ann_object
+
+                    # The user is defining ontology metadata
+                    # Is the annotation property already defined?
+                    elif ann_prefix + ":" + ann_suffix in self.ontology_metadata:
+                        self.ontology_metadata[ann_prefix + ":" + ann_suffix].append(ann_object)
+
+                    else:
+                        self.ontology_metadata[ann_prefix + ":" + ann_suffix] = [ann_object]
 
             except:
                 self.generate_error("Problems in the text of the Metadata", id, ann, "Metadata")

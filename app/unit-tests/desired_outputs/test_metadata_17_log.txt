@@ -1,0 +1,7 @@
+
+Error Syntax: Please check your syntax on the diagram, here you have a hint of                      the possible error:
+" http://www.w3.org/2002/07/owl#versionInfo" does not look like a valid URI, I cannot serialize this as N3/Turtle. Perhaps you wanted to urlencode it?
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
