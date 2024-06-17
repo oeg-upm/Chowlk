@@ -1,0 +1,20 @@
+@prefix : <http://www.owl-ontologies.com/chowlk#> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+: a owl:Ontology ;
+    owl:backwardCompatibleWith <https://w3id.org/example/1.0.0> ;
+    owl:incompatibleWith <https://w3id.org/example/0.2.0> ;
+    owl:priorVersion <https://w3id.org/example/1.0.0> ;
+    owl:versionInfo "0.0.1"^^xsd:int ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+owl:backwardCompatibleWith a owl:AnnotationProperty .
+
+owl:incompatibleWith a owl:AnnotationProperty .
+
+owl:priorVersion a owl:AnnotationProperty .
+
+owl:versionInfo a owl:AnnotationProperty .
+

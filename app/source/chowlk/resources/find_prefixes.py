@@ -53,9 +53,11 @@ def find_prefixes_datatype_properties(prefixes, attribute_blocks):
 # Find the prefixes that are used in the ontology metadata
 def find_prefixes_metadata(prefixes, metadata):
     for prefix_uri in metadata.items():
-        prefix = prefix_uri[0].split(':')[0]
-        if prefix not in prefixes:
-            prefixes.append(prefix)
+        # Skip the annotation properties defined through an URI
+        if prefix_uri[0][0]!='<':
+            prefix = prefix_uri[0].split(':')[0]
+            if prefix not in prefixes:
+                prefixes.append(prefix)
     
     return prefixes
 
