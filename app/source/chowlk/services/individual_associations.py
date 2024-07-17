@@ -124,7 +124,7 @@ def individual_identification_geometry(diagram_model):
     boxes = diagram_model.get_boxes()
     # Dictionary whose:
     #   - key = identifier of an individual
-    #   - value = named class which is on top of the individual
+    #   - value = list with the named classes which are above of the individual
     individual_type = {}
     # Dictionary whose:
     #   - key = identifier of an individual
@@ -153,7 +153,13 @@ def individual_identification_geometry(diagram_model):
                     # Add class membership
                     name = f'{base_directive_prefix(class_box["prefix"])}{class_box["uri"]}'
                     ind_below["type"].append(name)
-                    individual_type[ind_id] = name
+                    individual_type[ind_id] = [name]
+                    
+                    # Is there a tower of classes?
+                    if 'above_class' in class_box:
+                        # Get the classes which compose the tower
+                        add_individual_types(classes[class_box['above_class']], ind_below, classes, individual_type[ind_id])
+
                     # A box just can be under another box
                     box_found_below = False
                 
@@ -163,7 +169,7 @@ def individual_identification_geometry(diagram_model):
 
                 break
         
-        # Is not the individual under another box?
+        # Is not the individual under another box (datatype property or class)?
         if box_found_below:
 
             # Iterate all the individuals
@@ -183,14 +189,16 @@ def individual_identification_geometry(diagram_model):
                     # Is that individual (individual above) under a named class?
                     if ind_id_2 in individual_type:
                         # Get the name of the class which is on top
-                        name = individual_type[ind_id_2]
+                        names = individual_type[ind_id_2]
                         # Add the type to the individual
-                        ind_below["type"].append(name)
+                        for name in names:
+                            ind_below["type"].append(name)
+
                         # Store the name of the class which is on top
-                        individual_type[ind_id] = name
+                        individual_type[ind_id] = names
 
                     else:
-                        # In this case we dont know yet the name of the class which is on top of the tower.
+                        # In this case we dont know yet the name of the classes which are on top of the tower of individuals.
                         # We stored that the type of the individual must be equal to the type of the individual above.
                         individual_above[ind_id] = ind_id_2
 
@@ -202,17 +210,22 @@ def individual_identification_geometry(diagram_model):
 
         # Has the type of the above individual been identified yet?
         if ind_above_id in individual_type:
-            ind_below['type'].append(individual_type[ind_above_id])
+            
+            for name in individual_type[ind_above_id]:
+                ind_below['type'].append(name)
 
         # Has the type of the above individual not been identified yet?
         elif ind_above_id in individual_above:
 
             
             try:
-                 # It is neccesary to identify the type of the above individual
-                 class_id = get_class_above(individual_type, individual_above, individual_above[ind_above_id])
-                 ind_below['type'].append(class_id)
-                 individual_type[ind_below_id] = class_id
+                # It is neccesary to identify the type of the above individual
+                names = get_class_above(individual_type, individual_above, individual_above[ind_above_id])
+                
+                for name in names:
+                    ind_below['type'].append(name)
+                    
+                individual_type[ind_below_id] = names
             
             except:
                 value = f'{base_directive_prefix(ind_below["prefix"])}{ind_below["uri"]}'
@@ -221,6 +234,17 @@ def individual_identification_geometry(diagram_model):
         else:
             value = f'{base_directive_prefix(ind_below["prefix"])}{ind_below["uri"]}'
             diagram_model.generate_error("An individual is below an element that is not a named class", ind_below_id, value, "Individual")
+
+# This function add all the classes that compound a tower as types of a named individual
+def add_individual_types(class_box, ind_below, classes, individual_type):
+    # Add class membership
+    name = f'{base_directive_prefix(class_box["prefix"])}{class_box["uri"]}'
+    ind_below["type"].append(name)
+    individual_type.append(name)
+
+    #Have we not reached the top of the class tower yet?
+    if 'above_class' in class_box:
+        add_individual_types(classes[class_box['above_class']], ind_below, classes, individual_type)
 
 # This function update the identifier of the class which is on top of a tower of individuals.
 def get_class_above(individual_type, individual_above, ind_below_id):

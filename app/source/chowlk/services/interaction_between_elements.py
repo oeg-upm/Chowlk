@@ -2,7 +2,7 @@ import re
 from app.source.chowlk.resources.utils import create_label, clean_html_tags
 from app.source.chowlk.resources.utils import base_directive_prefix
 from app.source.chowlk.services.individual_associations import datatype_relation_association
-from app.source.chowlk.services.class_associations import resolve_concept_reference
+from app.source.chowlk.services.class_associations import resolve_concept_reference, detect_misclassifed_classes_as_datatype_properties
 
 # This class store the functions which add more information to the classified elements which are identified in the
 # diagram_model trough the interaction between other xml elements.
@@ -10,6 +10,7 @@ from app.source.chowlk.services.class_associations import resolve_concept_refere
 def interaction_between_elements(diagram_model):
     add_value_to_empty_arrows(diagram_model)
     classify_boxes_into_classes_and_datatype_properties(diagram_model)
+    detect_misclassifed_classes_as_datatype_properties(diagram_model)
     resolve_concept_reference(diagram_model)
     datatype_relation_association(diagram_model)
     check_default_annotations(diagram_model)

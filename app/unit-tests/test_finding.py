@@ -61,35 +61,46 @@ def compare_ontologies2(filename, o1, o2):
     file2 = open(o2, 'r')
     file_read2 = file2.read()
     file2.close()
-    g1 = rdflib.Graph()
-    g1.parse(data=file_read1, format="turtle")
-    g2 = rdflib.Graph()
-    g2.parse(data=file_read2, format="turtle")
-    turtle_output_file1 = tempfile.NamedTemporaryFile()
-    turtle_output_file2 = tempfile.NamedTemporaryFile()
-    g1.serialize(destination=turtle_output_file1, format="turtle")
-    g2.serialize(destination=turtle_output_file2, format="turtle")
+    try:
+        g1 = rdflib.Graph()
+        g1.parse(data=file_read1, format="turtle")
+        g2 = rdflib.Graph()
+        g2.parse(data=file_read2, format="turtle")
+        turtle_output_file1 = tempfile.NamedTemporaryFile()
+        turtle_output_file2 = tempfile.NamedTemporaryFile()
+        g1.serialize(destination=turtle_output_file1, format="turtle")
+        g2.serialize(destination=turtle_output_file2, format="turtle")
 
-    turtle_output_file1.seek(0)
-    turtle_output_file2.seek(0)
+        turtle_output_file1.seek(0)
+        turtle_output_file2.seek(0)
 
-    turtle_string1 = turtle_output_file1.read().decode("utf-8")
-    turtle_string1 = turtle_string1.replace('#/', '#')
-    turtle_string1 = turtle_string1.replace('##', '#')
-    turtle_string2 = turtle_output_file2.read().decode("utf-8")
+        turtle_string1 = turtle_output_file1.read().decode("utf-8")
+        turtle_string1 = turtle_string1.replace('#/', '#')
+        turtle_string1 = turtle_string1.replace('##', '#')
+        turtle_string2 = turtle_output_file2.read().decode("utf-8")
 
-    g3 = rdflib.Graph()
-    g3.parse(data=turtle_string1, format="turtle")
-    turtle_output_file3 = tempfile.NamedTemporaryFile()
-    g3.serialize(destination=turtle_output_file3, format="turtle")
-    turtle_output_file3.seek(0)
+        try:
+            g3 = rdflib.Graph()
+            g3.parse(data=turtle_string1, format="turtle")
+            turtle_output_file3 = tempfile.NamedTemporaryFile()
+            g3.serialize(destination=turtle_output_file3, format="turtle")
+            turtle_output_file3.seek(0)
 
-    turtle_string3 = turtle_output_file3.read().decode("utf-8")
+            turtle_string3 = turtle_output_file3.read().decode("utf-8")
+        
+        except:
+            turtle_string3 = turtle_string1
+    
+    except:
+        turtle_string3 = file_read1
+        turtle_string2 = file_read2
+    
+    is_equal = turtle_string3 == turtle_string2
 
-    if turtle_string3 != turtle_string2:
+    if not is_equal:
         print('Test ' + filename + ' failed. Files are not equal\n')
 
-    return turtle_string3 == turtle_string2
+    return is_equal
 
 def compare_ontologies3(o1, o2):
     file1 = open(o1, 'r')
