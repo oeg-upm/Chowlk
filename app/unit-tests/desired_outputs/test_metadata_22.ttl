@@ -7,7 +7,7 @@
     owl:backwardCompatibleWith <https://w3id.org/example/1.0.0> ;
     owl:incompatibleWith <https://w3id.org/example/0.2.0> ;
     owl:priorVersion <https://w3id.org/example/1.0.0> ;
-    owl:versionInfo "0.0.1"^^xsd:string ;
+    owl:versionInfo "0.0.1"^^xsd:int ;
     mod:createdWith <https://chowlk.linkeddata.es/> .
 
 owl:backwardCompatibleWith a owl:AnnotationProperty .
