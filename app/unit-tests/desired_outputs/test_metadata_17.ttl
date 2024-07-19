@@ -11,7 +11,7 @@
 @base <http://www.owl-ontologies.com/chowlk#> .
 
 <http://www.owl-ontologies.com/chowlk#> rdf:type owl:Ontology ;
-			< http://www.w3.org/2002/07/owl#versionInfo> "0.0.1"^^xsd:int ;
+			< http://www.w3.org/2002/07/owl#versionInfo> "0.0.1"^^xsd:string ;
 			owl:priorVersion <https://w3id.org/example/1.0.0> ;
 			owl:backwardCompatibleWith <https://w3id.org/example/1.0.0> ;
 			owl:incompatibleWith <https://w3id.org/example/0.2.0> ;

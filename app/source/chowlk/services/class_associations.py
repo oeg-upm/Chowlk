@@ -1,5 +1,7 @@
+from app.source.chowlk.resources.geometry import get_corners_rect_child
+
 # This function resolves the relative references that attribute blocks could have.
-# This occur when a concept have more than one block of attributes attacked to it. Each block (except the first) 
+# This occur when a concept have more than one block of attributes attached to it. Each block (except the first) 
 # have as associated concept the attribute block above of it instead of the concept which is on top of the tower of blocks.
 def resolve_concept_reference(diagram_model):
     # Get th attributes from the diagram model
@@ -27,6 +29,69 @@ def resolve_concept_reference(diagram_model):
             
             except:
                 diagram_model.generate_error("Datatype property block not attached to a named class", property_id, None, "Attributes")
+
+# This function detects boxes that have been classified as datatype properties when they should have been classified as classes.
+# This occurs when the user tries to declare more than one type for an individual in the same figure.
+# If an individual is below a class, chowlk detects that the type of the individual is that class.
+# The problem comes when an individual is below a tower of classes. In this case the types of that individual must be the classes 
+# that compose the tower. However, when a box (box_1) is below another box Chowlk detects that box_1 is a datatype property.
+# For that reason it is neccesary to reclassify all the boxes which are above an individual as classes.
+def detect_misclassifed_classes_as_datatype_properties(diagram_model):
+    # Get th attributes from the diagram model
+    datatype_properties = diagram_model.get_datatype_properties()
+    individuals = diagram_model.get_individuals()
+    classes = diagram_model.get_classes()
+    boxes = diagram_model.get_boxes()
+
+    # Iterate all the individuals
+    for ind_id, individual in individuals.items():
+        
+        # Get the corners (points) of the individual box
+        p1 = get_corners_rect_child(individual["xml_object"])[0]
+
+        # Variable to store the identifier of the missclassifed datatype properties
+        dp_remove = []
+
+        # Iterate all the datatype properties boxes
+        for dp_id, datatype_property in datatype_properties.items():
+            # Get the corners (points) of the box
+            p2 = get_corners_rect_child(datatype_property["xml_object"])[1]
+            dx = abs(p1[0] - p2[0])
+            dy = abs(p1[1] - p2[1])
+
+            # Is the individual under a datatype property box?
+            if dx < 5 and dy < 5:
+                # In this case a box have been missclassified as a dataype property
+                change_datatype_property_to_class(diagram_model, dp_id, datatype_property, boxes, classes, datatype_properties, dp_remove)
+                
+                # An individual cannot be under more than one boxes, so no further search is neccesary
+                break
+
+        # Remove the datatype properties
+        for id_remove in dp_remove:
+            del datatype_properties[id_remove]
+
+    return
+
+# Function that reclassify a datatype property as a class and check if there is another datatype property box missclassifed above.
+def change_datatype_property_to_class(diagram_model, dp_id, datatype_property, boxes, classes, datatype_properties, dp_remove):
+    # Store the id of the datatype property that is going to be removed
+    dp_remove.append(dp_id)
+
+    # Create a class
+    box = boxes[dp_id]
+    diagram_model.add_class(box['value'], dp_id, box['child'])
+
+    # Has the class been created correctly?
+    if dp_id in classes:
+        # Indicate the id of the box that is above the class
+        class_box = classes[dp_id]
+        box_above = datatype_property['concept_associated']
+        class_box['above_class'] = box_above
+
+        if box_above in datatype_properties:
+            # The box above has been missclassified as a datatype property too
+            change_datatype_property_to_class(diagram_model, box_above, datatype_properties[box_above], boxes, classes, datatype_properties, dp_remove)
 
 # This function update the identifier of the class which is on top of a tower of datatype property blocks.
 # The recursive function is going through the tower until it finds a datatype property which correctly stores 

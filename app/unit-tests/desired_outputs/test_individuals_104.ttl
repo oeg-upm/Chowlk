@@ -1,0 +1,73 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:Individual1 a ns:Class1,
+        ns:Class2,
+        ns:Class3,
+        owl:NamedIndividual .
+
+ns:Individual2 a ns:Class1,
+        ns:Class2,
+        ns:Class3,
+        owl:NamedIndividual .
+
+ns:Individual3 a ns:Class1,
+        ns:Class2,
+        ns:Class3,
+        owl:NamedIndividual .
+
+ns:Individual4 a ns:Class1,
+        ns:Class2,
+        ns:Class3,
+        owl:NamedIndividual .
+
+ns:Individual5 a ns:Class1,
+        ns:Class2,
+        ns:Class3,
+        owl:NamedIndividual .
+
+ns:Individual6 a owl:NamedIndividual .
+
+ns:objectProperty a owl:ObjectProperty ;
+    rdfs:label "object property" ;
+    rdfs:domain ns:Class1 ;
+    rdfs:range ns:Class4 .
+
+ns:objectProperty2 a owl:ObjectProperty ;
+    rdfs:label "object property2" ;
+    rdfs:domain ns:Class2 ;
+    rdfs:range ns:Class5 .
+
+ns:objectProperty3 a owl:ObjectProperty ;
+    rdfs:label "object property3" ;
+    rdfs:domain ns:Class3 .
+
+ns:Class4 a owl:Class ;
+    rdfs:label "Class4" .
+
+ns:Class5 a owl:Class ;
+    rdfs:label "Class5" .
+
+ns:Class1 a owl:Class ;
+    rdfs:label "Class1" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom ns:Class4 ;
+            owl:onProperty ns:objectProperty ] .
+
+ns:Class2 a owl:Class ;
+    rdfs:label "Class2" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty ns:objectProperty2 ;
+            owl:someValuesFrom ns:Class5 ] .
+
+ns:Class3 a owl:Class ;
+    rdfs:label "Class3" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:hasValue ns:Individual6 ;
+            owl:onProperty ns:objectProperty3 ] .
+
