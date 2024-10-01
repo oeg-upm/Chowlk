@@ -1,0 +1,24 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://base.namespace.com#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:annotationProperty1 a owl:AnnotationProperty ;
+    rdfs:label "annotation property1" .
+
+ns:datatypeProperty a owl:ObjectProperty ;
+    rdfs:label "datatype property" .
+
+ns:datatypeProperty2 a owl:ObjectProperty ;
+    rdfs:label "datatype property2" .
+
+ns:datatypeProperty3 a owl:DatatypeProperty ;
+    rdfs:label "datatype property3" .
+
+ns:datatypeProperty4 a owl:DatatypeProperty ;
+    rdfs:label "datatype property4" ;
+    ns:annotationProperty1 [ ns:datatypeProperty [ ns:datatypeProperty2 [ ns:datatypeProperty3 "literal" ] ] ] .
+

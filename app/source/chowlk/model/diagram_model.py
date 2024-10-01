@@ -614,6 +614,11 @@ class Diagram_model():
         attributes = []
         value = clean_html_tags(html_value)
         attribute_list = value.split("|")
+
+        # Is it a data value? (e.g. "data value"^^xsd:string, "data value", etc.)
+        if len(attribute_list) < 2 and value.startswith("\""):
+            return
+        
         # In this case is possible that different datatype properties are defined in the same block but not all are marked as deprecated.
         # Therefore, it is necessary to divide the html value by line breaks (<br>) in order to check what properties are deprecated
         html_attribute_list = html_value.split("<br>")
@@ -979,7 +984,7 @@ class Diagram_model():
             self.generate_error("Attributes not attached to any concept", id, value, "Attributes")
             return
 
-        # It is a data value? (e.g. "data value"^^xsd:string, "data value", etc.)
+        # Is it a data value? (e.g. "data value"^^xsd:string, "data value", etc.)
         if "\"" in value:
             return
 

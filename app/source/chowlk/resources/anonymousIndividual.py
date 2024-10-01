@@ -109,10 +109,10 @@ def write_annotation_triple(relation_id, relation, individuals, uri_references, 
     elif target in values:
         target_suffix, type = check_values_type(values[target])
 
-        # Is not the object a literal?
+        """# Is not the object a literal?
         if type != 'xsd:string':
             # The object of an annotation property triple is not an individual, a literal or an URI reference
-            object_error = True
+            object_error = True"""
 
         target_prefix = ''
     
