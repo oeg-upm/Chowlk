@@ -1,14 +1,16 @@
-FROM python:3.7
+FROM python:3.12.6
 
-WORKDIR /app
+RUN mkdir -p /home/app/
 
-COPY . .
+COPY . /home/app
 
-RUN pip install --no-cache-dir -r requirements.txt
+#WORKDIR /app
+
+RUN pip install --no-cache-dir -r /home/app/requirements.txt
 
 EXPOSE 5000
 
-#CMD ["python", "./app.py"]
+CMD ["python", "/home/app/entrypoint.py"]
 
 
 

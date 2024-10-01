@@ -439,6 +439,10 @@ class Diagram_model():
         individual = {}
         value = clean_html_tags(value)
 
+        if "|" in value:
+            self.generate_error("Problems in the text of the Individual", id, value, "Individual")
+            return
+
         try:
             individual["prefix"], individual["uri"] = parse_prefix_uri(value)
 
