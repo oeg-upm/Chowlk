@@ -57,8 +57,11 @@ def one_of(hexagon, individuals, diagram_model):
         
         # Is the element an anonymous individual?
         elif id in anonymous_individuals:
-            object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, diagram_model.get_arrows(), individuals, diagram_model.get_property_values(), diagram_model)
-            text += f'{object}\n'
+            try:
+                object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, diagram_model.get_arrows(), individuals, diagram_model.get_property_values(), diagram_model)
+                text += f'{object}\n'
+            except:
+                diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving an owl:oneOf hexagon.", id, None, "Individual")
         
         else:
             diagram_model.generate_error("An element of an owl:oneOf is not an individual", id, None, "oneOf")

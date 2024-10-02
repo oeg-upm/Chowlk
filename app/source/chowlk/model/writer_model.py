@@ -816,8 +816,12 @@ class Writer_model():
                     
                     # Is the target an anonymous individual?
                     elif target_id in anonymous_individuals:
-                        object = get_anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values, diagram_model)
-                        self.file.write(subject + " " + predicate + " " + object + " .\n")
+                        try:
+                            object = get_anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values, diagram_model, [target_id])
+                            self.file.write(subject + " " + predicate + " " + object + " .\n")
+                        except:
+                            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving a named individual.", target_id, subject, "Individual")
+                            
 
             # Iterate the datatype properties whose source is the individual
             for attribute_id, attribute in attributes.items():
@@ -894,8 +898,11 @@ class Writer_model():
                     
                     # Is the element an anonymous individual?
                     elif id in anonymous_individuals:
-                        object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, arrows, individuals, values, diagram_model)
-                        self.file.write("\t\t" + object + "\n")
+                        try:
+                            object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, arrows, individuals, values, diagram_model, [id])
+                            self.file.write("\t\t" + object + "\n")
+                        except:
+                            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving an owl:AllDifferent hexagon.", id, None, "Individual")
 
                     else:
                         diagram_model.generate_error("An element of an owl:AllDifferent axiom is not an individual", id, None, "Hexagons")

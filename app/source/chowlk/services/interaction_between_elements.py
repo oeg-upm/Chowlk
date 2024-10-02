@@ -121,6 +121,8 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
                                 break
 
                             elif 'source' in arrow and arrow['source'] in boxes:
+                                # In this case the source of the arrow is a box, which is not neccesary already classified
+                                # It is neccesary to wait until all th boxes has been classified
                                 aux[box_id_1] = {"source": arrow['source'], "child": box_1['child']}
                                 anonymous_individual = False
                                 # The blank box has been classified. No more iterations are needed
@@ -133,6 +135,7 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
                     unclassified_blank_boxes[box_id_1] = box_1['child']
 
     classes = diagram_model.get_classes()
+    # Now that all the boxes has been classify, check if the the source of the arrows is a named class
     for key, value in aux.items():
         if value['source'] in classes:
             diagram_model.add_anonymous_individual(value['child'], key)
@@ -147,6 +150,7 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
         # Check the target of the arrows whose source is the anonymous individual
         check_anonymous_individuals(unclassified_blank_boxes, id, arrows, anonymous_individuals)
 
+    # Last check of unclassified blank boxes to see if they are representing anonymous individuals
     classify_anonymous_individuals(unclassified_blank_boxes, arrows, anonymous_individuals, diagram_model.get_hexagons())
 
     # Add as anonymous individuals the blank boxes that satisfy the conditions
