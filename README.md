@@ -97,7 +97,21 @@ The service will return the following dictionary:
 }
 ```
 
-### 3. Running it from source:
+### 3. Running it from docker:
+### Copy the project:
+```bash
+git clone https://github.com/oeg-upm/Chowlk.git
+git checkout webservice
+```
+### Docker:
+1. Intall and run Docker Desktop
+2. Open a command line located in the Chowlk repository and execute:
+```bash
+docker compose up
+```
+3. Open a web browser and go to localhost:5000
+
+### 4. Running it from source:
 
 ### Copy the project:
 ```bash

@@ -106,7 +106,7 @@ def obtain_union_intersection_of_classes(anonymous_concepts, object, concepts, d
     # Does the ellipse represent an owl:intersectionOf?
     if ellipse["type"] == "owl:intersectionOf":
         predicate = "[ rdf:type owl:Class ;"
-        predicate = predicate + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+        predicate = predicate + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, [])
         if predicate == "":
             #empty domain
             predicate = ":"
@@ -116,7 +116,7 @@ def obtain_union_intersection_of_classes(anonymous_concepts, object, concepts, d
     # Does the ellipse represent an owl:unionOf?
     elif ellipse["type"] == "owl:unionOf":
         predicate = "[ rdf:type owl:Class ;"
-        predicate = predicate + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+        predicate = predicate + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, [])
         if predicate == "":
             #empty domain
             predicate = ":"
@@ -129,7 +129,7 @@ def obtain_union_intersection_of_classes(anonymous_concepts, object, concepts, d
 
 # This function obtain the declaration of a class description which represents a complement of a class or a 
 # restriction. Both are represented as a blank node which is the source of an arrow. If the arrow name is not
-# owl:complementOf that means that the user is defining a restriction. Otherwise is a restriction.
+# owl:complementOf that means that the user is defining a restriction. Otherwise is a complement.
 def obtain_complement_restriction_of_classes(anonymous_classes, object, relations, relation_id, concepts, diagram_model, hexagons, anonymous_concepts, individuals):
     predicate = ":"
 
@@ -159,13 +159,13 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
                 return ":"
 
             if(arrow["type"] == "owl:ObjectProperty"):
-                predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id)[0]
+                predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id, [])[0]
                 if predicate == "":
                     #empty domain
                     predicate = ":"
 
             elif(arrow["type"] == "owl:complementOf"):
-                predicate = complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                predicate = complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, [])
                 if predicate == "":
                     #empty domain
                     predicate = ":"

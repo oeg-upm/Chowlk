@@ -76,14 +76,14 @@ def individual_identification_arrow(diagram_model):
                 # Is the object an intersection of classes?
                 if ellipse["type"] == "owl:intersectionOf":
                     text = '\t[ rdf:type owl:Class ;'
-                    text += intersection_of(ellipse, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes)
+                    text += intersection_of(ellipse, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, [])
                     text += "\t\t]"
                     individual["type"].append(text)
 
                 # Is the object an union of classes?
                 elif ellipse["type"] == "owl:unionOf":
                     text = f'\t[ rdf:type owl:Class ;'
-                    text += union_of(ellipse, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes)
+                    text += union_of(ellipse, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, [])
                     text += "\t\t]"
                     individual["type"].append(text)
 
@@ -101,13 +101,13 @@ def individual_identification_arrow(diagram_model):
                     # Is the object a restriction?
                     if(complement["type"] == "owl:ObjectProperty"):
                         text = '\t'
-                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, complement_id[0])[0]
+                        text += restrictions(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, complement_id[0], [])[0]
                         individual["type"].append(text)
 
                     # Is the object a complement class?
                     elif(complement["type"] == "owl:complementOf"):
                         text = '\t[ rdf:type owl:Class ;'
-                        text += complement_of(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes)
+                        text += complement_of(complement, classes, diagram_model, hexagons, anonymous_concepts, individuals, arrows, anonymous_classes, [])
                         text += "\t\t]"
                         individual["type"].append(text)
             

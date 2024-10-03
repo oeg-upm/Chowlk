@@ -58,7 +58,7 @@ def one_of(hexagon, individuals, diagram_model):
         # Is the element an anonymous individual?
         elif id in anonymous_individuals:
             try:
-                object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, diagram_model.get_arrows(), individuals, diagram_model.get_property_values(), diagram_model)
+                object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, diagram_model.get_arrows(), individuals, diagram_model.get_property_values(), diagram_model, [id])
                 text += f'{object}\n'
             except:
                 diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving an owl:oneOf hexagon.", id, None, "Individual")
@@ -72,13 +72,20 @@ def one_of(hexagon, individuals, diagram_model):
 # Function to construct a class description which represents an union of class descriptions.
 # All the elements of a owl:unionOf must be class descriptions (i.e. all the elements which 
 # are connected to the ellipse through an arrow must be class descriptions).
-def union_of(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes):
+def union_of(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached):
     # Get the identifiers of the elements connected to the owl:unionOf ellipse
     ids = complement["group"]
     text = "\n\towl:unionOf ( \n"
 
     # Iterate the identifiers of the elements connected to the owl:unionOf ellipse
     for id in ids:
+
+        # Check if the node has been reached before
+        if id in reached:
+            text = text + "\t\t\t\t)"
+            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", id, None, "unionOf")
+            return text
+        reached.append(id)
         
         # Is the element a named class?
         if id in concepts:
@@ -102,14 +109,14 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
             # Is the element an union of class descriptions?
             if(ellipse["type"] == "owl:unionOf"):
                 text = text + "\n\t[ rdf:type owl:Class ;"
-                text = text + union_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                text = text + union_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached)
                 text = text + "\t\t\t\t ]"
                 text = "\t\t\t\t" + text + "\n"
 
             # Is the element an intersection of class descriptions?
             elif(ellipse["type"] == "owl:intersectionOf"):
                 text = text + "\n\t[ rdf:type owl:Class ;"
-                text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached)
                 text = text + "\t\t\t\t ]"
                 text = "\t\t\t\t" + text + "\n"
 
@@ -146,13 +153,13 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
                     # Does the arrow represent a complement class description?
                     if(complement["type"] == "owl:complementOf"):
                         text = text + "\n\t[ rdf:type owl:Class ;"
-                        text = text + complement_of(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = text + complement_of(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached)
                         text = text + "\t\t\t\t ]"
                         text = "\t\t\t\t" + text + "\n"
 
                     # Does the arrow represent a restriction?
                     elif (complement["type"] == "owl:ObjectProperty"):
-                        text2, more_than_two_restrictions= restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id)
+                        text2, more_than_two_restrictions= restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
                         
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
@@ -160,6 +167,9 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
                         else:
                             text = text + "\t\t\t\t" + text2 + "\n"
                 
+                except RecursionError:
+                    diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", id, None, "unionOf")
+
                 except:
                     diagram_model.generate_error("An element is not connected", id, None, "unionOf")
                 
@@ -172,11 +182,17 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 # Function to construct a class description which represents a complement.
 # All the elements of a complement must be class descriptions (i.e. all the elements which 
 # are connected to the blank node through an arrow must be class descriptions).
-def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes):
+def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached):
     # Get the element connected to the arrow
     target_id = arrow["target"]
     text = ""
 
+    # Check if the node has been reached before
+    if target_id in reached:
+        diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", target_id, None, "complementOf")
+        return text
+    reached.append(target_id)
+    
     # Is the element a class?
     if target_id in concepts:
         text += named_class(concepts[target_id])
@@ -199,14 +215,14 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
         # Is the element an union of class descriptions?
         if(ellipse["type"] == "owl:unionOf"):
             text = text + "\n\t[ rdf:type owl:Class ;"
-            text = text + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+            text = text + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached)
             text = text + "\t\t\t\t ]"
             text = "\t\t\t\t" + text + "\n"
 
         # Is the element an intersection of class descriptions?
         elif(ellipse["type"] == "owl:intersectionOf"):
             text = text + "\n\t[ rdf:type owl:Class ;"
-            text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+            text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached)
             text = text + "\t\t\t\t ]"
             text = "\t\t\t\t" + text + "\n"
     
@@ -242,7 +258,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 
                 # Does the arrow represent a restriction?
                 if(arrow["type"] == "owl:ObjectProperty"):
-                    text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0])
+                    text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0], reached)
                     
                     if more_than_two_restrictions:
                         diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
@@ -254,10 +270,13 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
                 elif(arrow["type"] == "owl:complementOf"):
                     # target is an anonymous class with owl:complementOf statement
                     text = text + "\n\t[ rdf:type owl:Class ;"
-                    text = text + complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text = text + complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached)
                     text = text + "\t\t\t\t ]"
                     text = "\t\t\t\t" + text + "\n"
-                
+            
+            except RecursionError:
+                diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", target_id, None, "complementOf")
+
             except:
                 diagram_model.generate_error("An element is not connected", target_id, None, "complementOf")
 
@@ -273,7 +292,7 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 # Function to construct a class description which represents a restriction.
 # All the elements of a restriction must be class descriptions (i.e. all the elements which 
 # are connected to the blank node through an arrow must be class descriptions).
-def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id):
+def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id, reached):
     text = ""
     more_than_one_restriction = False
     more_than_two_restriction = False
@@ -281,7 +300,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     # Is the arrow representing a constraint restriction?
     if (arrow["allValuesFrom"] or arrow["someValuesFrom"]) and "target" in arrow:
         
-        text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
+        text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"], reached)
 
         if not target_defined:
 
@@ -378,7 +397,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
 
     # Is the arrow representing a qualified restriction?
     if (arrow["max_q_cardinality"] or arrow["min_q_cardinality"] or arrow["q_cardinality"]) and "target" in arrow:
-        text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"])
+        text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"], reached)
 
         if not target_defined:
 
@@ -435,7 +454,11 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     return text, more_than_two_restriction
 
 # Target is the identifier of the element connected to the arrow
-def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target):
+def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target, reached):
+    # Check if the node has been reached before
+    if target in reached:
+        raise RecursionError("Infinite loop")
+    reached.append(target)
     text2 = ""
     target_defined = True
     
@@ -460,7 +483,7 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
         # Is the element an union of class descriptions?
         if(ellipse["type"] == "owl:unionOf"):
             text2 = "\n\t[ rdf:type owl:Class ;"
-            text2 = text2 + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+            text2 = text2 + union_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached)
             text2 = text2 + "\t\t\t\t ]"
             text2 = "\t\t\t\t" + text2 + "\n"
             
@@ -468,7 +491,7 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
         # Is the element an intersection of class descriptions?
         elif(ellipse["type"] == "owl:intersectionOf"):
             text2 = "\n\t[ rdf:type owl:Class ;"
-            text2 = text2 + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+            text2 = text2 + intersection_of(ellipse, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached)
             text2 = text2 + "\t\t\t\t ]"
             text2 = "\t\t\t\t" + text2 + "\n"
     
@@ -502,7 +525,7 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
 
                 # Does the arrow represent a restriction?
                 if(arrow2["type"] == "owl:ObjectProperty"):
-                    text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0])
+                    text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0], reached)
 
                     if text2 != '':
                         text2 = "\t\t\t\t" + text2 + "\n"
@@ -515,9 +538,13 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
                 elif(arrow2["type"] == "owl:complementOf"):
                     # target is an anonymous class with owl:complementOf statement
                     text2 = "\n\t[ rdf:type owl:Class ;"
-                    text2 = text2 + complement_of(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes)
+                    text2 = text2 + complement_of(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, reached)
                     text2 = text2 + "\t\t\t\t ]"
                     text2 = "\t\t\t\t" + text2 + "\n"
+
+            except RecursionError:
+                diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", target, None, "Relations")
+                text2 = ""
 
             except:
                 diagram_model.generate_error("An element is not connected", target, None, "Relations")
@@ -710,13 +737,19 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
 # Function to construct a class description which represents an intersection of class descriptions.
 # All the elements of a owl:intersectionOf must be class descriptions (i.e. all the elements which 
 # are connected to the ellipse through an arrow must be class descriptions).
-def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes):
+def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached):
     # Get the identifier of the elements connected to the owl:intersectionOf ellipse
     ids = intersection["group"]
     text = "\n\towl:intersectionOf ( \n"
 
     # Iterate the identifiers of the elements connected to the owl:intersectionOf ellipse
     for id in ids:
+        # Check if the node has been reached before
+        if id in reached:
+            text = text + "\t\t\t\t)"
+            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", id, None, "intersectionOf")
+            return text
+        reached.append(id)
 
         # Is the element a named class?
         if id in concepts:
@@ -740,14 +773,14 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
             # Is the element an union of class descriptions?
             if(ellipse["type"] == "owl:unionOf"):
                 text = text + "\n\t[ rdf:type owl:Class ;"
-                text = text + union_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                text = text + union_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached)
                 text = text + "\t\t\t\t ]"
                 text = "\t\t\t\t" + text + "\n"
 
             # Is the element an intersection of class descriptions?
             elif(ellipse["type"] == "owl:intersectionOf"):
                 text = text + "\n\t[ rdf:type owl:Class ;"
-                text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                text = text + intersection_of(ellipse, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached)
                 text = text + "\t\t\t\t ]"
                 text = "\t\t\t\t" + text + "\n"
         
@@ -785,20 +818,22 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
                     # Does the arrow represent an owl:complementOf?
                     if(arrow["type"] == "owl:complementOf"):
                         text = text + "\n\t[ rdf:type owl:Class ;"
-                        text = text + complement_of(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes)
+                        text = text + complement_of(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, reached)
                         text = text + "\t\t\t\t ]"
                         text = "\t\t\t\t" + text + "\n"
 
                     # Does the arrow represent a restriction?
                     elif (arrow["type"] == "owl:ObjectProperty"):
-                        text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id)
+                        text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
 
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
                         
                         else:
                             text = text + "\t\t\t\t" + text2 + "\n"
-                
+                except RecursionError:
+                    diagram_model.generate_error("There is an infinite loop in the diagram between anonymous classes", id, None, "intersectionOf")
+
                 except:
                     diagram_model.generate_error("An element is not connected", id, None, "intersectionOf")
             
