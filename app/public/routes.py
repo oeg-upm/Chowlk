@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, request, flash, redirect, url_for, session, abort
+from flask import render_template, jsonify, request, flash, redirect, url_for, session, abort, send_from_directory
 import os
 import copy
 from datetime import datetime
@@ -11,6 +11,12 @@ from app import db
 from app.source.chowlk.services.transformations import transform_ontology
 from app.source.chowlk.resources.utils import read_drawio_xml
 from app.source.chowlk.resources.generate_xml_errors import generate_xml_error
+
+# Load favicon
+@public_bp.route('/favicon.ico')
+def favicon():
+    print(public_bp.root_path)
+    return send_from_directory(os.path.join(public_bp.root_path, '../static/images/favicon_io'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # Load main web page
 @public_bp.route("/")

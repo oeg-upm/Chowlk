@@ -61,9 +61,16 @@ def detect_misclassifed_classes_as_datatype_properties(diagram_model):
 
             # Is the individual under a datatype property box?
             if dx < 5 and dy < 5:
-                # In this case a box have been missclassified as a dataype property
-                change_datatype_property_to_class(diagram_model, dp_id, datatype_property, boxes, classes, datatype_properties, dp_remove)
-                
+                # It is neccesary to check the value of the box
+                # If there are more than one attributes declared, that box is really representing a datatype property 
+                # In the case of just been one attribute declared, if there is a datatype declared, that box is really representing a datatype property
+                # In the case of just been one attribute declared, if there is a restriction declared, that box is really representing a datatype property
+                if len(datatype_property["attributes"]) < 2 and 'prefix_datatype' not in datatype_property["attributes"][0]:
+                    attribute = datatype_property["attributes"][0]
+                    if not (attribute['allValuesFrom'] or attribute['someValuesFrom'] or attribute['hasValue'] or attribute['functional'] or attribute['min_cardinality'] or attribute['max_cardinality'] or attribute['cardinality'] or attribute['min_q_cardinality'] or attribute['max_q_cardinality'] or attribute['q_cardinality']):
+                        # In this case a box have been missclassified as a dataype property
+                        change_datatype_property_to_class(diagram_model, dp_id, datatype_property, boxes, classes, datatype_properties, dp_remove)
+                    
                 # An individual cannot be under more than one boxes, so no further search is neccesary
                 break
 

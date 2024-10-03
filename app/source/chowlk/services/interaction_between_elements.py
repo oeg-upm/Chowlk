@@ -9,6 +9,7 @@ from app.source.chowlk.services.class_associations import resolve_concept_refere
 # (e.g. if the source of an arrow is an ellipse it is neccsary to store that information in the ellipse)
 def interaction_between_elements(diagram_model):
     add_value_to_empty_arrows(diagram_model)
+    find_annotations_properties(diagram_model)
     classify_boxes_into_classes_and_datatype_properties(diagram_model)
     detect_misclassifed_classes_as_datatype_properties(diagram_model)
     resolve_concept_reference(diagram_model)
@@ -18,7 +19,7 @@ def interaction_between_elements(diagram_model):
     check_ellipses_relations(diagram_model)
     check_hexagons_relations(diagram_model)
     rhombus_relations(diagram_model)
-    find_annotations_properties(diagram_model)
+    #find_annotations_properties(diagram_model)
 
 # This function classify each of the boxes into a concept or an attribute.
 # An attribute is always underneath another box.
@@ -28,11 +29,15 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
     boxes = diagram_model.get_boxes()
     individuals = diagram_model.get_individuals()
     arrows = diagram_model.get_arrows()
+    rhombuses = diagram_model.get_rhombuses()
 
     # Variable to store blank boxes that has not been identified as anonymous classes.
     # This blank boxes need additional checks in order to  be classify as anonymous classes or individuals
     unclassified_blank_boxes = {}
 
+    # Variable to store blank boxes that has not been identified as anonymous classes and
+    # they are connected to an arrow (as target) that the source is a box
+    aux = {}
     # For each box (box_1) check if there is another box (box_2) above it
     # (i.e. upper left corner of box_1 matches with the bottom left corner of box_2).
     for box_id_1, box_1 in boxes.items():
@@ -72,8 +77,10 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
             
             else:
                 # In this case the box can be an anonymous class or an anonymous individual
-                # The box represents an anonymous individual if there is an arrow whose target is this box,
-                # whose source is a named individual and the arrow is representing an object property
+                # The box represents an anonymous individual if there is an arrow whose target is this box and:
+                #   - whose source is a named individual and the arrow is representing an object property
+                #   - whose source is a named individual and the arrow is representing an annotation property
+                #   - whose source is an object/datatype property and the arrow is representing an annotation property
 
                 # Variable to check if an arrow that satisfied the conditions has been found
                 anonymous_individual = True
@@ -90,24 +97,61 @@ def classify_boxes_into_classes_and_datatype_properties(diagram_model):
 
                             # Is the source of the arrow a named individual?
                             if 'source' in arrow and arrow['source'] in individuals:
+                                # The blank box is representing an anonymous individual
                                 diagram_model.add_anonymous_individual(box_1['child'], box_id_1)
                                 anonymous_individual = False
+                                # The blank box has been classified. No more iterations are needed
                                 break
+                    
+                        # Has been the arrow identified as an annotation property?
+                        elif arrow['type'] == 'owl:AnnotationProperty':
+                            # Is the source of the arrow a named individual?
+                            if 'source' in arrow and arrow['source'] in individuals:
+                                # The blank box is representing an anonymous individual
+                                diagram_model.add_anonymous_individual(box_1['child'], box_id_1)
+                                anonymous_individual = False
+                                # The blank box has been classified. No more iterations are needed
+                                break
+
+                            elif 'source' in arrow and arrow['source'] in rhombuses:
+                                # The blank box is representing an anonymous individual
+                                diagram_model.add_anonymous_individual(box_1['child'], box_id_1)
+                                anonymous_individual = False
+                                # The blank box has been classified. No more iterations are needed
+                                break
+
+                            elif 'source' in arrow and arrow['source'] in boxes:
+                                # In this case the source of the arrow is a box, which is not neccesary already classified
+                                # It is neccesary to wait until all th boxes has been classified
+                                aux[box_id_1] = {"source": arrow['source'], "child": box_1['child']}
+                                anonymous_individual = False
+                                # The blank box has been classified. No more iterations are needed
+                                break
+
                 
                 if anonymous_individual:
-                    # Other conditions need to be checked in order to classify the blank boxes as
+                    # Other conditions need to be checked in order to classify the blank box as
                     # anonymous individuals or anonymous classes
                     unclassified_blank_boxes[box_id_1] = box_1['child']
 
+    classes = diagram_model.get_classes()
+    # Now that all the boxes has been classify, check if the the source of the arrows is a named class
+    for key, value in aux.items():
+        if value['source'] in classes:
+            diagram_model.add_anonymous_individual(value['child'], key)
+        else:
+            unclassified_blank_boxes[key] = value['child']
+                                
+
     # Dictionary that contains the blank boxes which satisfy the conditions of an anonymous individual
     anonymous_individuals = {}
-
     # Iterate all the anonymous individuals that have been detected above
     for id in diagram_model.get_anonymous_individuals().keys():
         # Check the target of the arrows whose source is the anonymous individual
         check_anonymous_individuals(unclassified_blank_boxes, id, arrows, anonymous_individuals)
 
-    aux(unclassified_blank_boxes, arrows, anonymous_individuals, diagram_model.get_hexagons())
+    # Last check of unclassified blank boxes to see if they are representing anonymous individuals
+    classify_anonymous_individuals(unclassified_blank_boxes, arrows, anonymous_individuals, diagram_model.get_hexagons())
 
     # Add as anonymous individuals the blank boxes that satisfy the conditions
     for a_id, a in anonymous_individuals.items():
@@ -143,32 +187,37 @@ def check_anonymous_individuals(unclassified_blank_boxes, id, arrows, anonymous_
                 break
         
         
-
-def aux(unclassified_blank_boxes, arrows, anonymous_individuals, hexagons):
+# Function to check if an unclassified blank box represents an anonymous individual
+def classify_anonymous_individuals(unclassified_blank_boxes, arrows, anonymous_individuals, hexagons):
     # Iterate all the arrows
     for arrow_id, arrow in arrows.items():
-        # Get the source element
-        source = arrow['source'] if 'source' in arrow else None
+        # Get the target element
+        target = arrow['target'] if 'target' in arrow else None
 
-        # Is the source element an hexagon?
-        if source in hexagons:
-            hexagon = hexagons[source]
-            hexagon_type = hexagon['type'] if 'type' in hexagon else None
+        # Is the target element an unclassified blank box?
+        if target in unclassified_blank_boxes:
+            # Get the source element
+            source = arrow['source'] if 'source' in arrow else None
 
-            # Does the hexagon represent an an owl:oneOf or owl:AllDifferentFrom?
-            if hexagon_type == 'owl:oneOf' or hexagon_type == 'owl:AllDifferent':
-                # Get the target element
-                target = arrow['target'] if 'target' in arrow else None
+            # Is the source element an hexagon?
+            if source in hexagons:
+                hexagon = hexagons[source]
+                hexagon_type = hexagon['type'] if 'type' in hexagon else None
 
-                # Is the target element an unclassified blank box?
-                if target in unclassified_blank_boxes:
-                    # In this case the elements involved has to be individuals
-                    # Add an anonymous individual
-                    anonymous_individuals[target] = unclassified_blank_boxes[target]
-                    # Remove the unclassified blank box
-                    del unclassified_blank_boxes[target]
-                    # Check the target of the arrows whose source is the anonymous individual
-                    check_anonymous_individuals(unclassified_blank_boxes, target, arrows, anonymous_individuals)
+                # Does the hexagon represent an owl:oneOf or owl:AllDifferentFrom?
+                if hexagon_type == 'owl:oneOf' or hexagon_type == 'owl:AllDifferent':
+                    # Get the target element
+                    target = arrow['target'] if 'target' in arrow else None
+
+                    # Is the target element an unclassified blank box?
+                    if target in unclassified_blank_boxes:
+                        # In this case the elements involved has to be individuals
+                        # Add an anonymous individual
+                        anonymous_individuals[target] = unclassified_blank_boxes[target]
+                        # Remove the unclassified blank box
+                        del unclassified_blank_boxes[target]
+                        # Check the target of the arrows whose source is the anonymous individual
+                        check_anonymous_individuals(unclassified_blank_boxes, target, arrows, anonymous_individuals)
 
 # This functionc check if the nameless arrow have an associated xml element containing its name or
 # if they are special arrows (i.e. type, subclassOf or ellipse connections).

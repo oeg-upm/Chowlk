@@ -2,7 +2,9 @@ from app.source.chowlk.resources.utils import base_directive_prefix, check_value
 
 # Function to construct an anonymous individual. 
 # It is neccesary to write all the triples where this anonymous individual is the subject.
-def get_anonymous_individual(anonymous_individual, anonymous_individuals, arrows, individuals, values, diagram_model):
+# This is a recursive function that cannot terminate if the user has created a loop in the diagram. Therefore, it is neccesary
+# to check if each anonymous individual (blank box) has been reached before.
+def get_anonymous_individual(anonymous_individual, anonymous_individuals, arrows, individuals, values, diagram_model, reached):
     text = '[ '
 
     # Iterate all the arrows whose source is the anonymous individual
@@ -12,6 +14,12 @@ def get_anonymous_individual(anonymous_individual, anonymous_individuals, arrows
         arrow = arrows[relation_id]
         # Get the arrow type
         arrow_type = arrow['type']
+        # Get the target of the arrow
+        target = arrow['target'] if 'target' in arrow else None
+
+        if target in reached:
+            raise Exception("Infinite loop")
+
 
         # Does the arrow represent an object property?
         if arrow_type == 'owl:ObjectProperty': 
@@ -26,8 +34,9 @@ def get_anonymous_individual(anonymous_individual, anonymous_individuals, arrows
             
             # Does the target of the arrow represent an anonymous individual?
             elif target in anonymous_individuals:
+                reached.append(target)
                 predicate = f'{base_directive_prefix(arrow["prefix"])}{arrow["uri"]}'
-                object = get_anonymous_individual(anonymous_individuals[target], anonymous_individuals, arrows, individuals, values, diagram_model)
+                object = get_anonymous_individual(anonymous_individuals[target], anonymous_individuals, arrows, individuals, values, diagram_model, reached)
                 text += f'{predicate} {object} ;\n'
         
         elif arrow_type == 'owl:sameAs' or arrow_type == 'owl:differentFrom':
@@ -41,7 +50,8 @@ def get_anonymous_individual(anonymous_individual, anonymous_individuals, arrows
             
             # Does the target of the arrow represent an anonymous individual?
             elif target in anonymous_individuals:
-                object = get_anonymous_individual(anonymous_individuals[target], anonymous_individuals, arrows, individuals, values, diagram_model)
+                reached.append(target)
+                object = get_anonymous_individual(anonymous_individuals[target], anonymous_individuals, arrows, individuals, values, diagram_model, reached)
                 text += f'{arrow_type} {object} ;\n'
         
         # Does the arrow represent a datatype property?
@@ -109,17 +119,21 @@ def write_annotation_triple(relation_id, relation, individuals, uri_references, 
     elif target in values:
         target_suffix, type = check_values_type(values[target])
 
-        # Is not the object a literal?
+        """# Is not the object a literal?
         if type != 'xsd:string':
             # The object of an annotation property triple is not an individual, a literal or an URI reference
-            object_error = True
+            object_error = True"""
 
         target_prefix = ''
     
     # Is the object an anonymous individual?
     elif target in anonymous_individuals:
         target_prefix = ''
-        target_suffix = get_anonymous_individual(anonymous_individuals[target], anonymous_individuals, diagram_model.get_arrows(), individuals, values, diagram_model)
+        try:
+            target_suffix = get_anonymous_individual(anonymous_individuals[target], anonymous_individuals, diagram_model.get_arrows(), individuals, values, diagram_model, [target])
+        except:
+            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving an owl:AnnotationProperty", target, None, "Individual")
+            target_suffix = '""'
     
     else:
         # The object of an annotation property triple is not an individual, a literal or an URI reference

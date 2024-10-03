@@ -535,7 +535,7 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text, more_than_two_restrictions = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id)
+                    text, more_than_two_restrictions = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id, [])
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
@@ -582,7 +582,7 @@ class Writer_model():
                         if complement["type"] == "owl:intersectionOf":
                             self.file.write(" ;")
                             self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
-                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, [])
                             self.file.write(text)
                             self.file.write("\t\t]")
 
@@ -590,7 +590,7 @@ class Writer_model():
                         elif complement["type"] == "owl:unionOf":
                             self.file.write(" ;")
                             self.file.write(f'\t{relation["type"]} [ rdf:type owl:Class ;')
-                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, [])
                             self.file.write(text)
                             self.file.write("\t\t]")
 
@@ -607,7 +607,7 @@ class Writer_model():
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0])
+                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
                                 if text != "":
                                     self.file.write(" ;")
                                     self.file.write(f'\t{relation["type"]} ')
@@ -620,7 +620,7 @@ class Writer_model():
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
-                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, [])
 
                                 if text != "":
                                     self.file.write(" ;")
@@ -705,14 +705,14 @@ class Writer_model():
                         # Is the other element an intersection of classes?
                         if complement["type"] == "owl:intersectionOf":
                             self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
-                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                            text = intersection_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, [])
                             self.file.write(text)
                             self.file.write("\t\t]")
 
                         # Is the other element an union of classes?
                         elif complement["type"] == "owl:unionOf":
                             self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
-                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                            text = union_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, [])
                             self.file.write(text)
                             self.file.write("\t\t]")
 
@@ -730,7 +730,7 @@ class Writer_model():
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0])
+                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
                                 self.file.write(text)
 
                                 if more_than_two_restrictions:
@@ -740,7 +740,7 @@ class Writer_model():
 
                             # Is the object a complement class?
                             elif(complement["type"] == "owl:complementOf"):
-                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes)
+                                text = complement_of(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, [])
 
                                 if text != "":
                                     self.file.write(f'\t{blank["type"]} [ rdf:type owl:Class ;')
@@ -816,8 +816,12 @@ class Writer_model():
                     
                     # Is the target an anonymous individual?
                     elif target_id in anonymous_individuals:
-                        object = get_anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values, diagram_model)
-                        self.file.write(subject + " " + predicate + " " + object + " .\n")
+                        try:
+                            object = get_anonymous_individual(anonymous_individuals[target_id], anonymous_individuals, arrows, individuals, values, diagram_model, [target_id])
+                            self.file.write(subject + " " + predicate + " " + object + " .\n")
+                        except:
+                            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving a named individual.", target_id, subject, "Individual")
+                            
 
             # Iterate the datatype properties whose source is the individual
             for attribute_id, attribute in attributes.items():
@@ -894,8 +898,11 @@ class Writer_model():
                     
                     # Is the element an anonymous individual?
                     elif id in anonymous_individuals:
-                        object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, arrows, individuals, values, diagram_model)
-                        self.file.write("\t\t" + object + "\n")
+                        try:
+                            object = get_anonymous_individual(anonymous_individuals[id], anonymous_individuals, arrows, individuals, values, diagram_model, [id])
+                            self.file.write("\t\t" + object + "\n")
+                        except:
+                            diagram_model.generate_error("There is an infinite loop in the diagram between anonymous individuals, involving an owl:AllDifferent hexagon.", id, None, "Individual")
 
                     else:
                         diagram_model.generate_error("An element of an owl:AllDifferent axiom is not an individual", id, None, "Hexagons")
