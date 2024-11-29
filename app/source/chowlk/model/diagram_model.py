@@ -932,6 +932,15 @@ class Diagram_model():
                 attribute["min_q_cardinality"] = None
                 self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
 
+            # Check if the user does not want to declare the range of a datatype property
+            # when declaring a restriction
+            if "(None)" in attribute_value or "Ø" in attribute_value:
+
+                if attribute["allValuesFrom"] or attribute["someValuesFrom"] or attribute["min_q_cardinality"] or attribute["max_q_cardinality"] or attribute["q_cardinality"]:
+                    attribute["range"] = False
+                else:
+                    self.generate_error("(None) just can be used when declaring a restriction in order to indicate that the range of a datatype property is not being declared at the same time", id, attribute_value_cleaned, "Attributes")
+
             attributes.append(attribute)
 
         datatype_property["attributes"] = attributes
