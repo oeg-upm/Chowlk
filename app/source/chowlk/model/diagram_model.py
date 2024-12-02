@@ -575,7 +575,15 @@ class Diagram_model():
         parent = child.attrib["parent"] if "parent" in child.attrib else ""
 
         if parent and parent != '1' and parent != '0':
+
+            # Check if the arrow has more than one value (more than one text associated)
+            if parent in self.arrows_parent:
+                self.generate_error("The arrow has more than one value associated (text associated to the arrow)", parent, value, "Arrows")
+
             self.arrows_parent[parent] = value
+        
+        else:
+            self.generate_error("Text not associated to any arrow", child.attrib["id"], value, "Arrows")
     
     # Function to find concepts and attributes elements.
     # These elements are characterized by being squares or rectangles.
@@ -938,8 +946,15 @@ class Diagram_model():
 
                 if attribute["allValuesFrom"] or attribute["someValuesFrom"] or attribute["min_q_cardinality"] or attribute["max_q_cardinality"] or attribute["q_cardinality"]:
                     attribute["range"] = False
+
+                    if "(None)" in attribute_value and "Ø" in attribute_value:
+                        self.generate_error("(None) and (Ø) can not be used at the same time", id, attribute_value_cleaned, "Attributes")
+
                 else:
-                    self.generate_error("(None) just can be used when declaring a restriction in order to indicate that the range of a datatype property is not being declared at the same time", id, attribute_value_cleaned, "Attributes")
+                    if "(None)" in attribute_value:
+                        self.generate_error("(None) just can be used when declaring a restriction in order to indicate that the range of a datatype property is not being declared at the same time", id, attribute_value_cleaned, "Attributes")
+                    else:
+                        self.generate_error("(Ø) just can be used when declaring a restriction in order to indicate that the range of a datatype property is not being declared at the same time", id, attribute_value_cleaned, "Attributes")
 
             attributes.append(attribute)
 
@@ -1128,7 +1143,18 @@ class Diagram_model():
     # 7) The uri of the name defined in the arrow
     # 8) An auto generated label
     def add_value_to_arrow(self, relation, html_value, style, id):
+
         value = clean_html_tags(html_value)
+
+        # Check if the value of the arrow not contain text (it just contain html text)
+        if not value:
+            self.generate_error("The arrow does not contain text (it just contain white lines, line break, etc)", id, html_value, "Arrows")
+            return
+        
+        # Check if the arrow has more than one value (more than one text associated)
+        if "prefix" in relation or "uri" in relation:
+            self.generate_error("The arrow has more than one value associated (text associated to the arrow)", id, value, "Arrows")
+            return
 
         # Has the arrow a source element from which it departs?
         if relation["source"] is None:

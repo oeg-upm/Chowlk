@@ -1,0 +1,8 @@
+
+Error Attributes: (Ø) just can be used when declaring a restriction in order to indicate that the range of a datatype property is not being declared at the same time
+	shape_id: ppXCMfuBc_x3lI4SAJni-13
+	value: ns:datatypeProperty1: {"value1"^^ns:datatype, "value2"^^ns:datatype, "value3"^^ns:datatype}
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

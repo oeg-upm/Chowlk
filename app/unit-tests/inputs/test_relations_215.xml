@@ -1,0 +1,26 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
+  <diagram id="layQFqpLhYCm77lHLeqK" name="Página-1">
+    <mxGraphModel dx="988" dy="570" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MlQ7vf9WANcBgA2plqKL-1" value="&lt;div&gt;&lt;b&gt;ns&lt;/b&gt;: http://base.namespace.com#&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="190" y="150" width="290" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="SLLxA0KV_3pxwyraxPk1-1" value="ns:Class2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e2cbda;" vertex="1" parent="1">
+          <mxGeometry x="509.9999999999999" y="280.0000000000001" width="185" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SLLxA0KV_3pxwyraxPk1-2" value="ns:Class1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="280" width="185" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SLLxA0KV_3pxwyraxPk1-3" value="&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" style="endArrow=classic;html=1;endSize=8;arcSize=0;rounded=0;fillColor=#FF3333;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeColor=#FF3333;" edge="1" parent="1" source="SLLxA0KV_3pxwyraxPk1-1" target="SLLxA0KV_3pxwyraxPk1-2">
+          <mxGeometry x="-0.0081" y="6" relative="1" as="geometry">
+            <mxPoint x="654.3299999999999" y="355.62" as="sourcePoint" />
+            <mxPoint x="731.3299999999999" y="409.62" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
