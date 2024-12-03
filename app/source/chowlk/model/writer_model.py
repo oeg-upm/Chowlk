@@ -227,22 +227,32 @@ class Writer_model():
                 # Does the object property have a defined domain?
                 if "domain" in relation and relation["domain"]:
                     range = relation["range"] if 'range' in relation else ''
-                    domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["domain"], range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
+                    # Just take the first range defined (this variable just make sense when checking object properties defined trhough arrows, and this kind of object properties
+                    # always have just one domain and one range)
+                    if range and range != '':
+                        range = range[0]
+                    for relation_domain in relation["domain"]:
+                        domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation_domain, range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
 
-                    # Avoid blank nodes
-                    if domain_name != ":":
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:domain " + domain_name)
+                        # Avoid blank nodes
+                        if domain_name != ":":
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:domain " + domain_name)
 
                 # Does the object property have a defined range? (avoid has value restrictions)
                 if "range" in relation and relation["range"] and not relation["hasValue"]:
                     domain = relation["domain"] if 'domain' in relation else ''
-                    range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["range"], domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
+                    # Just take the first range defined (this variable just make sense when checking object properties defined trhough arrows, and this kind of object properties
+                    # always have just one domain and one range)
+                    if domain and domain != '':
+                        domain = domain[0]
+                    for relation_range in relation["range"]:
+                        range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation_range, domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
 
-                    # Avoid blank nodes
-                    if range_name != ":":
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:range " + range_name)
+                        # Avoid blank nodes
+                        if range_name != ":":
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:range " + range_name)
 
                 # Write relations with other object properties.
                 # Has the object property been defined as a sub-property of another object property?
@@ -295,6 +305,8 @@ class Writer_model():
                 # Write functional property delcaration
                 self.file.write("### " + prefix + uri + "\n")
                 self.file.write(prefix + uri + " rdf:type owl:FunctionalProperty")
+
+                diagram_model.generate_error("A rhombus has been declared just as Functional. Please indicate if the rhombhus is representing an object or datatype property", relation_id, f'{prefix}{uri}', "Rhombuses")
                 
                 # Is the functional property deprecated?
                 if relation['deprecated']:

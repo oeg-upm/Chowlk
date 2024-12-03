@@ -1186,16 +1186,16 @@ class Diagram_model():
                 relation["domain"] = False
                 relation["range"] = False
             elif "startFill=1" in style:
-                relation["domain"] = relation["source"]
+                relation["domain"] = [relation["source"]] if relation["source"] is not None else False
                 relation["range"] = False
 
         else:
             if "startArrow=oval" not in style or "startFill=1" in style:
-                relation["domain"] = relation["source"]
-                relation["range"] = relation["target"]
+                relation["domain"] = [relation["source"]] if relation["source"] is not None else False
+                relation["range"] = [relation["target"]] if relation["target"] is not None else False
             elif "startFill=0" in style:
                 relation["domain"] = False
-                relation["range"] = relation["target"]
+                relation["range"] = [relation["target"]] if relation["target"] is not None else False
 
         # Existential Universal restriction evaluation
         if "allValuesFrom" in value or "(all)" in value or "∀" in value:

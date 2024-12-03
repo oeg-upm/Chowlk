@@ -149,8 +149,12 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
                 # Has the source rhombus been defined as an object property?
                 if sprop_type == "owl:ObjectProperty":
                     # Add domain/range
-                    # This has to be modified to allow multiple declaration of domain and ranges in rhombuses
-                    relations_copy[source_id][relation_type] = target_id
+                    # Is this the first domain/range arrow detected whose source is the rhombus? 
+                    if not relations_copy[source_id][relation_type]:
+                        relations_copy[source_id][relation_type] = [target_id]
+                    else:
+                        # Multiple domain/range declarations
+                        relations_copy[source_id][relation_type].append(target_id)
 
                 # Has the source rhombus been defined as a datatype property?
                 elif sprop_type == "owl:DatatypeProperty":

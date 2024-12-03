@@ -19,7 +19,6 @@ def interaction_between_elements(diagram_model):
     check_ellipses_relations(diagram_model)
     check_hexagons_relations(diagram_model)
     rhombus_relations(diagram_model)
-    #find_annotations_properties(diagram_model)
 
 
 # This function classify each of the boxes into a concept or an attribute.
