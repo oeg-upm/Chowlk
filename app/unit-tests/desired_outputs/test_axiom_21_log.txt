@@ -1,4 +1,8 @@
 
+Error Rhombuses: A rhombus has been declared just as Functional. Please indicate if the rhombhus is representing an object or datatype property
+	shape_id: 5ltwtWKie9tUYiSgxbXD-16
+	value: ns:functionalProperty1
+
 Error Hexagons: An element of an owl:AllDisjointProperties axiom is not an object or datatype property
 	shape_id: 5ltwtWKie9tUYiSgxbXD-16
 	value: ns:functionalProperty1

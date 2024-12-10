@@ -7,6 +7,19 @@
   border-radius: 50%;
 }
 
+.portrait {
+  float: right;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+}
+
+.portrait img {
+  width: 100%;
+  height: auto;
+}
+
 .circular--portrait img {
   width: 100%;
   height: auto;
