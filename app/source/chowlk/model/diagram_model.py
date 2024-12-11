@@ -635,7 +635,7 @@ class Diagram_model():
         # Therefore, it is necessary to divide the html value by line breaks (<br>) in order to check what properties are deprecated
         html_attribute_list = html_value.split("<br>")
         index = 0
-        domain = False if "dashed=1" in style else child2.attrib["id"]
+        # domain = False if "dashed=1" in style else child2.attrib["id"]
 
         # Iterate all the datatype properties defined in the same block
         for attribute_value in attribute_list:
@@ -699,8 +699,9 @@ class Diagram_model():
 
                     # Is the user defining an enumerated datatype?
                     if len(enumeration) > 0:
-                        attribute["prefix_datatype"] = ''
-                        attribute["datatype"] = self.get_datatype_enumeration(enumeration[0], id)
+                        attribute["prefix_datatype"] = ['']
+                        datatype = self.get_datatype_enumeration(enumeration[0], id)
+                        attribute["datatype"] = None if datatype is None else [datatype]
                     
                     else:
                         # The user is defining a datatype
@@ -711,24 +712,24 @@ class Diagram_model():
                                 self.generate_error("The datatype URI has not a valid identifier", id, value, "Attributes")
                                 continue
 
-                            attribute["prefix_datatype"] = ''
-                            attribute["datatype"] = datatype_value_split.strip()
+                            attribute["prefix_datatype"] = ['']
+                            attribute["datatype"] = [datatype_value_split.strip()]
 
                         # Check if the sentence is :datatype
                         elif datatype_value_split[0] == ':':
-                            attribute["prefix_datatype"] = ':'
-                            attribute["datatype"] = datatype_value_split[1:].strip()
+                            attribute["prefix_datatype"] = [':']
+                            attribute["datatype"] = [datatype_value_split[1:].strip()]
 
                         #Check if the sentence is prefix:datatype
                         elif ':' in datatype_value_split:
                             final_datatype = datatype_value_split.split(":")
-                            attribute["prefix_datatype"] = final_datatype[0].strip()
-                            attribute["datatype"] = final_datatype[1].strip()
+                            attribute["prefix_datatype"] = [final_datatype[0].strip()]
+                            attribute["datatype"] = [final_datatype[1].strip()]
                         
                         #The sentence is datatype
                         else:
-                            attribute["prefix_datatype"] = "xsd"
-                            attribute["datatype"] = datatype_value_split.strip()
+                            attribute["prefix_datatype"] = ["xsd"]
+                            attribute["datatype"] = [datatype_value_split.strip()]
                 
                 else:
                     attribute["datatype"] = None
@@ -742,7 +743,7 @@ class Diagram_model():
             else:
                 attribute["range"] = True
 
-            attribute["domain"] = domain
+            attribute["domain"] = False if "dashed=1" in style else [child2.attrib["id"]]
 
             # Existential Universal restriction evaluation
             if "(all)" in attribute_value or "∀" in attribute_value:

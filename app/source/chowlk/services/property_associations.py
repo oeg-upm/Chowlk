@@ -167,7 +167,8 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
                             # In this case, the dataype has been identified incorrectly as a concept.
                             # The datatype information is retreived from the concept.
                             # Moreover, it is neccesary to remove that concept (because it is not really a concept)
-                            attribute_blocks[source_id]["attributes"][0][relation_type] = True
+                            if not attribute_blocks[source_id]["attributes"][0][relation_type]:
+                                attribute_blocks[source_id]["attributes"][0][relation_type] = True
                             incorrect_concept = concepts.pop(target_id)
                             prefix_datatype = incorrect_concept["prefix"]
                             datatype = incorrect_concept["uri"]
@@ -177,8 +178,15 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
                                 prefix_datatype = "xsd"
                                 datatype = datatype[2:-1]
 
-                            attribute_blocks[source_id]["attributes"][0]["datatype"] = datatype
-                            attribute_blocks[source_id]["attributes"][0]["prefix_datatype"] = prefix_datatype
+                            # Is this the first range arrow detected whose source is the rhombus? 
+                            if not attribute_blocks[source_id]["attributes"][0]["datatype"]:
+                                attribute_blocks[source_id]["attributes"][0]["datatype"] = [datatype]
+                                attribute_blocks[source_id]["attributes"][0]["prefix_datatype"] = [prefix_datatype]
+                            
+                            else:
+                                # Multiple range declarations
+                                attribute_blocks[source_id]["attributes"][0]["datatype"].append(datatype)
+                                attribute_blocks[source_id]["attributes"][0]["prefix_datatype"].append(prefix_datatype)
 
                         # Is the range an enumerated datatype? (i.e. the target is an hexagon)
                         elif target_id in hexagons:
@@ -190,7 +198,13 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
 
                     else:
                         # The relation is a rdfs:domain
-                        attribute_blocks[source_id]["attributes"][0][relation_type] = target_id
+                        # Is this the first domain arrow detected whose source is the rhombus? 
+                        if not attribute_blocks[source_id]["attributes"][0][relation_type]:
+                            attribute_blocks[source_id]["attributes"][0][relation_type] = [target_id]
+                        
+                        else:
+                            # Multiple domain declarations
+                            attribute_blocks[source_id]["attributes"][0][relation_type].append(target_id)
 
             # Is an annotation property triple?
             elif source_id in rhombuses and relation_type == 'owl:AnnotationProperty':

@@ -397,17 +397,18 @@ class Writer_model():
                 # Does the datatype property have a defined domain?
                 if attribute["domain"]:
 
-                    # We want to skip the domain definition of those datatype properties block that are below a blank node
-                    if not ('concept_associated' in attribute_block and attribute["domain"] == attribute_block['concept_associated'] and attribute["domain"] in anonymous_classes):
-                        domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
-                        # Avoid blank nodes
-                        if domain_name != ":":
-                            self.file.write(" ;\n")
-                            self.file.write("\t\trdfs:domain " + domain_name)
+                    for relation_domain in attribute["domain"]:
+                        # We want to skip the domain definition of those datatype properties block that are below a blank node
+                        if not ('concept_associated' in attribute_block and relation_domain == attribute_block['concept_associated'] and relation_domain in anonymous_classes):
+                            
+                            domain_name = properties_domain_range(id, prefix, uri, relation_domain, '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
+                            # Avoid blank nodes
+                            if domain_name != ":":
+                                self.file.write(" ;\n")
+                                self.file.write("\t\trdfs:domain " + domain_name)
 
                 # Does the datatype property have a defined range? (avoid has value restrictions)
                 if attribute["range"] and not attribute["hasValue"]:
-                    
                     # Is the datatype property connected to an hexagon?
                     if attribute["range"] in hexagons:
                         # The user is defining an enumerated datatype.
@@ -467,9 +468,11 @@ class Writer_model():
 
                     # Is the user defining a datatype?
                     elif attribute["datatype"]:
-                        prefix = base_directive_prefix(attribute["prefix_datatype"])
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:range " + prefix + attribute["datatype"])
+
+                        for i in range(len(attribute["datatype"])):
+                            prefix = base_directive_prefix(attribute["prefix_datatype"][i])
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:range " + prefix + attribute["datatype"][i])
 
                     else:
                         # In this case, the user has declared the datatype property through a rhombus,
