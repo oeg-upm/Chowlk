@@ -190,7 +190,11 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
 
                         # Is the range an enumerated datatype? (i.e. the target is an hexagon)
                         elif target_id in hexagons:
-                            attribute_blocks[source_id]["attributes"][0]['range'] = target_id
+
+                            if not attribute_blocks[source_id]["attributes"][0]["range"]:
+                                attribute_blocks[source_id]["attributes"][0]['range'] = [target_id]
+                            else:
+                                attribute_blocks[source_id]["attributes"][0]['range'].append(target_id)
 
                         else:
                             value = f'{base_directive_prefix(attribute_blocks[source_id]["attributes"][0]["prefix"])}{attribute_blocks[source_id]["attributes"][0]["uri"]}'

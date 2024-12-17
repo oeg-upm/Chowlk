@@ -409,72 +409,82 @@ class Writer_model():
 
                 # Does the datatype property have a defined range? (avoid has value restrictions)
                 if attribute["range"] and not attribute["hasValue"]:
-                    # Is the datatype property connected to an hexagon?
-                    if attribute["range"] in hexagons:
-                        # The user is defining an enumerated datatype.
-                        # In this case, the user has declared the datatype property through a rhombus,
-                        # which is connected to an hexagon through an arrow whose name is "rdfs:range".
-                        hexagon_id = attribute["range"]
-                        hexagon = hexagons[hexagon_id]
+                    range_error = True
 
-                        # Is the user defining an enumerated datatype?
-                        if hexagon["type"] == "owl:oneOf":
-                            self.file.write(" ;\n")
-                            self.file.write("\t\trdfs:range [ rdf:type rdfs:Datatype ; owl:oneOf")
-                            text1 =""
-                            text2 =""
-                            # the range is an enumerated datatype
-                            enumerated_datatypes_ids = hexagon["group"]
+                    if not isinstance(attribute["range"], bool):
+                        range_error = False
+                        for hexagon_range in attribute["range"]:
+                            # Is the datatype property connected to an hexagon?
+                            if hexagon_range in hexagons:
+                                # The user is defining an enumerated datatype.
+                                # In this case, the user has declared the datatype property through a rhombus,
+                                # which is connected to an hexagon through an arrow whose name is "rdfs:range".
+                                hexagon_id = hexagon_range
+                                hexagon = hexagons[hexagon_id]
 
-                            # Iterate the elements connected to the hexagon
-                            for enumerated_datatypes_id in enumerated_datatypes_ids:
+                                # Is the user defining an enumerated datatype?
+                                if hexagon["type"] == "owl:oneOf":
+                                    self.file.write(" ;\n")
+                                    self.file.write("\t\trdfs:range [ rdf:type rdfs:Datatype ; owl:oneOf")
+                                    text1 =""
+                                    text2 =""
+                                    # the range is an enumerated datatype
+                                    enumerated_datatypes_ids = hexagon["group"]
 
-                                # Is the element a data value?
-                                if enumerated_datatypes_id in values:
+                                    # Iterate the elements connected to the hexagon
+                                    for enumerated_datatypes_id in enumerated_datatypes_ids:
 
-                                    # Is a datatype specified in the data value?
-                                    if values[enumerated_datatypes_id]["type"] is not None:
+                                        # Is the element a data value?
+                                        if enumerated_datatypes_id in values:
 
-                                        # Is the datatype specified through a prefix:uri?
-                                        if ":" in values[enumerated_datatypes_id]["type"]:
-                                            object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^" + values[enumerated_datatypes_id]["type"]
-                                        
+                                            # Is a datatype specified in the data value?
+                                            if values[enumerated_datatypes_id]["type"] is not None:
+
+                                                # Is the datatype specified through a prefix:uri?
+                                                if ":" in values[enumerated_datatypes_id]["type"]:
+                                                    object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^" + values[enumerated_datatypes_id]["type"]
+                                                
+                                                else:
+                                                    # The default prefix is xsd
+                                                    object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^xsd:" + values[enumerated_datatypes_id]["type"]
+                                            
+                                            # Is a language specified in the data value?
+                                            elif values[enumerated_datatypes_id]["lang"] is not None:
+                                                # The data value is a literal
+                                                object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "@" + values[enumerated_datatypes_id]["lang"]
+                                            
+                                            else:
+                                                # The data value is a literal
+                                                object = "\"" + values[enumerated_datatypes_id]["value"] + "\""
+                                            
+                                            text1 = text1 + "[ rdf:type rdf:List ; rdf:first " + object + "; rdf:rest"
+                                            text2 = text2 + " ]"
+
                                         else:
-                                            # The default prefix is xsd
-                                            object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^xsd:" + values[enumerated_datatypes_id]["type"]
-                                    
-                                    # Is a language specified in the data value?
-                                    elif values[enumerated_datatypes_id]["lang"] is not None:
-                                        # The data value is a literal
-                                        object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "@" + values[enumerated_datatypes_id]["lang"]
-                                    
-                                    else:
-                                        # The data value is a literal
-                                        object = "\"" + values[enumerated_datatypes_id]["value"] + "\""
-                                    
-                                    text1 = text1 + "[ rdf:type rdf:List ; rdf:first " + object + "; rdf:rest"
+                                            diagram_model.generate_error("An element of an owl:oneOf is not a data value", enumerated_datatypes_id, None, "oneOf")
+
+                                    text1 = text1 + " rdf:nil"
                                     text2 = text2 + " ]"
+                                    self.file.write(text1 + text2)
 
                                 else:
-                                    diagram_model.generate_error("An element of an owl:oneOf is not a data value", enumerated_datatypes_id, None, "oneOf")
+                                    # The user has defined an invalid hexagon
+                                    diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", hexagon_id, hexagon["type"], "Attributes")
 
-                            text1 = text1 + " rdf:nil"
-                            text2 = text2 + " ]"
-                            self.file.write(text1 + text2)
-
-                        else:
-                            # The user has defined an invalid hexagon
-                            diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", hexagon_id, hexagon["type"], "Attributes")
+                            else:
+                                # In this case, the user has declared the datatype property through a rhombus,
+                                # which is connected to another element through an arrow whose name is "rdfs:range".
+                                diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", id, f'{prefix}{uri}', "Attributes")
 
                     # Is the user defining a datatype?
-                    elif attribute["datatype"]:
+                    if attribute["datatype"]:
 
                         for i in range(len(attribute["datatype"])):
                             prefix = base_directive_prefix(attribute["prefix_datatype"][i])
                             self.file.write(" ;\n")
                             self.file.write("\t\trdfs:range " + prefix + attribute["datatype"][i])
 
-                    else:
+                    elif range_error:
                         # In this case, the user has declared the datatype property through a rhombus,
                         # which is connected to another element through an arrow whose name is "rdfs:range".
                         diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", id, f'{prefix}{uri}', "Attributes")
