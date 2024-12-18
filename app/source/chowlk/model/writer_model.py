@@ -288,7 +288,7 @@ class Writer_model():
 
                     for propertyChain in relation["owl:propertyChainAxiom"]:
                         self.file.write(" ;\n")
-                        text = obtain_elements_property_chain(diagram_model, relations, propertyChain)
+                        text = obtain_elements_property_chain(diagram_model, relations, propertyChain, [])
                         self.file.write("\t\towl:propertyChainAxiom ( " + text + ")")
                     
                 # Write label

@@ -1,7 +1,7 @@
 
-Error Rhombuses: A rdf:type relation can not be defined in a rhombus
-	shape_id: b56bNx_wXVy78U0txQsK-16
-	value: ns:datatypeProperty
+Error Rhombuses: Just one path can be defined in a property chain axiom
+	shape_id: x2lojsMZcXaRY4SJAVnc-5
+	value:  ns:objectProperty2 
 
 Warning Base: A base has not been declared. The first namespace has been taken as base
 

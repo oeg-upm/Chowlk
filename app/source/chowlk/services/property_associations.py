@@ -9,45 +9,72 @@ def enrich_properties(diagram_model):
     datatype_properties = diagram_model.get_datatype_properties()
     concepts = diagram_model.get_classes()
     hexagons = diagram_model.get_hexagons()
-    
     relations_copy = enrich_properties_through_relations(diagram_model, relations, rhombuses, datatype_properties, concepts, hexagons, copy.deepcopy(relations))
     check_rhombus_names(rhombuses, relations_copy, diagram_model)
-    
     diagram_model.set_arrows(relations_copy)
     check_property_aggregations(diagram_model)
 
 # Function to check if all the aggregations between properties are part of a path of a property chain
 def check_property_aggregations(diagram_model):
+    # List to store the identifier of the aggregation arrows that are connecting to rhombus which represent object properties
     aggregations = []
+    # List to store the identifier of the aggregation arrows that are part of a property chain axiom. The condition to be in this list is to be connected
+    # to a path where there is a property chain arrow.
     propertyChain = []
     arrows = diagram_model.get_arrows()
 
+    # Iterate all the arrows
     for arrow_id, arrow in arrows.items():
+        # Get the type of the arrow
         arrow_type = arrow['type'] if 'type' in arrow else None
+        # Get the target of the arrow
         target_id = arrow['target'] if 'target' in arrow else None
+        # Get the source of the arrow
         source_id = arrow['source'] if 'source' in arrow else None
+
+        # Does the arrow represent an aggregation arrow whose source and target represent object properties?
         if arrow_type == 'aggregation' and target_id in arrows and source_id in arrows:
             aggregations.append(arrow_id)
+
+        # Does the arrow represent a property chain arrow?
         elif arrow_type == 'owl:propertyChainAxiom':
 
+            # Is the property chain axiom connected to an object property?
             if target_id in arrows:
-                aux(arrows[target_id], propertyChain, arrows)
+                # Store into the list propertyChain the aggregation arrows connected to the property chain arrow
+                check_aggregation(arrows[target_id], propertyChain, arrows, target_id, [])
     
+    # Iterate all the aggregation arrows whose source and target represent object properties
     for aggregation in aggregations:
 
+        # Is the aggregation arrow not connected to a path where is a property chain arrow?
         if aggregation not in propertyChain:
             diagram_model.generate_error(f'A path used to describe a property chain is not part of a correct property chain axiom. It lacks the owl:propertyChainAxiom arrow', aggregation, None, "Rhombuses")
 
-def aux(target, propertyChain, arrows):
+# Function to store in the propertyChain list the aggergation arrows connected to a path where there is a property chain arrow.
+# Note: infinite_loop is a list to check that there are not loops in the paths which starts in a property chain arrow.
+# Note: in aggregation[0] the identifier of the rhombus is stored and in aggregation[1] the identifier of the aggregation arrow is stored
+def check_aggregation(target, propertyChain, arrows, arrow_id, infinite_loop):
+    # Check if this arrow has been reached before
+    if arrow_id in infinite_loop:
+        # Infinite loop. The error is generated in writer_model.py
+        return
+    
+    infinite_loop.append(arrow_id)
+
+    # There are more aggregation arrows connected to the path?
     if "aggregation" in target:
 
+        # Iterate those aggregation arrows directly connected to the rhombus (object property)
         for aggregation in target["aggregation"]:
 
+            # Store the aggregation arrow in the list
             if aggregation[1] not in propertyChain:
                 propertyChain.append(aggregation[1])
             
+            # Is the target of the aggregation arrow connected to another rhombus (object property)?
             if aggregation[0] in arrows:
-                aux(arrows[aggregation[0]], propertyChain, arrows)
+                check_aggregation(arrows[aggregation[0]], propertyChain, arrows, aggregation[1], infinite_loop)
 
 # The objective of this function is to find the relations between properties (e.g. rdfs:subPropertyOf) in order to
 # add that information into the properties (i.e. relations or attribute_blocks).
@@ -236,6 +263,17 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
             source_property = rhombuses[source_id]
             value = f'{base_directive_prefix(source_property["prefix"])}{source_property["uri"]}'
             diagram_model.generate_error(f'A {relation_type} relation can not been defined between rhombuses', source_id, value, "Rhombuses")
+
+        elif source_id in rhombuses:
+            source_property = rhombuses[source_id]
+            value = f'{base_directive_prefix(source_property["prefix"])}{source_property["uri"]}'
+            diagram_model.generate_error(f'A {relation_type} relation can not be defined in a rhombus', source_id, value, "Rhombuses")
+
+        # Posiblemente esto hay que borrarlo
+        elif target_id in rhombuses:
+            source_property = rhombuses[target_id]
+            value = f'{base_directive_prefix(source_property["prefix"])}{source_property["uri"]}'
+            diagram_model.generate_error(f'A {relation_type} relation can not be defined in a rhombus', target_id, value, "Rhombuses")
                     
     return relations_copy
 

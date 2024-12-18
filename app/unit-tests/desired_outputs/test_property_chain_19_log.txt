@@ -1,7 +1,6 @@
 
-Error Rhombuses: A rdf:type relation can not be defined in a rhombus
-	shape_id: b56bNx_wXVy78U0txQsK-16
-	value: ns:datatypeProperty
+Error Rhombuses: There is an infinite loop in the diagram between rhombuses, involving a property chain axiom.
+	shape_id: QsCOg0P8CIKrM8H12nyJ-3
 
 Warning Base: A base has not been declared. The first namespace has been taken as base
 
