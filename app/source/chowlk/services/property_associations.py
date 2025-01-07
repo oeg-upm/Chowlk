@@ -270,7 +270,7 @@ def enrich_properties_through_relations(diagram_model, relations, rhombuses, att
             diagram_model.generate_error(f'A {relation_type} relation can not be defined in a rhombus', source_id, value, "Rhombuses")
 
         # Posiblemente esto hay que borrarlo
-        elif target_id in rhombuses:
+        elif target_id in rhombuses and not (relation_type == "ellipse_connection" and source_id in hexagons):
             source_property = rhombuses[target_id]
             value = f'{base_directive_prefix(source_property["prefix"])}{source_property["uri"]}'
             diagram_model.generate_error(f'A {relation_type} relation can not be defined in a rhombus', target_id, value, "Rhombuses")
