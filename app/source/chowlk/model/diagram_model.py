@@ -160,53 +160,77 @@ class Diagram_model():
     # This function iterate the objects defined inside the xml diagram in order to classify them
     # in based of this shapes (e.g. arrows, boxes, rhombuses, etc.)
     def classify_elements(self, root):
-        
+
+        # List to store the identifiers of the containers elements
+        containers_id = []
+
+        # Search for container elements. The elements inside a container will not be taken into account 
+        # in the next classification  phase, performed in the following "for" loop. An element inside a 
+        # container is characterized by having an attribute called “parent” whose value is the “Id” of the container.
+        for child in root:
+            style = child.attrib["style"] if "style" in child.attrib else ""
+
+            # Is the element representing a container element?
+            if "swimlane" in style:
+                containers_id.append(child.attrib["id"])
+
         # Classify each xml object on the basis of its individual information 
         # (i.e. without taking into account the xml objects to which they are connected).
         for child in root:
-            style = child.attrib["style"] if "style" in child.attrib else ""
-            value = child.attrib["value"] if "value" in child.attrib else ""
+
+            parent = child.attrib["parent"] if "parent" in child.attrib else ""
             id = child.attrib["id"]
 
-            # Is a namespace element?
-            if "shape=note" in style:
-                self.add_namespace(id, value)
+            # Is the element inside a container element?
+            if parent in containers_id:
+                # Store the identifier because it could be the case that are other elements whose attribute
+                #"parent" value is the "Id" of this elememt (and those other elements are inside of the container too)
+                containers_id.append(id)
 
-            # Is a metadata element?
-            elif "shape=document" in style:
-                self.add_ontology_metadata(id, value)
+            else:
 
-            # Is an arrow element?
-            elif "edge" in child.attrib:
-                self.add_arrow(child, id, value, style)
+                style = child.attrib["style"] if "style" in child.attrib else ""
+                value = child.attrib["value"] if "value" in child.attrib else ""
 
-            # Is an ellipse element?
-            elif "ellipse" in style:
-                self.add_ellipse(child, id, value)
+                # Is a namespace element?
+                if "shape=note" in style:
+                    self.add_namespace(id, value)
 
-            # Is an hexagon element?
-            elif "hexagon" in style:
-                self.add_hexagon(child, id, value)
+                # Is a metadata element?
+                elif "shape=document" in style:
+                    self.add_ontology_metadata(id, value)
 
-            # Is a bow element with an underlined name? (<u> in html means underlined text)
-            elif "value" in child.attrib and ("fontStyle=4" in style or "<u" in value):
-                self.add_individual(child, id, value)
+                # Is an arrow element?
+                elif "edge" in child.attrib:
+                    self.add_arrow(child, id, value, style)
 
-            # Is a rhombus element?
-            elif "rhombus" in style:
-                self.add_rhombus(child, id, value)
+                # Is an ellipse element?
+                elif "ellipse" in style:
+                    self.add_ellipse(child, id, value)
 
-            # Is the name of an arrow?
-            elif "edgeLabel" in style or "text" in style:
-                self.add_arrow_parent(child, value)
+                # Is an hexagon element?
+                elif "hexagon" in style:
+                    self.add_hexagon(child, id, value)
 
-            # Is it a box element?
-            elif "rounded" in style:
-                self.add_box(child, id, value, style)
-            
-            # Is there a data value defined in the element? (i.e. the element name contains "")
-            if "&quot;" in value or "\"" in value:
-                self.add_property_value(id, value, child)
+                # Is a bow element with an underlined name? (<u> in html means underlined text)
+                elif "value" in child.attrib and ("fontStyle=4" in style or "<u" in value):
+                    self.add_individual(child, id, value)
+
+                # Is a rhombus element?
+                elif "rhombus" in style:
+                    self.add_rhombus(child, id, value)
+
+                # Is the name of an arrow?
+                elif "edgeLabel" in style or "text" in style:
+                    self.add_arrow_parent(child, value)
+
+                # Is it a box element?
+                elif "rounded" in style:
+                    self.add_box(child, id, value, style)
+                
+                # Is there a data value defined in the element? (i.e. the element name contains "")
+                if "&quot;" in value or "\"" in value:
+                    self.add_property_value(id, value, child)
 
     # Function to find the "note" element in which the namespaces are defined.
     # The namespaces are stored into a dictionary called "namespaces" whose key is 
