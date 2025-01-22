@@ -157,6 +157,7 @@ class Diagram_model():
     def set_ontology_uri(self, ontology_uri):
         self.ontology_uri = ontology_uri
     
+
     # This function iterate the objects defined inside the xml diagram in order to classify them
     # in based of this shapes (e.g. arrows, boxes, rhombuses, etc.)
     def classify_elements(self, root):
@@ -182,12 +183,7 @@ class Diagram_model():
             id = child.attrib["id"]
 
             # Is the element inside a container element?
-            if parent in containers_id:
-                # Store the identifier because it could be the case that are other elements whose attribute
-                #"parent" value is the "Id" of this elememt (and those other elements are inside of the container too)
-                containers_id.append(id)
-
-            else:
+            if check_inside_container(containers_id, parent, id, root):
 
                 style = child.attrib["style"] if "style" in child.attrib else ""
                 value = child.attrib["value"] if "value" in child.attrib else ""
@@ -1576,3 +1572,34 @@ def check_rhombus_error_types(types):
         return "A rhombus can not be defined as Datatype Property and Annotation Property at the same time"
     
     return ""
+
+def check_inside_container(containers_id, parent, element_id, root):
+
+        # Is the parent the diagram?
+        if parent == '1':
+            return True
+        
+        # Is the parent of the element a container?
+        elif parent in containers_id:
+            # Store the identifier because it could be the case that are other elements whose attribute
+            #"parent" value is the "Id" of this elememt (and those other elements are inside of the container too)
+            containers_id.append(element_id)
+            return False
+        
+        else:
+            # The parent is another element of the diagram
+            # Search for the parent element
+            for child in root:
+
+                parent_2 = child.attrib["parent"] if "parent" in child.attrib else ""
+                id = child.attrib["id"]
+
+                if id == parent:
+                    if not check_inside_container(containers_id, parent_2, id, root):
+                        containers_id.append(element_id)
+                        return False
+                    
+                    else:
+                        return True
+
+            return True
