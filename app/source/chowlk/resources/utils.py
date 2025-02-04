@@ -63,6 +63,9 @@ def clean_html_tags(text):
     for tag in html_tags:
         text = re.sub(tag, "", text)
 
+    # This line is to parse different line breaks (e.g. &#xa;)
+    text = re.sub('\n', "<br>", text)
+
     soup = BeautifulSoup(text, "html.parser")
     text = soup.get_text("|")
     return text

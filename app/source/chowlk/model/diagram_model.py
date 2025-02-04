@@ -233,7 +233,7 @@ class Diagram_model():
     # the prefix and the value is the uri.
     # A namespace can be defined as "prefix: uri" or "prefix: <uri>".
     # The uri of the namespace has to start with "http"
-    def add_namespace(self, id, value): 
+    def add_namespace(self, id, value):
         text = clean_html_tags(value)
         namespaces = text.split("|")
         namespaces = [item for item in namespaces if item.strip() != ""]
@@ -623,6 +623,7 @@ class Diagram_model():
         try:
             box["child"] = child
             box["value"] = value
+            print(value)
             box["style"] = style
 
             # Concepts and attributes shape do not have a specific characteristic to differentiate them.
