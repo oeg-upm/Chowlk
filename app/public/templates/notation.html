@@ -20,6 +20,16 @@
 </head>
 
 <body>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MVGE77GN7B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-MVGE77GN7B');
+    </script>
+    
     <div class="row">
 
         <div id="toc" class="col-3 pt-4 d-none d-xl-block bg-light px-5">
@@ -42,75 +52,76 @@
                     <p class="ps-2"><a href="#basic-elements">2.1. Basic Elements</a></p>
                     <p class="ps-2"><a href="#namespaces">2.2. Namespaces</a></p>
                     <p class="ps-2"><a href="#ontology_metadata">2.3. Ontology Metadata</a></p>
-                    <p class="ps-2"><a href="#class-definition">2.4. Class Definition</a></p>
-                    <p class="ps-2"><a href="#classes">2.5. Class Descriptions</a></p>
-                    <p class="ps-4"><a href="#class-identifier">2.5.1. Class Identifier</a></p>
-                    <p class="ps-4"><a href="#enumeration-identifier">2.5.2. Enumeration</a></p>
-                    <p class="ps-4"><a href="#restriction-identifier">2.5.3. Restriction</a></p>
-                    <p class="ps-5"><a href="#restriction-value-constraint-identifier">2.5.3.1. Value Constraints</a>
+                    <p class="ps-2"><a href="#legend-definition">2.4. Legend Container</a></p>
+                    <p class="ps-2"><a href="#class-definition">2.5. Class Definition</a></p>
+                    <p class="ps-2"><a href="#classes">2.6. Class Descriptions</a></p>
+                    <p class="ps-4"><a href="#class-identifier">2.6.1. Class Identifier</a></p>
+                    <p class="ps-4"><a href="#enumeration-identifier">2.6.2. Enumeration</a></p>
+                    <p class="ps-4"><a href="#restriction-identifier">2.6.3. Restriction</a></p>
+                    <p class="ps-5"><a href="#restriction-value-constraint-identifier">2.6.3.1. Value Constraints</a>
                     </p>
-                    <p class="ps-5"><a href="#restriction-cardinality-constraint-identifier">2.5.3.2. Cardinality
+                    <p class="ps-5"><a href="#restriction-cardinality-constraint-identifier">2.6.3.2. Cardinality
                             Constraints</a></p>
-                    <p class="ps-5"><a href="#restriction-qualified-cardinality-constraint-identifier">2.5.3.3.
+                    <p class="ps-5"><a href="#restriction-qualified-cardinality-constraint-identifier">2.6.3.3.
                             Qualified Cardinality Constraints</a></p>
-                    <p class="ps-4"><a href="#intersection-identifier">2.5.4. Intersection</a></p>
-                    <p class="ps-4"><a href="#union-identifier">2.5.5. Union</a></p>
-                    <p class="ps-4"><a href="#complement-identifier">2.5.6. Complement</a></p>
-                    <p class="ps-2"><a href="#class-axioms">2.6. Class Axioms</a></p>
-                    <p class="ps-4"><a href="#class-axioms-subclass">2.6.1. Subclass</a></p>
-                    <p class="ps-4"><a href="#class-axioms-equivalent">2.6.2. Equivalent</a></p>
-                    <p class="ps-4"><a href="#class-axioms-disjoint">2.6.3. Disjoint</a></p>
-                    <p class="ps-2"><a href="#object-properties">2.7. Object Properties</a></p>
-                    <p class="ps-4"><a href="#object-properties-domain-and-range">2.7.1. Domain and Range</a></p>
-                    <p class="ps-4"><a href="#object-properties-functional-properties">2.7.2. Functional Properties</a>
+                    <p class="ps-4"><a href="#intersection-identifier">2.6.4. Intersection</a></p>
+                    <p class="ps-4"><a href="#union-identifier">2.6.5. Union</a></p>
+                    <p class="ps-4"><a href="#complement-identifier">2.6.6. Complement</a></p>
+                    <p class="ps-2"><a href="#class-axioms">2.7. Class Axioms</a></p>
+                    <p class="ps-4"><a href="#class-axioms-subclass">2.7.1. Subclass</a></p>
+                    <p class="ps-4"><a href="#class-axioms-equivalent">2.7.2. Equivalent</a></p>
+                    <p class="ps-4"><a href="#class-axioms-disjoint">2.7.3. Disjoint</a></p>
+                    <p class="ps-2"><a href="#object-properties">2.8. Object Properties</a></p>
+                    <p class="ps-4"><a href="#object-properties-domain-and-range">2.8.1. Domain and Range</a></p>
+                    <p class="ps-4"><a href="#object-properties-functional-properties">2.8.2. Functional Properties</a>
                     </p>
-                    <p class="ps-4"><a href="#object-properties-inverse-functional-properties">2.7.3. Inverse Functional
+                    <p class="ps-4"><a href="#object-properties-inverse-functional-properties">2.8.3. Inverse Functional
                             Properties</a></p>
-                    <p class="ps-4"><a href="#object-properties-symmetric-properties">2.7.4. Symmetric Properties</a>
+                    <p class="ps-4"><a href="#object-properties-symmetric-properties">2.8.4. Symmetric Properties</a>
                     </p>
-                    <p class="ps-4"><a href="#object-properties-transitive-properties">2.7.5. Transitive Properties</a>
+                    <p class="ps-4"><a href="#object-properties-transitive-properties">2.8.5. Transitive Properties</a>
                     </p>
-                    <p class="ps-4"><a href="#object-properties-reflexive-properties">2.7.6. Reflexive Properties</a>
+                    <p class="ps-4"><a href="#object-properties-reflexive-properties">2.8.6. Reflexive Properties</a>
                     </p>
-                    <p class="ps-4"><a href="#object-properties-asymmetric-properties">2.7.7. Asymmetric Properties</a>
+                    <p class="ps-4"><a href="#object-properties-asymmetric-properties">2.8.7. Asymmetric Properties</a>
                     </p>
-                    <p class="ps-4"><a href="#object-properties-irreflexive-properties">2.7.8. Irreflexive
+                    <p class="ps-4"><a href="#object-properties-irreflexive-properties">2.8.8. Irreflexive
                             Properties</a></p>
-                    <p class="ps-2"><a href="#datatype-properties">2.8. Datatype Properties</a></p>
-                    <p class="ps-4"><a href="#datatype-properties-domain-and-range">2.8.1. Domain and Range</a></p>
-                    <p class="ps-4"><a href="#datatype-properties-enumerated-datatype">2.8.2. Enumerated datatypes</a>
+                    <p class="ps-2"><a href="#datatype-properties">2.9. Datatype Properties</a></p>
+                    <p class="ps-4"><a href="#datatype-properties-domain-and-range">2.9.1. Domain and Range</a></p>
+                    <p class="ps-4"><a href="#datatype-properties-enumerated-datatype">2.9.2. Enumerated datatypes</a>
                     </p>
-                    <p class="ps-4"><a href="#datatype-properties-functional-properties">2.8.3. Functional
+                    <p class="ps-4"><a href="#datatype-properties-functional-properties">2.9.3. Functional
                             Properties</a></p>
-                    <p class="ps-2"><a href="#relations-between-properties-object-property">2.9. Relations between
+                    <p class="ps-2"><a href="#relations-between-properties-object-property">2.10. Relations between
                             Object Properties</a></p>
-                    <p class="ps-4"><a href="#sub-property-object-property">2.9.1. Sub-Property</a></p>
-                    <p class="ps-4"><a href="#equivalent-property-object-property">2.9.2. Equivalent Property</a></p>
-                    <p class="ps-4"><a href="#inverse-property-object-property">2.9.3. Inverse Property</a></p>
-                    <p class="ps-4"><a href="#disjoint-property-object-property">2.9.4. Disjoint Property</a></p>
-                    <p class="ps-4"><a href="#all-disjoint-property-object-properties">2.9.5. All Disjoint Properties</a></p>
-                    <p class="ps-4"><a href="#property-chain">2.9.6. Property Chain</a></p>
-                    <p class="ps-2"><a href="#relations-between-properties-datatype-properties">2.10. Relations between
+                    <p class="ps-4"><a href="#sub-property-object-property">2.10.1. Sub-Property</a></p>
+                    <p class="ps-4"><a href="#equivalent-property-object-property">2.10.2. Equivalent Property</a></p>
+                    <p class="ps-4"><a href="#inverse-property-object-property">2.10.3. Inverse Property</a></p>
+                    <p class="ps-4"><a href="#disjoint-property-object-property">2.10.4. Disjoint Property</a></p>
+                    <p class="ps-4"><a href="#all-disjoint-property-object-properties">2.10.5. All Disjoint Properties</a></p>
+                    <p class="ps-4"><a href="#property-chain">2.10.6. Property Chain</a></p>
+                    <p class="ps-2"><a href="#relations-between-properties-datatype-properties">2.11. Relations between
                             Datatype Properties</a></p>
-                    <p class="ps-4"><a href="#sub-property-datatype-property">2.10.1. Sub-Property</a></p>
-                    <p class="ps-4"><a href="#equivalent-property-datatype-property">2.10.2. Equivalent Property</a></p>
-                    <p class="ps-4"><a href="#disjoint-property-datatype-property">2.10.3. Disjoint Property</a></p>
-                    <p class="ps-4"><a href="#all-disjoint-property-datatype-properties">2.10.4. All Disjoint
+                    <p class="ps-4"><a href="#sub-property-datatype-property">2.11.1. Sub-Property</a></p>
+                    <p class="ps-4"><a href="#equivalent-property-datatype-property">2.11.2. Equivalent Property</a></p>
+                    <p class="ps-4"><a href="#disjoint-property-datatype-property">2.11.3. Disjoint Property</a></p>
+                    <p class="ps-4"><a href="#all-disjoint-property-datatype-properties">2.11.4. All Disjoint
                             Properties</a></p>
-                    <p class="ps-2"><a href="#individuals">2.11. Individuals</a></p>
-                    <p class="ps-4"><a href="#class-membership">2.11.1. Class Membership</a></p>
-                    <p class="ps-4"><a href="#property-values">2.11.2. Property Values</a></p>
-                    <p class="ps-4"><a href="#individual-identity">2.11.3. Individual Identity</a></p>
-                    <p class="ps-5"><a href="#same-as">2.11.3.1. Same as</a></p>
-                    <p class="ps-5"><a href="#different-from">2.11.3.2. Different From</a></p>
-                    <p class="ps-5"><a href="#all-different">2.11.3.3. All Different</a></p>
-                    <p class="ps-2"><a href="#annotation-properties">2.12. Annotation properties</a></p>
-                    <p class="ps-4"><a href="#class-annotations">2.12.1. Class Annotations</a></p>
-                    <p class="ps-4"><a href="#object-property-annotations">2.12.2. Object Property Annotations</a></p>
-                    <p class="ps-4"><a href="#datatype-property-annotations">2.12.3. Datatype Property Annotations</a>
+                    <p class="ps-2"><a href="#individuals">2.12. Individuals</a></p>
+                    <p class="ps-4"><a href="#class-membership">2.12.1. Class Membership</a></p>
+                    <p class="ps-4"><a href="#property-values">2.12.2. Property Values</a></p>
+                    <p class="ps-4"><a href="#individual-identity">2.12.3. Individual Identity</a></p>
+                    <p class="ps-5"><a href="#same-as">2.12.3.1. Same as</a></p>
+                    <p class="ps-5"><a href="#different-from">2.12.3.2. Different From</a></p>
+                    <p class="ps-5"><a href="#all-different">2.12.3.3. All Different</a></p>
+                    <p class="ps-2"><a href="#annotation-properties">2.13. Annotation properties</a></p>
+                    <p class="ps-4"><a href="#class-annotations">2.13.1. Class Annotations</a></p>
+                    <p class="ps-4"><a href="#object-property-annotations">2.13.2. Object Property Annotations</a></p>
+                    <p class="ps-4"><a href="#datatype-property-annotations">2.13.3. Datatype Property Annotations</a>
                     </p>
-                    <p class="ps-4"><a href="#individual-annotations">2.12.4. Individual Annotations</a></p>
-                    <p class="ps-4"><a href="#deprecated-annotations">2.12.5. Deprecated class and property</a></p>
+                    <p class="ps-4"><a href="#individual-annotations">2.13.4. Individual Annotations</a></p>
+                    <p class="ps-4"><a href="#deprecated-annotations">2.13.5. Deprecated class and property</a></p>
                     <p><a href="#concatenation-class-restrictions">3. Combining Class Descriptions</a></p>
                     <p class="ps-2"><a href="#restriction-of-classes">3.1. Restriction of Classes</a></p>
                     <p class="ps-2"><a href="#intersection-of-classes">3.2. Intersection of Classes</a></p>
@@ -810,7 +821,30 @@
                         </tbody>
                     </table>
 
-                    <h5 id="class-definition" class="pt-3">2.4. Class Definition</h5>
+                    <h5 id="legend-definition" class="pt-3">2.4. Legend Container</h5>
+
+                    <p class="pt-3">Definition of a legend container. All elements inside a container are going to be ignored by Chowlk when generating the ontology code. Note that
+                        an element
+                        <span class="black-letter">is inside of a container when the element dissapears when container button is clicked</span>.</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/legend_element.svg" alt="legend"></td>
+                                <td><code>-</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <h5 id="class-definition" class="pt-3">2.5. Class Definition</h5>
 
                     <p class="pt-3">Definition of a named class.</p>
 
@@ -877,7 +911,7 @@
 
                     </table>
 
-                    <h5 id="classes" class="pt-3">2.5. Class Descriptions</h5>
+                    <h5 id="classes" class="pt-3">2.6. Class Descriptions</h5>
 
                     <p class="pt-3">A class description describes an OWL class, either by a class name
                         or by specifying the class extension of an unnamed anonymous class. OWL distinguishes six types
@@ -897,7 +931,7 @@
                         class</span> by placing constraints on the class extension.
                     </p>
 
-                    <h5 id="class-identifier" class="pt-3">2.5.1. Class Identifier</h5>
+                    <h5 id="class-identifier" class="pt-3">2.6.1. Class Identifier</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -916,7 +950,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="enumeration-identifier" class="pt-3">2.5.2. Enumeration</h5>
+                    <h5 id="enumeration-identifier" class="pt-3">2.6.2. Enumeration</h5>
                     <p class="pt-3">A class description of the "enumeration" kind is defined with the
                         <code>owl:oneOf</code> property. The value of this built-in
                         OWL property must be a list of individuals that are the instances of the class. This enables a
@@ -943,7 +977,7 @@
                     </table>
 
 
-                    <h5 id="restriction-identifier" class="pt-3">2.5.3. Restriction</h5>
+                    <h5 id="restriction-identifier" class="pt-3">2.6.3. Restriction</h5>
 
                     <p class="pt-3">A property restriction is a special kind of class description. It describes an
                         anonymous class, namely a class
@@ -959,7 +993,7 @@
                     value is a data literal) and object properties (properties for which the value is an individual).
                     </p>
 
-                    <h5 id="restriction-value-constraint-identifier" class="pt-3">2.5.3.1. Value Constraints</h5>
+                    <h5 id="restriction-value-constraint-identifier" class="pt-3">2.6.3.1. Value Constraints</h5>
 
                     <p class="pt-3">The value constraint <code>owl:allValuesFrom</code> is a built-in OWL property that
                         links a restriction class to either a class description
@@ -1315,7 +1349,7 @@
 
                     </table>
 
-                    <h5 id="restriction-cardinality-constraint-identifier" class="pt-3">2.5.3.2. Cardinality Constraints
+                    <h5 id="restriction-cardinality-constraint-identifier" class="pt-3">2.6.3.2. Cardinality Constraints
                     </h5>
 
                     <p class="pt-3">Cardinality restriction of a concept on an object property. The
@@ -1491,7 +1525,7 @@
 
                     </table>
 
-                    <h5 id="restriction-qualified-cardinality-constraint-identifier" class="pt-3">2.5.3.3. Qualified
+                    <h5 id="restriction-qualified-cardinality-constraint-identifier" class="pt-3">2.6.3.3. Qualified
                         Cardinality Constraints</h5>
 
                     <p class="pt-3">Qualified cardinality restriction of a concept on an object property. The
@@ -1676,7 +1710,7 @@
 
                     </table>
 
-                    <h5 id="intersection-identifier" class="pt-3">2.5.4. Intersection</h5>
+                    <h5 id="intersection-identifier" class="pt-3">2.6.4. Intersection</h5>
 
                     <p class="pt-3">It can be viewed as representing the AND operator on classes. The
                         <code>owl:intersectionOf</code> property links a
@@ -1714,7 +1748,7 @@
 
                     </table>
 
-                    <h5 id="union-identifier" class="pt-3">2.5.5. Union</h5>
+                    <h5 id="union-identifier" class="pt-3">2.6.5. Union</h5>
 
                     <p class="pt-3">It can be viewed as representing the OR operator on classes. The
                         <code>owl:unionOf</code> property links a
@@ -1752,7 +1786,7 @@
 
                     </table>
 
-                    <h5 id="complement-identifier" class="pt-3">2.5.6. Complement</h5>
+                    <h5 id="complement-identifier" class="pt-3">2.6.6. Complement</h5>
 
                     <p class="pt-3">It can be viewed as representing the NOR operator on classes. The
                         <code>owl:complementOf</code> property links a
@@ -1781,7 +1815,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="class-axioms" class="pt-3">2.6. Class Axioms</h5>
+                    <h5 id="class-axioms" class="pt-3">2.7. Class Axioms</h5>
 
                     <p class="pt-3">Class descriptions form the building blocks for defining classes through class
                         axioms.
@@ -1803,7 +1837,7 @@
                             class axiom.</p>
                     </details>
 
-                    <h5 id="class-axioms-subclass" class="pt-3">2.6.1. Subclass</h5>
+                    <h5 id="class-axioms-subclass" class="pt-3">2.7.1. Subclass</h5>
 
                     <p class="pt-3">Graphical representations to indicate that <code>ns:Class2</code> concept is
                         sub-class of <code>ns:Class1</code></p>
@@ -2098,7 +2132,7 @@
 
                     </table>
 
-                    <h5 id="class-axioms-equivalent" class="pt-3">2.6.2. Equivalent</h5>
+                    <h5 id="class-axioms-equivalent" class="pt-3">2.7.2. Equivalent</h5>
 
                     <p>Graphical representations to indicate that <code>ns:Class2</code> concept is equivalent to
                         <code>ns:Class1</code></p>
@@ -2379,7 +2413,7 @@
 
                     </table>
 
-                    <h5 id="class-axioms-disjoint" class="pt-3">2.6.3. Disjoint</h5>
+                    <h5 id="class-axioms-disjoint" class="pt-3">2.7.3. Disjoint</h5>
 
                     <p>Graphical representations to indicate that <code>ns:Class2</code> and <code>ns:Class1</code> are
                         disjoint concepts</p>
@@ -2691,9 +2725,9 @@
 
                     </table>
 
-                    <h5 id="object-properties" class="pt-3">2.7. Object Properties</h5>
+                    <h5 id="object-properties" class="pt-3">2.8. Object Properties</h5>
 
-                    <h5 id="object-properties-domain-and-range" class="pt-3">2.7.1. Domain and Range</h5>
+                    <h5 id="object-properties-domain-and-range" class="pt-3">2.8.1. Domain and Range</h5>
 
                     <p class="pt-3">Object properties without domain and range.</p>
 
@@ -2863,7 +2897,7 @@
                     </table>
 
 
-                    <h5 id="object-properties-functional-properties" class="pt-3">2.7.2. Functional Properties</h5>
+                    <h5 id="object-properties-functional-properties" class="pt-3">2.8.2. Functional Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -2899,7 +2933,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="object-properties-inverse-functional-properties" class="pt-3">2.7.3. Inverse Functional
+                    <h5 id="object-properties-inverse-functional-properties" class="pt-3">2.8.3. Inverse Functional
                         Properties</h5>
 
                     <p>A functional property can be an <code>owl:ObjectProperty</code> or an
@@ -2940,7 +2974,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="object-properties-symmetric-properties" class="pt-3">2.7.4. Symmetric Properties</h5>
+                    <h5 id="object-properties-symmetric-properties" class="pt-3">2.8.4. Symmetric Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -2977,7 +3011,7 @@
                     </table>
 
 
-                    <h5 id="object-properties-transitive-properties" class="pt-3">2.7.5. Transitive Properties</h5>
+                    <h5 id="object-properties-transitive-properties" class="pt-3">2.8.5. Transitive Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3013,7 +3047,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="object-properties-reflexive-properties" class="pt-3">2.7.6. Reflexive Properties</h5>
+                    <h5 id="object-properties-reflexive-properties" class="pt-3">2.8.6. Reflexive Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3049,7 +3083,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="object-properties-asymmetric-properties" class="pt-3">2.7.7. Asymmetric Properties</h5>
+                    <h5 id="object-properties-asymmetric-properties" class="pt-3">2.8.7. Asymmetric Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3085,7 +3119,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="object-properties-irreflexive-properties" class="pt-3">2.7.8. Irreflexive Properties</h5>
+                    <h5 id="object-properties-irreflexive-properties" class="pt-3">2.8.8. Irreflexive Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3121,9 +3155,9 @@
                         </tbody>
                     </table>
 
-                    <h5 id="datatype-properties" class="pt-3">2.8. Datatype Properties</h5>
+                    <h5 id="datatype-properties" class="pt-3">2.9. Datatype Properties</h5>
 
-                    <h5 id="datatype-properties-domain-and-range" class="pt-3">2.8.1. Domain and Range</h5>
+                    <h5 id="datatype-properties-domain-and-range" class="pt-3">2.9.1. Domain and Range</h5>
 
                     <p class="pt-3">Datatype properties without domain and range.</p>
 
@@ -3291,7 +3325,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="datatype-properties-enumerated-datatype" class="pt-3">2.8.2. Enumerated datatypes</h5>
+                    <h5 id="datatype-properties-enumerated-datatype" class="pt-3">2.9.2. Enumerated datatypes</h5>
 
                     <p>In addition to the RDF datatypes, OWL provides one additional construct for defining a range of
                         data values, namely an
@@ -3368,7 +3402,7 @@
 
                     </table>
 
-                    <h5 id="datatype-properties-functional-properties" class="pt-3">2.8.3. Functional Properties</h5>
+                    <h5 id="datatype-properties-functional-properties" class="pt-3">2.9.3. Functional Properties</h5>
 
                     <p>A functional property can be an <code>owl:ObjectProperty</code> or an
                         <code>owl:DatatypeProperty</code>. For that reason, it is neccesary to specify
@@ -3406,12 +3440,12 @@
                         </tbody>
                     </table>
 
-                    <h5 id="relations-between-properties-object-property" class="pt-3">2.9. Relations between Object
+                    <h5 id="relations-between-properties-object-property" class="pt-3">2.10. Relations between Object
                         Properties</h5>
 
                     <p>Currently, the converter only supports the "Preferred" version of the relations.</p>
 
-                    <h5 id="sub-property-object-property" class="pt-3">2.9.1. Sub-Property</h5>
+                    <h5 id="sub-property-object-property" class="pt-3">2.10.1. Sub-Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3449,7 +3483,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="equivalent-property-object-property" class="pt-3">2.9.2. Equivalent Property</h5>
+                    <h5 id="equivalent-property-object-property" class="pt-3">2.10.2. Equivalent Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3488,7 +3522,7 @@
                     </table>
 
 
-                    <h5 id="inverse-property-object-property" class="pt-3">2.9.3. Inverse Property</h5>
+                    <h5 id="inverse-property-object-property" class="pt-3">2.10.3. Inverse Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3526,7 +3560,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="disjoint-property-object-property" class="pt-3">2.9.4. Disjoint Property</h5>
+                    <h5 id="disjoint-property-object-property" class="pt-3">2.10.4. Disjoint Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3550,7 +3584,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="all-disjoint-property-object-properties" class="pt-3">2.9.5. All Disjoint Properties</h5>
+                    <h5 id="all-disjoint-property-object-properties" class="pt-3">2.10.5. All Disjoint Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3578,7 +3612,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="property-chain" class="pt-3">2.9.6. Property Chain</h5>
+                    <h5 id="property-chain" class="pt-3">2.10.6. Property Chain</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3607,10 +3641,10 @@
                     </table>
 
 
-                    <h5 id="relations-between-properties-datatype-properties" class="pt-3">2.10. Relations between
+                    <h5 id="relations-between-properties-datatype-properties" class="pt-3">2.11. Relations between
                         Datatype Properties</h5>
 
-                    <h5 id="sub-property-datatype-property" class="pt-3">2.10.1. Sub-Property</h5>
+                    <h5 id="sub-property-datatype-property" class="pt-3">2.11.1. Sub-Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3633,7 +3667,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="equivalent-property-datatype-property" class="pt-3">2.10.2. Equivalent Property</h5>
+                    <h5 id="equivalent-property-datatype-property" class="pt-3">2.11.2. Equivalent Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3656,7 +3690,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="disjoint-property-datatype-property" class="pt-3">2.10.3. Disjoint Property</h5>
+                    <h5 id="disjoint-property-datatype-property" class="pt-3">2.11.3. Disjoint Property</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3679,7 +3713,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="all-disjoint-property-datatype-properties" class="pt-3">2.10.4. All Disjoint Properties</h5>
+                    <h5 id="all-disjoint-property-datatype-properties" class="pt-3">2.11.4. All Disjoint Properties</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3707,9 +3741,9 @@
                     </table>
 
 
-                    <h5 id="individuals" class="pt-3">2.11. Individuals</h5>
+                    <h5 id="individuals" class="pt-3">2.12. Individuals</h5>
 
-                    <h5 id="class-membership" class="pt-3">2.11.1. Class Membership</h5>
+                    <h5 id="class-membership" class="pt-3">2.12.1. Class Membership</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3860,7 +3894,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="property-values" class="pt-3">2.11.2. Property Values</h5>
+                    <h5 id="property-values" class="pt-3">2.12.2. Property Values</h5>
 
                     <p class="pt-3">Association between individuals in RDF graphs.</p>
 
@@ -3930,9 +3964,9 @@
                         </tbody>
                     </table>
 
-                    <h5 id="individual-identity" class="pt-3">2.11.3. Individual Identity</h5>
+                    <h5 id="individual-identity" class="pt-3">2.12.3. Individual Identity</h5>
 
-                    <h5 id="same-as" class="pt-3">2.11.3.1. Same As</h5>
+                    <h5 id="same-as" class="pt-3">2.12.3.1. Same As</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3954,7 +3988,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="different-from" class="pt-3">2.11.3.2. Different From</h5>
+                    <h5 id="different-from" class="pt-3">2.12.3.2. Different From</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -3976,7 +4010,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="all-different" class="pt-3">2.11.3.3. All Different</h5>
+                    <h5 id="all-different" class="pt-3">2.12.3.3. All Different</h5>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -4002,7 +4036,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="annotation-properties" class="pt-3">2.12. Annotation properties</h5>
+                    <h5 id="annotation-properties" class="pt-3">2.13. Annotation properties</h5>
 
                     <p class="pt-3">Annotations are allowed on classes, properties, individuals and ontology headers.
                         The object of an annotation property must be either a data literal, a URI reference, or an
@@ -4043,7 +4077,7 @@
 
                     </table>
 
-                    <h5 id="class-annotations" class="pt-3">2.12.1. Class Annotations</h5>
+                    <h5 id="class-annotations" class="pt-3">2.13.1. Class Annotations</h5>
 
                     <p class="pt-3">Class annotation whose object is a data literal.</p>
 
@@ -4125,7 +4159,7 @@
 
                     </table>
 
-                    <h5 id="object-property-annotations" class="pt-3">2.12.2. Object Property Annotations</h5>
+                    <h5 id="object-property-annotations" class="pt-3">2.13.2. Object Property Annotations</h5>
 
                     <p class="pt-3">Object property annotation whose object is a data literal.</p>
 
@@ -4207,7 +4241,7 @@
 
                     </table>
 
-                    <h5 id="datatype-property-annotations" class="pt-3">2.12.3. Datatype Property Annotations</h5>
+                    <h5 id="datatype-property-annotations" class="pt-3">2.13.3. Datatype Property Annotations</h5>
 
                     <p class="pt-3">Datatype property annotation whose object is a data literal.</p>
 
@@ -4289,7 +4323,7 @@
 
                     </table>
 
-                    <h5 id="individual-annotations" class="pt-3">2.12.4. Individual Annotations</h5>
+                    <h5 id="individual-annotations" class="pt-3">2.13.4. Individual Annotations</h5>
 
                     <p class="pt-3">Individual annotation whose object is a data literal.</p>
 
@@ -4371,7 +4405,7 @@
 
                     </table>
 
-                    <h5 id="deprecated-annotations" class="pt-3">2.12.5. Deprecated class and property</h5>
+                    <h5 id="deprecated-annotations" class="pt-3">2.13.5. Deprecated class and property</h5>
 
                     <p class="pt-3">Here, a specific identifier is said to be of type <code>owl:DeprecatedClass</code>
                         or <code>owl:DeprecatedProperty</code>,
