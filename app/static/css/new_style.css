@@ -10,6 +10,15 @@
   width: 150px;
 }
 
+.version-history-img {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding: 10px 10px 10px 10px;
+  display: block;
+  border-style: solid;
+  border-width: 1px;
+}
+
 .showcase {
   background-image: linear-gradient(120deg, #155799, #159957);
   min-height: 400px;
