@@ -8,18 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="static/images/favicon_io/favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="static/css/new_style.css">
+    <link rel="stylesheet" href="static/css/floatingButton.css">
 
     <title>Chowlk | Notation</title>
 
 </head>
 
 <body>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MVGE77GN7B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-MVGE77GN7B');
+    </script>
+
+    <a href="#" class="btn-flotante" style="text-decoration: none">Go to top</a>
+
     <div class="row">
 
         <div id="toc" class="col-3 pt-4 d-none d-xl-block bg-light px-5">
@@ -38,92 +48,143 @@
 
                 <div id="toc-ontologists">
                     <p><a href="#introduction">1. Introduction</a></p>
-                    <p><a href="#specification-ontologists">2. Specification</a></p>
-                    <p class="ps-2"><a href="#basic-elements">2.1. Basic Elements</a></p>
-                    <p class="ps-2"><a href="#namespaces">2.2. Namespaces</a></p>
-                    <p class="ps-2"><a href="#ontology_metadata">2.3. Ontology Metadata</a></p>
-                    <p class="ps-2"><a href="#class-definition">2.4. Class Definition</a></p>
-                    <p class="ps-2"><a href="#classes">2.5. Class Descriptions</a></p>
-                    <p class="ps-4"><a href="#class-identifier">2.5.1. Class Identifier</a></p>
-                    <p class="ps-4"><a href="#enumeration-identifier">2.5.2. Enumeration</a></p>
-                    <p class="ps-4"><a href="#restriction-identifier">2.5.3. Restriction</a></p>
-                    <p class="ps-5"><a href="#restriction-value-constraint-identifier">2.5.3.1. Value Constraints</a>
-                    </p>
-                    <p class="ps-5"><a href="#restriction-cardinality-constraint-identifier">2.5.3.2. Cardinality
-                            Constraints</a></p>
-                    <p class="ps-5"><a href="#restriction-qualified-cardinality-constraint-identifier">2.5.3.3.
-                            Qualified Cardinality Constraints</a></p>
-                    <p class="ps-4"><a href="#intersection-identifier">2.5.4. Intersection</a></p>
-                    <p class="ps-4"><a href="#union-identifier">2.5.5. Union</a></p>
-                    <p class="ps-4"><a href="#complement-identifier">2.5.6. Complement</a></p>
-                    <p class="ps-2"><a href="#class-axioms">2.6. Class Axioms</a></p>
-                    <p class="ps-4"><a href="#class-axioms-subclass">2.6.1. Subclass</a></p>
-                    <p class="ps-4"><a href="#class-axioms-equivalent">2.6.2. Equivalent</a></p>
-                    <p class="ps-4"><a href="#class-axioms-disjoint">2.6.3. Disjoint</a></p>
-                    <p class="ps-2"><a href="#object-properties">2.7. Object Properties</a></p>
-                    <p class="ps-4"><a href="#object-properties-domain-and-range">2.7.1. Domain and Range</a></p>
-                    <p class="ps-4"><a href="#object-properties-functional-properties">2.7.2. Functional Properties</a>
-                    </p>
-                    <p class="ps-4"><a href="#object-properties-inverse-functional-properties">2.7.3. Inverse Functional
-                            Properties</a></p>
-                    <p class="ps-4"><a href="#object-properties-symmetric-properties">2.7.4. Symmetric Properties</a>
-                    </p>
-                    <p class="ps-4"><a href="#object-properties-transitive-properties">2.7.5. Transitive Properties</a>
-                    </p>
-                    <p class="ps-4"><a href="#object-properties-reflexive-properties">2.7.6. Reflexive Properties</a>
-                    </p>
-                    <p class="ps-4"><a href="#object-properties-asymmetric-properties">2.7.7. Asymmetric Properties</a>
-                    </p>
-                    <p class="ps-4"><a href="#object-properties-irreflexive-properties">2.7.8. Irreflexive
-                            Properties</a></p>
-                    <p class="ps-2"><a href="#datatype-properties">2.8. Datatype Properties</a></p>
-                    <p class="ps-4"><a href="#datatype-properties-domain-and-range">2.8.1. Domain and Range</a></p>
-                    <p class="ps-4"><a href="#datatype-properties-enumerated-datatype">2.8.2. Enumerated datatypes</a>
-                    </p>
-                    <p class="ps-4"><a href="#datatype-properties-functional-properties">2.8.3. Functional
-                            Properties</a></p>
-                    <p class="ps-2"><a href="#relations-between-properties-object-property">2.9. Relations between
-                            Object Properties</a></p>
-                    <p class="ps-4"><a href="#sub-property-object-property">2.9.1. Sub-Property</a></p>
-                    <p class="ps-4"><a href="#equivalent-property-object-property">2.9.2. Equivalent Property</a></p>
-                    <p class="ps-4"><a href="#inverse-property-object-property">2.9.3. Inverse Property</a></p>
-                    <p class="ps-4"><a href="#disjoint-property-object-property">2.9.4. Disjoint Property</a></p>
-                    <p class="ps-4"><a href="#all-disjoint-property-object-properties">2.9.5. All Disjoint Properties</a></p>
-                    <p class="ps-4"><a href="#property-chain">2.9.6. Property Chain</a></p>
-                    <p class="ps-2"><a href="#relations-between-properties-datatype-properties">2.10. Relations between
-                            Datatype Properties</a></p>
-                    <p class="ps-4"><a href="#sub-property-datatype-property">2.10.1. Sub-Property</a></p>
-                    <p class="ps-4"><a href="#equivalent-property-datatype-property">2.10.2. Equivalent Property</a></p>
-                    <p class="ps-4"><a href="#disjoint-property-datatype-property">2.10.3. Disjoint Property</a></p>
-                    <p class="ps-4"><a href="#all-disjoint-property-datatype-properties">2.10.4. All Disjoint
-                            Properties</a></p>
-                    <p class="ps-2"><a href="#individuals">2.11. Individuals</a></p>
-                    <p class="ps-4"><a href="#class-membership">2.11.1. Class Membership</a></p>
-                    <p class="ps-4"><a href="#property-values">2.11.2. Property Values</a></p>
-                    <p class="ps-4"><a href="#individual-identity">2.11.3. Individual Identity</a></p>
-                    <p class="ps-5"><a href="#same-as">2.11.3.1. Same as</a></p>
-                    <p class="ps-5"><a href="#different-from">2.11.3.2. Different From</a></p>
-                    <p class="ps-5"><a href="#all-different">2.11.3.3. All Different</a></p>
-                    <p class="ps-2"><a href="#annotation-properties">2.12. Annotation properties</a></p>
-                    <p class="ps-4"><a href="#class-annotations">2.12.1. Class Annotations</a></p>
-                    <p class="ps-4"><a href="#object-property-annotations">2.12.2. Object Property Annotations</a></p>
-                    <p class="ps-4"><a href="#datatype-property-annotations">2.12.3. Datatype Property Annotations</a>
-                    </p>
-                    <p class="ps-4"><a href="#individual-annotations">2.12.4. Individual Annotations</a></p>
-                    <p class="ps-4"><a href="#deprecated-annotations">2.12.5. Deprecated class and property</a></p>
-                    <p><a href="#concatenation-class-restrictions">3. Combining Class Descriptions</a></p>
-                    <p class="ps-2"><a href="#restriction-of-classes">3.1. Restriction of Classes</a></p>
-                    <p class="ps-2"><a href="#intersection-of-classes">3.2. Intersection of Classes</a></p>
-                    <p class="ps-2"><a href="#union-of-classes">3.3. Union of Classes</a></p>
-                    <!--<p class="ps-2"><a href="#complement-of-classes">3.4. Complement of Classes</a></p>-->
-                    <p><a href="#anonymous-classes-domain-range-properties">4. Anonymous classes as domain and range in
-                            properties</a></p>
-                    <p class="ps-2"><a href="#anonymous-classes-domain-object-properties">4.1. Object Properties
-                            Domain</a></p>
-                    <p class="ps-2"><a href="#anonymous-classes-range-object-properties">4.2. Object Properties
-                            Range</a></p>
-                    <p class="ps-2"><a href="#anonymous-classes-domain-datatype-properties">4.3. Datatype Properties
-                            Domain</a></p>
+
+                    <div style="margin-bottom: 1rem;">
+                        <a href="#specification-ontologists">2. Specification</a>
+                        <div style="display: inline-block;" class="collapse-button" data-target="collapse-specification">
+                            <img class="right-arrow" src="static/images/right-arrow.svg" style="height: 20px;width: 20px;"></img>
+                            <img class="down-arrow" src="static/images/down-arrow.svg" style="height: 20px;width: 20px; display: none;"></img>
+                        </div>
+                    </div>
+
+                    <div class="grow" id="collapse-specification-grow">
+                        <div id="collapse-specification">
+                            <p class="ps-2"><a href="#basic-elements">2.1. Basic Elements</a></p>
+                            <p class="ps-2"><a href="#namespaces">2.2. Namespaces</a></p>
+                            <p class="ps-2"><a href="#ontology_metadata">2.3. Ontology Metadata</a></p>
+                            <p class="ps-2"><a href="#class-definition">2.4. Class Definition</a></p>
+                            <p class="ps-2"><a href="#classes">2.5. Class Descriptions</a></p>
+                            <p class="ps-4"><a href="#class-identifier">2.5.1. Class Identifier</a></p>
+                            <p class="ps-4"><a href="#enumeration-identifier">2.5.2. Enumeration</a></p>
+                            <p class="ps-4"><a href="#restriction-identifier">2.5.3. Restriction</a></p>
+                            <p class="ps-5"><a href="#restriction-value-constraint-identifier">2.5.3.1. Value Constraints</a>
+                            </p>
+                            <p class="ps-5"><a href="#restriction-cardinality-constraint-identifier">2.5.3.2. Cardinality
+                                    Constraints</a></p>
+                            <p class="ps-5"><a href="#restriction-qualified-cardinality-constraint-identifier">2.5.3.3.
+                                    Qualified Cardinality Constraints</a></p>
+                            <p class="ps-4"><a href="#intersection-identifier">2.5.4. Intersection</a></p>
+                            <p class="ps-4"><a href="#union-identifier">2.5.5. Union</a></p>
+                            <p class="ps-4"><a href="#complement-identifier">2.5.6. Complement</a></p>
+                            <p class="ps-2"><a href="#class-axioms">2.6. Class Axioms</a></p>
+                            <p class="ps-4"><a href="#class-axioms-subclass">2.6.1. Subclass</a></p>
+                            <p class="ps-4"><a href="#class-axioms-equivalent">2.6.2. Equivalent</a></p>
+                            <p class="ps-4"><a href="#class-axioms-disjoint">2.6.3. Disjoint</a></p>
+                            <p class="ps-2"><a href="#object-properties">2.7. Object Properties</a></p>
+                            <p class="ps-4"><a href="#object-properties-domain-and-range">2.7.1. Domain and Range</a></p>
+                            <p class="ps-4"><a href="#object-properties-functional-properties">2.7.2. Functional Properties</a>
+                            </p>
+                            <p class="ps-4"><a href="#object-properties-inverse-functional-properties">2.7.3. Inverse Functional
+                                    Properties</a></p>
+                            <p class="ps-4"><a href="#object-properties-symmetric-properties">2.7.4. Symmetric Properties</a>
+                            </p>
+                            <p class="ps-4"><a href="#object-properties-transitive-properties">2.7.5. Transitive Properties</a>
+                            </p>
+                            <p class="ps-4"><a href="#object-properties-reflexive-properties">2.7.6. Reflexive Properties</a>
+                            </p>
+                            <p class="ps-4"><a href="#object-properties-asymmetric-properties">2.7.7. Asymmetric Properties</a>
+                            </p>
+                            <p class="ps-4"><a href="#object-properties-irreflexive-properties">2.7.8. Irreflexive
+                                    Properties</a></p>
+                            <p class="ps-2"><a href="#datatype-properties">2.8. Datatype Properties</a></p>
+                            <p class="ps-4"><a href="#datatype-properties-domain-and-range">2.8.1. Domain and Range</a></p>
+                            <p class="ps-4"><a href="#datatype-properties-enumerated-datatype">2.8.2. Enumerated datatypes</a>
+                            </p>
+                            <p class="ps-4"><a href="#datatype-properties-functional-properties">2.8.3. Functional
+                                    Properties</a></p>
+                            <p class="ps-2"><a href="#relations-between-properties-object-property">2.9. Relations between
+                                    Object Properties</a></p>
+                            <p class="ps-4"><a href="#sub-property-object-property">2.9.1. Sub-Property</a></p>
+                            <p class="ps-4"><a href="#equivalent-property-object-property">2.9.2. Equivalent Property</a></p>
+                            <p class="ps-4"><a href="#inverse-property-object-property">2.9.3. Inverse Property</a></p>
+                            <p class="ps-4"><a href="#disjoint-property-object-property">2.9.4. Disjoint Property</a></p>
+                            <p class="ps-4"><a href="#all-disjoint-property-object-properties">2.9.5. All Disjoint Properties</a></p>
+                            <p class="ps-4"><a href="#property-chain">2.9.6. Property Chain</a></p>
+                            <p class="ps-2"><a href="#relations-between-properties-datatype-properties">2.10. Relations between
+                                    Datatype Properties</a></p>
+                            <p class="ps-4"><a href="#sub-property-datatype-property">2.10.1. Sub-Property</a></p>
+                            <p class="ps-4"><a href="#equivalent-property-datatype-property">2.10.2. Equivalent Property</a></p>
+                            <p class="ps-4"><a href="#disjoint-property-datatype-property">2.10.3. Disjoint Property</a></p>
+                            <p class="ps-4"><a href="#all-disjoint-property-datatype-properties">2.10.4. All Disjoint
+                                    Properties</a></p>
+                            <p class="ps-2"><a href="#individuals">2.11. Individuals</a></p>
+                            <p class="ps-4"><a href="#class-membership">2.11.1. Class Membership</a></p>
+                            <p class="ps-4"><a href="#property-values">2.11.2. Property Values</a></p>
+                            <p class="ps-4"><a href="#individual-identity">2.11.3. Individual Identity</a></p>
+                            <p class="ps-5"><a href="#same-as">2.11.3.1. Same as</a></p>
+                            <p class="ps-5"><a href="#different-from">2.11.3.2. Different From</a></p>
+                            <p class="ps-5"><a href="#all-different">2.11.3.3. All Different</a></p>
+                            <p class="ps-2"><a href="#annotation-properties">2.12. Annotation properties</a></p>
+                            <p class="ps-4"><a href="#class-annotations">2.12.1. Class Annotations</a></p>
+                            <p class="ps-4"><a href="#object-property-annotations">2.12.2. Object Property Annotations</a></p>
+                            <p class="ps-4"><a href="#datatype-property-annotations">2.12.3. Datatype Property Annotations</a>
+                            </p>
+                            <p class="ps-4"><a href="#individual-annotations">2.12.4. Individual Annotations</a></p>
+                            <p class="ps-4"><a href="#deprecated-annotations">2.12.5. Deprecated class and property</a></p>
+                        </div> 
+                    </div>
+                          
+
+                    <div style="margin-bottom: 1rem;">
+                        <a href="#tips">3. Tips</a>
+                        <div style="display: inline-block;" class="collapse-button" data-target="collapse-tips">
+                            <img class="right-arrow" src="static/images/right-arrow.svg" style="height: 20px;width: 20px;"></img>
+                            <img class="down-arrow" src="static/images/down-arrow.svg" style="height: 20px;width: 20px; display: none;"></img>
+                        </div>
+                    </div>
+                    
+                    <div class="grow" id="collapse-tips-grow">
+                        <div id="collapse-tips">
+                            <p class="ps-2"><a href="#legend-definition">3.1. Legend Container</a></p>
+                        </div>
+                    </div>
+                    
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <a href="#concatenation-class-restrictions">4. Combining Class Descriptions</a>
+                        <div style="display: inline-block;" class="collapse-button" data-target="collapse-concatenation">
+                            <img class="right-arrow" src="static/images/right-arrow.svg" style="height: 20px;width: 20px;"></img>
+                            <img class="down-arrow" src="static/images/down-arrow.svg" style="height: 20px;width: 20px; display: none;"></img>
+                        </div>
+                    </div>
+                    
+                    <div class="grow" id="collapse-concatenation-grow">
+                        <div id="collapse-concatenation">
+                            <p class="ps-2"><a href="#restriction-of-classes">4.1. Restriction of Classes</a></p>
+                            <p class="ps-2"><a href="#intersection-of-classes">4.2. Intersection of Classes</a></p>
+                            <p class="ps-2"><a href="#union-of-classes">4.3. Union of Classes</a></p>
+                            <!--<p class="ps-2"><a href="#complement-of-classes">4.4. Complement of Classes</a></p>-->
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <a href="#anonymous-classes-domain-range-properties">5. Anonymous classes as domain and range in properties</a>
+                        <div style="display: inline-block;" class="collapse-button" data-target="collapse-anonymous">
+                            <img class="right-arrow" src="static/images/right-arrow.svg" style="height: 20px;width: 20px;"></img>
+                            <img class="down-arrow" src="static/images/down-arrow.svg" style="height: 20px;width: 20px; display: none;"></img>
+                        </div>
+                    </div>
+                    
+                    <div class="grow" id="collapse-anonymous-grow">
+                        <div id="collapse-anonymous">
+                            <p class="ps-2"><a href="#anonymous-classes-domain-object-properties">5.1. Object Properties
+                                Domain</a></p>
+                            <p class="ps-2"><a href="#anonymous-classes-range-object-properties">5.2. Object Properties
+                                    Range</a></p>
+                            <p class="ps-2"><a href="#anonymous-classes-domain-datatype-properties">5.3. Datatype Properties
+                                    Domain</a></p>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="toc-domain-experts" style="display: none;">
@@ -238,7 +299,7 @@
                     </div>
                     <div class="py-1">
                         <p class="fw-bold mb-1">Last update:</p>
-                        <p class="px-3 secondary-text">30-04-2024</p>
+                        <p class="px-3 secondary-text">03-03-2025</p>
                     </div>
                     <div class="py-1">
                         <p class="fw-bold mb-1">Chowlk Diagrams.net Library (lightweight version):</p>
@@ -4467,7 +4528,32 @@
 
                     </table>
 
-                    <h5 id="concatenation-class-restrictions" class="pt-3">3. Combining Class Descriptions</h5>
+                    <h4 id="tips" class="pt-3">3. Tips</h5>
+
+                    <h5 id="legend-definition" class="pt-3">3.1. Legend Container</h5>
+
+                    <p class="pt-3">Definition of a legend container. All elements inside a container are going to be ignored by Chowlk when generating the ontology code. ou can also use different colours in the class boxes to identify different ontologies or modules (i.e. terms defined in different namespaces). Note that
+                        an element
+                        <span class="black-letter">is inside of a container when the element dissapears when container button is clicked</span>.</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/legend_element.svg" alt="legend"></td>
+                                <td><code>-</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <h4 id="concatenation-class-restrictions" class="pt-3">4. Combining Class Descriptions</h5>
 
                     <p class="pt-3">An anonymous Class acts semantically as a Class. Therefore, inside a Class
                         Description
@@ -4477,7 +4563,7 @@
                         is just used in order to not overload this section.
                     </p>
 
-                    <h5 id="restriction-of-classes" class="pt-3">3.1. Restriction of Classes</h5>
+                    <h5 id="restriction-of-classes" class="pt-3">4.1. Restriction of Classes</h5>
 
                     <p class="pt-3">Note that in case of property restrictions just
                         <code>owl:allValuesFrom</code> and <code>owl:someValuesFrom</code>
@@ -4710,7 +4796,7 @@
 
                     </table>
 
-                    <h5 id="intersection-of-classes" class="pt-3">3.2. Intersection of Classes</h5>
+                    <h5 id="intersection-of-classes" class="pt-3">4.2. Intersection of Classes</h5>
 
                     <p class="pt-3">Definition of an anonymous class which represents
                         an <span class="black-letter">enumeration</span> inside of an anonymous class which
@@ -4912,7 +4998,7 @@
 
                     </table>
 
-                    <h5 id="union-of-classes" class="pt-3">3.3. Union of Classes</h5>
+                    <h5 id="union-of-classes" class="pt-3">4.3. Union of Classes</h5>
 
                     <p class="pt-3">Definition of an anonymous class which represents
                         an <span class="black-letter">enumeration</span> inside of an anonymous class which
@@ -5115,7 +5201,7 @@
                     </table>
 
 
-                    <!--<h5 id="complement-of-classes" class="pt-3">3.4. Complement of a Class</h5>
+                    <!--<h5 id="complement-of-classes" class="pt-3">4.4. Complement of a Class</h5>
 
                     <p class="pt-3">Definition of an anonymous class which represents 
                         an <span class="black-letter">enumeration</span> inside of an anonymous class which
@@ -5279,10 +5365,10 @@
 
                     </table>-->
 
-                    <h4 id="anonymous-classes-domain-range-properties" class="pt-3">4. Anonymous classes as domain and
+                    <h4 id="anonymous-classes-domain-range-properties" class="pt-3">5. Anonymous classes as domain and
                         range in properties</h4>
 
-                    <h5 id="anonymous-classes-domain-object-properties" class="pt-3">4.1. Object Properties Domain</h5>
+                    <h5 id="anonymous-classes-domain-object-properties" class="pt-3">5.1. Object Properties Domain</h5>
 
                     <p class="pt-3">Enumeration as domain of an object property.</p>
 
@@ -5550,7 +5636,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="anonymous-classes-range-object-properties" class="pt-3">4.2. Object Properties Range</h5>
+                    <h5 id="anonymous-classes-range-object-properties" class="pt-3">5.2. Object Properties Range</h5>
 
                     <p class="pt-3">Enumeration as range of an object property.</p>
 
@@ -5818,7 +5904,7 @@
                         </tbody>
                     </table>
 
-                    <h5 id="anonymous-classes-domain-datatype-properties" class="pt-3">4.3. Datatype Properties Domain
+                    <h5 id="anonymous-classes-domain-datatype-properties" class="pt-3">5.3. Datatype Properties Domain
                     </h5>
 
                     <p class="pt-3">Enumeration as domain of an datatype property.</p>
@@ -6455,7 +6541,7 @@
                         <div class="col">
                             <p>María Poveda-Villalón <br>
                                 Contact email: chowlk@delicias.dia.fi.upm.es <br>
-                                Latest revision: April, 2024 <br>
+                                Latest revision: March, 2025 <br>
                                 Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
                                     License 2.0</a></p>
                         </div>

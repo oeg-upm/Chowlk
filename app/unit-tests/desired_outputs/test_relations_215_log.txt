@@ -1,0 +1,8 @@
+
+Error Arrows: The arrow does not contain text (it just contain white lines, line break, etc)
+	shape_id: SLLxA0KV_3pxwyraxPk1-3
+	value: <div><br/></div>
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

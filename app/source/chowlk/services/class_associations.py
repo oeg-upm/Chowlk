@@ -137,7 +137,7 @@ def update_domain(property_block, class_id):
         # Has the datatype property got define a domain?
         if datatype_property["domain"] != False:
             # Update the identifier of the domain
-            datatype_property["domain"] = class_id
+            datatype_property["domain"] = [class_id]
 
 # This function create a map called association in which the following information is going to be stored:
 # - The named classes

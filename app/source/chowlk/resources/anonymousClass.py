@@ -567,10 +567,10 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
 
         # Has the user specified a datatype?
         if attribute["uri"] and attribute["datatype"]:
-            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
             text = '\t\t[ rdf:type owl:Restriction ;\n'\
                     f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                    f'\t\t  owl:allValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+                    f'\t\t  owl:allValuesFrom {prefix_datatype}{attribute["datatype"][0]} ]\n'
         
         else:
             text = '\t\t[ rdf:type owl:Restriction ;\n'\
@@ -590,10 +590,10 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
 
         # Has the user specified a datatype?
         if attribute["uri"] and attribute["datatype"]:
-            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
                     f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
-                    f'\t\t  owl:someValuesFrom {prefix_datatype}{attribute["datatype"]} ]\n'
+                    f'\t\t  owl:someValuesFrom {prefix_datatype}{attribute["datatype"][0]} ]\n'
         
         else:
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -645,11 +645,11 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
 
         # Has the user specified a datatype?
         if attribute["uri"] and attribute["datatype"]:
-            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
                     f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
                     f'\t\t  owl:minQualifiedCardinality "{attribute["min_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
-                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"][0]} ]\n'
         
         else:
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -668,11 +668,11 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
 
         # Has the user specified a datatype?
         if attribute["uri"] and attribute["datatype"]:
-            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
                     f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
                     f'\t\t  owl:maxQualifiedCardinality "{attribute["max_q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
-                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"][0]} ]\n'
         
         else:
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -691,11 +691,11 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
 
         # Has the user specified a datatype?
         if attribute["uri"] and attribute["datatype"]:
-            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"])
+            prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
                     f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
                     f'\t\t  owl:qualifiedCardinality "{attribute["q_cardinality"]}"^^xsd:nonNegativeInteger ;\n'\
-                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"]} ]\n'
+                    f'\t\t  owl:onDataRange {prefix_datatype}{attribute["datatype"][0]} ]\n'
         
         else:
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
@@ -716,14 +716,14 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
             # In this case the target is a data value
 
             # Has the user specified a datatype?
-            if attribute["prefix_datatype"] == "xsd":
+            if attribute["prefix_datatype"][0] == "xsd":
                 # The default datatype is xsd
-                aux = attribute["datatype"].split("^^")
+                aux = attribute["datatype"][0].split("^^")
                 object = aux[0] + "^^xsd:" + aux[1]
 
             else:
                 # In this case the user has specifyed a datatype
-                object = attribute["prefix_datatype"] + ":" + attribute["datatype"]
+                object = attribute["prefix_datatype"][0] + ":" + attribute["datatype"][0]
 
             text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
                     f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\

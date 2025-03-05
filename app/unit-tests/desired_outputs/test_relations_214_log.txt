@@ -1,0 +1,11 @@
+
+Error Arrows: Text not associated to any arrow
+	shape_id: mFNE3ibXSdeqid7XAT4_-1
+	value: ns:objectProperty
+
+Error Arrows: Could not recognize type of arrow
+	shape_id: bo4K-H5GtsFG5mHyIFOt-2
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

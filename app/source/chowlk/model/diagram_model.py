@@ -157,63 +157,83 @@ class Diagram_model():
     def set_ontology_uri(self, ontology_uri):
         self.ontology_uri = ontology_uri
     
+
     # This function iterate the objects defined inside the xml diagram in order to classify them
     # in based of this shapes (e.g. arrows, boxes, rhombuses, etc.)
     def classify_elements(self, root):
-        
+
+        # List to store the identifiers of the containers elements
+        containers_id = []
+
+        # Search for container elements. The elements inside a container will not be taken into account 
+        # in the next classification  phase, performed in the following "for" loop. An element inside a 
+        # container is characterized by having an attribute called “parent” whose value is the “Id” of the container.
+        for child in root:
+            style = child.attrib["style"] if "style" in child.attrib else ""
+
+            # Is the element representing a container element?
+            if "swimlane" in style:
+                containers_id.append(child.attrib["id"])
+
         # Classify each xml object on the basis of its individual information 
         # (i.e. without taking into account the xml objects to which they are connected).
         for child in root:
-            style = child.attrib["style"] if "style" in child.attrib else ""
-            value = child.attrib["value"] if "value" in child.attrib else ""
+
+            parent = child.attrib["parent"] if "parent" in child.attrib else ""
             id = child.attrib["id"]
 
-            # Is a namespace element?
-            if "shape=note" in style:
-                self.add_namespace(id, value)
+            # Is the element inside a container element?
+            if check_inside_container(containers_id, parent, id, root):
 
-            # Is a metadata element?
-            elif "shape=document" in style:
-                self.add_ontology_metadata(id, value)
+                style = child.attrib["style"] if "style" in child.attrib else ""
+                value = child.attrib["value"] if "value" in child.attrib else ""
 
-            # Is an arrow element?
-            elif "edge" in child.attrib:
-                self.add_arrow(child, id, value, style)
+                # Is a namespace element?
+                if "shape=note" in style:
+                    self.add_namespace(id, value)
 
-            # Is an ellipse element?
-            elif "ellipse" in style:
-                self.add_ellipse(child, id, value)
+                # Is a metadata element?
+                elif "shape=document" in style:
+                    self.add_ontology_metadata(id, value)
 
-            # Is an hexagon element?
-            elif "hexagon" in style:
-                self.add_hexagon(child, id, value)
+                # Is an arrow element?
+                elif "edge" in child.attrib:
+                    self.add_arrow(child, id, value, style)
 
-            # Is a bow element with an underlined name? (<u> in html means underlined text)
-            elif "value" in child.attrib and ("fontStyle=4" in style or "<u" in value):
-                self.add_individual(child, id, value)
+                # Is an ellipse element?
+                elif "ellipse" in style:
+                    self.add_ellipse(child, id, value)
 
-            # Is a rhombus element?
-            elif "rhombus" in style:
-                self.add_rhombus(child, id, value)
+                # Is an hexagon element?
+                elif "hexagon" in style:
+                    self.add_hexagon(child, id, value)
 
-            # Is the name of an arrow?
-            elif "edgeLabel" in style or "text" in style:
-                self.add_arrow_parent(child, value)
+                # Is a bow element with an underlined name? (<u> in html means underlined text)
+                elif "value" in child.attrib and ("fontStyle=4" in style or "<u" in value):
+                    self.add_individual(child, id, value)
 
-            # Is it a box element?
-            elif "rounded" in style:
-                self.add_box(child, id, value, style)
-            
-            # Is there a data value defined in the element? (i.e. the element name contains "")
-            if "&quot;" in value or "\"" in value:
-                self.add_property_value(id, value, child)
+                # Is a rhombus element?
+                elif "rhombus" in style:
+                    self.add_rhombus(child, id, value)
+
+                # Is the name of an arrow?
+                elif "edgeLabel" in style or "text" in style:
+                    self.add_arrow_parent(child, value)
+
+                # Is it a box element?
+                elif "rounded" in style:
+                    self.add_box(child, id, value, style)
+                
+                # Is there a data value defined in the element? (i.e. the element name contains "")
+                if "&quot;" in value or "\"" in value:
+                    self.add_property_value(id, value, child)
 
     # Function to find the "note" element in which the namespaces are defined.
     # The namespaces are stored into a dictionary called "namespaces" whose key is 
     # the prefix and the value is the uri.
     # A namespace can be defined as "prefix: uri" or "prefix: <uri>".
     # The uri of the namespace has to start with "http"
-    def add_namespace(self, id, value): 
+    def add_namespace(self, id, value):
         text = clean_html_tags(value)
         namespaces = text.split("|")
         namespaces = [item for item in namespaces if item.strip() != ""]
@@ -575,7 +595,15 @@ class Diagram_model():
         parent = child.attrib["parent"] if "parent" in child.attrib else ""
 
         if parent and parent != '1' and parent != '0':
+
+            # Check if the arrow has more than one value (more than one text associated)
+            if parent in self.arrows_parent:
+                self.generate_error("The arrow has more than one value associated (text associated to the arrow)", parent, value, "Arrows")
+
             self.arrows_parent[parent] = value
+        
+        else:
+            self.generate_error("Text not associated to any arrow", child.attrib["id"], value, "Arrows")
     
     # Function to find concepts and attributes elements.
     # These elements are characterized by being squares or rectangles.
@@ -627,7 +655,7 @@ class Diagram_model():
         # Therefore, it is necessary to divide the html value by line breaks (<br>) in order to check what properties are deprecated
         html_attribute_list = html_value.split("<br>")
         index = 0
-        domain = False if "dashed=1" in style else child2.attrib["id"]
+        # domain = False if "dashed=1" in style else child2.attrib["id"]
 
         # Iterate all the datatype properties defined in the same block
         for attribute_value in attribute_list:
@@ -691,8 +719,9 @@ class Diagram_model():
 
                     # Is the user defining an enumerated datatype?
                     if len(enumeration) > 0:
-                        attribute["prefix_datatype"] = ''
-                        attribute["datatype"] = self.get_datatype_enumeration(enumeration[0], id)
+                        attribute["prefix_datatype"] = ['']
+                        datatype = self.get_datatype_enumeration(enumeration[0], id)
+                        attribute["datatype"] = None if datatype is None else [datatype]
                     
                     else:
                         # The user is defining a datatype
@@ -703,24 +732,24 @@ class Diagram_model():
                                 self.generate_error("The datatype URI has not a valid identifier", id, value, "Attributes")
                                 continue
 
-                            attribute["prefix_datatype"] = ''
-                            attribute["datatype"] = datatype_value_split.strip()
+                            attribute["prefix_datatype"] = ['']
+                            attribute["datatype"] = [datatype_value_split.strip()]
 
                         # Check if the sentence is :datatype
                         elif datatype_value_split[0] == ':':
-                            attribute["prefix_datatype"] = ':'
-                            attribute["datatype"] = datatype_value_split[1:].strip()
+                            attribute["prefix_datatype"] = [':']
+                            attribute["datatype"] = [datatype_value_split[1:].strip()]
 
                         #Check if the sentence is prefix:datatype
                         elif ':' in datatype_value_split:
                             final_datatype = datatype_value_split.split(":")
-                            attribute["prefix_datatype"] = final_datatype[0].strip()
-                            attribute["datatype"] = final_datatype[1].strip()
+                            attribute["prefix_datatype"] = [final_datatype[0].strip()]
+                            attribute["datatype"] = [final_datatype[1].strip()]
                         
                         #The sentence is datatype
                         else:
-                            attribute["prefix_datatype"] = "xsd"
-                            attribute["datatype"] = datatype_value_split.strip()
+                            attribute["prefix_datatype"] = ["xsd"]
+                            attribute["datatype"] = [datatype_value_split.strip()]
                 
                 else:
                     attribute["datatype"] = None
@@ -734,7 +763,7 @@ class Diagram_model():
             else:
                 attribute["range"] = True
 
-            attribute["domain"] = domain
+            attribute["domain"] = False if "dashed=1" in style else [child2.attrib["id"]]
 
             # Existential Universal restriction evaluation
             if "(all)" in attribute_value or "∀" in attribute_value:
@@ -1119,7 +1148,18 @@ class Diagram_model():
     # 7) The uri of the name defined in the arrow
     # 8) An auto generated label
     def add_value_to_arrow(self, relation, html_value, style, id):
+
         value = clean_html_tags(html_value)
+
+        # Check if the value of the arrow not contain text (it just contain html text)
+        if not value:
+            self.generate_error("The arrow does not contain text (it just contain white lines, line break, etc)", id, html_value, "Arrows")
+            return
+        
+        # Check if the arrow has more than one value (more than one text associated)
+        if "prefix" in relation or "uri" in relation:
+            self.generate_error("The arrow has more than one value associated (text associated to the arrow)", id, value, "Arrows")
+            return
 
         # Has the arrow a source element from which it departs?
         if relation["source"] is None:
@@ -1151,16 +1191,16 @@ class Diagram_model():
                 relation["domain"] = False
                 relation["range"] = False
             elif "startFill=1" in style:
-                relation["domain"] = relation["source"]
+                relation["domain"] = [relation["source"]] if relation["source"] is not None else False
                 relation["range"] = False
 
         else:
             if "startArrow=oval" not in style or "startFill=1" in style:
-                relation["domain"] = relation["source"]
-                relation["range"] = relation["target"]
+                relation["domain"] = [relation["source"]] if relation["source"] is not None else False
+                relation["range"] = [relation["target"]] if relation["target"] is not None else False
             elif "startFill=0" in style:
                 relation["domain"] = False
-                relation["range"] = relation["target"]
+                relation["range"] = [relation["target"]] if relation["target"] is not None else False
 
         # Existential Universal restriction evaluation
         if "allValuesFrom" in value or "(all)" in value or "∀" in value:
@@ -1516,3 +1556,34 @@ def check_rhombus_error_types(types):
         return "A rhombus can not be defined as Datatype Property and Annotation Property at the same time"
     
     return ""
+
+def check_inside_container(containers_id, parent, element_id, root):
+
+        # Is the parent the diagram?
+        if parent == '1':
+            return True
+        
+        # Is the parent of the element a container?
+        elif parent in containers_id:
+            # Store the identifier because it could be the case that are other elements whose attribute
+            #"parent" value is the "Id" of this elememt (and those other elements are inside of the container too)
+            containers_id.append(element_id)
+            return False
+        
+        else:
+            # The parent is another element of the diagram
+            # Search for the parent element
+            for child in root:
+
+                parent_2 = child.attrib["parent"] if "parent" in child.attrib else ""
+                id = child.attrib["id"]
+
+                if id == parent:
+                    if not check_inside_container(containers_id, parent_2, id, root):
+                        containers_id.append(element_id)
+                        return False
+                    
+                    else:
+                        return True
+
+            return True

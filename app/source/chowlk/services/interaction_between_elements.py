@@ -19,7 +19,6 @@ def interaction_between_elements(diagram_model):
     check_ellipses_relations(diagram_model)
     check_hexagons_relations(diagram_model)
     rhombus_relations(diagram_model)
-    #find_annotations_properties(diagram_model)
 
 
 # This function classify each of the boxes into a concept or an attribute.
@@ -240,6 +239,7 @@ def add_value_to_empty_arrows(diagram_model):
         # Is there an xml element associated to the arrow?
         if arrow_id in arrows_parent:
             value = arrows_parent[arrow_id]
+            del arrows_parent[arrow_id]
 
         # Does the xml element associated to the arrow have a name?
         if value is None or len(value) == 0:
@@ -281,6 +281,10 @@ def add_value_to_empty_arrows(diagram_model):
 
         else:
             diagram_model.add_value_to_arrow(arrow, value, style, arrow_id)
+
+    # Check if a value is associated to an arrow that already has a value
+    for arrow_id, value in arrows_parent.items():
+        diagram_model.generate_error("The arrow has more than one value associated (text associated to the arrow)", arrow_id, value, "Arrows")
 
 # This function check if the uri references of a default annotation property 
 # has been wrongly classified as a class.

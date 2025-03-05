@@ -35,16 +35,17 @@ def find_prefixes_datatype_properties(prefixes, attribute_blocks):
 
             #Prefix of the datatypes
             if attribute["datatype"] and not attribute["hasValue"]:
-                prefix = attribute['prefix_datatype']
-                if prefix not in prefixes:
-                    prefixes.append(prefix)
+                for prefix in attribute['prefix_datatype']:
+                    #prefix = attribute['prefix_datatype']
+                    if prefix not in prefixes:
+                        prefixes.append(prefix)
 
             #Prefix of the data values defined inside a owl:hasValue statement
             if attribute["datatype"] and attribute["hasValue"]:
-                if attribute["prefix_datatype"] == "xsd":
-                    prefix = attribute['prefix_datatype']
-                else:
-                    prefix = attribute['prefix_datatype'].split('^^')[1]
+                for prefix in attribute['prefix_datatype']:
+                    if prefix != "xsd":
+                        prefix = prefix.split('^^')[1]
+
                 if prefix not in prefixes:
                     prefixes.append(prefix)
 

@@ -227,22 +227,32 @@ class Writer_model():
                 # Does the object property have a defined domain?
                 if "domain" in relation and relation["domain"]:
                     range = relation["range"] if 'range' in relation else ''
-                    domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["domain"], range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
+                    # Just take the first range defined (this variable just make sense when checking object properties defined trhough arrows, and this kind of object properties
+                    # always have just one domain and one range)
+                    if range and range != '':
+                        range = range[0]
+                    for relation_domain in relation["domain"]:
+                        domain_name = properties_domain_range(relation_id, property_prefix, property_uri, relation_domain, range, "object property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
 
-                    # Avoid blank nodes
-                    if domain_name != ":":
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:domain " + domain_name)
+                        # Avoid blank nodes
+                        if domain_name != ":":
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:domain " + domain_name)
 
                 # Does the object property have a defined range? (avoid has value restrictions)
                 if "range" in relation and relation["range"] and not relation["hasValue"]:
                     domain = relation["domain"] if 'domain' in relation else ''
-                    range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation["range"], domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
+                    # Just take the first range defined (this variable just make sense when checking object properties defined trhough arrows, and this kind of object properties
+                    # always have just one domain and one range)
+                    if domain and domain != '':
+                        domain = domain[0]
+                    for relation_range in relation["range"]:
+                        range_name = properties_domain_range(relation_id, property_prefix, property_uri, relation_range, domain, "object property", "range", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
 
-                    # Avoid blank nodes
-                    if range_name != ":":
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:range " + range_name)
+                        # Avoid blank nodes
+                        if range_name != ":":
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:range " + range_name)
 
                 # Write relations with other object properties.
                 # Has the object property been defined as a sub-property of another object property?
@@ -278,7 +288,7 @@ class Writer_model():
 
                     for propertyChain in relation["owl:propertyChainAxiom"]:
                         self.file.write(" ;\n")
-                        text = obtain_elements_property_chain(diagram_model, relations, propertyChain)
+                        text = obtain_elements_property_chain(diagram_model, relations, propertyChain, [])
                         self.file.write("\t\towl:propertyChainAxiom ( " + text + ")")
                     
                 # Write label
@@ -295,6 +305,8 @@ class Writer_model():
                 # Write functional property delcaration
                 self.file.write("### " + prefix + uri + "\n")
                 self.file.write(prefix + uri + " rdf:type owl:FunctionalProperty")
+
+                diagram_model.generate_error("A rhombus has been declared just as Functional. Please indicate if the rhombhus is representing an object or datatype property", relation_id, f'{prefix}{uri}', "Rhombuses")
                 
                 # Is the functional property deprecated?
                 if relation['deprecated']:
@@ -385,81 +397,94 @@ class Writer_model():
                 # Does the datatype property have a defined domain?
                 if attribute["domain"]:
 
-                    # We want to skip the domain definition of those datatype properties block that are below a blank node
-                    if not ('concept_associated' in attribute_block and attribute["domain"] == attribute_block['concept_associated'] and attribute["domain"] in anonymous_classes):
-                        domain_name = properties_domain_range(id, prefix, uri, attribute["domain"], '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
-                        # Avoid blank nodes
-                        if domain_name != ":":
-                            self.file.write(" ;\n")
-                            self.file.write("\t\trdfs:domain " + domain_name)
+                    for relation_domain in attribute["domain"]:
+                        # We want to skip the domain definition of those datatype properties block that are below a blank node
+                        if not ('concept_associated' in attribute_block and relation_domain == attribute_block['concept_associated'] and relation_domain in anonymous_classes):
+                            
+                            domain_name = properties_domain_range(id, prefix, uri, relation_domain, '', "datatype property", "domain", concepts, hexagons, diagram_model, individuals, anonymous_concepts, anonymous_classes, relations, attribute_blocks, anonymous_individuals)
+                            # Avoid blank nodes
+                            if domain_name != ":":
+                                self.file.write(" ;\n")
+                                self.file.write("\t\trdfs:domain " + domain_name)
 
                 # Does the datatype property have a defined range? (avoid has value restrictions)
                 if attribute["range"] and not attribute["hasValue"]:
-                    
-                    # Is the datatype property connected to an hexagon?
-                    if attribute["range"] in hexagons:
-                        # The user is defining an enumerated datatype.
-                        # In this case, the user has declared the datatype property through a rhombus,
-                        # which is connected to an hexagon through an arrow whose name is "rdfs:range".
-                        hexagon_id = attribute["range"]
-                        hexagon = hexagons[hexagon_id]
+                    range_error = True
 
-                        # Is the user defining an enumerated datatype?
-                        if hexagon["type"] == "owl:oneOf":
-                            self.file.write(" ;\n")
-                            self.file.write("\t\trdfs:range [ rdf:type rdfs:Datatype ; owl:oneOf")
-                            text1 =""
-                            text2 =""
-                            # the range is an enumerated datatype
-                            enumerated_datatypes_ids = hexagon["group"]
+                    if not isinstance(attribute["range"], bool):
+                        range_error = False
+                        for hexagon_range in attribute["range"]:
+                            # Is the datatype property connected to an hexagon?
+                            if hexagon_range in hexagons:
+                                # The user is defining an enumerated datatype.
+                                # In this case, the user has declared the datatype property through a rhombus,
+                                # which is connected to an hexagon through an arrow whose name is "rdfs:range".
+                                hexagon_id = hexagon_range
+                                hexagon = hexagons[hexagon_id]
 
-                            # Iterate the elements connected to the hexagon
-                            for enumerated_datatypes_id in enumerated_datatypes_ids:
+                                # Is the user defining an enumerated datatype?
+                                if hexagon["type"] == "owl:oneOf":
+                                    self.file.write(" ;\n")
+                                    self.file.write("\t\trdfs:range [ rdf:type rdfs:Datatype ; owl:oneOf")
+                                    text1 =""
+                                    text2 =""
+                                    # the range is an enumerated datatype
+                                    enumerated_datatypes_ids = hexagon["group"]
 
-                                # Is the element a data value?
-                                if enumerated_datatypes_id in values:
+                                    # Iterate the elements connected to the hexagon
+                                    for enumerated_datatypes_id in enumerated_datatypes_ids:
 
-                                    # Is a datatype specified in the data value?
-                                    if values[enumerated_datatypes_id]["type"] is not None:
+                                        # Is the element a data value?
+                                        if enumerated_datatypes_id in values:
 
-                                        # Is the datatype specified through a prefix:uri?
-                                        if ":" in values[enumerated_datatypes_id]["type"]:
-                                            object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^" + values[enumerated_datatypes_id]["type"]
-                                        
+                                            # Is a datatype specified in the data value?
+                                            if values[enumerated_datatypes_id]["type"] is not None:
+
+                                                # Is the datatype specified through a prefix:uri?
+                                                if ":" in values[enumerated_datatypes_id]["type"]:
+                                                    object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^" + values[enumerated_datatypes_id]["type"]
+                                                
+                                                else:
+                                                    # The default prefix is xsd
+                                                    object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^xsd:" + values[enumerated_datatypes_id]["type"]
+                                            
+                                            # Is a language specified in the data value?
+                                            elif values[enumerated_datatypes_id]["lang"] is not None:
+                                                # The data value is a literal
+                                                object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "@" + values[enumerated_datatypes_id]["lang"]
+                                            
+                                            else:
+                                                # The data value is a literal
+                                                object = "\"" + values[enumerated_datatypes_id]["value"] + "\""
+                                            
+                                            text1 = text1 + "[ rdf:type rdf:List ; rdf:first " + object + "; rdf:rest"
+                                            text2 = text2 + " ]"
+
                                         else:
-                                            # The default prefix is xsd
-                                            object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "^^xsd:" + values[enumerated_datatypes_id]["type"]
-                                    
-                                    # Is a language specified in the data value?
-                                    elif values[enumerated_datatypes_id]["lang"] is not None:
-                                        # The data value is a literal
-                                        object = "\"" + values[enumerated_datatypes_id]["value"] + "\"" + "@" + values[enumerated_datatypes_id]["lang"]
-                                    
-                                    else:
-                                        # The data value is a literal
-                                        object = "\"" + values[enumerated_datatypes_id]["value"] + "\""
-                                    
-                                    text1 = text1 + "[ rdf:type rdf:List ; rdf:first " + object + "; rdf:rest"
+                                            diagram_model.generate_error("An element of an owl:oneOf is not a data value", enumerated_datatypes_id, None, "oneOf")
+
+                                    text1 = text1 + " rdf:nil"
                                     text2 = text2 + " ]"
+                                    self.file.write(text1 + text2)
 
                                 else:
-                                    diagram_model.generate_error("An element of an owl:oneOf is not a data value", enumerated_datatypes_id, None, "oneOf")
+                                    # The user has defined an invalid hexagon
+                                    diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", hexagon_id, hexagon["type"], "Attributes")
 
-                            text1 = text1 + " rdf:nil"
-                            text2 = text2 + " ]"
-                            self.file.write(text1 + text2)
-
-                        else:
-                            # The user has defined an invalid hexagon
-                            diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", hexagon_id, hexagon["type"], "Attributes")
+                            else:
+                                # In this case, the user has declared the datatype property through a rhombus,
+                                # which is connected to another element through an arrow whose name is "rdfs:range".
+                                diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", id, f'{prefix}{uri}', "Attributes")
 
                     # Is the user defining a datatype?
-                    elif attribute["datatype"]:
-                        prefix = base_directive_prefix(attribute["prefix_datatype"])
-                        self.file.write(" ;\n")
-                        self.file.write("\t\trdfs:range " + prefix + attribute["datatype"])
+                    if attribute["datatype"]:
 
-                    else:
+                        for i in range(len(attribute["datatype"])):
+                            prefix = base_directive_prefix(attribute["prefix_datatype"][i])
+                            self.file.write(" ;\n")
+                            self.file.write("\t\trdfs:range " + prefix + attribute["datatype"][i])
+
+                    elif range_error:
                         # In this case, the user has declared the datatype property through a rhombus,
                         # which is connected to another element through an arrow whose name is "rdfs:range".
                         diagram_model.generate_error("The range of a datatype property is not a datatype or an enumerated datatype", id, f'{prefix}{uri}', "Attributes")

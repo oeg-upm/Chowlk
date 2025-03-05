@@ -1,2 +1,6 @@
 
+Error Rhombuses: A rhombus has been declared just as Functional. Please indicate if the rhombhus is representing an object or datatype property
+	shape_id: ZjD5kE2wXRQ46pKr2R3K-7
+	value: ns:objectProperty1
+
 Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

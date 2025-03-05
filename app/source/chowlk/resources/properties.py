@@ -176,7 +176,8 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
 
 # Function to obtain the properties which are part of a property chain axiom. A property chain axiom is defined
 # through a collection where the order matters
-def obtain_elements_property_chain(diagram_model, relations, relation_id):
+# Note: infinite_loop is a list to check that there are not loops in the paths which starts in a property chain arrow.
+def obtain_elements_property_chain(diagram_model, relations, relation_id, infinite_loop):
     text = ""
     # Check if really the element is an object property
     if relation_id in relations:
@@ -187,6 +188,14 @@ def obtain_elements_property_chain(diagram_model, relations, relation_id):
 
         # Check if the end of path that defines the property chain axiom has been reached
         if "aggregation" in relation:
+
+            # Check if this arrow has been reached before
+            if relation["aggregation"][0][1] in infinite_loop:
+                # Infinite loop
+                diagram_model.generate_error("There is an infinite loop in the diagram between rhombuses, involving a property chain axiom.", relation["aggregation"][0][1], None, "Rhombuses")
+                return ""
+
+            infinite_loop.append(relation["aggregation"][0][1])
             
             # Just one path can be defined, so the array should contains just one element
             if len(relation["aggregation"]) > 1:
@@ -194,6 +203,6 @@ def obtain_elements_property_chain(diagram_model, relations, relation_id):
                 diagram_model.generate_error("Just one path can be defined in a property chain axiom", relation_id, text, "Rhombuses")
 
             # Go to the next element
-            text += obtain_elements_property_chain(diagram_model, relations, relation["aggregation"][0][0])
+            text += obtain_elements_property_chain(diagram_model, relations, relation["aggregation"][0][0], infinite_loop)
     
     return text
