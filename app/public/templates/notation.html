@@ -392,7 +392,7 @@
                                     ontology conceptualization. The content of the block should be accompanied with the
                                     prefix
                                     and the name of the concept on order to fully identify it.</td>
-                                <td><code>owl:Individual</code></td>
+                                <td><code>owl:NamedIndividual</code></td>
                             </tr>
 
                             <tr>
@@ -410,7 +410,7 @@
                                 <td class="text-center" scope="row"><img src="static/images/subclass_arrow.svg"
                                         alt="sub-class"></td>
                                 <td>Special arrow to indicate sub-class relationship between two classes.</td>
-                                <td><code>owl:subClassOf</code></td>
+                                <td><code>rdfs:subClassOf</code></td>
                             </tr>
 
                             <tr>
@@ -435,14 +435,14 @@
                                     element. Variations can apply to the type
                                     of outer line depending on the domain and range specification. For more details see
                                     section 2.4.</td>
-                                <td><code>rdf:DatatypeProperty</code></td>
+                                <td><code>owl:DatatypeProperty</code></td>
                             </tr>
 
                             <tr>
                                 <td class="text-center" scope="row"><img src="static/images/object_property_diamond.svg"
                                         alt="object-properties"></td>
                                 <td>Alternative way to represent object properties.
-                                <td><code>rdf:ObjectProperty</code></td>
+                                <td><code>owl:ObjectProperty</code></td>
                             </tr>
 
                             <tr>
@@ -450,7 +450,7 @@
                                         src="static/images/datatype_property_diamond.svg" alt="datatype-properties">
                                 </td>
                                 <td>Alternative way to represent datatype properties.</td>
-                                <td><code>rdf:DatatypeProperty</code></td>
+                                <td><code>owl:DatatypeProperty</code></td>
                             </tr>
 
                             <tr>
@@ -500,7 +500,7 @@
                         neccesary to use "@base".
                         If it is used "base", a prefix base is created instead.</p>
 
-                    <p class="pt-3">Definition of @base an empty prefix when they are not specified in the namespaces.
+                    <p class="pt-3">Definition of @base and empty prefix when they are not specified in the namespaces.
                     </p>
 
                     <table class="table table-bordered align-middle">
@@ -525,7 +525,7 @@
 
                     </table>
 
-                    <p class="pt-3">Definition of @base an empty prefix when a base is specified in the namespaces but
+                    <p class="pt-3">Definition of @base and empty prefix when a base is specified in the namespaces but
                         the empty prefix is not specified.</p>
 
                     <table class="table table-bordered align-middle">
@@ -550,7 +550,7 @@
 
                     </table>
 
-                    <p class="pt-3">Definition of @base an empty prefix when a base is not specified in the namespaces
+                    <p class="pt-3">Definition of @base and empty prefix when a base is not specified in the namespaces
                         but the empty prefix is specified.</p>
 
                     <table class="table table-bordered align-middle">
@@ -575,7 +575,7 @@
 
                     </table>
 
-                    <p class="pt-3">Definition of @base an empty prefix when they are specified in namespaces.</p>
+                    <p class="pt-3">Definition of @base and empty prefix when they are specified in namespaces.</p>
 
                     <table class="table table-bordered align-middle">
                         <thead>
@@ -717,7 +717,7 @@
                             </tr>
                             <tr>
                                 <td>Backward compatibility</td>
-                                <td><code>owl:backwardCompatibility</code></td>
+                                <td><code>owl:backwardCompatibleWith</code></td>
                                 <td>Version compatibility</td>
                                 <td>Optional</td>
                             </tr>
@@ -747,7 +747,7 @@
                             </tr>
                             <tr>
                                 <td>Publisher</td>
-                                <td><code>dcterms:published</code></td>
+                                <td><code>dcterms:publisher</code></td>
                                 <td>Provenance</td>
                                 <td>Optional</td>
                             </tr>
@@ -1884,7 +1884,7 @@
                                     <p> <br> </p>
                                     <img src="static/images/subclass_1.svg" alt="subclass">
                                 </td>
-                                <td rowspan="2"><code>ns:Class2 owl:subClassOf ns:Class1 .<br>
+                                <td rowspan="2"><code>ns:Class2 rdfs:subClassOf ns:Class1 .<br>
                                     <br>
                                     ns:Class1 a owl:Class .</code></td>
                             </tr>
@@ -1922,11 +1922,11 @@
                                     rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .</code></td>
+                                    ns:Individual3 a owl:NamedIndividual .</code></td>
                             </tr>
 
                             <tr>
@@ -2218,11 +2218,11 @@
                                     owl:equivalentClass [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .</code></td>
+                                    ns:Individual3 a owl:NamedIndividual .</code></td>
                             </tr>
 
                             <tr>
@@ -2311,7 +2311,7 @@
                                 <td class="text-center" scope="row"><img src="static/images/restriction_equivalent4.svg"
                                         alt="namespace"></td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    rdfs:equivalentClass [ a owl:Restriction ;<br>
+                                    owl:equivalentClass [ a owl:Restriction ;<br>
                                     owl:allValuesFrom xsd:datatype ;<br>
                                     owl:onProperty ns:datatypeProperty1 ] .<br>
                                     <br>
@@ -2525,14 +2525,14 @@
                                     <img src="static/images/enumeration_disjoint1.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="2"><code>ns:Class a owl:Class ;<br>
-                                    owl:disjointClass [ a owl:Class ;<br>
+                                    owl:disjointWith [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .</code></td>
+                                    ns:Individual3 a owl:NamedIndividual .</code></td>
                             </tr>
 
                             <tr>
@@ -2569,7 +2569,7 @@
                                     <img src="static/images/restriction_disjoint1.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="2"><code>ns:Class1 a owl:Class ;<br>
-                                    owl:disjointClass [ a owl:Restriction ;<br>
+                                    owl:disjointWith  [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class2 ;<br>
                                     owl:onProperty ns:objectProperty ] .<br>
                                     <br>
@@ -2594,7 +2594,7 @@
                                     <img src="static/images/restriction_disjoint3.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="1"><code>ns:Class1 a owl:Class ;<br>
-                                    owl:disjointClass [ a owl:Restriction ;<br>
+                                    owl:disjointWith  [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class2 ;<br>
                                     owl:onProperty ns:objectProperty ] .<br>
                                     <br>
@@ -2621,7 +2621,7 @@
                                 <td class="text-center" scope="row"><img src="static/images/restriction_disjoint4.svg"
                                         alt="namespace"></td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    rdfs:disjointWith [ a owl:Restriction ;<br>
+                                    owl:disjointWith [ a owl:Restriction ;<br>
                                     owl:allValuesFrom xsd:datatype ;<br>
                                     owl:onProperty ns:datatypeProperty1 ] .<br>
                                     <br>
@@ -2655,7 +2655,7 @@
                                     <img src="static/images/intersection_disjoint1.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="2"><code>ns:Class3 a owl:Class ;<br>
-                                    owl:disjointClass [ a owl:Class ;<br>
+                                    owl:disjointWith  [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 ) ] .<br>
                                     <br>
                                     ns:Class1 a owl:Class <br>
@@ -2695,7 +2695,7 @@
                                     <img src="static/images/union_disjoint1.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="2"><code>ns:Class3 a owl:Class ;<br>
-                                    owl:disjointClass [ a owl:Class ;<br>
+                                    owl:disjointWith  [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 ) ] .<br>
                                     <br>
                                     ns:Class1 a owl:Class .<br>
@@ -2735,7 +2735,7 @@
                                     <img src="static/images/complement_disjoint1.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="2"><code>ns:Class1 a owl:Class ;<br>
-                                    owl:disjointClass [ a owl:Class ;<br>
+                                    owl:disjointWith  [ a owl:Class ;<br>
                                     owl:complementOf ns:Class2 ] .<br>
                                     <br>
                                     ns:Class2 a owl:Class .</code></td>
@@ -3787,7 +3787,7 @@
                                     <p> <br> </p>
                                     <img src="static/images/individual_class_3.svg" alt="">
                                 </td>
-                                <td rowspan="4"><code>ns:Individual a owl:Individual ;<br>
+                                <td rowspan="4"><code>ns:Individual a owl:NamedIndividual ;<br>
                                     rdf:type ns:Class .<br>
                                     <br>
                                     ns:Class a owl:Class .</code></td>
@@ -3937,10 +3937,10 @@
                             <tr>
                                 <td class="text-center row-height" scope="row"><img src="static/images/rdf_1.svg"
                                         alt=""></td>
-                                <td><code>ns:Individual1 a owl:Individual ;<br>
+                                <td><code>ns:Individual1 a owl:NamedIndividual ;<br>
                                     ns:objectProperty ns:Individual2 .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
                                     ns:objectProperty a owl:ObjectProperty .</code></td>
                             </tr>
@@ -3962,8 +3962,8 @@
                             <tr>
                                 <td class="text-center row-height" scope="row"><img src="static/images/rdf_2.svg"
                                         alt=""></td>
-                                <td><code>ns:Individual a owl:Individual ;<br>
-                                    ns:datatypeProperty "value"^^datatype .</code></td>
+                                <td><code>ns:Individual a owl:NamedIndividual ;<br>
+                                    ns:datatypeProperty "value"^^xsd:datatype .</code></td>
                             </tr>
 
                         </tbody>
@@ -3984,7 +3984,7 @@
                             <tr>
                                 <td class="text-center row-height" scope="row"><img src="static/images/rdf_3.svg"
                                         alt=""></td>
-                                <td><code>ns:Individual a owl:Individual ;<br>
+                                <td><code>ns:Individual a owl:NamedIndividual ;<br>
                                     ns:datatypeProperty "datatype_value"^^prefix:datatype .</code></td>
                             </tr>
 
@@ -4007,10 +4007,10 @@
                             <tr>
                                 <td class="text-center row-height" scope="row"><img src="static/images/same_as.svg"
                                         alt=""></td>
-                                <td><code>ns:Individual1 a owl:Individual ;<br>
+                                <td><code>ns:Individual1 a owl:NamedIndividual ;<br>
                                     owl:sameAs ns:Individual2 .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .</code></td>
+                                    ns:Individual2 a owl:NamedIndividual .</code></td>
                             </tr>
                         </tbody>
                     </table>
@@ -4029,10 +4029,10 @@
                             <tr>
                                 <td class="text-center row-height" scope="row"><img
                                         src="static/images/different_from.svg" alt=""></td>
-                                <td><code>ns:Individual1 a owl:Individual ;<br>
+                                <td><code>ns:Individual1 a owl:NamedIndividual ;<br>
                                     owl:differentFrom ns:Individual2 .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .</code></td>
+                                    ns:Individual2 a owl:NamedIndividual .</code></td>
                             </tr>
                         </tbody>
                     </table>
@@ -4054,11 +4054,11 @@
                                 <td><code>[rdf:type owl:AllDifferent ;<br>
                                     owl:distinctMembers (ns:Individual1 ns:Individual2 ns:Individual3)] .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .</code></td>
+                                    ns:Individual3 a owl:NamedIndividual .</code></td>
                             </tr>
                         </tbody>
                     </table>
@@ -4179,7 +4179,7 @@
                                     ns:Class1 a owl:Class ;<br>
                                     ns:annotationProperty1 ns:Individual1 .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .</code></td>
+                                    ns:Individual1 a owl:NamedIndividual .</code></td>
                             </tr>
 
                         </tbody>
@@ -4261,7 +4261,7 @@
                                     ns:objectProperty a owl:ObjectProperty ;<br>
                                     ns:annotationProperty1 ns:Individual1 .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .</code></td>
+                                    ns:Individual1 a owl:NamedIndividual .</code></td>
                             </tr>
 
                         </tbody>
@@ -4343,7 +4343,7 @@
                                     ns:datatypeProperty a owl:DatatypeProperty ;<br>
                                     ns:annotationProperty1 ns:Individual1 .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .</code></td>
+                                    ns:Individual1 a owl:NamedIndividual .</code></td>
                             </tr>
 
                         </tbody>
@@ -4370,7 +4370,7 @@
                                 </td>
                                 <td><code>ns:annotationProperty1 a owl:AnnotationProperty .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual ;<br>
+                                    ns:Individual1 a owl:NamedIndividual ;<br>
                                     ns:annotationProperty1 "literal" .</code></td>
                             </tr>
 
@@ -4396,7 +4396,7 @@
                                 </td>
                                 <td><code>ns:annotationProperty1 a owl:AnnotationProperty .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual ;<br>
+                                    ns:Individual1 a owl:NamedIndividual ;<br>
                                     ns:annotationProperty1 &lt;https://w3id.org/example&gt; .</code></td>
                             </tr>
 
@@ -4422,10 +4422,10 @@
                                 </td>
                                 <td><code>ns:annotationProperty1 a owl:AnnotationProperty .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual ;<br>
+                                    ns:Individual1 a owl:NamedIndividual ;<br>
                                     ns:annotationProperty1 ns:Individual2 .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .</code></td>
+                                    ns:Individual2 a owl:NamedIndividual .</code></td>
                             </tr>
 
                         </tbody>
@@ -4589,7 +4589,7 @@
                                     <img src="static/images/restriction_enumeration.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty ;<br>
                                     owl:allValuesFrom [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] ] .<br>
@@ -4609,7 +4609,7 @@
                                     <img src="static/images/restriction_enumeration_2.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:datatypeProperty ;<br>
                                     owl:allValuesFrom [ a rdfs:Datatype ;<br>
                                     owl:oneOf [ a rdf:List ;<br>
@@ -4653,7 +4653,7 @@
                                     <img src="static/images/restriction_restriction.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty1 ;<br>
                                     owl:allValuesFrom [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class2 ;<br>
@@ -4673,7 +4673,7 @@
                                     <img src="static/images/restriction_restriction_dp.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty1 ;<br>
                                     owl:allValuesFrom [ a owl:Restriction ;<br>
                                     owl:allValuesFrom prefix:datatype ;<br>
@@ -4709,7 +4709,7 @@
                                     <img src="static/images/restriction_intersection.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty ;<br>
                                     owl:allValuesFrom [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class2 ns:Class3 ) ] ] .<br>
@@ -4745,7 +4745,7 @@
                                     <img src="static/images/restriction_union.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty ;<br>
                                     owl:allValuesFrom [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class2 ns:Class3 ) ] ] .<br>
@@ -4781,7 +4781,7 @@
                                     <img src="static/images/restriction_complement.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Restriction ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
                                     owl:onProperty ns:objectProperty ;<br>
                                     owl:allValuesFrom [ a owl:Class ;<br>
                                     owl:complementOf ns:Class2 ] ] .<br>
@@ -4817,7 +4817,7 @@
                                     <img src="static/images/intersection_enumeration.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class5 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] ) ] .<br>
                                     <br>
@@ -4825,11 +4825,11 @@
                                     <br>
                                     ns:Class2 a owl:Class .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .<br></code></td>
+                                    ns:Individual3 a owl:NamedIndividual .<br></code></td>
                             </tr>
 
                         </tbody>
@@ -4855,7 +4855,7 @@
                                     <img src="static/images/intersection_restriction.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class4 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class3 ;<br>
                                     owl:onProperty ns:objectProperty ] ) .<br>
@@ -4875,7 +4875,7 @@
                                     <img src="static/images/intersection_restriction_dp.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class3 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
                                     owl:allValuesFrom prefix:datatype ;<br>
                                     owl:onProperty ns:datatypeProperty1 ] ) .<br>
@@ -4911,7 +4911,7 @@
                                     <img src="static/images/intersection_intersection.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class5 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class3 ns:Class4 ) ] ) ] .<br>
                                     <br>
@@ -4947,7 +4947,7 @@
                                     <img src="static/images/intersection_union.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class5 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class3 ns:Class4 ) ] ) ] .<br>
                                     <br>
@@ -4983,7 +4983,7 @@
                                     <img src="static/images/intersection_complement.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class4 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:complementOf ns:Class3 ] ) ] .<br>
                                     <br>
@@ -5019,7 +5019,7 @@
                                     <img src="static/images/union_enumeration.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class5 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] ) ] .<br>
                                     <br>
@@ -5027,11 +5027,11 @@
                                     <br>
                                     ns:Class2 a owl:Class .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .</code></td>
+                                    ns:Individual3 a owl:NamedIndividual .</code></td>
                             </tr>
 
                         </tbody>
@@ -5057,7 +5057,7 @@
                                     <img src="static/images/union_restriction.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class4 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class3 ;<br>
                                     owl:onProperty ns:objectProperty ] ) .<br>
@@ -5077,7 +5077,7 @@
                                     <img src="static/images/union_restriction_dp.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class3 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Restriction ;<br>
                                     owl:allValuesFrom prefix:datatype ;<br>
                                     owl:onProperty ns:datatypeProperty1 ] ) .<br>
@@ -5113,7 +5113,7 @@
                                     <img src="static/images/union_intersection.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class5 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class3 ns:Class4 ) ] ) ] .<br>
                                     <br>
@@ -5149,7 +5149,7 @@
                                     <img src="static/images/union_union.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class5 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class3 ns:Class4 ) ] ) ] .<br>
                                     <br>
@@ -5185,7 +5185,7 @@
                                     <img src="static/images/union_complement.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class4 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 [ a owl:Class ;<br>
                                     owl:complementOf ns:Class3 ] ) ] .<br>
                                     <br>
@@ -5222,15 +5222,15 @@
                                     <img src="static/images/complement_enumeration.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:complementOf [ a owl:Class ;<br>
                                     owl:oneOf ( ns:Individual1 ns:Individual2 ns:Individual3 ) ] ) ] .<br>
                                     <br>
-                                    ns:Individual1 a owl:Individual .<br>
+                                    ns:Individual1 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual2 a owl:Individual .<br>
+                                    ns:Individual2 a owl:NamedIndividual .<br>
                                     <br>
-                                    ns:Individual3 a owl:Individual .</code></td>
+                                    ns:Individual3 a owl:NamedIndividual .</code></td>
                             </tr>
 
                         </tbody>
@@ -5256,7 +5256,7 @@
                                     <img src="static/images/complement_restriction.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:complementOf [ a owl:Restriction ;<br>
                                     owl:allValuesFrom ns:Class2 ;<br>
                                     owl:onProperty ns:objectProperty ] .<br>
@@ -5290,7 +5290,7 @@
                                     <img src="static/images/complement_intersection.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class3 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:complementOf [ a owl:Class ;<br>
                                     owl:intersectionOf ( ns:Class1 ns:Class2 ) ] ) ] .<br>
                                     <br>
@@ -5322,7 +5322,7 @@
                                     <img src="static/images/complement_union.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class3 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:complementOf [ a owl:Class ;<br>
                                     owl:unionOf ( ns:Class1 ns:Class2 ) ] ) ] .<br>
                                     <br>
@@ -5354,7 +5354,7 @@
                                     <img src="static/images/complement_complement.svg" alt="disjoint">
                                 </td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
-                                    owl:subClassOf [ a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Class ;<br>
                                     owl:complementOf [ a owl:Class ;<br>
                                     owl:complementOf ns:Class2 ] ) ] .<br>
                                     <br>
@@ -6119,7 +6119,7 @@
                                     ontology conceptualization. The content of the block should be accompanied with the
                                     prefix
                                     and the name of the concept on order to fully identify it.</td>
-                                <td><code>owl:Individual</code></td>
+                                <td><code>owl:NamedIndividual</code></td>
                             </tr>
 
                             <tr>
@@ -6137,7 +6137,7 @@
                                 <td class="text-center" scope="row"><img src="static/images/subclass_arrow.svg"
                                         alt="sub-class"></td>
                                 <td>Special arrow to indicate sub-class relationship between two classes.</td>
-                                <td><code>owl:subClassOf</code></td>
+                                <td><code>rdfs:subClassOf</code></td>
                             </tr>
 
                             <tr>
@@ -6158,7 +6158,7 @@
                                     element. Variations can apply to the type
                                     of outer line depending on the domain and range specification. For more details see
                                     section 2.4.</td>
-                                <td><code>rdf:DatatypeProperty</code></td>
+                                <td><code>owl:DatatypeProperty</code></td>
                             </tr>
 
                             <tr>
@@ -6272,7 +6272,7 @@
                                 <td class="text-center row-height" scope="row">
                                     <img src="static/images/subclass_1.svg" alt="subclass">
                                 </td>
-                                <td><code>ns:Class2 owl:subClassOf ns:Class1</code></td>
+                                <td><code>ns:Class2 rdfs:subClassOf ns:Class1</code></td>
                             </tr>
                         </tbody>
 
