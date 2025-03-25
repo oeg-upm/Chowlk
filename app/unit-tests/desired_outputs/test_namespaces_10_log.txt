@@ -1,7 +1,7 @@
 
 Error Metadata: Problems in the text of the Metadata
 	shape_id: VuxEHUv_u_dpGtrIJ62Z-16
-	value: creator: Full Name
+	value: creator:Â Full Name
 
 Warning Base: A base has not been declared. The first namespace has been taken as base
 

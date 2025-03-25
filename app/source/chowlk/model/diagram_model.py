@@ -766,18 +766,18 @@ class Diagram_model():
             attribute["domain"] = False if "dashed=1" in style else [child2.attrib["id"]]
 
             # Existential Universal restriction evaluation
-            if "(all)" in attribute_value or "∀" in attribute_value:
+            if "(all)" in attribute_value or "(∀)" in attribute_value:
                 attribute["allValuesFrom"] = True
             else:
                 attribute["allValuesFrom"] = False
 
-            if "(some)" in attribute_value or "∃" in attribute_value:
+            if "(some)" in attribute_value or "(∃)" in attribute_value:
                 attribute["someValuesFrom"] = True
             else:
                 attribute["someValuesFrom"] = False
 
             # owl:hasValue
-            if "(value)" in attribute_value or "∋" in attribute_value:
+            if "(value)" in attribute_value or "(∋)" in attribute_value:
                 # In these cases the object is a data value of the form
                 # "data_value"^^prefix_datatype:datatype
                 attribute["hasValue"] = True
@@ -790,10 +790,13 @@ class Diagram_model():
             # When the user wants to declare this relation, it is specified inside the "relation" in diagrams
             if "(sub)" in attribute_value:
                 attribute["predicate_restriction"] = "rdfs:subClassOf"
+                self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (sub) (all) now write (sub all). But the triple has been generated anyway.", id, attribute_value, "Deprecated")
             elif "(eq)" in attribute_value:
                 attribute["predicate_restriction"] = "owl:equivalentClass"
+                self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (eq) (all) now write (eq all). But the triple has been generated anyway.", id, attribute_value, "Deprecated")
             elif "(dis)" in attribute_value:
                 attribute["predicate_restriction"] = "owl:disjointWith"
+                self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (dis) (all) now write (dis all). But the triple has been generated anyway.", id, attribute_value, "Deprecated")
             else:
                 attribute["predicate_restriction"] = "rdfs:subClassOf"
 
@@ -1001,7 +1004,7 @@ class Diagram_model():
             return
 
         # Other option is to verify things like functionality, some, all, etc.
-        if "(F)" in value or "(some)" in value or "(all)" in value or "∀" in value or "∃" in value:
+        if "(F)" in value or "(some)" in value or "(all)" in value or "(∀)" in value or "(∃)" in value:
             self.generate_error("Attributes not attached to any concept", id, value, "Attributes")
             return
 
@@ -1203,19 +1206,25 @@ class Diagram_model():
                 relation["range"] = [relation["target"]] if relation["target"] is not None else False
 
         # Existential Universal restriction evaluation
-        if "allValuesFrom" in value or "(all)" in value or "∀" in value:
+        if "<<owl:allValuesFrom>>" in value or "(all)" in value or "(∀)" in value:
             relation["allValuesFrom"] = True
+            if "<<owl:allValuesFrom>>" in value:
+                self.generate_warning("Deprecated notation. To declare an owl:allValuesFrom restriction it is neccesary to write (all) or (∀), but the triple has been generated anyway.", id, clean_uri(value).replace('|',' '), "Deprecated")
         else:
             relation["allValuesFrom"] = False
 
-        if "someValuesFrom" in value or "(some)" in value or "∃" in value:
+        if "<<owl:someValuesFrom>>" in value or "(some)" in value or "(∃)" in value:
             relation["someValuesFrom"] = True
+            if "<<owl:someValuesFrom>>" in value:
+                self.generate_warning("Deprecated notation. To declare an owl:someValuesFrom restriction it is neccesary to write (some) or (∃), but the triple has been generated anyway.", id, clean_uri(value).replace('|',' '), "Deprecated")
         else:
             relation["someValuesFrom"] = False
 
         # owl:hasValue
-        if "hasValue" in value or "(value)" in value or "∋" in value:
+        if "<<owl:hasValue>>" in value or "(value)" in value or "(∋)" in value:
             relation["hasValue"] = True
+            if "<<owl:hasValue>>" in value:
+                self.generate_warning("Deprecated notation. To declare an owl:hasValue restriction it is neccesary to write (value) or (∋), but the triple has been generated anyway.", id, clean_uri(value).replace('|',' '), "Deprecated")
         else:
             relation["hasValue"] = False
 
@@ -1224,10 +1233,13 @@ class Diagram_model():
         # When the user wants to declare this relation, it is specified inside the arrow name in the xml
         if "(sub)" in value:
             relation["predicate_restriction"] = "rdfs:subClassOf"
+            self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (sub) (all) now write (sub all). But the triple has been generated anyway.", id, value, "Deprecated")
         elif "(eq)" in value:
             relation["predicate_restriction"] = "owl:equivalentClass"
+            self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (eq) (all) now write (eq all). But the triple has been generated anyway.", id, value, "Deprecated")
         elif "(dis)" in value:
             relation["predicate_restriction"] = "owl:disjointWith"
+            self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (dis) (all) now write (dis all). But the triple has been generated anyway.", id, value, "Deprecated")
         else:
             relation["predicate_restriction"] = "rdfs:subClassOf"
 

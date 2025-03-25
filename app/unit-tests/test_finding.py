@@ -45,8 +45,8 @@ def test():
                         
                         all_test_passed = False
                         print("Test " + filename + " failed. Logs are not equal\n")
-                    else:
-                        print("Test " + filename + " passed\n")
+                    #else:
+                        #print("Test " + filename + " passed\n")
                 else:
                     all_test_passed = False
         else:
@@ -61,6 +61,10 @@ def compare_ontologies2(filename, o1, o2):
     file2 = open(o2, 'r')
     file_read2 = file2.read()
     file2.close()
+    """with open(o1, "rb") as f:
+        file_read1 = f.read().decode("UTF-8")
+    with open(o2, "rb") as f:
+        file_read2 = f.read().decode("UTF-8")"""
     try:
         g1 = rdflib.Graph()
         g1.parse(data=file_read1, format="turtle")
@@ -162,6 +166,13 @@ def compare_logs(l1, l2):
     file1.close()
     file2.close()
     return passed
+
+    """with open(l1, "rb") as f:
+        print(l1)
+        file_read1 = f.read().decode("UTF-8")
+    with open(l2, "rb") as f:
+        file_read2 = f.read().decode("UTF-8")
+    return file_read1 == file_read2"""
 
 #Funtion to remove all the files in the repository output
 def empty_repository():

@@ -1,11 +1,11 @@
 
 Error Rhombuses: Type <<owl:invention>> can not be defined inside a rhombus
 	shape_id: 4rq9chuBLuWLN-xE1oy9-1
-	value: <<owl:invention>> | ns:objectProperty
+	value: <<owl:invention>>Â |Â ns:objectProperty
 
 Error Rhombuses: There is not a single valid type defined inside a rhombus
 	shape_id: 4rq9chuBLuWLN-xE1oy9-1
-	value: <<owl:invention>> | ns:objectProperty
+	value: <<owl:invention>>Â |Â ns:objectProperty
 
 Warning Base: A base has not been declared. The first namespace has been taken as base
 

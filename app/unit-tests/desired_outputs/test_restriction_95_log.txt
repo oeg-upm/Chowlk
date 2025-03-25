@@ -6,3 +6,7 @@ Warning Restrictions: More than one restriction has been defined at the same tim
 Warning Base: A base has not been declared. The first namespace has been taken as base
 
 Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+
+Warning Deprecated: Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (eq) (all) now write (eq all). But the triple has been generated anyway.
+	shape_id: Ju1RTPdh9tJ6ZwYG0b28-11
+	value: (eq) (all) (1..20) ns:datatypeProperty1: datatype

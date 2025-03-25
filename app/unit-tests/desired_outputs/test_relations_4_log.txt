@@ -2,3 +2,7 @@
 Warning Base: A base has not been declared. The first namespace has been taken as base
 
 Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+
+Warning Deprecated: Deprecated notation. To declare an owl:someValuesFrom restriction it is neccesary to write (some) or (∃), but the triple has been generated anyway.
+	shape_id: fVnfj62OFYGW4IorQ5-l-2
+	value: <<owl:someValuesFrom>> ns:objectProperty

@@ -1,7 +1,7 @@
 
 Error Metadata: Problems in the text of the Metadata
 	shape_id: GG5wGA6FgkKTUUNbn5ZA-1
-	value: <http://www.w3.org/2002/07/owl#versionInfo> : "0.0.1"^^xsd:string
+	value: <http://www.w3.org/2002/07/owl#versionInfo>Â : "0.0.1"^^xsd:string
 
 Warning Base: A base has not been declared. The first namespace has been taken as base
 

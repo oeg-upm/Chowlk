@@ -1,3 +1,8 @@
 
 Error Attributes: Problems in the text of the attribute. To deprecate a datatype property, it is necessary to cross out the full name
 	shape_id: GtYCgeF0o5ncuHVegKOD-11
+	value: (∀) ns:datatypeProperty1: {"value1"^^prefix:datatype1,"value2"^^prefix:datatype2,"value3"^^prefix:datatype3}
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
