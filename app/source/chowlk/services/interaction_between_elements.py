@@ -524,6 +524,7 @@ def create_object_property_from_rhombus(rhombus):
     arrow["allValuesFrom"] = False
     arrow["someValuesFrom"] = False
     arrow["hasValue"] = False
+    arrow["hasValue2"] = False
     arrow["min_cardinality"] = False
     arrow["max_cardinality"] = False
     arrow["cardinality"] = False
@@ -555,6 +556,7 @@ def create_datatype_property_from_rhombus(rhombus):
     attribute["allValuesFrom"] = False
     attribute["someValuesFrom"] = False
     attribute["hasValue"] = False
+    attribute["hasValue2"] = False
     attribute["min_cardinality"] = None
     attribute["max_cardinality"] = None
     attribute['deprecated'] = rhombus['deprecated']
@@ -579,6 +581,7 @@ def create_annotation_property_from_rhombus(rhombus):
     arrow["allValuesFrom"] = False
     arrow["someValuesFrom"] = False
     arrow["hasValue"] = False
+    arrow["hasValue2"] = False
     arrow["min_cardinality"] = False
     arrow["max_cardinality"] = False
     arrow["cardinality"] = False
@@ -609,6 +612,7 @@ def create_functional_property_from_rhombus(rhombus):
     arrow["allValuesFrom"] = False
     arrow["someValuesFrom"] = False
     arrow["hasValue"] = False
+    arrow["hasValue2"] = False
     arrow["min_cardinality"] = False
     arrow["max_cardinality"] = False
     arrow["cardinality"] = False

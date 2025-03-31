@@ -296,7 +296,6 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     text = ""
     more_than_one_restriction = False
     more_than_two_restriction = False
-
     # Is the arrow representing a constraint restriction?
     if (arrow["allValuesFrom"] or arrow["someValuesFrom"]) and "target" in arrow:
         
@@ -333,7 +332,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
                         f'\t owl:someValuesFrom {text2} ]'
     
     # Is the arrow representing a has value restriction?
-    if arrow["hasValue"]:
+    if arrow["hasValue"] and not arrow["hasValue2"]:
         # In this case the element connected to the arrow must be an individual
         target_id = arrow["target"]
 
@@ -560,7 +559,6 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
     more_than_one_restriction = False
     more_than_two_restriction = False
     prefix = base_directive_prefix(attribute["prefix"])
-
     # Is the user defining an all values from restriction?
     if attribute["allValuesFrom"]:
         more_than_one_restriction = True
@@ -705,7 +703,7 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
             diagram_model.generate_error("A qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
 
     # Is the user defining a has value restriction?
-    if attribute["hasValue"]:
+    if attribute["hasValue"] and not attribute["hasValue2"]:
 
         if attribute["uri"] and attribute["datatype"]:
         
@@ -825,7 +823,6 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
                     # Does the arrow represent a restriction?
                     elif (arrow["type"] == "owl:ObjectProperty"):
                         text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
-
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
                         
@@ -848,3 +845,252 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
 def named_class(concept):
     concept_prefix = base_directive_prefix(concept["prefix"])
     return f'\t\t\t\t{concept_prefix}{concept["uri"]}\n'
+
+# Function to construct a class description which represents a restriction.
+# All the elements of a restriction must be class descriptions (i.e. all the elements which 
+# are connected to the blank node through an arrow must be class descriptions).
+def restrictions_new_notation(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id, reached, restriction):
+    text = ""
+
+    if type(restriction) is tuple:
+        # Is the arrow representing a minimum cardinality restriction?
+        if restriction[0] == "min_cardinality":
+
+            restriction_prefix = base_directive_prefix(arrow["prefix"])
+
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                f'\t\t  owl:minCardinality \"{restriction[1]}\"^^xsd:nonNegativeInteger ]'
+
+        # Is the arrow representing a maximum cardinality restriction?
+        if restriction[0] == "max_cardinality":
+
+            restriction_prefix = base_directive_prefix(arrow["prefix"])
+            
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                f'\t\t  owl:maxCardinality \"{restriction[1]}\"^^xsd:nonNegativeInteger ]'
+
+        # Is the arrow representing a cardinality restriction?
+        if restriction[0] == "cardinality":
+            
+            restriction_prefix = base_directive_prefix(arrow["prefix"])
+            
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                f'\t\t  owl:cardinality \"{restriction[1]}\"^^xsd:nonNegativeInteger ]'
+
+        # Is the arrow representing a qualified restriction?
+        if ("q_cardinality" in restriction[0]) and "target" in arrow:
+            text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"], reached)
+
+            if not target_defined:
+
+                if restriction[0] == "max_q_cardinality":
+                    diagram_model.generate_error("A max qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
+                
+                if restriction[0] == "min_q_cardinality":
+                    diagram_model.generate_error("A min qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
+                
+                if restriction[0] == "q_cardinality":
+                    diagram_model.generate_error("A qualified cardinality restriction has not a target defined", arrow_id, None, "Relations")
+
+                text2 = 'owl:Thing'
+
+            if text2 != "":
+                restriction_prefix = base_directive_prefix(arrow["prefix"])
+
+                if restriction[0] == "max_q_cardinality":
+
+                    text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                            f'\t\t  owl:maxQualifiedCardinality \"{restriction[1]}\"^^xsd:nonNegativeInteger ;\n'\
+                            f'\t\t owl:onClass {text2} ]'
+                
+                if restriction[0] == "min_q_cardinality":
+
+                    text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                            f'\t\t  owl:minQualifiedCardinality \"{restriction[1]}\"^^xsd:nonNegativeInteger ;\n'\
+                            f'\t\t owl:onClass {text2} ]'
+                
+                if restriction[0] == "q_cardinality":
+
+                    text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                            f'\t\t  owl:qualifiedCardinality \"{restriction[1]}\"^^xsd:nonNegativeInteger ;\n'\
+                            f'\t\t owl:onClass {text2} ]'   
+    
+    else:
+        # Is the arrow representing a constraint restriction?
+        if (restriction == "allValuesFrom" or restriction == "someValuesFrom") and "target" in arrow:
+            
+            text2, target_defined = get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, arrow["target"], reached)
+
+            if not target_defined:
+
+                if restriction == "allValuesFrom":
+                    diagram_model.generate_error("An all values from restriction has not a target defined", arrow_id, None, "Relations")
+                
+                else:
+                    # someValuesFrom case
+                    diagram_model.generate_error("A some values from restriction has not a target defined", arrow_id, None, "Relations")
+                
+                text2 = 'owl:Thing'
+
+            if text2 != "":
+                restriction_prefix = base_directive_prefix(arrow["prefix"])
+
+                if restriction == "allValuesFrom":
+
+                    text = f'\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
+                            f'\t owl:allValuesFrom {text2} ]'
+
+                else:
+                    # someValuesFrom case
+                    text = f'{text}\n\t[ rdf:type owl:Restriction ;\n\t owl:onProperty {restriction_prefix}{arrow["uri"]};\n'\
+                            f'\t owl:someValuesFrom {text2} ]'
+        
+        # Is the arrow representing a has value restriction?
+        if restriction == "hasValue":
+            # In this case the element connected to the arrow must be an individual
+            target_id = arrow["target"]
+
+            # Is the element an individual?
+            if target_id in individuals:
+
+                restriction_prefix = base_directive_prefix(arrow["prefix"])
+
+                target_id = arrow["target"]
+                target_prefix = base_directive_prefix(individuals[target_id]["prefix"])
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
+                    f'\t\t  owl:hasValue {target_prefix}{individuals[target_id]["uri"]}]'
+
+            else:
+                diagram_model.generate_error("A has value restriction has not a target defined", arrow_id, None, "Relations")
+
+    return text
+
+def datatype_property_restriction_new_notation(attribute, diagram_model, block_id, restriction):
+    text = ""
+    prefix = base_directive_prefix(attribute["prefix"])
+
+    if type(restriction) is tuple:
+        # Is the user defining a minimal cardinality restriction?
+        if restriction[0] == "min_cardinality" and attribute["uri"]:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:minCardinality "{restriction[1]}"^^xsd:nonNegativeInteger ]\n'
+
+        # Is the user defining a maximum cardinality restriction?
+        if restriction[0] == "max_cardinality" and attribute["uri"]:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:maxCardinality "{restriction[1]}"^^xsd:nonNegativeInteger ]\n'
+
+        # Is the user defining a cardinality restriction?
+        if restriction[0] == "cardinality" and attribute["uri"]:
+            text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                    f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                    f'\t\t  owl:cardinality "{restriction[1]}"^^xsd:nonNegativeInteger ]\n'
+            
+        # Is the user defining a qualified restriction?
+        if ("q_cardinality" in restriction[0]):
+
+            # Has the user specified a datatype?
+            if attribute["uri"] and attribute["datatype"]:
+                prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
+                text2 = f"{prefix_datatype}{attribute["datatype"][0]}"
+            
+            else:
+
+                if restriction[0] == "min_q_cardinality":
+                    diagram_model.generate_error("A min qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
+
+                if restriction[0] == "max_q_cardinality":
+                    diagram_model.generate_error("A max qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
+
+                if restriction[0] == "q_cardinality":
+                    diagram_model.generate_error("A qualified cardinality restriction has not a target defined", block_id, None, "Attributes")
+
+                text2 = "owl:Thing"
+
+            # Is the user defining a minimal qualified cardinality restriction?
+            if restriction[0] == "min_q_cardinality":
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:minQualifiedCardinality "{restriction[1]}"^^xsd:nonNegativeInteger ;\n'\
+                        f'\t\t  owl:onDataRange {text2} ]\n'
+                    
+            
+            # Is the user defining a maximal qualified cardinality restriction?
+            if restriction[0] == "max_q_cardinality":
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:maxQualifiedCardinality "{restriction[1]}"^^xsd:nonNegativeInteger ;\n'\
+                        f'\t\t  owl:onDataRange {text2} ]\n'
+
+            # Is the user defining a qualified cardinality restriction?
+            if restriction[0] == "q_cardinality":
+
+                # Has the user specified a datatype?
+                if attribute["uri"] and attribute["datatype"]:
+                    prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
+                    text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                            f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                            f'\t\t  owl:qualifiedCardinality "{restriction[1]}"^^xsd:nonNegativeInteger ;\n'\
+                            f'\t\t  owl:onDataRange {text2} ]\n'
+
+    else:
+        # Is the user defining an all values from restriction?
+        if restriction == "allValuesFrom":
+
+            # Has the user specified a datatype?
+            if attribute["uri"] and attribute["datatype"]:
+                prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
+                text = '\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:allValuesFrom {prefix_datatype}{attribute["datatype"][0]} ]\n'
+            
+            else:
+                text = '\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:allValuesFrom owl:Thing ]\n'
+                diagram_model.generate_error("An all values from restriction has not a target defined", block_id, None, "Attributes")
+            
+
+        # Is the user defining a some values from restriction?
+        if restriction == "someValuesFrom":
+
+            # Has the user specified a datatype?
+            if attribute["uri"] and attribute["datatype"]:
+                prefix_datatype = base_directive_prefix(attribute["prefix_datatype"][0])
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:someValuesFrom {prefix_datatype}{attribute["datatype"][0]} ]\n'
+            
+            else:
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:someValuesFrom owl:Thing ]\n'
+                diagram_model.generate_error("A some values from restriction has not a target defined", block_id, None, "Attributes")
+        
+        # Is the user defining a has value restriction?
+        if restriction == "hasValue":
+
+            if attribute["uri"] and attribute["datatype"]:
+
+                # In this case the target is a data value
+
+                # Has the user specified a datatype?
+                if attribute["prefix_datatype"][0] == "xsd":
+                    # The default datatype is xsd
+                    aux = attribute["datatype"][0].split("^^")
+                    object = aux[0] + "^^xsd:" + aux[1]
+
+                else:
+                    # In this case the user has specifyed a datatype
+                    object = attribute["prefix_datatype"][0] + ":" + attribute["datatype"][0]
+
+                text = f'{text}\t\t[ rdf:type owl:Restriction ;\n'\
+                        f'\t\t  owl:onProperty {prefix}{attribute["uri"]} ;\n'\
+                        f'\t\t  owl:hasValue {object} ]\n'
+            
+            else:
+                diagram_model.generate_error("A has value restriction has not a target defined", block_id, None, "Attributes")
+      
+    return text

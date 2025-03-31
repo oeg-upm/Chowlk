@@ -1,5 +1,5 @@
 
-Error Cardinality-Restrictions: min_q_cardinality is not a number, in attribute ns:datatypeProperty1
+Error Cardinality-Restrictions: min_q_cardinality is not a number, in restriction ns:datatypeProperty1
 	shape_id: Ju1RTPdh9tJ6ZwYG0b28-68
 	value: ns:datatypeProperty1: datatype
 

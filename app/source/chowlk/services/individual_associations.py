@@ -350,6 +350,7 @@ def add_datatype_property(arrow_id, arrow, attribute_blocks):
         attribute["allValuesFrom"] = False
         attribute["someValuesFrom"] = False
         attribute["hasValue"] = False
+        attribute["hasValue2"] = False
         attribute["min_cardinality"] = None
         attribute["max_cardinality"] = None
         attribute['deprecated'] = arrow['deprecated']
