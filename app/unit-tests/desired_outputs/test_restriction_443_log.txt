@@ -1,5 +1,5 @@
 
-Error unionOf: More than one restriction is defined on the same element
+Error unionOf: A class axiom is defined in a blank node (restriction) that is a member of an owl:unionOf
 	shape_id: v4JZ5PmhY7Zb21jeRJf_-53
 
 Warning Base: A base has not been declared. The first namespace has been taken as base

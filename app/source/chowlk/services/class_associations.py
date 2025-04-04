@@ -68,8 +68,15 @@ def detect_misclassifed_classes_as_datatype_properties(diagram_model):
                 if len(datatype_property["attributes"]) < 2 and 'prefix_datatype' not in datatype_property["attributes"][0]:
                     attribute = datatype_property["attributes"][0]
                     if not (attribute['allValuesFrom'] or attribute['someValuesFrom'] or attribute['hasValue'] or attribute['functional'] or attribute['min_cardinality'] or attribute['max_cardinality'] or attribute['cardinality'] or attribute['min_q_cardinality'] or attribute['max_q_cardinality'] or attribute['q_cardinality']):
-                        # In this case a box have been missclassified as a dataype property
-                        change_datatype_property_to_class(diagram_model, dp_id, datatype_property, boxes, classes, datatype_properties, dp_remove)
+                        new_notation = True
+                        # Check if a restriction has been declared using the new notation
+                        for class_axiom, restriction_list in attribute["predicate_restriction_2"].items():
+                            if len(restriction_list) > 0:
+                                new_notation = False
+                                break
+                        if new_notation:
+                            # In this case a box have been missclassified as a dataype property
+                            change_datatype_property_to_class(diagram_model, dp_id, datatype_property, boxes, classes, datatype_properties, dp_remove)
                     
                 # An individual cannot be under more than one boxes, so no further search is neccesary
                 break

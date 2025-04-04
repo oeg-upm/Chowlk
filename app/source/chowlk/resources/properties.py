@@ -57,11 +57,27 @@ def obtained_named_class_through_datatype_property(attribute_blocks, concepts, o
 
     # Does the block represent a blank node?
     elif concept_id in anonymous_classes:
+        more_than_one_restriction = False
         # In this case "object" is the identifier of a datatype property block which is below the blank node
         # Get the first datatype property of the datatype property block which is below the blank node
         datatype_property = attribute_blocks[object]["attributes"][0]
         predicate = datatype_property_restriction(datatype_property, diagram_model, object)[0]
-    
+
+        if predicate != "":
+            more_than_one_restriction = True
+
+        for class_axiom, restriction_list in datatype_property["predicate_restriction_2"].items():
+
+            for restriction in restriction_list:
+                # The user may be defining a restriction 
+                text = datatype_property_restriction_new_notation(datatype_property, diagram_model, object, restriction)
+                # Is the user defining a restriction?
+                if text != "":
+                    if more_than_one_restriction:
+                        predicate = predicate + ",\n" + text
+                    else:
+                        more_than_one_restriction = True
+                        predicate = text
     #else:
         # The box which is on top of the attribute has not been identified as a concept.
         # This error is derived from another error (the box above the attribute has another error),
@@ -135,12 +151,29 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
 
     # Is there at least one datatype property block below the blank node?
     if anonymous_classes[object]['attributes']:
+        more_than_one_restriction = False
         datatype_properties = diagram_model.get_datatype_properties()
         # Get the identifier of the first datatype property block which is below the blank node
         d_p_block_id = anonymous_classes[object]["attributes"][0]
         # Get the first datatype property of the first datatype property block which is below the blank node
         datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
         predicate = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)[0]
+
+        if predicate != "":
+            more_than_one_restriction = True
+
+        for class_axiom, restriction_list in datatype_property["predicate_restriction_2"].items():
+
+            for restriction in restriction_list:
+                # The user may be defining a restriction 
+                text = datatype_property_restriction_new_notation(datatype_property, diagram_model, object, restriction)
+                # Is the user defining a restriction?
+                if text != "":
+                    if more_than_one_restriction:
+                        predicate = predicate + ",\n" + text
+                    else:
+                        more_than_one_restriction = True
+                        predicate = text
     
     else:
         # Get the arrows whose source is the blank node
@@ -159,11 +192,30 @@ def obtain_complement_restriction_of_classes(anonymous_classes, object, relation
                 return ":"
 
             if(arrow["type"] == "owl:ObjectProperty"):
+                more_than_one_restriction = False
                 predicate = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, arrow_id, [])[0]
+
+                if predicate != "":
+                    more_than_one_restriction = True
+
+                for class_axiom, restriction_list in arrow["predicate_restriction_2"].items():
+
+                    for restriction in restriction_list:
+                        # The user may be defining a restriction 
+                        text = restrictions_new_notation(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relation_id, [], restriction)
+                        # Is the user defining a restriction?
+                        if text != "":
+                            if more_than_one_restriction:
+                                predicate = predicate + ",\n" + text
+                            else:
+                                more_than_one_restriction = True
+                                predicate = text
+                
                 if predicate == "":
                     #empty domain
                     predicate = ":"
-
+                
+            
             elif(arrow["type"] == "owl:complementOf"):
                 predicate = complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, [])
                 if predicate == "":

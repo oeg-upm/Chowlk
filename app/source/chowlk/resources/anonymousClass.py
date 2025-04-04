@@ -134,10 +134,13 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
                 d_p_block_id = anonymous_classes[id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
+                text2, more_than_two_restrictions, new_notation = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
                 if more_than_two_restrictions:
                     diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
+                
+                elif new_notation:
+                    diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is a member of an owl:unionOf", id, None, "unionOf")
                 
                 else:
                     text = text + text2
@@ -159,11 +162,14 @@ def union_of(complement, concepts, diagram_model, hexagons, ellipses, individual
 
                     # Does the arrow represent a restriction?
                     elif (complement["type"] == "owl:ObjectProperty"):
-                        text2, more_than_two_restrictions= restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
+                        text2, more_than_two_restrictions, new_notation = restrictions(complement, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
                         
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "unionOf")
                         
+                        elif new_notation:
+                            diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is a member of an owl:unionOf", id, None, "unionOf")
+                
                         else:
                             text = text + "\t\t\t\t" + text2 + "\n"
                 
@@ -240,10 +246,13 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
                 d_p_block_id = anonymous_classes[target_id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
+                text2, more_than_two_restrictions, new_notation = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
                 if more_than_two_restrictions:
                     diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
+                
+                elif new_notation:
+                    diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is the object of a triple whose predicate is owl:complementOf", target_id, None, "complementOf")
                 
                 else:
                     text = text + text2
@@ -258,11 +267,14 @@ def complement_of(arrow, concepts, diagram_model, hexagons, anonymous_concepts, 
 
                 # Does the arrow represent a restriction?
                 if(arrow["type"] == "owl:ObjectProperty"):
-                    text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0], reached)
+                    text2, more_than_two_restrictions, new_notation = restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0], reached)
                     
                     if more_than_two_restrictions:
                         diagram_model.generate_error("More than one restriction is defined on the same element", target_id, None, "complementOf")
                     
+                    elif new_notation:
+                        diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is the object of a triple whose predicate is owl:complementOf", target_id, None, "complementOf")
+                
                     elif text2 != '':
                         text = text + "\t\t\t\t" + text2 + "\n"
 
@@ -296,6 +308,7 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
     text = ""
     more_than_one_restriction = False
     more_than_two_restriction = False
+    new_notation = False
     # Is the arrow representing a constraint restriction?
     if (arrow["allValuesFrom"] or arrow["someValuesFrom"]) and "target" in arrow:
         
@@ -449,8 +462,15 @@ def restrictions(arrow, concepts, diagram_model, hexagons, anonymous_concepts, i
                 text = f'{text}\t\t[ rdf:type owl:Restriction ;\n\t\t  owl:onProperty {restriction_prefix}{arrow["uri"]} ;\n'\
                         f'\t\t  owl:qualifiedCardinality \"{arrow["q_cardinality"]}\"^^xsd:nonNegativeInteger ;\n'\
                         f'\t\t owl:onClass {text2} ]'
-            
-    return text, more_than_two_restriction
+
+    # Check if the new notation is used to declare a restriction
+    for class_axiom, restriction_list in arrow["predicate_restriction_2"].items():
+
+        if len(restriction_list) > 0:
+            new_notation = True
+            break
+
+    return text, more_than_two_restriction, new_notation
 
 # Target is the identifier of the element connected to the arrow
 def get_restriction_target(concepts, hexagons, individuals, diagram_model, anonymous_concepts, relations, anonymous_classes, target, reached):
@@ -508,10 +528,14 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
             d_p_block_id = anonymous_classes[target]["attributes"][0]
             # Get the first datatype property of the first datatype property block which is below the blank node
             datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-            text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
+            text2, more_than_two_restrictions, new_notation = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
             if more_than_two_restrictions:
                 diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")
+                text2 = ""
+            
+            elif new_notation:
+                diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is the object of a triple whose subject is another owl:Restriction", target, None, "Relations")
                 text2 = ""
 
         # Does the blank node have associated an object property restriction?
@@ -524,13 +548,17 @@ def get_restriction_target(concepts, hexagons, individuals, diagram_model, anony
 
                 # Does the arrow represent a restriction?
                 if(arrow2["type"] == "owl:ObjectProperty"):
-                    text2, more_than_two_restrictions = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0], reached)
+                    text2, more_than_two_restrictions, new_notation = restrictions(arrow2, concepts, diagram_model, hexagons, anonymous_concepts, individuals, relations, anonymous_classes, relations_id[0], reached)
 
                     if text2 != '':
                         text2 = "\t\t\t\t" + text2 + "\n"
 
                     if more_than_two_restrictions:
                         diagram_model.generate_error("Just one restriction can be defined as the target of another restriction", target, None, "Relations")
+                        text2 = ""
+                    
+                    elif new_notation:
+                        diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is the object of a triple whose subject is another owl:Restriction", target, None, "Relations")
                         text2 = ""
 
                 # Does the arrow represent a complement class description?
@@ -558,6 +586,7 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
     text = ""
     more_than_one_restriction = False
     more_than_two_restriction = False
+    new_notation = False
     prefix = base_directive_prefix(attribute["prefix"])
     # Is the user defining an all values from restriction?
     if attribute["allValuesFrom"]:
@@ -729,8 +758,15 @@ def datatype_property_restriction(attribute, diagram_model, block_id):
         
         else:
             diagram_model.generate_error("A has value restriction has not a target defined", block_id, None, "Attributes")
-        
-    return text, more_than_two_restriction
+
+    # Check if the new notation is used to declare a restriction
+    for class_axiom, restriction_list in attribute["predicate_restriction_2"].items():
+
+        if len(restriction_list) > 0:
+            new_notation = True
+            break
+
+    return text, more_than_two_restriction, new_notation
 
 # Function to construct a class description which represents an intersection of class descriptions.
 # All the elements of a owl:intersectionOf must be class descriptions (i.e. all the elements which 
@@ -796,10 +832,13 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
                 d_p_block_id = anonymous_classes[id]["attributes"][0]
                 # Get the first datatype property of the first datatype property block which is below the blank node
                 datatype_property = datatype_properties[d_p_block_id]['attributes'][0]
-                text2, more_than_two_restrictions = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
+                text2, more_than_two_restrictions, new_notation = datatype_property_restriction(datatype_property, diagram_model, d_p_block_id)
 
                 if more_than_two_restrictions:
                     diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
+                
+                elif new_notation:
+                    diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is a member of an owl:intersectionOf", id, None, "intersectionOf")
                 
                 else:
                     text = text + text2
@@ -822,10 +861,13 @@ def intersection_of(intersection, concepts, diagram_model, hexagons, ellipses, i
 
                     # Does the arrow represent a restriction?
                     elif (arrow["type"] == "owl:ObjectProperty"):
-                        text2, more_than_two_restrictions = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
+                        text2, more_than_two_restrictions, new_notation = restrictions(arrow, concepts, diagram_model, hexagons, ellipses, individuals, relations, anonymous_classes, relation_id, reached)
                         if more_than_two_restrictions:
                             diagram_model.generate_error("More than one restriction is defined on the same element", id, None, "intersectionOf")
                         
+                        elif new_notation:
+                            diagram_model.generate_error("A class axiom is defined in a blank node (restriction) that is a member of an owl:intersectionOf", id, None, "intersectionOf")
+
                         else:
                             text = text + "\t\t\t\t" + text2 + "\n"
                 except RecursionError:

@@ -1,0 +1,8 @@
+
+Error Cardinality-Restrictions: max_q_cardinality is lower than min_q_cardinality in restriction ns:datatypeProperty1
+	shape_id: 9OHboWXFaLnJ9ermxEiC-5
+	value: (eq [20..3]) ns:datatypeProperty1: prefix:datatype
+
+Warning Base: A base has not been declared. The first namespace has been taken as base
+
+Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri

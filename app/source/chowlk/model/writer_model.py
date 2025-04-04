@@ -568,7 +568,7 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text, more_than_two_restrictions = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id, [])
+                    text, more_than_two_restrictions, new_notation = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id, [])
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
@@ -652,7 +652,7 @@ class Writer_model():
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
+                                text, more_than_two_restrictions, new_notation = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
                                 if text != "":
                                     self.file.write(" ;")
                                     self.file.write(f'\t{relation["type"]} ')
@@ -698,7 +698,7 @@ class Writer_model():
 
                 # Iterate the datatype properties which are defined in each datatype property block 
                 for attribute in attribute_block["attributes"]:
-                    text, more_than_two_restrictions = datatype_property_restriction(attribute, diagram_model, block_id)
+                    text, more_than_two_restrictions, new_notation = datatype_property_restriction(attribute, diagram_model, block_id)
                     if text != '':
                         self.file.write(f' ;\n\t{attribute["predicate_restriction"]} \n{text}')
                     
@@ -782,7 +782,7 @@ class Writer_model():
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
+                                text, more_than_two_restrictions, new_notation = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
                                 self.file.write(text)
 
                                 if more_than_two_restrictions:
