@@ -239,8 +239,8 @@ class Writer_model():
                             self.file.write(" ;\n")
                             self.file.write("\t\trdfs:domain " + domain_name)
 
-                # Does the object property have a defined range? (avoid has value restrictions)
-                if "range" in relation and relation["range"] and not relation["hasValue"]:
+                # Does the object property have a defined range? (avoid has value restrictions (also with new notation (hasValue2)))
+                if "range" in relation and relation["range"] and not relation["hasValue"] and not relation["hasValue2"]:
                     domain = relation["domain"] if 'domain' in relation else ''
                     # Just take the first range defined (this variable just make sense when checking object properties defined trhough arrows, and this kind of object properties
                     # always have just one domain and one range)
@@ -336,8 +336,8 @@ class Writer_model():
         if "domain" in relation and relation["domain"]:
             diagram_model.generate_error("A domain is defined in an annotation property", relation_id, prefix + uri, "Annotation Properties")
         
-        # A range can not be defined in an annotation property 
-        if "range" in relation and relation["range"] and not relation["hasValue"]:
+        # A range can not be defined in an annotation property (also with new notation (hasValue2))
+        if "range" in relation and relation["range"] and not relation["hasValue"] and not relation["hasValue2"]:
             diagram_model.generate_error("A range is defined in an annotation property", relation_id, prefix + uri, "Annotation Properties")
     
     # This function writes the declaration of the datatype properties properties, its relations with other datatype properties
@@ -407,8 +407,8 @@ class Writer_model():
                                 self.file.write(" ;\n")
                                 self.file.write("\t\trdfs:domain " + domain_name)
 
-                # Does the datatype property have a defined range? (avoid has value restrictions)
-                if attribute["range"] and not attribute["hasValue"]:
+                # Does the datatype property have a defined range? (avoid has value restrictions (also with new notation (hasValue2)))
+                if attribute["range"] and not attribute["hasValue"] and not attribute["hasValue2"]:
                     range_error = True
 
                     if not isinstance(attribute["range"], bool):
@@ -568,7 +568,7 @@ class Writer_model():
                 # Is the arrow an object property?
                 if relation["type"] == "owl:ObjectProperty":
                     # The user may be defining a restriction 
-                    text, more_than_two_restrictions = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id, [])
+                    text, more_than_two_restrictions, new_notation = restrictions(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id, [])
                     # Is the user defining a restriction?
                     if text != "":
                         self.file.write(" ;\n")
@@ -578,7 +578,19 @@ class Writer_model():
                         if more_than_two_restrictions:
                             prefix = base_directive_prefix(relation["prefix"])
                             diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", relation_id, f'{prefix}{relation["uri"]}', "Restrictions")
-                    
+
+                    for class_axiom, restriction_list in relation["predicate_restriction_2"].items():
+
+                        for restriction in restriction_list:
+                            # The user may be defining a restriction 
+                            text = restrictions_new_notation(relation, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, relation_id, [], restriction)
+                            # Is the user defining a restriction?
+                            if text != "":
+                                self.file.write(" ;\n")
+                                self.file.write("\t" + class_axiom + "\n")
+                                self.file.write(text)
+
+
                 # Is the arrow an annotation property?
                 elif relation["type"] == "owl:AnnotationProperty":
                     text = write_annotation_triple(relation_id, relation, individuals, uri_references, values, diagram_model)
@@ -640,7 +652,7 @@ class Writer_model():
 
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
-                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
+                                text, more_than_two_restrictions, new_notation = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
                                 if text != "":
                                     self.file.write(" ;")
                                     self.file.write(f'\t{relation["type"]} ')
@@ -686,8 +698,7 @@ class Writer_model():
 
                 # Iterate the datatype properties which are defined in each datatype property block 
                 for attribute in attribute_block["attributes"]:
-
-                    text, more_than_two_restrictions = datatype_property_restriction(attribute, diagram_model, block_id)
+                    text, more_than_two_restrictions, new_notation = datatype_property_restriction(attribute, diagram_model, block_id)
                     if text != '':
                         self.file.write(f' ;\n\t{attribute["predicate_restriction"]} \n{text}')
                     
@@ -695,6 +706,14 @@ class Writer_model():
                             prefix = base_directive_prefix(attribute["prefix"])
                             diagram_model.generate_warning("More than one restriction has been defined at the same time. This is not an official notation, but we have generated the restriction anyway", block_id, f'{prefix}{attribute["uri"]}', "Restrictions")
                     
+                    for class_axiom, restriction_list in attribute["predicate_restriction_2"].items():
+
+                        for restriction in restriction_list:
+                            # The user may be defining a restriction 
+                            text = datatype_property_restriction_new_notation(attribute, diagram_model, block_id, restriction)
+                            # Is the user defining a restriction?
+                            if text != "":
+                                self.file.write(f' ;\n\t{class_axiom} \n{text}')
 
             # Iterate all the ellipses.
             # In this case we are searching for the ellipses which define an owl:disjointWith or owl:equivalentClass statement.
@@ -763,7 +782,7 @@ class Writer_model():
                             # Is the object a restriction?
                             if(complement["type"] == "owl:ObjectProperty"):
                                 self.file.write(f'\t{blank["type"]} ')
-                                text, more_than_two_restrictions = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
+                                text, more_than_two_restrictions, new_notation = restrictions(complement, concepts, diagram_model, hexagons, anonymous_concepts, individuals, all_relations, anonymous_classes, complement_id[0], [])
                                 self.file.write(text)
 
                                 if more_than_two_restrictions:

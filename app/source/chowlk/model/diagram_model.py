@@ -497,7 +497,7 @@ class Diagram_model():
         try:
             # More than one type can be defined in a rhombus
             # A type is defined between << and >>
-            types = re.findall("[<][<]([^>]*)[>][>]", value_html_clean)
+            types = re.findall(r"[<][<]([^>]*)[>][>]", value_html_clean)
 
             # A rhombus can not be defined as two of the following types at the same time:
             # ObjectProperty, DatatypeProperty or AnnotationProperty
@@ -567,7 +567,7 @@ class Diagram_model():
             # Check if the rhombus is deprecated
             if '<strike>' in html_value:
                 rhombus['deprecated'] = True
-                crossed_text = re.findall("<strike>(.*?)</strike>", html_value)
+                crossed_text = re.findall(r"<strike>(.*?)</strike>", html_value)
 
                 if len(crossed_text) > 1:
                     self.generate_error("Problems in the text of the rhombus. To deprecate a rhombus, it is necessary to cross out the full name. In this case, there are no crossed-out characters between crossed-out characters", id, value, "Rhombuses")
@@ -687,7 +687,7 @@ class Diagram_model():
 
                     if '<strike>' in html_attribute_value:
                         attribute['deprecated'] = True
-                        crossed_text = re.findall("<strike>(.*?)</strike>", html_attribute_value)
+                        crossed_text = re.findall(r"<strike>(.*?)</strike>", html_attribute_value)
 
                         if len(crossed_text) > 1:
                             self.generate_error("Problems in the text of the attribute. To deprecate a datatype property, it is necessary to cross out the full name. In this case, there are no crossed-out characters between crossed-out characters", id, attribute_value, "Attributes")
@@ -715,7 +715,7 @@ class Diagram_model():
 
                     datatype_value_split = attribute_value_cleaned.split(" ", 1)[1].strip()
                     # Get the text between '{' and '}'
-                    enumeration = re.findall("\{(.*?)\}", datatype_value_split)
+                    enumeration = re.findall(r"\{(.*?)\}", datatype_value_split)
 
                     # Is the user defining an enumerated datatype?
                     if len(enumeration) > 0:
@@ -766,18 +766,18 @@ class Diagram_model():
             attribute["domain"] = False if "dashed=1" in style else [child2.attrib["id"]]
 
             # Existential Universal restriction evaluation
-            if "(all)" in attribute_value or "∀" in attribute_value:
+            if "(all)" in attribute_value or "(∀)" in attribute_value:
                 attribute["allValuesFrom"] = True
             else:
                 attribute["allValuesFrom"] = False
 
-            if "(some)" in attribute_value or "∃" in attribute_value:
+            if "(some)" in attribute_value or "(∃)" in attribute_value:
                 attribute["someValuesFrom"] = True
             else:
                 attribute["someValuesFrom"] = False
 
             # owl:hasValue
-            if "(value)" in attribute_value or "∋" in attribute_value:
+            if "(value)" in attribute_value or "(∋)" in attribute_value:
                 # In these cases the object is a data value of the form
                 # "data_value"^^prefix_datatype:datatype
                 attribute["hasValue"] = True
@@ -788,178 +788,35 @@ class Diagram_model():
             # class_description predicate restriction
             # A named class can be a subClass, an equivalentClass or disjointWith a class restriction
             # When the user wants to declare this relation, it is specified inside the "relation" in diagrams
+            num_class_axiom = 0
             if "(sub)" in attribute_value:
+                num_class_axiom += 1
                 attribute["predicate_restriction"] = "rdfs:subClassOf"
+                self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (sub) (all) now write (sub all). But the triple has been generated anyway.", id, attribute_value, "Deprecated")
             elif "(eq)" in attribute_value:
+                num_class_axiom += 1
                 attribute["predicate_restriction"] = "owl:equivalentClass"
+                self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (eq) (all) now write (eq all). But the triple has been generated anyway.", id, attribute_value, "Deprecated")
             elif "(dis)" in attribute_value:
+                num_class_axiom += 1
                 attribute["predicate_restriction"] = "owl:disjointWith"
-            else:
+                self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (dis) (all) now write (dis all). But the triple has been generated anyway.", id, attribute_value, "Deprecated")
+            if num_class_axiom > 1:
+                self.generate_error("More than one class axiom has been declared on the same arrow.", id, attribute_value, "Attributes")
+            elif num_class_axiom == 0:
                 attribute["predicate_restriction"] = "rdfs:subClassOf"
 
             attribute["functional"] = True if "(F)" in attribute_value else False
 
-            # Cardinality restriction evaluation
-            try:
-                max_min_card = re.findall("\((\S*[.][.]\S*)\)", attribute_value)
-                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
-                if max_min_card is None:
-                    attribute["min_cardinality"] = None
-                    attribute["max_cardinality"] = None
-                else:
-                    max_min_card = max_min_card.split("..")
-                    attribute["min_cardinality"] = max_min_card[0]
-                    attribute["max_cardinality"] = max_min_card[1]
-            except:
-                self.generate_error("Problems in cardinality definition", id, attribute_value_cleaned, "Attributes")
-                continue
+            # Qualified and cardinality restriction evaluation
+            cardinality_restriction(attribute_value, attribute)
 
-            # If min_cardinality == 0 this means it is not necessary to create
-            # a min_cardinality restrictions
-            if attribute["min_cardinality"] == '0':
-                attribute["min_cardinality"] = None
+            # Check new notation to declare a class axiom with a restriction
+            self.relation_restriction(attribute_value, attribute, id)
 
-            # If max_cardinality == N this means it is not necessary to create
-            # a max_cardinality restrictions
-            if attribute["max_cardinality"] == 'N':
-                attribute["max_cardinality"] = None
+            attribute["max_cardinality"], attribute["min_cardinality"], attribute["cardinality"] = self.check_cardinality_restriction(attribute["max_cardinality"], attribute["min_cardinality"], f"{attribute["prefix"]}:{attribute["uri"]}", attribute_value_cleaned, id)
 
-            # Check if min_cardinality represents a non negative integer
-            if attribute["min_cardinality"] != None:
-                try:
-                    aux = float(attribute["min_cardinality"])
-                    if not aux.is_integer() or aux < 0:
-                        message = ("min_cardinality is " + attribute["min_cardinality"] +
-                                    " which is not a non negative integer, in restriction " +
-                                    attribute["prefix"] + ":"
-                                    + attribute["uri"])
-                        attribute["min_cardinality"] = None
-                        self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-                except:
-                    message = ("min_cardinality is not a number, in attribute "
-                                + attribute["prefix"] + ":"
-                                + attribute["uri"])
-                    attribute["min_cardinality"] = None
-                    self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-            if attribute["max_cardinality"] != None:
-                # Check if max_cardinality represents a non negative integer
-                try:
-                    aux = float(attribute["max_cardinality"])
-                    if not aux.is_integer() or aux < 0:
-                        message = ("max_cardinality is " + attribute["max_cardinality"] +
-                                    " which is not a non negative integer, in restriction " +
-                                    attribute["prefix"] + ":"
-                                    + attribute["uri"])
-                        attribute["max_cardinality"] = None
-                        self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-                except:
-                    message = ("max_cardinality is not a number, in restriction "
-                                + attribute["prefix"] + ":"
-                                + attribute["uri"])
-                    attribute["max_cardinality"] = None
-                    self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-            if attribute["min_cardinality"] == attribute["max_cardinality"]:
-                attribute["cardinality"] = attribute["min_cardinality"]
-                attribute["min_cardinality"] = None
-                attribute["max_cardinality"] = None
-            else:
-                attribute["cardinality"] = None
-
-            # max_cardinality must be greater than min_cardinality
-            if(attribute["max_cardinality"] != None and attribute["min_cardinality"] != None
-                    and float(attribute["max_cardinality"]) < float(attribute["min_cardinality"])):
-                message = ("max_cardinality is lower than min_cardinality" +
-                            " in restriction " +
-                            attribute["prefix"] + ":"
-                            + attribute["uri"])
-                attribute["max_cardinality"] = None
-                attribute["min_cardinality"] = None
-                self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-            # Qualified cardinality restriction evaluation
-            try:
-                max_min_card = re.findall("\[(\S*[.][.]\S*)\]", attribute_value)
-                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
-                if max_min_card is None:
-                    attribute["min_q_cardinality"] = None
-                    attribute["max_q_cardinality"] = None
-                else:
-                    max_min_card = max_min_card.split("..")
-                    attribute["min_q_cardinality"] = max_min_card[0]
-                    attribute["max_q_cardinality"] = max_min_card[1]
-            except:
-                self.generate_error("Problems in qualified cardinality definition", id, attribute_value_cleaned, "Attributes")
-                continue
-
-            # If min_q_cardinality == 0 this means it is not necessary to create
-            # a min_q_cardinality restrictions
-            if attribute["min_q_cardinality"] == '0':
-                attribute["min_q_cardinality"] = None
-
-            # If max_q_cardinality == N this means it is not necessary to create
-            # a max_q_cardinality restrictions
-            if attribute["max_q_cardinality"] == 'N':
-                attribute["max_q_cardinality"] = None
-
-            # Check if min_q_cardinality represents a non negative integer
-            if attribute["min_q_cardinality"] != None:
-                try:
-                    aux = float(attribute["min_q_cardinality"])
-                    if not aux.is_integer() or aux < 0:
-                        message = ("min_q_cardinality is " + attribute["min_q_cardinality"] +
-                                    " which is not a non negative integer, in restriction " +
-                                    attribute["prefix"] + ":"
-                                    + attribute["uri"])
-                        attribute["min_q_cardinality"] = None
-                        self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-                except:
-                    message = ("min_q_cardinality is not a number, in attribute "
-                                + attribute["prefix"] + ":"
-                                + attribute["uri"])
-                    attribute["min_q_cardinality"] = None
-                    self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-            if attribute["max_q_cardinality"] != None:
-                # Check if max_q_cardinality represents a non negative integer
-                try:
-                    aux = float(attribute["max_q_cardinality"])
-                    if not aux.is_integer() or aux < 0:
-                        message = ("max_q_cardinality is " + attribute["max_q_cardinality"] +
-                                    " which is not a non negative integer, in restriction " +
-                                    attribute["prefix"] + ":"
-                                    + attribute["uri"])
-                        attribute["max_q_cardinality"] = None
-                        self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-                except:
-                    message = ("max_q_cardinality is not a number, in restriction "
-                                + attribute["prefix"] + ":"
-                                + attribute["uri"])
-                    attribute["max_q_cardinality"] = None
-                    self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
-
-            if attribute["min_q_cardinality"] == attribute["max_q_cardinality"]:
-                attribute["q_cardinality"] = attribute["min_q_cardinality"]
-                attribute["min_q_cardinality"] = None
-                attribute["max_q_cardinality"] = None
-            else:
-                attribute["q_cardinality"] = None
-
-            # max_q_cardinality must be greater than min_q_cardinality
-            if(attribute["max_q_cardinality"] != None and attribute["min_q_cardinality"] != None
-                    and float(attribute["max_q_cardinality"]) < float(attribute["min_q_cardinality"])):
-                message = ("max_q_cardinality is lower than min_q_cardinality" +
-                            " in restriction " +
-                            attribute["prefix"] + ":"
-                            + attribute["uri"])
-                attribute["max_q_cardinality"] = None
-                attribute["min_q_cardinality"] = None
-                self.generate_error(message, id, attribute_value_cleaned, "Cardinality-Restrictions")
+            attribute["max_q_cardinality"], attribute["min_q_cardinality"], attribute["q_cardinality"] = self.check_qualified_cardinality_restriction(attribute["max_q_cardinality"], attribute["min_q_cardinality"], f"{attribute["prefix"]}:{attribute["uri"]}", attribute_value_cleaned, id)
 
             attributes.append(attribute)
 
@@ -1001,7 +858,7 @@ class Diagram_model():
             return
 
         # Other option is to verify things like functionality, some, all, etc.
-        if "(F)" in value or "(some)" in value or "(all)" in value or "∀" in value or "∃" in value:
+        if "(F)" in value or "(some)" in value or "(all)" in value or "(∀)" in value or "(∃)" in value:
             self.generate_error("Attributes not attached to any concept", id, value, "Attributes")
             return
 
@@ -1039,7 +896,7 @@ class Diagram_model():
         # Check if the class is deprecated
         if '<strike>' in html_value:
             ontology_class['deprecated'] = True
-            crossed_text = re.findall("<strike>(.*?)</strike>", html_value)
+            crossed_text = re.findall(r"<strike>(.*?)</strike>", html_value)
 
             if len(crossed_text) > 1:
                 self.generate_error("Problems in the text of the concept. To deprecate a class, it is necessary to cross out the full name. In this case, there are no crossed-out characters between crossed-out characters", id, value, "Concepts")
@@ -1095,7 +952,7 @@ class Diagram_model():
                     property_value["value"] = value.split("&quot;")[1]
 
                 elif "\"" in value:
-                    reg_exp = '"(.*?)"'
+                    reg_exp = r'"(.*?)"'
                     property_value["value"] = re.findall(reg_exp, value)[0]
 
                 # Finding the type
@@ -1203,32 +1060,47 @@ class Diagram_model():
                 relation["range"] = [relation["target"]] if relation["target"] is not None else False
 
         # Existential Universal restriction evaluation
-        if "allValuesFrom" in value or "(all)" in value or "∀" in value:
+        if "<<owl:allValuesFrom>>" in value or "(all)" in value or "(∀)" in value:
             relation["allValuesFrom"] = True
+            if "<<owl:allValuesFrom>>" in value:
+                self.generate_warning("Deprecated notation. To declare an owl:allValuesFrom restriction it is neccesary to write (all) or (∀), but the triple has been generated anyway.", id, clean_uri(value).replace('|',' '), "Deprecated")
         else:
             relation["allValuesFrom"] = False
 
-        if "someValuesFrom" in value or "(some)" in value or "∃" in value:
+        if "<<owl:someValuesFrom>>" in value or "(some)" in value or "(∃)" in value:
             relation["someValuesFrom"] = True
+            if "<<owl:someValuesFrom>>" in value:
+                self.generate_warning("Deprecated notation. To declare an owl:someValuesFrom restriction it is neccesary to write (some) or (∃), but the triple has been generated anyway.", id, clean_uri(value).replace('|',' '), "Deprecated")
         else:
             relation["someValuesFrom"] = False
 
         # owl:hasValue
-        if "hasValue" in value or "(value)" in value or "∋" in value:
+        if "<<owl:hasValue>>" in value or "(value)" in value or "(∋)" in value:
             relation["hasValue"] = True
+            if "<<owl:hasValue>>" in value:
+                self.generate_warning("Deprecated notation. To declare an owl:hasValue restriction it is neccesary to write (value) or (∋), but the triple has been generated anyway.", id, clean_uri(value).replace('|',' '), "Deprecated")
         else:
             relation["hasValue"] = False
 
         # class_description predicate restriction
         # A named class can be a subClass, an equivalentClass or disjointWith a class restriction
         # When the user wants to declare this relation, it is specified inside the arrow name in the xml
+        num_class_axiom = 0
         if "(sub)" in value:
+            num_class_axiom += 1
             relation["predicate_restriction"] = "rdfs:subClassOf"
-        elif "(eq)" in value:
+            self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (sub) (all) now write (sub all). But the triple has been generated anyway.", id, value, "Deprecated")
+        if "(eq)" in value:
+            num_class_axiom += 1
             relation["predicate_restriction"] = "owl:equivalentClass"
-        elif "(dis)" in value:
+            self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (eq) (all) now write (eq all). But the triple has been generated anyway.", id, value, "Deprecated")
+        if "(dis)" in value:
+            num_class_axiom += 1
             relation["predicate_restriction"] = "owl:disjointWith"
-        else:
+            self.generate_warning("Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (dis) (all) now write (dis all). But the triple has been generated anyway.", id, value, "Deprecated")
+        if num_class_axiom > 1:
+            self.generate_error("More than one class axiom has been declared on the same arrow.", id, value, "Arrows")
+        elif num_class_axiom == 0:
             relation["predicate_restriction"] = "rdfs:subClassOf"
 
         # Property restriction evaluation
@@ -1267,7 +1139,7 @@ class Diagram_model():
         # Check if the arrow is deprecated
         if '<strike>' in html_value:
             relation['deprecated'] = True
-            crossed_text = re.findall("<strike>(.*?)</strike>", html_value)
+            crossed_text = re.findall(r"<strike>(.*?)</strike>", html_value)
 
             if len(crossed_text) > 1:
                 self.generate_error("Problems in the text of the arrow. To deprecate an arrow, it is necessary to cross out the full name. In this case, there are no crossed-out characters between crossed-out characters", id, value, "Arrows")
@@ -1280,151 +1152,15 @@ class Diagram_model():
         else:
             relation['deprecated'] = False
 
-        # Cardinality restriction evaluation
-        try:
-            # Find (N1..N2) in the arrow name
-            max_min_card = re.findall("\((\S*[.][.]\S*)\)", value)
-            max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
-
-            if max_min_card is None:
-                relation["min_cardinality"] = None
-                relation["max_cardinality"] = None
-            else:
-                max_min_card = max_min_card.split("..")
-                relation["min_cardinality"] = max_min_card[0]
-                relation["max_cardinality"] = max_min_card[1]
-
-        except:
-            self.generate_error("Problems in cardinality definition", id, value, "Arrows")
-            return
-
-        # If min_cardinality == 0 this means it is not necessary to create
-        # a min_cardinality restrictions
-        if relation["min_cardinality"] == '0':
-            relation["min_cardinality"] = None
-
-        # If max_cardinality == N this means it is not necessary to create
-        # a max_cardinality restrictions
-        if relation["max_cardinality"] == 'N':
-            relation["max_cardinality"] = None
-
-        # Check if min_cardinality represents a non negative integer
-        if relation["min_cardinality"] != None:
-            try:
-                aux = float(relation["min_cardinality"])
-                if not aux.is_integer() or aux < 0:
-                    message = f'min_cardinality is {relation["min_cardinality"]} which is not a non negative integer, in restriction {relation["prefix"]}:{relation["uri"]}'
-                    relation["min_cardinality"] = None
-                    self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-            except:
-                message = f'min_cardinality is not a number, in restriction {relation["prefix"]}:{relation["uri"]}'
-                relation["min_cardinality"] = None
-                self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-        if relation["max_cardinality"] != None:
-            # Check if max_cardinality represents a non negative integer
-            try:
-                aux = float(relation["max_cardinality"])
-                if not aux.is_integer() or aux < 0:
-                    message = f'max_cardinality is {relation["max_cardinality"]} which is not a non negative integer, in restriction {relation["prefix"]}:{relation["uri"]}'
-                    relation["max_cardinality"] = None
-                    self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-            except:
-                message = f'max_cardinality is not a number, in restriction {relation["prefix"]}:{relation["uri"]}'
-                relation["max_cardinality"] = None
-                self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-        # Check if the user is defining an exact cardinality
-        if relation["min_cardinality"] == relation["max_cardinality"]:
-            relation["cardinality"] = relation["min_cardinality"]
-            relation["max_cardinality"] = None
-            relation["min_cardinality"] = None
-        else:
-            relation["cardinality"] = None
-
-        # max_cardinality must be greater than min_cardinality
-        if(relation["max_cardinality"] != None and relation["min_cardinality"] != None and float(relation["max_cardinality"]) < float(relation["min_cardinality"])):
-            message = ("max_cardinality is lower than min_cardinality" +
-                        " in restriction " + relation["prefix"] + ":"
-                        + relation["uri"])
-            relation["max_cardinality"] = None
-            relation["min_cardinality"] = None
-            self.generate_error(message, id, value, "Cardinality-Restrictions")
+        # Qualified and cardinality restriction evaluation
+        cardinality_restriction(value, relation)
         
-        # Qualified cardinality restriction evaluation
-        try:
-            # Find [N1..N2] in the arrow name
-            max_min_card = re.findall("\[(\S*[.][.]\S*)\]", value)
-            max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+        # Check new notation to declare a class axiom with a restriction
+        self.relation_restriction(value, relation, id)
 
-            if max_min_card is None:
-                relation["min_q_cardinality"] = None
-                relation["max_q_cardinality"] = None
-            else:
-                max_min_card = max_min_card.split("..")
-                relation["min_q_cardinality"] = max_min_card[0]
-                relation["max_q_cardinality"] = max_min_card[1]
+        relation["max_cardinality"], relation["min_cardinality"], relation["cardinality"] = self.check_cardinality_restriction(relation["max_cardinality"], relation["min_cardinality"], f"{relation["prefix"]}:{relation["uri"]}", value, id)
 
-        except:
-            self.generate_error("Problems in qualified cardinality definition", id, value, "Arrows")
-            return
-
-        # If min_q_cardinality == 0 this means it is not necessary to create
-        # a min_q_cardinality restrictions
-        if relation["min_q_cardinality"] == '0':
-            relation["min_q_cardinality"] = None
-
-        # If max_q_cardinality == N this means it is not necessary to create
-        # a max_q_cardinality restrictions
-        if relation["max_q_cardinality"] == 'N':
-            relation["max_q_cardinality"] = None
-        
-        # Check if min_q_cardinality represents a non negative integer
-        if relation["min_q_cardinality"] != None:
-            try:
-                aux = float(relation["min_q_cardinality"])
-                if not aux.is_integer() or aux < 0:
-                    message = f'min_q_cardinality is {relation["min_q_cardinality"]} which is not a non negative integer, in restriction {relation["prefix"]}:{relation["uri"]}'
-                    relation["min_q_cardinality"] = None
-                    self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-            except:
-                message = f'min_q_cardinality is not a number, in restriction {relation["prefix"]}:{relation["uri"]}'
-                relation["min_q_cardinality"] = None
-                self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-        if relation["max_q_cardinality"] != None:
-            # Check if max_q_cardinality represents a non negative integer
-            try:
-                aux = float(relation["max_q_cardinality"])
-                if not aux.is_integer() or aux < 0:
-                    message = f'max_q_cardinality is {relation["max_q_cardinality"]} which is not a non negative integer, in restriction {relation["prefix"]}:{relation["uri"]}'
-                    relation["max_q_cardinality"] = None
-                    self.generate_error(message, id, value, "Cardinality-Restrictions")
-
-            except:
-                message = f'max_q_cardinality is not a number, in restriction {relation["prefix"]}:{relation["uri"]}'
-                relation["max_q_cardinality"] = None
-                self.generate_error(message, id, value, "Cardinality-Restrictions")
-        
-        # Check if the user is defining an exact qualified cardinality
-        if relation["min_q_cardinality"] == relation["max_q_cardinality"]:
-            relation["q_cardinality"] = relation["min_q_cardinality"]
-            relation["max_q_cardinality"] = None
-            relation["min_q_cardinality"] = None
-        else:
-            relation["q_cardinality"] = None
-
-        # max_q_cardinality must be greater than min_cardinality
-        if(relation["max_q_cardinality"] != None and relation["min_q_cardinality"] != None and float(relation["max_q_cardinality"]) < float(relation["min_q_cardinality"])):
-            message = ("max_q_cardinality is lower than min_q_cardinality" +
-                        " in restriction " + relation["prefix"] + ":"
-                        + relation["uri"])
-            relation["max_q_cardinality"] = None
-            relation["min_q_cardinality"] = None
-            self.generate_error(message, id, value, "Cardinality-Restrictions")
+        relation["max_q_cardinality"], relation["min_q_cardinality"], relation["q_cardinality"] = self.check_qualified_cardinality_restriction(relation["max_q_cardinality"], relation["min_q_cardinality"], f"{relation["prefix"]}:{relation["uri"]}", value, id)
 
         prefix = relation["prefix"]
         uri = relation['uri']
@@ -1445,7 +1181,7 @@ class Diagram_model():
         self.store_relation_name(id, relation["prefix"], relation["uri"])
 
         self.arrows[id] = relation
-    
+
     def get_datatype_enumeration(self, enumeration, d_p_block_id):
         datatype = '[ rdf:type rdfs:Datatype ; owl:oneOf'
         data_values = enumeration.split(',')
@@ -1493,7 +1229,7 @@ class Diagram_model():
                 value = value_split[1]
 
             elif "\"" in data_value:
-                value_split = re.findall('"(.*?)"', data_value)
+                value_split = re.findall(r'"(.*?)"', data_value)
 
                 if len(value_split) > 1:
                     self.generate_error("Problems in the text of a data value defined in an enumeration datatype. Data values must be separated by ','", d_p_block_id, data_value, "Attributes")
@@ -1543,6 +1279,191 @@ class Diagram_model():
 
         return object
     
+    def relation_restriction(self, value, property_object, property_id):
+        property_object["predicate_restriction_2"] = {'rdfs:subClassOf': [], 'owl:equivalentClass': [],'owl:disjointWith': []}
+        property_object["hasValue2"] = False
+        # Find (classAxiom restriction) in the arrow name
+        class_axiom_restriction = re.findall(r"\(([^)]*\s\S*)\)", value)
+        
+        if (len(class_axiom_restriction) > 0):
+            for aux in class_axiom_restriction:
+                class_axiom, restriction = aux.replace("\xa0", " ").split(' ', 1)
+                
+                if "sub" == class_axiom:
+                    class_axiom = "rdfs:subClassOf"
+
+                elif "eq" == class_axiom:
+                    class_axiom = "owl:equivalentClass"
+       
+                elif "dis" == class_axiom:
+                    class_axiom = "owl:disjointWith"
+            
+                else:
+                    #error
+                    print("error")
+                    continue
+                
+                # Existential Universal restriction evaluation
+                if "all" == restriction or "∀" == restriction:
+                    property_object["predicate_restriction_2"][class_axiom].append('allValuesFrom')
+
+                if "some" == restriction or "∃" == restriction:
+                    property_object["predicate_restriction_2"][class_axiom].append('someValuesFrom')
+ 
+                # owl:hasValue
+                if "value" == restriction or "∋" == restriction:
+                    # This is a special case
+                    property_object["hasValue2"] = True
+                    property_object["predicate_restriction_2"][class_axiom].append('hasValue')
+                
+                # Cardinality restrictions
+                # Find (N1..N2) in the arrow name
+                max_min_card = re.findall(r"\((\S*[.][.]\S*)\)", restriction)
+                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+
+                if max_min_card is not None:
+                    max_min_card = max_min_card.split("..") 
+                    max_cardinality, min_cardinality, cardinality = self.check_cardinality_restriction(max_min_card[1], max_min_card[0], f"{property_object["prefix"]}:{property_object["uri"]}", value, property_id)
+
+                    if min_cardinality is not None:
+                        property_object["predicate_restriction_2"][class_axiom].append(("min_cardinality", min_cardinality))
+                    
+                    if max_cardinality is not None:
+                        property_object["predicate_restriction_2"][class_axiom].append(("max_cardinality", max_cardinality))
+                    
+                    if cardinality is not None:
+                        property_object["predicate_restriction_2"][class_axiom].append(("cardinality", cardinality))
+
+
+                #  Qualified cardinality restrictions
+                # Find [N1..N2] in the arrow name
+                max_min_card = re.findall(r"\[(\S*[.][.]\S*)\]", restriction)
+                max_min_card = max_min_card[-1] if len(max_min_card) > 0 else None
+
+                if max_min_card is not None:
+                    max_min_card = max_min_card.split("..")
+                    # Falta hacer las comprobaciones para min_q_cardinality y max_q_cardinality
+                    max_q_cardinality, min_q_cardinality, q_cardinality = self.check_qualified_cardinality_restriction(max_min_card[1], max_min_card[0], f"{property_object["prefix"]}:{property_object["uri"]}", value, property_id)
+                    if min_q_cardinality is not None:
+                        property_object["predicate_restriction_2"][class_axiom].append(("min_q_cardinality", min_q_cardinality))
+                    
+                    if max_q_cardinality is not None:
+                        property_object["predicate_restriction_2"][class_axiom].append(("max_q_cardinality", max_q_cardinality))
+                    
+                    if q_cardinality is not None:
+                        property_object["predicate_restriction_2"][class_axiom].append(("q_cardinality", q_cardinality))
+
+
+    def check_cardinality_restriction(self, max_cardinality, min_cardinality, property_name, value, property_id):
+        # If min_cardinality == 0 this means it is not necessary to create
+        # a min_cardinality restrictions
+        if min_cardinality == '0':
+            min_cardinality = None
+
+        # If max_cardinality == N this means it is not necessary to create
+        # a max_cardinality restrictions
+        if max_cardinality == 'N':
+            max_cardinality = None
+        
+        # Check if min_cardinality represents a non negative integer
+        if min_cardinality != None:
+            try:
+                aux = float(min_cardinality)
+                if not aux.is_integer() or aux < 0:
+                    message = f"min_cardinality is {min_cardinality} which is not a non negative integer, in restriction {property_name}" 
+                    min_cardinality = None
+                    self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+            except:
+                message = f"min_cardinality is not a number, in restriction {property_name}" 
+                min_cardinality = None
+                self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+        if max_cardinality != None:
+            # Check if max_cardinality represents a non negative integer
+            try:
+                aux = float(max_cardinality)
+                if not aux.is_integer() or aux < 0:
+                    message = f"max_cardinality is {max_cardinality} which is not a non negative integer, in restriction {property_name}" 
+                    max_cardinality = None
+                    self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+            except:
+                message = f"max_cardinality is not a number, in restriction {property_name}" 
+                max_cardinality = None
+                self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+        if min_cardinality == max_cardinality:
+            cardinality = min_cardinality
+            min_cardinality = None
+            max_cardinality = None
+        else:
+            cardinality = None
+
+        # max_cardinality must be greater than min_cardinality
+        if(max_cardinality != None and min_cardinality != None and float(max_cardinality) < float(min_cardinality)):
+            message = f"max_cardinality is lower than min_cardinality in restriction {property_name}" 
+            max_cardinality = None
+            min_cardinality = None
+            self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+        
+        return max_cardinality, min_cardinality, cardinality
+
+    def check_qualified_cardinality_restriction(self, max_q_cardinality, min_q_cardinality, property_name, value, property_id):
+        # If min_q_cardinality == 0 this means it is not necessary to create
+        # a min_q_cardinality restrictions
+        if min_q_cardinality == '0':
+            min_q_cardinality = None
+
+        # If max_q_cardinality == N this means it is not necessary to create
+        # a max_q_cardinality restrictions
+        if max_q_cardinality == 'N':
+            max_q_cardinality = None
+
+        # Check if min_q_cardinality represents a non negative integer
+        if min_q_cardinality != None:
+            try:
+                aux = float(min_q_cardinality)
+                if not aux.is_integer() or aux < 0:
+                    message = f"min_q_cardinality is {min_q_cardinality} which is not a non negative integer, in restriction {property_name}"
+                    min_q_cardinality = None
+                    self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+            except:
+                message = f"min_q_cardinality is not a number, in restriction {property_name}"
+                min_q_cardinality = None
+                self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+        if max_q_cardinality != None:
+            # Check if max_q_cardinality represents a non negative integer
+            try:
+                aux = float(max_q_cardinality)
+                if not aux.is_integer() or aux < 0:
+                    message = f"max_q_cardinality is {max_q_cardinality} which is not a non negative integer, in restriction {property_name}"
+                    max_q_cardinality = None
+                    self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+            except:
+                message = f"max_q_cardinality is not a number, in restriction {property_name}"
+                max_q_cardinality = None
+                self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+
+        if min_q_cardinality == max_q_cardinality:
+            q_cardinality = min_q_cardinality
+            min_q_cardinality = None
+            max_q_cardinality = None
+        else:
+            q_cardinality = None
+
+        # max_q_cardinality must be greater than min_q_cardinality
+        if(max_q_cardinality != None and min_q_cardinality != None and float(max_q_cardinality) < float(min_q_cardinality)):
+            message = f"max_q_cardinality is lower than min_q_cardinality in restriction {property_name}"
+            max_q_cardinality = None
+            min_q_cardinality = None
+            self.generate_error(message, property_id, value, "Cardinality-Restrictions")
+        
+        return max_q_cardinality, min_q_cardinality, q_cardinality
+    
 # This function check if there are two main types defined inside a rhombus.
 # For main types it is understood: ObjectProperty, DatatypeProperty or AnnotationProperty
 def check_rhombus_error_types(types):
@@ -1587,3 +1508,60 @@ def check_inside_container(containers_id, parent, element_id, root):
                         return True
 
             return True
+
+
+def cardinality_restriction(value, property_object):
+    property_object["min_cardinality"] = None
+    property_object["max_cardinality"] = None
+    property_object["min_q_cardinality"] = None
+    property_object["max_q_cardinality"] = None
+
+    brackets = get_single_brackets(value)
+    
+    for bracket in brackets:
+
+        if bracket[0] == '(' and bracket[-1] == ')':
+            max_min_card = bracket[1:-1]
+            max_min_card = max_min_card.split("..")
+            property_object["min_cardinality"] = max_min_card[0]
+            property_object["max_cardinality"] = max_min_card[1]
+        
+        elif bracket[0] == '[' or bracket[-1] == ']':
+            max_min_card = bracket[1:-1]
+            max_min_card = max_min_card.split("..")
+            property_object["min_q_cardinality"] = max_min_card[0]
+            property_object["max_q_cardinality"] = max_min_card[1]
+
+# Function to get non-nested brackets that contains "..". For example:
+# Case 1: "(1..2)" => "1..2"
+# Case 2: "(dis (1..2))" => ""
+# Case 3: "[1..2]" => "1..2"
+# Case 4: "(dis [1..2])" => "1..2"
+def get_single_brackets(value):
+    brackets = []
+    brackets_num = 0
+    bracket_start = 0
+    index = 0
+    non_nested_brackets = True
+    for char in value:
+        if char == '(' or char == '[':
+            if brackets_num == 0:
+                bracket_start = index
+            else:
+                non_nested_brackets = False
+
+            brackets_num += 1
+
+        elif char == ')' or char == ']':
+            brackets_num -= 1
+            if brackets_num == 0:
+                if non_nested_brackets:
+                    aux = value[bracket_start:index+1]
+                    if '..' in aux:
+                        brackets.append(aux)
+                    non_nested_brackets = True
+
+
+        index += 1
+
+    return brackets

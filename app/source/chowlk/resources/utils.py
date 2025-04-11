@@ -102,21 +102,33 @@ def read_drawio_xml(diagram_path):
     return root
 
 def clean_uri(uri):
+    """uri = re.sub(r"\(([0-9][^)]+)\)", "", uri).strip()
+    uri = re.sub(r"\[([0-9][^)]+)\]", "", uri).strip()
+    uri = re.sub(r"\(([^)]+)\)", "", uri).strip()
+    uri = re.sub(r"\[([^)]+)\]", "", uri).strip()
+    uri = re.sub(r"\(all\)", "", uri).strip()
+    uri = re.sub(r"\(some\)", "", uri).strip()
+    uri = re.sub(r"\(∀\)", "", uri).strip()
+    uri = re.sub(r"\(∃\)", "", uri).strip()
+    uri = re.sub(r"\(F\)", "", uri).strip()
+    uri = re.sub(r"\(IF\)", "", uri).strip()
+    uri = re.sub(r"\(S\)", "", uri).strip()
+    uri = re.sub(r"\(T\)", "", uri).strip()"""
+    # Delete all the characters between '(' and ')'
+    # uri = re.sub(r"\([^)(]*\)", "", uri).strip()
+    clean_uri = ""
+    brackets_num = 0
+    for char in uri:
+        if char == '(' or char == '[':
+            brackets_num += 1
 
-    uri = re.sub("\(([0-9][^)]+)\)", "", uri).strip()
-    uri = re.sub("\[([0-9][^)]+)\]", "", uri).strip()
-    uri = re.sub("\(([^)]+)\)", "", uri).strip()
-    uri = re.sub("\[([^)]+)\]", "", uri).strip()
-    uri = re.sub("\(all\)", "", uri).strip()
-    uri = re.sub("\(some\)", "", uri).strip()
-    uri = re.sub("\(∀\)", "", uri).strip()
-    uri = re.sub("\(∃\)", "", uri).strip()
-    uri = re.sub("\(F\)", "", uri).strip()
-    uri = re.sub("\(IF\)", "", uri).strip()
-    uri = re.sub("\(S\)", "", uri).strip()
-    uri = re.sub("\(T\)", "", uri).strip()
+        elif char == ')' or char == ']':
+            brackets_num -= 1
+        
+        elif brackets_num == 0:
+            clean_uri += char
 
-    return uri
+    return clean_uri.strip()
 
 # In order to implement @base directive
 # If value contains ':' && value does not start with ':' => normal prefix

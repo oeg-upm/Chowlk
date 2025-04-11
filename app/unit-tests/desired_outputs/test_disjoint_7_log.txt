@@ -2,3 +2,7 @@
 Warning Base: A base has not been declared. The first namespace has been taken as base
 
 Warning Ontology: An ontology uri has not been declared. The base uri has been taken as the ontology uri
+
+Warning Deprecated: Deprecated notation. To declare a class axiom it is necessary to write it inside the same brackets as the restriction, e.g. instead of writing (dis) (all) now write (dis all). But the triple has been generated anyway.
+	shape_id: 7DWAGDdYnqaAVfMgQ0mg-124
+	value: (dis) (all) ns:objectProperty

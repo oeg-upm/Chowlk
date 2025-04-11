@@ -1,0 +1,50 @@
+@prefix mod: <https://w3id.org/mod#> .
+@prefix ns: <http://www.owl-ontologies.com/ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns: a owl:Ontology ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+ns:ConditionalAnswer a owl:Class ;
+    rdfs:label "Conditional Answer" ;
+    rdfs:subClassOf [ a owl:Class ;
+            owl:unionOf ( [ a owl:Restriction ;
+                        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass ns:Section ;
+                        owl:onProperty ns:triggersSection ] [ a owl:Restriction ;
+                        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass ns:Questionnaire ;
+                        owl:onProperty ns:triggersQuestionnaire ] [ a owl:Class ;
+                        owl:intersectionOf ( [ a owl:Restriction ;
+                                    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                    owl:onClass ns:Question ;
+                                    owl:onProperty ns:triggersQuestion ] [ a owl:Restriction ;
+                                    owl:onProperty ns:triggersSection ;
+                                    owl:someValuesFrom ns:Section ] [ a owl:Restriction ;
+                                    owl:onProperty ns:triggersQuestionnaire ;
+                                    owl:someValuesFrom ns:Questionnaire ] ) ] ) ] .
+
+ns:triggersQuestion a owl:ObjectProperty ;
+    rdfs:label "triggers question" ;
+    rdfs:range ns:Question .
+
+ns:Question a owl:Class ;
+    rdfs:label "Question" .
+
+ns:triggersQuestionnaire a owl:ObjectProperty ;
+    rdfs:label "triggers questionnaire" ;
+    rdfs:range ns:Questionnaire .
+
+ns:triggersSection a owl:ObjectProperty ;
+    rdfs:label "triggers section" ;
+    rdfs:range ns:Section .
+
+ns:Questionnaire a owl:Class ;
+    rdfs:label "Questionnaire" .
+
+ns:Section a owl:Class ;
+    rdfs:label "Section" .
+
