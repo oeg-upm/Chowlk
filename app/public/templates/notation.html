@@ -146,9 +146,10 @@
                     <div class="grow" id="collapse-tips-grow">
                         <div id="collapse-tips">
                             <p class="ps-2"><a href="#legend-definition">3.1. Legend Container</a></p>
+                            <p class="ps-2"><a href="#class-axiom-cardinality">3.2. Class axioms with cardinalities</a></p>
+                            <p class="ps-2"><a href="#multiple-restrictions">3.3. Declare multiple class restrictions</a></p>
                         </div>
-                    </div>
-                    
+                    </div>   
                     
                     <div style="margin-bottom: 1rem;">
                         <a href="#concatenation-class-restrictions">4. Combining Class Descriptions</a>
@@ -1978,7 +1979,7 @@
                                 <td class="text-center row-height" scope="row">
                                     <p class="alt-tag">Alternative</p>
                                     <p> <br> </p>
-                                    <img src="static/images/restriction_subclass2.svg" alt="subclass">
+                                    <img src="static/images/restriction_subclass2_new_notation.svg" alt="subclass">
                                 </td>
                             </tr>
 
@@ -2038,7 +2039,7 @@
                                 <td class="text-center row-height" scope="row">
                                     <p class="alt-tag">Alternative</p>
                                     <p> <br> </p>
-                                    <img src="static/images/restriction_subclass6.svg" alt="subclass">
+                                    <img src="static/images/restriction_subclass6_new_notation.svg" alt="subclass">
                                 </td>
                             </tr>
 
@@ -2281,7 +2282,7 @@
                                 <td class="text-center row-height" scope="row">
                                     <p class="alt-tag">Alternative</p>
                                     <p> <br> </p>
-                                    <img src="static/images/restriction_equivalent3.svg" alt="equivalent">
+                                    <img src="static/images/restriction_equivalent3_new_notation.svg" alt="equivalent">
                                 </td>
                                 <td rowspan="1"><code>ns:Class1 a owl:Class ;<br>
                                     owl:equivalentClass [ a owl:Restriction ;<br>
@@ -2308,7 +2309,7 @@
 
                         <tbody>
                             <tr>
-                                <td class="text-center" scope="row"><img src="static/images/restriction_equivalent4.svg"
+                                <td class="text-center" scope="row"><img src="static/images/restriction_equivalent4_new_notation.svg"
                                         alt="namespace"></td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
                                     owl:equivalentClass [ a owl:Restriction ;<br>
@@ -2591,7 +2592,7 @@
                                 <td class="text-center row-height" scope="row">
                                     <p class="alt-tag">Alternative</p>
                                     <p> <br> </p>
-                                    <img src="static/images/restriction_disjoint3.svg" alt="disjoint">
+                                    <img src="static/images/restriction_disjoint3_new_notation.svg" alt="disjoint">
                                 </td>
                                 <td rowspan="1"><code>ns:Class1 a owl:Class ;<br>
                                     owl:disjointWith  [ a owl:Restriction ;<br>
@@ -2618,7 +2619,7 @@
 
                         <tbody>
                             <tr>
-                                <td class="text-center" scope="row"><img src="static/images/restriction_disjoint4.svg"
+                                <td class="text-center" scope="row"><img src="static/images/restriction_disjoint4_new_notation.svg"
                                         alt="namespace"></td>
                                 <td><code>ns:Class1 a owl:Class ;<br>
                                     owl:disjointWith [ a owl:Restriction ;<br>
@@ -4548,6 +4549,178 @@
                             <tr>
                                 <td class="text-center" scope="row"><img src="static/images/legend_element.svg" alt="legend"></td>
                                 <td><code>-</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <h5 id="class-axiom-cardinality" class="pt-3">3.2. Class axioms with cardinalities</h5>
+
+                    <p class="pt-3">How to declare a class axiom when creating a cardinality restriction which involves a datatype property</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/cardinality_class_axiom_1.svg" alt="cardinality class axiom"></td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    owl:equivalentClass [ a owl:Restriction ;<br>
+                                    owl:minCardinality "1"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:label "datatype property1" ;<br>
+                                    dfs:range xsd:datatype .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">How to declare a class axiom when creating a cardinality restriction which involves an object property</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/cardinality_class_axiom_2.svg" alt="cardinality class axiom"></td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
+                                    owl:minCardinality "1"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onProperty ns:objectProperty ] .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .<br>
+                                    <br>
+                                    ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:domain ns:Class1 ;<br>
+                                    rdfs:range ns:Class2 .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">How to declare a class axiom when creating a qualified cardinality restriction which involves a datatype property</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/qualified_cardinality_class_axiom_1.svg" alt="qualified cardinality class axiom"></td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    owl:equivalentClass [ a owl:Restriction ;<br>
+                                    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onDataRange xsd:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range xsd:datatype .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">How to declare a class axiom when creating a qualified cardinality restriction which involves an object property</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/qualified_cardinality_class_axiom_2.svg" alt="qualified cardinality class axiom"></td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
+                                    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;<br>
+                                    owl:onClass ns:Class2 ;<br>
+                                    owl:onProperty ns:objectProperty ] .<br>
+                                    <br>
+                                    ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:domain ns:Class1 ;<br>
+                                    rdfs:range ns:Class2 .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <h5 id="multiple-restrictions" class="pt-3">3.3. Declare multiple class restrictions</h5>
+
+                    <p class="pt-3">How to declare multiple restrictions which involves a datatype property</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/multiple_clas_restriction_1.svg" alt="cardinality class axiom"></td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ;<br>
+                                    owl:someValuesFrom xsd:datatype ] ;<br>
+                                    owl:equivalentClass [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom xsd:datatype ;<br>
+                                    owl:onProperty ns:datatypeProperty1 ] .<br>
+                                    <br>
+                                    ns:datatypeProperty1 a owl:DatatypeProperty ;<br>
+                                    rdfs:range xsd:datatype .</code></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <p class="pt-3">How to declare multiple restrictions which involves an object property</p>
+
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 55%;">Diagram Block</th>
+                                <th scope="col" style="width: 45%;">OWL Element</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="text-center" scope="row"><img src="static/images/multiple_clas_restriction_2.svg" alt="cardinality class axiom"></td>
+                                <td><code>ns:Class1 a owl:Class ;<br>
+                                    rdfs:subClassOf [ a owl:Restriction ;<br>
+                                    owl:onProperty ns:objectProperty ;<br>
+                                    owl:someValuesFrom ns:Class2 ] ;<br>
+                                    owl:equivalentClass [ a owl:Restriction ;<br>
+                                    owl:allValuesFrom ns:Class2 ;<br>
+                                    owl:onProperty ns:objectProperty ] .<br>
+                                    <br>
+                                    ns:objectProperty a owl:ObjectProperty ;<br>
+                                    rdfs:domain ns:Class1 ;<br>
+                                    rdfs:range ns:Class2 .<br>
+                                    <br>
+                                    ns:Class2 a owl:Class .</code></td>
                             </tr>
                         </tbody>
 
